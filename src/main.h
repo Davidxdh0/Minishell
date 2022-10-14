@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/13 15:38:50 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 07:27:49 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ https://pubs.opengroup.org/onlinepubs/009604499/utilities/xcu_chap02.html
 # define MAIN_H
 
 # include <stdio.h>
+# include <stdlib.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 
 /* BNF
 commandline ::= list

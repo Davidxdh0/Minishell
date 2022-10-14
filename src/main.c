@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/13 15:40:52 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 07:28:42 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,19 @@ void	get_input_line(t_line *line)
 		line->str = NULL;
 		line->nread = getline(&line->str, &line->size, stdin);
 }
+
+// char	*rl_gets(char *line_read, const char *display_name)
+// {
+// 	if (line_read)
+// 	{
+// 		free (line_read);
+// 		line_read = (char *) NULL;
+// 	}
+// 	line_read = readline (display_name);
+// 	if (line_read && *line_read)
+// 		add_history (line_read);
+// 	return (line_read);
+// }
 
 /* Program flow
 1. lexer
@@ -51,10 +64,15 @@ int	main(void)
 {
 	t_line		line;
 	t_line_lst	line_lst;
+	// char	*line;
 
 	while (1)
 	{
 		set_promt();
+		// line = NULL;
+		// line = rl_gets(line, "$");
+		// line.size = 0;
+		// line.str = "123";
 		get_input_line(&line);
 		lexer(&line, &line_lst);
 		printf("[line]\t%s[nread]\t%zi\n[size]\t%zu\n", \
