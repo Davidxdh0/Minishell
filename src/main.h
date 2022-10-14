@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 07:27:49 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 10:00:31 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ https://pubs.opengroup.org/onlinepubs/009604499/utilities/xcu_chap02.html
 
 # include <stdio.h>
 # include <stdlib.h>
-// # include <readline/readline.h>
-// # include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 /* BNF
 commandline ::= list
@@ -85,7 +85,7 @@ typedef enum{
 	pipe,
 	var,
 	redirect
-} note_type;
+}	note_type;
 
 void	lexer(t_line *line, t_line_lst *line_list);
 

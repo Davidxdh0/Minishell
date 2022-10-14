@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 07:28:42 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 09:51:40 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ void	get_input_line(t_line *line)
 		line->nread = getline(&line->str, &line->size, stdin);
 }
 
-// char	*rl_gets(char *line_read, const char *display_name)
-// {
-// 	if (line_read)
-// 	{
-// 		free (line_read);
-// 		line_read = (char *) NULL;
-// 	}
-// 	line_read = readline (display_name);
-// 	if (line_read && *line_read)
-// 		add_history (line_read);
-// 	return (line_read);
-// }
+char	*rl_gets(char *line_read, const char *display_name)
+{
+	if (line_read)
+	{
+		free (line_read);
+		line_read = (char *) NULL;
+	}
+	line_read = readline (display_name);
+	if (line_read && *line_read)
+		add_history (line_read);
+	return (line_read);
+}
 
 /* Program flow
 1. lexer
@@ -57,26 +57,32 @@ void	get_input_line(t_line *line)
 4.x. creating pipes
 4.x. creating processes
 
-To do
-[ ] Header dependency in makefile
+To do:
+[X] Header dependency in makefile
+
+Optional:
+[ ] *.d in seperate folder
 */
 int	main(void)
 {
-	t_line		line;
-	t_line_lst	line_lst;
-	// char	*line;
+	// t_line		line;
+	// t_line_lst	line_lst;
+	char	*line;
 
 	while (1)
 	{
-		set_promt();
-		// line = NULL;
+		// set_promt();
+		
+		line = NULL;
+		line = rl_gets(line, "minishelll$ ");
+		printf("%s\n", line);
 		// line = rl_gets(line, "$");
 		// line.size = 0;
 		// line.str = "123";
-		get_input_line(&line);
-		lexer(&line, &line_lst);
-		printf("[line]\t%s[nread]\t%zi\n[size]\t%zu\n", \
-			line.str, line.nread, line.size);
+		// get_input_line(&line);
+		// lexer(&line, &line_lst);
+		// printf("[line]\t%s[nread]\t%zi\n[size]\t%zu\n", \
+		// 	line.str, line.nread, line.size);
 	}
 	return (0);
 }
