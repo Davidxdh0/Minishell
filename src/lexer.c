@@ -6,25 +6,41 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 09:15:31 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 10:45:41 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 18:20:06 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
+int	count_tokens(char *line)
+{
+	int	index;
+	int	counter;
+
+	index = 0;
+	counter = 0;
+	while (line[index] != '\0')
+	{
+		if (line[index] == '"' || line[index] == '\'')
+			get_data_in_quotes(&line[index]);
+		ft_putchar_fd(line[index], 1);
+		index++;
+	}
+	ft_putchar_fd('\n', 1);
+	return (counter);
+}
+
 /*
 	The lexer takes the input line and puts the characters together into words 
 	called tokens.
 */
-void	lexer(char *line, char **tokens)
+char	**lexer(char *line)
 {
-	int	i;
+	char	**tokens;
 
-	tokens = ft_split(line, ' ');
-	i = 0;
-	while (tokens[i])
-	{
-		printf("%s\n", tokens[i]);
-		i++;
-	}
+	count_tokens(line);
+	tokens = NULL;
+	// tokens = malloc(sizeof(char *) * count_tokens(line));
+	return (tokens);
+	// return (ft_split(line, ' '));
 }

@@ -6,23 +6,44 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 11:24:39 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 21:37:34 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-char	*get_input_line(char *line_read, const char *display_name)
+void	make_sure_line_is_empty(char **line)
 {
-	if (line_read)
+	if (*line)
 	{
-		free (line_read);
-		line_read = (char *) NULL;
+		free (*line);
+		*line = (char *) NULL;
 	}
-	line_read = readline (display_name);
-	if (line_read && *line_read)
-		add_history (line_read);
-	return (line_read);
+}
+
+void	add_line_in_history(char **line)
+{
+	if (*line && **line)
+		add_history (*line);
+}
+
+/*
+	Set the display name in the termian and reading the input from the termial
+*/
+void	line_reader(char **line, const char *display_name)
+{
+	make_sure_line_is_empty(line);
+	*line = readline (display_name);
+	add_line_in_history(line);
+}
+
+int	shell(char *line, char **envp)
+{
+	char	**tokens;
+
+	tokens = lexer(line);
+	envp = 0;
+	return (0);
 }
 
 /* Program flow
@@ -42,19 +63,22 @@ char	*get_input_line(char *line_read, const char *display_name)
 
 To do:
 [X] Header dependency in makefile
+[X] Creata a flag option for giving command through argv
+[ ] Make unit testers
 
 Optional:
-[ ] *.d in seperate folder
+[ ] *.d files in seperate folder
 */
-int	main(void)
+int	main(int argc, char *argv[], char **envp)
 {
 	static char	*line;
-	char		*tokens;
 
-	while (1)
+	if (input_is_argv(argc, argv, &line))
+		return (shell(line, envp));
+	while ("you don't close me")
 	{
-		line = get_input_line(line, "minishelll$ ");
-		lexer(line, &tokens);
+		line_reader(&line, "minishell$ ");
+		shell(line, envp);
 	}
 	return (0);
 }

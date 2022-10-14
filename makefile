@@ -10,7 +10,10 @@ LIBFT = $(LIBFT_DIR)/libft.a
 READLINE_LIB = -lreadline
 
 SRCFILES =	main.c \
-			lexer.c
+			argv_input.c \
+			lexer.c \
+			handle_quotes.c \
+			handle_variables.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRCFILES))
 

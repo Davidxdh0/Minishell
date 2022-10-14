@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 11:24:09 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 21:11:33 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ explanation shell:
 https://cs61.seas.harvard.edu/site/2019/Section7/
 Shell Command Language:
 https://pubs.opengroup.org/onlinepubs/009604499/utilities/xcu_chap02.html
+Unit tester:
+https://github.com/Snaipe/Criterion
 */
 #ifndef MAIN_H
 # define MAIN_H
@@ -28,6 +30,15 @@ https://pubs.opengroup.org/onlinepubs/009604499/utilities/xcu_chap02.html
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libs/libft/libft.h"
+
+
+#define RIDIRECT_I		"<"
+#define RIDIRECT_O		">"
+#define APPEND			">>"
+#define DELIMITER		"<<"
+#define SINGLE_QUOTE	"\'"
+#define DOUBLE_QUOTE	"\""
+#define PIPE			"|"
 
 /* BNF
 commandline ::= list
@@ -51,7 +62,7 @@ command  ::=  word
           |   command redirection
 
 redirection  ::=  redirectionop filename
-redirectionop  ::=  "<"  |  ">"  |  "2>"
+redirectionop  ::=  "<"  |  ">"  |  "<<"  |  ">>"
 */
 typedef struct s_line_lst
 {
@@ -59,13 +70,6 @@ typedef struct s_line_lst
 	char				*value;
 	struct s_line_lst	*next;
 }	t_line_lst;
-
-typedef struct s_line
-{
-	char	*str;
-	size_t	size;
-	ssize_t	nread;
-}	t_line;
 
 /* command list
 ''		should prevent the shell from interpreting the meta- characters in the quoted sequence
@@ -84,10 +88,15 @@ typedef enum{
 	cmd,
 	file,
 	pipe,
+	text,
 	var,
 	redirect
 }	note_type;
 
-void	lexer(char *line, char **tokens);
+int		input_is_argv(int argc, char *argv[], char **line);
+char	**lexer(char *line);
+char	*get_data_in_quotes(char *str);
+char	*get_variable(char *str);
+
 
 #endif
