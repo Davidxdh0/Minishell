@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 09:15:31 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/13 19:27:07 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 10:45:41 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 	The lexer takes the input line and puts the characters together into words 
 	called tokens.
 */
-void	lexer(t_line *line, t_line_lst *line_lst)
+void	lexer(char *line, char **tokens)
 {
-	size_t	index;
+	int	i;
 
-	index = 0;
-	while (index < line->size)
+	tokens = ft_split(line, ' ');
+	i = 0;
+	while (tokens[i])
 	{
-		index++;
+		printf("%s\n", tokens[i]);
+		i++;
 	}
-	line_lst->value = line->str;
 }

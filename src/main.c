@@ -6,30 +6,13 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 09:51:40 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 11:24:39 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-/*
-	Print the promt in the terminal.
-*/
-void	set_promt(void)
-{
-	printf("minishell$ ");
-}
-
-/*
-	Reading the input line form the terminal.
-*/
-void	get_input_line(t_line *line)
-{
-		line->str = NULL;
-		line->nread = getline(&line->str, &line->size, stdin);
-}
-
-char	*rl_gets(char *line_read, const char *display_name)
+char	*get_input_line(char *line_read, const char *display_name)
 {
 	if (line_read)
 	{
@@ -65,24 +48,13 @@ Optional:
 */
 int	main(void)
 {
-	// t_line		line;
-	// t_line_lst	line_lst;
-	char	*line;
+	static char	*line;
+	char		*tokens;
 
 	while (1)
 	{
-		// set_promt();
-		
-		line = NULL;
-		line = rl_gets(line, "minishelll$ ");
-		printf("%s\n", line);
-		// line = rl_gets(line, "$");
-		// line.size = 0;
-		// line.str = "123";
-		// get_input_line(&line);
-		// lexer(&line, &line_lst);
-		// printf("[line]\t%s[nread]\t%zi\n[size]\t%zu\n", \
-		// 	line.str, line.nread, line.size);
+		line = get_input_line(line, "minishelll$ ");
+		lexer(line, &tokens);
 	}
 	return (0);
 }
