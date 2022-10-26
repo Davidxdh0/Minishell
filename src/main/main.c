@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:20:28 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 20:01:08 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	shell(char *line, char **envp)
 
 	tokens = lexer(line);
 	line_lst = parser(tokens);
-	envp = 0;
+	envp = NULL;
 	return (0);
 }
 
