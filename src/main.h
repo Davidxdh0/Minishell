@@ -6,19 +6,32 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 11:55:26 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 16:31:40 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* sources
-bash manual:
-https://www.gnu.org/software/bash/manual/
-explanation shell:
-https://harm-smits.github.io/42docs/projects/minishell
+bash flow
+http://www.aosabook.org/en/bash.html
+tutorial
+https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 explanation shell:
 https://cs61.seas.harvard.edu/site/2019/Section7/
 Shell Command Language:
 https://pubs.opengroup.org/onlinepubs/009604499/utilities/xcu_chap02.html
+BNF:
+https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
+bash manual:
+https://www.gnu.org/software/bash/manual/
+
+bash parser"
+https://mywiki.wooledge.org/BashParser
+tokenizer:
+https://ix-56h.github.io/how-to-make-a-tokenizer/
+ridirections:
+https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+
+
 Unit tester:
 https://github.com/Snaipe/Criterion
 */
@@ -69,6 +82,7 @@ typedef struct s_line_lst
 	int					type;
 	char				*value;
 	struct s_line_lst	*next;
+	struct s_line_lst	*prev;
 }	t_line_lst;
 
 /* command list
