@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 16:31:40 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 16:44:03 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ tokenizer:
 https://ix-56h.github.io/how-to-make-a-tokenizer/
 ridirections:
 https://www.gnu.org/software/bash/manual/html_node/Redirections.html
-
 
 Unit tester:
 https://github.com/Snaipe/Criterion
