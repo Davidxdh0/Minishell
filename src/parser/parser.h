@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 18:59:30 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 20:20:24 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ typedef struct s_line_lst
 	struct s_line_lst	*prev;
 }	t_line_lst;
 
-t_line_lst	parser(char	**tokens);
+t_line_lst	*parser(char	**tokens);
 
 #endif

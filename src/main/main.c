@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 20:01:08 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 20:20:47 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ Optional:
 int	shell(char *line, char **envp)
 {
 	char		**tokens;
-	t_line_lst	line_lst;
+	t_line_lst	*line_lst;
 
 	tokens = lexer(line);
 	line_lst = parser(tokens);
