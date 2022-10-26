@@ -10,15 +10,21 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -lreadline
 
-SRCFILES =	main.c \
-			argv_input.c \
-			lexer.c \
-			parser.c \
-			handle_quotes.c \
-			handle_variables.c \
-			history.c
+LEXER_FILES =	lexer.c \
+				handle_quotes.c \
+				handle_variables.c
 
-SRC = $(addprefix $(SRC_DIR)/, $(SRCFILES))
+MAIN_FILES =	main.c \
+				argv_input.c \
+				history.c
+
+PARSER_FILES =	parser.c
+
+SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
+				$(addprefix lexer/, $(LEXER_FILES)) \
+				$(addprefix parser/, $(PARSER_FILES))
+
+SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   handle_variables.c                                 :+:    :+:            */
+/*   handle_quotes.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/14 14:40:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 14:59:46 by bprovoos      ########   odam.nl         */
+/*   Created: 2022/10/14 14:39:53 by bprovoos      #+#    #+#                 */
+/*   Updated: 2022/10/26 17:50:32 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "lexer.h"
 
-char	*get_variable(char *str)
+/*
+	Get chars and $variables between quotes.
+*/
+char	*get_data_in_quotes(char *str)
 {
-	str = "";
+	ft_putendl_fd("", 1);
+	ft_putchar_fd(*(str), 1);
+	ft_putendl_fd("", 1);
 	return (str);
 }

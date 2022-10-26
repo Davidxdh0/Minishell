@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   parser.h                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:21:43 by bprovoos      ########   odam.nl         */
+/*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
+/*   Updated: 2022/10/26 18:59:30 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#ifndef PASER_H
+# define PASER_H
 
-/*
-	The parser processes the tokens according to a grammar and build the command 
-	table.
-*/
-t_line_lst	parser(char	**tokens)
+# include <stdlib.h>
+
+typedef struct s_line_lst
 {
-	t_line_lst	line_lst;
+	int					type;
+	char				*value;
+	struct s_line_lst	*next;
+	struct s_line_lst	*prev;
+}	t_line_lst;
 
-	tokens = NULL;
-	line_lst.value = "";
-	return (line_lst);
-}
+t_line_lst	parser(char	**tokens);
+
+#endif

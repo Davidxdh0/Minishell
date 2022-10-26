@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:19:21 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 17:55:42 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ https://github.com/Snaipe/Criterion
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../libs/libft/libft.h"
-
+# include "../../libs/libft/libft.h"
+# include "../lexer/lexer.h"
+# include "../parser/parser.h"
 
 #define RIDIRECT_I		"<"
 #define RIDIRECT_O		">"
@@ -76,13 +77,7 @@ command  ::=  word
 redirection  ::=  redirectionop filename
 redirectionop  ::=  "<"  |  ">"  |  "<<"  |  ">>"
 */
-typedef struct s_line_lst
-{
-	int					type;
-	char				*value;
-	struct s_line_lst	*next;
-	struct s_line_lst	*prev;
-}	t_line_lst;
+
 
 /* command list
 ''		should prevent the shell from interpreting the meta- characters in the quoted sequence
@@ -108,9 +103,5 @@ typedef enum{
 
 int			input_is_argv(int argc, char *argv[], char **line);
 void		add_line_in_history(char **line);
-char		**lexer(char *line);
-t_line_lst	parser(char	**tokens);
-char		*get_data_in_quotes(char *str);
-char		*get_variable(char *str);
 
 #endif
