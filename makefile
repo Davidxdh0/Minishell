@@ -14,7 +14,8 @@ SRCFILES =	main.c \
 			argv_input.c \
 			lexer.c \
 			handle_quotes.c \
-			handle_variables.c
+			handle_variables.c \
+			history.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRCFILES))
 

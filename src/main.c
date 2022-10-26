@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/21 10:40:54 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 16:49:02 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,13 @@ void	make_sure_line_is_empty(char **line)
 	}
 }
 
-void	add_line_in_history(char **line)
-{
-	if (*line && **line)
-		add_history (*line);
-}
-
 /*
 	Set the display name in the termian and reading the input from the termial
 */
 void	line_reader(char **line, const char *display_name)
 {
 	make_sure_line_is_empty(line);
-	*line = readline (display_name);
+	*line = readline(display_name);
 	add_line_in_history(line);
 }
 
