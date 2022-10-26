@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:55:42 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 19:09:25 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ command  ::=  word
 redirection  ::=  redirectionop filename
 redirectionop  ::=  "<"  |  ">"  |  "<<"  |  ">>"
 */
-
 
 /* command list
 ''		should prevent the shell from interpreting the meta- characters in the quoted sequence
