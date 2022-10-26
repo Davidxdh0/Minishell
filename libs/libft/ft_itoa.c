@@ -6,7 +6,7 @@
 /*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/30 18:31:16 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 17:56:30 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:33:58 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ int	get_len_of_int(int n)
 	return (i);
 }
 
+/*
+	Allocates (with malloc(3)) and returns a string representing the integer 
+	received as an argument.
+*/
 char	*ft_itoa(int n)
 {
 	char	*result;

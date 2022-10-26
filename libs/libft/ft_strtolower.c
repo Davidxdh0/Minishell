@@ -6,12 +6,15 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/23 09:59:37 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/09/29 21:13:17 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:52:33 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+	Set all characters in the string to lower case
+*/
 char	*ft_strtolower(char *str)
 {
 	int	i;

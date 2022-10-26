@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/01 22:09:54 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/05/27 18:06:57 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:32:10 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int	get_end_trim(char const *s1, char const *set)
 	return (end + 1);
 }
 
+/*
+	Allocates (with malloc(3)) and returns a copy of ’s1’ with the characters 
+	specified in ’set’ removed from the beginning and the end of the string.
+*/
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	start;

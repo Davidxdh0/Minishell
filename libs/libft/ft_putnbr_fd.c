@@ -6,12 +6,15 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/08 16:34:01 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/09/23 14:53:26 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:48:55 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+	Outputs the integer ’n’ to the given file descriptor.
+*/
 int	ft_putnbr_fd(int n, int fd)
 {
 	long	nb;

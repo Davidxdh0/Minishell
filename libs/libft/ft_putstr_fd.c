@@ -6,13 +6,16 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/08 16:42:38 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/09/29 21:13:55 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:47:45 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libft.h"
 
+/*
+	Outputs the string ’s’ to the given file descriptor.
+*/
 int	ft_putstr_fd(char *str, int fd)
 {
 	if (!str)

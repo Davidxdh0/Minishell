@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 21:10:54 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 21:48:18 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/21 10:38:23 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,13 @@ void	put_argv_in_line(int argc, char *argv[], char **line)
 
 int	argv_has_flag(int argc, char *argv[])
 {
-	if (argc >= 2 && ft_strncmp(argv[1], "-p", ft_strlen(argv[1])) == 0)
-		return (1);
-	return (0);
-	// if (argc < 2)
-	// 	return (0);
-	// if (ft_strlen(argv[1]) < 1)
-	// 	return (0);
-	// if (ft_strncmp(argv[1], "-p", ft_strlen(argv[1]) != 0))
-	// 	return (0);
-	// return (1);
+	if (argc < 2)
+		return (0);
+	if (ft_strlen(argv[1]) < 2)
+		return (0);
+	if (ft_strncmp(argv[1], "-p", ft_strlen(argv[1])) != 0)
+		return (0);
+	return (1);
 }
 
 int	input_is_argv(int argc, char *argv[], char **line)

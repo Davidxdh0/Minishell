@@ -6,12 +6,15 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/27 14:00:19 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/05/27 17:52:14 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:59:43 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
+/*
+	Writes len bytes of value c (converted to an unsigned char) to the string.
+*/
 void	*ft_memset(void *str, int c, size_t n)
 {
 	unsigned char	*ptr;

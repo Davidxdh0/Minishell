@@ -6,12 +6,17 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/08 14:52:04 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/05/27 18:04:54 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:38:32 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+	Applies the function ’f’ to each character of the string ’s’, and passing 
+	its index as first argument to create a new string (with malloc(3)) resulting
+	from successive applications of ’f’.
+*/
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
 	unsigned int	i;

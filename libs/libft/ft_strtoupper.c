@@ -6,12 +6,15 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/23 09:58:52 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/09/29 21:12:38 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:52:42 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+	Set all characters in the string to upper case
+*/
 char	*ft_strtoupper(char *str)
 {
 	int	i;

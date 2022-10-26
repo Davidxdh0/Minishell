@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 21:37:34 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/21 10:40:54 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,6 @@ void	line_reader(char **line, const char *display_name)
 	add_line_in_history(line);
 }
 
-int	shell(char *line, char **envp)
-{
-	char	**tokens;
-
-	tokens = lexer(line);
-	envp = 0;
-	return (0);
-}
-
 /* Program flow
 1. lexer
 1.1. check syntax
@@ -69,6 +60,15 @@ To do:
 Optional:
 [ ] *.d files in seperate folder
 */
+int	shell(char *line, char **envp)
+{
+	char	**tokens;
+
+	tokens = lexer(line);
+	envp = 0;
+	return (0);
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
 	static char	*line;

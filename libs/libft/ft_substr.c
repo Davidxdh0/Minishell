@@ -6,12 +6,16 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/01 20:44:17 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/04/20 09:23:23 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:29:21 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
+/*
+	Allocates (with malloc(3)) and returns a substring from the string ’s’.
+	The substring begins at index ’start’ and is of maximum size ’len’.
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;

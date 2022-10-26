@@ -4,3 +4,7 @@
 
 ./minishell -p echo Hello
 ./minishell -p echo Hello World!
+./minishell -p echo Hello World!
+./minishell -p echo Hello World!
+./minishell -p echo Hello World!
+./minishell -p echo Hello World!

@@ -6,7 +6,7 @@
 /*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/03 16:11:48 by bramjr        #+#    #+#                 */
-/*   Updated: 2022/09/20 18:24:39 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:33:19 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ char	**splitting(char const *s, char c, char **splits, int amount)
 	return (splits);
 }
 
+/*
+	Allocates (with malloc(3)) and returns an array of strings obtained by 
+	splitting ’s’ using the character ’c’ as a delimiter. The array ends
+	with a NULL pointer.
+*/
 char	**ft_split(char const *s, char c)
 {
 	int		amount;

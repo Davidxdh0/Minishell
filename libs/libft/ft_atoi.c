@@ -6,12 +6,15 @@
 /*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/28 15:25:08 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/10/11 16:51:22 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/14 16:54:28 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+	converts the string to a int representation.
+*/
 long	ft_atoi(const char *str)
 {
 	int		neg;
