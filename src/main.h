@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 09:38:59 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 11:55:26 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,5 @@ int		input_is_argv(int argc, char *argv[], char **line);
 char	**lexer(char *line);
 char	*get_data_in_quotes(char *str);
 char	*get_variable(char *str);
-
 
 #endif

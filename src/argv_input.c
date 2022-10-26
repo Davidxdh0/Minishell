@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 21:10:54 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/21 10:38:23 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 13:34:48 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	put_argv_in_line(int argc, char *argv[], char **line)
 {
 	int	index;
 
-	*line = &argv[1][2];
 	index = 2;
+	*line = &argv[1][index];
 	while (index < argc)
 	{
 		*line = ft_strjoin(*line, argv[index]);
