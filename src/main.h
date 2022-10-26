@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 16:49:51 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 17:19:21 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,11 @@ typedef enum{
 	redirect
 }	note_type;
 
-int		input_is_argv(int argc, char *argv[], char **line);
-void	add_line_in_history(char **line);
-char	**lexer(char *line);
-char	*get_data_in_quotes(char *str);
-char	*get_variable(char *str);
+int			input_is_argv(int argc, char *argv[], char **line);
+void		add_line_in_history(char **line);
+char		**lexer(char *line);
+t_line_lst	parser(char	**tokens);
+char		*get_data_in_quotes(char *str);
+char		*get_variable(char *str);
 
 #endif

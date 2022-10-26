@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 14:48:58 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/26 17:21:43 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 	The parser processes the tokens according to a grammar and build the command 
 	table.
 */
-void	parser(void)
+t_line_lst	parser(char	**tokens)
 {
-	
+	t_line_lst	line_lst;
+
+	tokens = NULL;
+	line_lst.value = "";
+	return (line_lst);
 }

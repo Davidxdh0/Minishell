@@ -13,6 +13,7 @@ READLINE_LIB = -lreadline
 SRCFILES =	main.c \
 			argv_input.c \
 			lexer.c \
+			parser.c \
 			handle_quotes.c \
 			handle_variables.c \
 			history.c
