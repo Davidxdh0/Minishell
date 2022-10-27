@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 19:09:25 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/27 08:48:46 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,6 @@ file	(open)
 $VAR	expand VAR to the value
 $?		expand to the exit status of the most recently executed foreground pipeline
 */
-typedef enum{
-	cmd,
-	file,
-	pipe,
-	text,
-	var,
-	redirect
-}	note_type;
 
 int			input_is_argv(int argc, char *argv[], char **line);
 void		add_line_in_history(char **line);
