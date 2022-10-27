@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 09:15:31 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:50:21 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:22:34 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,3 +44,66 @@ char	**lexer(char *line)
 	return (tokens);
 	// return (ft_split(line, ' '));
 }
+
+// void insertStart(struct Node** head, int data){
+    
+//     // creating memory for newNode
+//     struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+    
+//     // assigning newNode's next as the current head 
+//     // Assign data & and make newNode's prev as NULL
+//     newNode->data = data;
+//     newNode->next = *head;
+//     newNode->prev = NULL;
+    
+//     // if list already had item(s)
+//     // We need to make current head previous node as this new node
+//     if(*head != NULL)
+//         (*head)->prev = newNode;
+    
+//     // change head to this newNode
+//     *head = newNode;
+    
+// }
+
+// void insertLast(struct Node** head, int data){
+//     struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+
+//     newNode->data = data;
+//     newNode->next = NULL;
+    
+//     //need this if there is no node present in linked list at all
+//     if(*head==NULL){
+//         *head = newNode;
+//         newNode->prev = NULL;
+//         return;
+//     }
+    
+//     struct Node* temp = *head;
+    
+//     // traverse till the last node
+//     while(temp->next!=NULL)
+//         temp = temp->next;
+    
+//     // assign last node's next to this new Node
+//     temp->next = newNode;
+//     // assign this new Node's previous to last node(temp)
+//     newNode->prev = temp;
+// }
+
+// void display(struct Node* node)
+// {
+//     struct Node* end;
+//     printf("\nIn Forward Direction\n");
+//     while (node != NULL) {
+//         printf(" %d ", node->data);
+//         end = node;
+//         node = node->next;
+//     }
+ 
+//     printf("\nIn Backward direction \n");
+//     while (end != NULL) {
+//         printf(" %d ", end->data);
+//         end = end->prev;
+//     }
+// }
