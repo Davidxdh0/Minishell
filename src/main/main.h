@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:55:42 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:31:11 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ $?		expand to the exit status of the most recently executed foreground pipeline
 typedef enum{
 	cmd,
 	file,
-	pipe,
+	token_pipe,
 	text,
 	var,
 	redirect

@@ -6,11 +6,12 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/26 20:06:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/27 16:26:55 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+#include "../main/main.h"
 
 /* cmd's zijn in linked list -> execute op basis van: links, rechts, type, 
 	eerste keer lezen van fd[1] - kan file zijn.
@@ -38,11 +39,12 @@ needs to save input/output and restore it at the end.
 	characters in the quoted sequence.
 	Handle " (double quote) which should prevent the shell from interpreting the meta-
 	characters in the quoted sequence except for $ (dollar sign).
+	
 	""'$variabel'"" - testen
 	
 	<< should be given a delimiter, then read the input until a line containing the
 	delimiter is seen. However, it doesn’t have to update the history!
-	◦ >> should redirect output in append mode
+	>> should redirect output in append mode
 	environment variables ($variabele
 	$? laatste exit code
 
@@ -65,22 +67,78 @@ needs to save input/output and restore it at the end.
 */
 
 
+// 4.1. read command table
+// 4.x. creating pipes
+// 4.x. creating processes
 
-void	execute_list(t_line_lst *cmdlist)
+void	message_exit(char *message, int errornumber)
 {
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd("\n", 2);
+	exit(errornumber);
+}
+
+void	message(char *msg)
+{
+	ft_putstr_fd(msg, 2);
+}
+
+// execute commands op basis van wat het is. 
+void	execute_commands(t_line_lst *stack, t_data *data, int stdin, int stdout, char **envp)
+{
+	pid_t	pid1;
+
+	pid1 = fork();
+	if (pid1 < 1)
+		message_exit("fork went wrong");
+	if (pid1 == 0)
+	{
+		dup2(data->infile, 0);
+		dup2(data->outfile, 1);
+		if (execve(data->path, data->cmd, envp) == -1)
+			perror_exit(1, data->path);
+	}
+	else
+	{
+		close(data->fd[1]);
+		waitpid(pid, ?, ?)
+;	}
+}
+
+void	execute_process(t_line_lst *cmdlist, char **envp, int fd[2], t_data *data)
+{
+	t_line_lst *stack;
+
+	int	stin;
+	int	stout;
+
+	if (!cmdlist)
+		return ;
+	stack = cmdlist;
+	//while niet last van stack.
+	while(stack)
+	{
+		pipe(fd[2]);
+		stdin = dup(0);
+		stdout = dup(1);
+		execute_commands(stack, &stdin, &stdout, envp, &data);
+		stack = stack->next;
+	}
+}
+
+void	execute_builtins(t_line_lst *cmdlist)
+{
+	//check testers voor alle builtins.
 	if (!cmdlist)
 		return ;
 	if (cmdlist->type == 0)
-		//cmd
+		execute_cd(cmdlist);
 	if (cmdlist->type == 1)
-		//file
+		execute_file(cmdlist);
 	if (cmdlist->type == 2)
-		//pipe
+		execute_file(cmdlist);
 	if (cmdlist->type == 3)
-		//text
+		execute_text(cmdlist);
 	if (cmdlist->type == 4)
-		//var
-	if (cmdlist->type == 5)
-		//redirect
-		
+		execute_var(cmdlist);
 }

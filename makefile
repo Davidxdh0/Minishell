@@ -10,6 +10,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -lreadline
 
+EXEC_FILES	=	
 LEXER_FILES =	lexer.c \
 				handle_quotes.c \
 				handle_variables.c
