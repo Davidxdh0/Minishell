@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   executor.h                                         :+:    :+:            */
+/*   exit.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/26 17:54:04 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 11:45:45 by dyeboa        ########   odam.nl         */
+/*   Created: 2022/10/28 11:37:15 by dyeboa        #+#    #+#                 */
+/*   Updated: 2022/10/28 11:37:27 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
+#include "executor.h"
+#include "../main/main.h"
 
-# include "../libs/libft/libft.h"
-# include <stddef.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <errno.h>
-
-typedef struct s_data
+void	message_exit(char *message, int errornumber)
 {
-	char	**envp;
-	int		infile;
-	int		outfile;
-	int		fd[2];
-}	t_data;
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd("\n", 2);
+	exit(errornumber);
+}
 
-#endif
+void	message(char *msg)
+{
+	ft_putstr_fd(msg, 2);
+}

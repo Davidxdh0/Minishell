@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/27 16:26:55 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 12:03:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,11 @@ needs to save input/output and restore it at the end.
 // 4.x. creating pipes
 // 4.x. creating processes
 
-void	message_exit(char *message, int errornumber)
-{
-	ft_putstr_fd(message, 2);
-	ft_putstr_fd("\n", 2);
-	exit(errornumber);
-}
-
-void	message(char *msg)
-{
-	ft_putstr_fd(msg, 2);
-}
-
 // execute commands op basis van wat het is. 
-void	execute_commands(t_line_lst *stack, t_data *data, int stdin, int stdout, char **envp)
+void	execute_process(t_line_lst *stack, t_data *data, int stdin, int stdout, char **envp)
 {
 	pid_t	pid1;
+	int	wstatus;
 
 	pid1 = fork();
 	if (pid1 < 1)
@@ -101,11 +90,35 @@ void	execute_commands(t_line_lst *stack, t_data *data, int stdin, int stdout, ch
 	else
 	{
 		close(data->fd[1]);
-		waitpid(pid, ?, ?)
-;	}
+		waitpid(pid2, &wstatus, 0);
+		if (WIFEXITED(wstatus))
+			exit(WEXITSTATUS(wstatus));
+	}
 }
 
-void	execute_process(t_line_lst *cmdlist, char **envp, int fd[2], t_data *data)
+void	execute_commands(t_line_lst *stack, t_data *data, int stdin, int stdout, char **envp)
+{
+	char	**splitted_cmd;
+	char	*path_and_cmd;
+
+	if (!stack || !data)
+		return ;
+	// if (stack->type == builtin)
+	// 	execute_builtins(stack, data)
+	// else if ()
+
+	data->splitted_cmd = ft_split(stack->cmd, ' ');
+	data->path = get_cmd_path(splitted_cmd[0], envp);
+	if (!data->path || data->splitted_cmd)
+		message("geen path of splitted cmd")
+	execute_process(stack, &stdin, &stdout, envp, &data)
+	if (cmd1[0] == '\0')
+		message_exit("cmd1 == '\0'");
+	if (ft_isspace(cmd1[0]))
+		exit(msg_custom_error_code("pipex: command not found: ", "", 0));
+}
+
+void	execute_cmd_list(t_line_lst *cmdlist, char **envp, int fd[2], t_data *data)
 {
 	t_line_lst *stack;
 
@@ -124,21 +137,4 @@ void	execute_process(t_line_lst *cmdlist, char **envp, int fd[2], t_data *data)
 		execute_commands(stack, &stdin, &stdout, envp, &data);
 		stack = stack->next;
 	}
-}
-
-void	execute_builtins(t_line_lst *cmdlist)
-{
-	//check testers voor alle builtins.
-	if (!cmdlist)
-		return ;
-	if (cmdlist->type == 0)
-		execute_cd(cmdlist);
-	if (cmdlist->type == 1)
-		execute_file(cmdlist);
-	if (cmdlist->type == 2)
-		execute_file(cmdlist);
-	if (cmdlist->type == 3)
-		execute_text(cmdlist);
-	if (cmdlist->type == 4)
-		execute_var(cmdlist);
 }

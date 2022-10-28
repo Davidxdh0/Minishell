@@ -6,22 +6,21 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 19:56:13 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/26 20:02:04 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 11:47:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-char	*get_env_paths(char **envp, char *variable)
+char	*get_env_paths(char **envp)
 {
 	char	*paths;
 
-
-	while (*envp && ft_strncmp(variable, *envp, ft_strlen(variable)))
+	while (*envp && ft_strncmp("PATH", *envp, 4))
 		envp++;
 	if (!*envp)
 		exit(127);
-	paths = ft_strjoin(*envp + ft_strlen(variable), "/");
+	paths = ft_strjoin(*envp + ft_strlen("PATH="), "/");
 	if (!paths)
 		exit(1);
 	return (paths);
