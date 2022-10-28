@@ -6,12 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 12:03:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 15:00:06 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../main/main.h"
 
 /* cmd's zijn in linked list -> execute op basis van: links, rechts, type, 
 	eerste keer lezen van fd[1] - kan file zijn.
@@ -72,58 +71,56 @@ needs to save input/output and restore it at the end.
 // 4.x. creating processes
 
 // execute commands op basis van wat het is. 
-void	execute_process(t_line_lst *stack, t_data *data, int stdin, int stdout, char **envp)
+void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 {
 	pid_t	pid1;
 	int	wstatus;
 
 	pid1 = fork();
 	if (pid1 < 1)
-		message_exit("fork went wrong");
+		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
 		dup2(data->infile, 0);
 		dup2(data->outfile, 1);
 		if (execve(data->path, data->cmd, envp) == -1)
-			perror_exit(1, data->path);
+			message_exit("execve went wrong", 0);
 	}
 	else
 	{
 		close(data->fd[1]);
-		waitpid(pid2, &wstatus, 0);
+		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
-			exit(WEXITSTATUS(wstatus));
+			message_exit("process", (WEXITSTATUS(wstatus)));
 	}
+	message(stack->value);
 }
 
-void	execute_commands(t_line_lst *stack, t_data *data, int stdin, int stdout, char **envp)
+void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 {
-	char	**splitted_cmd;
-	char	*path_and_cmd;
-
 	if (!stack || !data)
 		return ;
 	// if (stack->type == builtin)
 	// 	execute_builtins(stack, data)
 	// else if ()
 
-	data->splitted_cmd = ft_split(stack->cmd, ' ');
-	data->path = get_cmd_path(splitted_cmd[0], envp);
-	if (!data->path || data->splitted_cmd)
-		message("geen path of splitted cmd")
-	execute_process(stack, &stdin, &stdout, envp, &data)
-	if (cmd1[0] == '\0')
-		message_exit("cmd1 == '\0'");
-	if (ft_isspace(cmd1[0]))
+	data->cmd = ft_split(stack->value, ' ');
+	data->path = get_cmd_path(data->cmd[0], envp);
+	if (!data->path || !data->cmd[0])
+		message("geen path of splitted cmd");
+	execute_process(stack, data, envp);
+	if (data->cmd[0] == '\0')
+		message_exit("cmd == '\0'", 1);
+	if (ft_isspace(data->cmd[0][0]))
 		exit(msg_custom_error_code("pipex: command not found: ", "", 0));
 }
 
-void	execute_cmd_list(t_line_lst *cmdlist, char **envp, int fd[2], t_data *data)
+void	execute_cmd_list(t_line_lst *cmdlist, char **envp, t_data *data)
 {
 	t_line_lst *stack;
 
-	int	stin;
-	int	stout;
+	int	stdinput;
+	int	stdoutput;
 
 	if (!cmdlist)
 		return ;
@@ -131,10 +128,11 @@ void	execute_cmd_list(t_line_lst *cmdlist, char **envp, int fd[2], t_data *data)
 	//while niet last van stack.
 	while(stack)
 	{
-		pipe(fd[2]);
-		stdin = dup(0);
-		stdout = dup(1);
-		execute_commands(stack, &stdin, &stdout, envp, &data);
+		pipe(data->fd);
+		stdinput = dup(0);
+		stdoutput = dup(1);
+		execute_commands(stack, data, envp);
+		//close  &stdin, &stdout,
 		stack = stack->next;
 	}
 }

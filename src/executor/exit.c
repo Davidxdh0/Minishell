@@ -6,12 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 11:37:15 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 11:37:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 12:14:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../main/main.h"
 
 void	message_exit(char *message, int errornumber)
 {

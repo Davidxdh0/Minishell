@@ -6,12 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 14:35:08 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/27 16:09:30 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 12:14:16 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../main/main.h"
 
 void	open_infile(char *file, t_data *data)
 {

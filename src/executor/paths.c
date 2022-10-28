@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 19:56:13 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 11:47:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 15:02:00 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*get_env_paths(char **envp)
 char	*get_cmd_path(char *cmd, char **envp)
 {
 	char	**splitted_cmd;
-	char	*paths;
 	char	**path;
+	char	*paths;
 	char	*tmp;
 	char	*path_and_cmd;
 
@@ -40,12 +40,12 @@ char	*get_cmd_path(char *cmd, char **envp)
 	free(paths);
 	if (!path)
 		exit(1);
-	if (access(splitted_cmd, X_OK) == 0)
-		return (splitted_cmd);
+	if (access(splitted_cmd[0], X_OK) == 0)
+		return (splitted_cmd[0]);
 	while (*path)
 	{
 		tmp = ft_strjoin(*path, "/");
-		path_and_cmd = ft_strjoin(tmp, splitted_cmd);
+		path_and_cmd = ft_strjoin(tmp, splitted_cmd[0]);
 		if (!tmp || !path_and_cmd)
 			exit(1);
 		free(tmp);

@@ -1,3 +1,8 @@
+EXECUTE_FI	=	executor.c \
+				file.c \
+				paths.c \
+				exit.c \
+				errors.c
 
 Program flow
 1. lexer

@@ -6,12 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 11:36:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 11:36:39 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 12:14:06 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../main/main.h"
 
 /* check testers voor alle builtins.
 cd
