@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -g -MMD
+FLAGS = -Wall -Werror -Wextra -MMD -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -10,18 +10,24 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -lreadline
 
-EXEC_FILES	=	
+EXECUTE_FI	=	executor.c \
+				file.c \
+				paths.c \
+				exit.c \
+				errors.c
+
 LEXER_FILES =	lexer.c \
 				handle_quotes.c \
 				handle_variables.c
 
 MAIN_FILES =	main.c \
-				argv_input.c \
-				history.c
+				line_input.c \
+				argv_input.c
 
 PARSER_FILES =	parser.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
+				$(addprefix executor/, $(EXECUTE_FI)) \
 				$(addprefix lexer/, $(LEXER_FILES)) \
 				$(addprefix parser/, $(PARSER_FILES))
 

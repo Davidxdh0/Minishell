@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:54:04 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 14:29:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 16:42:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,10 @@ typedef struct s_data
 }	t_data;
 
 //executor.c
-void	execute_cmd_list(t_line_lst *cmdlist, char **envp, t_data *data);
+void	execute_cmd_list(t_line_lst *cmdlist, t_data *data);
 void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
 void	execute_process(t_line_lst *stack, t_data *data, char **envp);
+void	close_fd_dup(t_data *data, int *stin, int *stout);
 
 //errors.c
 int		msg_error_code(char *err, int code);

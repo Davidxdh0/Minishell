@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 15:31:11 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/28 16:08:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ https://github.com/Snaipe/Criterion
 # include "../../libs/libft/libft.h"
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
+# include "../executor/executor.h"
 
 #define RIDIRECT_I		"<"
 #define RIDIRECT_O		">"
@@ -54,17 +55,7 @@ https://github.com/Snaipe/Criterion
 #define PIPE			"|"
 
 /* BNF
-commandline ::= list
-          |  list ";"
-          |  list "&"
-
-list     ::=  conditional
-          |   list ";" conditional
-          |   list "&" conditional
-
-conditional ::=  pipeline
-          |   conditional "&&" pipeline
-          |   conditional "||" pipeline
+commandline ::= pipeline
 
 pipeline ::=  command
           |   pipeline "|" command
@@ -77,7 +68,6 @@ command  ::=  word
 redirection  ::=  redirectionop filename
 redirectionop  ::=  "<"  |  ">"  |  "<<"  |  ">>"
 */
-
 
 /* command list
 ''		should prevent the shell from interpreting the meta- characters in the quoted sequence
@@ -92,16 +82,34 @@ file	(open)
 $VAR	expand VAR to the value
 $?		expand to the exit status of the most recently executed foreground pipeline
 */
-typedef enum{
-	cmd,
-	file,
-	token_pipe,
-	text,
-	var,
-	redirect
-}	note_type;
 
-int			input_is_argv(int argc, char *argv[], char **line);
-void		add_line_in_history(char **line);
+/* Program flow
+1. lexer
+1.1. check syntax
+1.2. puts the characters together into words called tokens
+2. parser
+2.1. read the tokens
+2.2. build the command table
+-------(index, command, flags, envp)
+-------(in, out, err)
+3. expander
+4. executor
+4.1. read command table
+4.x. creating pipes
+4.x. creating processes
+
+To do:
+[X] Header dependency in makefile
+[X] Creata a flag option for giving command through argv
+[ ] Make unit testers
+
+Optional:
+[ ] *.d files in seperate folder
+*/
+int		shell(char *line, char **envp);
+int		input_is_argv(int argc, char *argv[], char **line);
+void	line_reader(char **line, const char *display_name);
+void	add_line_in_history(char **line);
+void	test_list(t_line_lst *head, char **envp);
 
 #endif

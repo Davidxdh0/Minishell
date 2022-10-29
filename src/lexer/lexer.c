@@ -6,11 +6,12 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 09:15:31 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/26 17:50:21 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/27 19:10:09 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include <stdio.h>	// temp
 
 int	count_tokens(char *line)
 {
@@ -30,17 +31,53 @@ int	count_tokens(char *line)
 	return (counter);
 }
 
-/*
-	The lexer takes the input line and puts the characters together into words 
-	called tokens.
-*/
-char	**lexer(char *line)
+void	free_double_char_array(char **tokens)
 {
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
+void	show_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	printf("tokens\n");
+	while (tokens[i])
+	{
+		printf("\t'%s'\n", tokens[i]);
+		i++;
+	}
+}
+
+void	test_token_input(void)
+{
+	int		amount_of_tokens;
 	char	**tokens;
 
-	count_tokens(line);
+	amount_of_tokens = 3;
+	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+	tokens[0] = ft_strdup("ls -la");
+	tokens[1] = ft_strdup(">");
+	tokens[2] = ft_strdup("outfile.txt");
+	tokens[3] = NULL;
+	show_tokens(tokens);
+}
+
+char	**lexer(char *line)
+{
+	int		amount_of_tokens;
+	char	**tokens;
+
+	amount_of_tokens = count_tokens(line);
 	tokens = NULL;
-	// tokens = malloc(sizeof(char *) * count_tokens(line));
+	// test_token_input();
 	return (tokens);
-	// return (ft_split(line, ' '));
 }
