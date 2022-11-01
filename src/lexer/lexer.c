@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 09:15:31 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 19:10:09 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/10/31 17:41:20 by yeboa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ char	**lexer(char *line)
 
 	amount_of_tokens = count_tokens(line);
 	tokens = NULL;
+	amount_of_tokens++;
 	// test_token_input();
 	return (tokens);
 }

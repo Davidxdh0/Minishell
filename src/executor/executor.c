@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 18:17:18 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/10/31 17:59:00 by yeboa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 	}
 	else
 	{
-		message("parent\n");
+		//message("parent\n");
 		close(data->fd[1]);
 		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
@@ -118,32 +118,18 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 		if (pipe(data->fd) < 0)
 			message("pipe werkt niet");
 		data->outfile = data->fd[1];
-		execute_process
+		execute_process(stack, data, envp);
 		close(data->outfile);
 		if (data->infile != 0)
 			close(data->infile);
 		data->infile = data->fd[0];
-		stack = stack->next
+		stack = stack->next;
 	}
-	execute_process
-	
 	execute_process(stack, data, envp);
-	if (data->cmd[0] == '\0')
+	if (data->cmd[0][0] == '\0')
 		message_exit("cmd == '\0'", 1);
 	if (ft_isspace(data->cmd[0][0]))
 		exit(msg_custom_error_code("pipex: command not found: ", "", 0));
-}
-
-void	close_fd_dup(t_data *data, int *stin, int *stout)
-{
-	if (data->infile != 0)
-		close(data->infile);
-	if (data->outfile != 1)
-		close(data->outfile );
-	dup2(*stin, 0);
-	dup2(*stout, 1);
-	close(*stin);
-	close(*stout);
 }
 
 void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
@@ -162,6 +148,10 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 		data->fd[0] = dup(0);
 		data->fd[1] = dup(1);
 		execute_commands(stack, data, data->envp);
+		dup2(data->fd[0], 0);
+		dup2(data->fd[1], 1);
+		close(data->fd[0]);
+		close(data->fd[1]);
 		stack = stack->next;
 	}
 	exit(0);
