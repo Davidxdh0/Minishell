@@ -6,21 +6,12 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 18:23:06 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/02 20:12:03 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdio.h>	// temp
-
-int	amount_of_tokens(char **tokens)
-{
-	int	list_len;
-
-	list_len = 0;
-	tokens =  NULL;
-	return (list_len);
-}
 
 void	delete_list(t_line_lst **head)
 {
@@ -75,6 +66,7 @@ void	show_list(t_line_lst *node)
 	int	i;
 
 	i = 1;
+	printf("\n------ line list table -------\n");
 	printf("index\ttype\tvalue\n");
 	while (node != NULL)
 	{
@@ -82,7 +74,7 @@ void	show_list(t_line_lst *node)
 		node = node->next;
 		i++;
 	}
-	printf("\n");
+	printf("---- end line list table -----\n\n");
 }
 
 int	length_of_list(t_line_lst *node)
@@ -104,22 +96,92 @@ void	test_list(void)
 
 	head = NULL;
 	add_at_end_of_list(&head, e_cmd, "ls -la");
-	add_at_end_of_list(&head, e_redirect, ">");
-	add_at_end_of_list(&head, e_file, "outfile.txt");
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep Nov");
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep m");
 	show_list(head);
-	printf("length of list is %d\n", length_of_list(head));
 	delete_list(&head);
-	show_list(head);
-	printf("length of list is %d\n", length_of_list(head));
 }
 
-t_line_lst	*parser(char **tokens)
+int	amount_of_tokens(char **tokens)
 {
-	int			len_list;
+	int	list_len;
+
+	list_len = 0;
+	while (tokens[list_len])
+		list_len++;
+	return (list_len);
+}
+
+/* Note
+Option 1: [ ]
+	lexer checkt the grammar (BNF) and detects tokens (a group of caracters).
+	parser checkt grammer (BNF) and create the type of the token and stors it in a list.
+
+Option 2: [ ]
+	lexer chect the grammer (BNF), detekt tokens and type of tokens.
+	parser stores tokens en the type of tokens in a list.
+
+Option 3: [X]
+	use lexer inside of the parser
+	
+Handle in the parser:
+	Variables and Parameters
+	
+Word Expansions: After parsing, but before execution. example $OSTYPE = darwin18.0
+*/
+
+char	**test_token_array(void)
+{
+	int		amount_of_tokens;
+	char	**tokens;
+
+	amount_of_tokens = 5;
+	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+	tokens[0] = ft_strdup("ls -la");
+	tokens[1] = ft_strdup("|");
+	tokens[2] = ft_strdup("grep Nov");
+	tokens[3] = ft_strdup("|");
+	tokens[4] = ft_strdup("grep m");
+	tokens[5] = NULL;
+	return (tokens);
+}
+
+t_line_lst	*fil_list(char *line)
+{
+	t_line_lst	*head;
+	int			i;
+	int			len;
+
+	i = 0;
+	head = NULL;
+	line = ft_strtrim(line, " ");
+	printf("%s\n", line);
+	while (line[i])
+	{
+		if (line[i] == '|')
+			add_at_end_of_list(&head, e_pipe, "|");
+		if (line[i] == '<')
+			add_at_end_of_list(&head, e_redirect, "<");
+		if (line[i] == '>')
+			add_at_end_of_list(&head, e_redirect, ">");
+		if (line[i] == '$')
+		{
+			len = 0;
+			while (line[i + len] && line[i + len] != ' ')
+				len++;
+			add_at_end_of_list(&head, e_var, ft_substr(line, i + 1, len - 1));
+			i += len - 1;
+		}
+	}
+	return (head);
+}
+
+t_line_lst	*parser(char *line)
+{
 	t_line_lst	*head;
 
-	len_list = amount_of_tokens(tokens);
-	// test_list();	// use for testing
-	head = NULL;
+	head = fil_list(line);
 	return (head);
 }

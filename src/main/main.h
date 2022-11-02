@@ -6,11 +6,13 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 17:01:52 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/02 18:28:30 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* sources
+Example:
+https://github.com/yabtaour/Minishell-42
 bash flow
 http://www.aosabook.org/en/bash.html
 tutorial
@@ -45,13 +47,13 @@ https://github.com/Snaipe/Criterion
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
 
-#define RIDIRECT_I		"<"
-#define RIDIRECT_O		">"
-#define APPEND			">>"
-#define DELIMITER		"<<"
-#define SINGLE_QUOTE	"\'"
-#define DOUBLE_QUOTE	"\""
-#define PIPE			"|"
+// #define RIDIRECT_I		"<"
+// #define RIDIRECT_O		">"
+// #define APPEND			">>"
+// #define DELIMITER		"<<"
+// #define SINGLE_QUOTE	"\'"
+// #define DOUBLE_QUOTE	"\""
+// #define PIPE			"|"
 
 /* BNF
 commandline ::= pipeline
