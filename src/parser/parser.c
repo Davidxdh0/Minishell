@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:12:03 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/02 20:20:57 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,15 @@ t_line_lst	*fil_list(char *line)
 		if (line[i] == '|')
 			add_at_end_of_list(&head, e_pipe, "|");
 		if (line[i] == '<')
-			add_at_end_of_list(&head, e_redirect, "<");
+		{
+			if (line[i + 1] && line[i + 1] == '<')
+			{
+				add_at_end_of_list(&head, e_redirect, "<<");
+				i++;
+			}
+			else
+				add_at_end_of_list(&head, e_redirect, "<");
+		}	
 		if (line[i] == '>')
 			add_at_end_of_list(&head, e_redirect, ">");
 		if (line[i] == '$')
@@ -174,6 +182,7 @@ t_line_lst	*fil_list(char *line)
 			add_at_end_of_list(&head, e_var, ft_substr(line, i + 1, len - 1));
 			i += len - 1;
 		}
+		i++;
 	}
 	return (head);
 }
