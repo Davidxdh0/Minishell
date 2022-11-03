@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 11:32:22 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 12:17:54 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	show_t_list(t_line_lst *node)
 	printf("index\ttype\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t'%s'\n" ,i, node->type, node->value);
+		printf("%d\t%d\t\"%s\"\n" ,i, node->type, node->value);
 		node = node->next;
 		i++;
 	}
@@ -148,16 +148,6 @@ char	**test_token_array(void)
 	return (tokens);
 }
 
-char	*get_PID_current_shell(void)
-{
-	return ("PID_of_the_current_shell");
-}
-
-char	*get_last_exit_status(void)
-{
-	return ("exit_status_recently_executed_foreground_pipeline");
-}
-
 int		is_word(char c)
 {
 	if (ft_isalpha(c))
@@ -214,13 +204,13 @@ t_line_lst	*fil_list(char *line)
 			i++;
 			if (line[i] == '?')
 			{
-				add_at_end_of_list(&head, e_word, get_last_exit_status());
+				add_at_end_of_list(&head, e_var, "$?");
 				i++;
 				continue;
 			}
 			if (line[i] == '$')
 			{
-				add_at_end_of_list(&head, e_word, get_PID_current_shell());
+				add_at_end_of_list(&head, e_var, "$$");
 				i++;
 				continue;
 			}	
@@ -234,6 +224,8 @@ t_line_lst	*fil_list(char *line)
 	}
 	return (head);
 }
+
+// adlskjsdf$?asdfjkasl
 
 t_line_lst	*parser(char *line)
 {
