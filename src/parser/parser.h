@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 11:31:37 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:05:44 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,18 @@ typedef struct s_line_lst
 	struct s_line_lst	*prev;
 }	t_line_lst;
 
-// typedef enum{
-// 	e_none = -1,
-// 	e_cmd,
-// 	e_file,
-// 	e_pipe,
-// 	e_word,
-// 	e_var,
-// 	e_redirect
-// }	note_type;
-
 typedef enum{
-	e_none = -1,
+	e_start = -1,	
 	e_cmd,
 	e_file,
 	e_pipe,
-	e_word,
+	e_word,			// also flags for commands
 	e_var,
 	e_redirect_I,
 	e_redirect_O,
 	e_delimiter,
 	e_append
-}	note_type2;
+}	note_type;
 
 /* The parser processes the input line and build the list with tokens */
 t_line_lst	*parser(char *line);

@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:17:54 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 15:45:44 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,19 +154,100 @@ int		is_word(char c)
 		return (1);
 	if (ft_isdigit(c))
 		return (1);
-	// if (c == '')
+	return (0);
+}
+
+note_type	get_last_type(t_line_lst *node)
+{
+	note_type	type;
+
+	type = e_start;
+	while (node != NULL)
+	{
+		type = node->type;
+		node = node->next;
+	}
+	return (type);
+}
+
+int	is_valid_cmd(note_type last_type)
+{
+	if (last_type == e_start)
+		return (1);
+	if (last_type == e_pipe)
+		return (1);
+	return (0);
+}
+
+int	is_valid_pipe(note_type last_type)
+{
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
+int	is_valid_file(note_type last_type)
+{
+	if (last_type == e_redirect_I)
+		return (1);
+	if (last_type == e_redirect_O)
+		return (1);
+	if (last_type == e_delimiter)
+		return (1);
+	if (last_type == e_append)
+		return (1);
+	return (0);
+}
+
+int	is_valid_word(note_type last_type)
+{
+	if (last_type == e_cmd)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	if (last_type == e_var)
+		return (1);
+	return (0);
+}
+
+int	is_valid_var(note_type last_type)
+{
+	if (last_type == e_cmd)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
+int	is_valid_type(note_type type, t_line_lst *node)
+{
+	note_type	last_type;
+
+	last_type = get_last_type(node);
+	if (type == e_cmd)
+		return (is_valid_cmd(last_type));
+	if (type == e_file)
+		return (is_valid_file(last_type));
+	if (type == e_pipe)
+		return (is_valid_pipe(last_type));
+	if (type == e_word)
+		return (is_valid_word(last_type));
+	if (type == e_var)
+		return (is_valid_var(last_type));
 	return (0);
 }
 
 t_line_lst	*fil_list(char *line)
 {
 	t_line_lst	*head;
+	int			last_type;
 	int			i;
 	int			len;
 
 	i = 0;
 	head = NULL;
 	line = ft_strtrim(line, " ");
+	last_type = get_last_type(head);
 	while (line[i])
 	{
 		if (ft_isalpha(line[i]))	// command, word or filename. Use the previous type to check the grammer
@@ -224,8 +305,6 @@ t_line_lst	*fil_list(char *line)
 	}
 	return (head);
 }
-
-// adlskjsdf$?asdfjkasl
 
 t_line_lst	*parser(char *line)
 {
