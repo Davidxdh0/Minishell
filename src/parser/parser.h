@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 18:47:46 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 20:36:12 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_line_lst	*parser(char *line);
 void		delete_t_list(t_line_lst **head);
 void		add_at_end_of_list(t_line_lst **head, int type, char *value);
 void		show_t_list(t_line_lst *node, char *line);
+char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 
 #endif
