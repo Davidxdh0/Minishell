@@ -6,7 +6,11 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2022/11/03 17:29:35 by dyeboa        ########   odam.nl         */
+=======
+/*   Updated: 2022/11/03 10:39:23 by bprovoos      ########   odam.nl         */
+>>>>>>> fc121cfdfff8a2bd03b05df1e44f5e67393c9115
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +50,10 @@ https://github.com/Snaipe/Criterion
 # include "../../libs/libft/libft.h"
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
+<<<<<<< HEAD
 # include "../executor/executor.h"
+=======
+>>>>>>> fc121cfdfff8a2bd03b05df1e44f5e67393c9115
 
 /* BNF
 commandline ::= pipeline
