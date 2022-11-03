@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/31 17:59:00 by yeboa         ########   odam.nl         */
+/*   Updated: 2022/11/03 16:41:55 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,19 @@ needs to save input/output and restore it at the end.
 // 4.x. creating processes
 
 // execute commands op basis van wat het is. 
+
 void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 {
 	pid_t	pid1;
 	int	wstatus;
 
+	
 	pid1 = fork();
 	if (pid1 < 0)
 		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
-		message("child\n");
+		//message("child\n");
 		dup2(data->fd[1], 1);
 		close(data->fd[0]);
 		dup2(1, 1);
@@ -95,9 +97,9 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			message("process einde\n");//, (WEXITSTATUS(wstatus)));
+		// message(ft_itoa(wstatus));
+		// message("\n");
 	}
-	message(stack->value);
-	message("\n");
 }
 
 void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
@@ -111,8 +113,6 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 	data->path = get_cmd_path(data->cmd[0], envp);
 	if (!data->path || !data->cmd[0])
 		message("geen path of splitted cmd");
-	message(data->path);
-	message(" = data->path\n");
 	while(stack->next)
 	{
 		if (pipe(data->fd) < 0)

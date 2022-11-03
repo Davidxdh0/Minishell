@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/31 17:46:57 by yeboa         ########   odam.nl         */
+/*   Updated: 2022/11/03 13:09:14 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ void	test_list(t_line_lst *head, char **envp)
 	data.envp = envp;
 	head = NULL;
 	add_at_end_of_list(&head, e_cmd, "ls -la");
-	add_at_end_of_list(&head, e_cmd, "grep Oct");
-	add_at_end_of_list(&head, e_cmd, "grep 17");
+	add_at_end_of_list(&head, e_cmd, "grep Nov");
+	add_at_end_of_list(&head, e_cmd, "grep obj");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
 	show_list(head);
 	printf("length of list is %d\n", length_of_list(head));
