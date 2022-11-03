@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:05:44 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 18:23:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef enum{
 t_line_lst	*parser(char *line);
 
 void		delete_t_list(t_line_lst **head);
-
+void		add_at_end_of_list(t_line_lst **head, int type, char *value);
 void		show_t_list(t_line_lst *node);
+int			length_of_list(t_line_lst *node);
 
 #endif

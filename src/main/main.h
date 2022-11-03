@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 10:39:23 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 18:23:40 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ https://github.com/Snaipe/Criterion
 # include "../../libs/libft/libft.h"
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
+# include "../executor/executor.h"
 
 /* BNF
 commandline ::= pipeline
