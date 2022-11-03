@@ -6,11 +6,13 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 08:48:46 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 10:39:23 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* sources
+Example:
+https://github.com/yabtaour/Minishell-42
 bash flow
 http://www.aosabook.org/en/bash.html
 tutorial
@@ -45,26 +47,8 @@ https://github.com/Snaipe/Criterion
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
 
-#define RIDIRECT_I		"<"
-#define RIDIRECT_O		">"
-#define APPEND			">>"
-#define DELIMITER		"<<"
-#define SINGLE_QUOTE	"\'"
-#define DOUBLE_QUOTE	"\""
-#define PIPE			"|"
-
 /* BNF
-commandline ::= list
-          |  list ";"
-          |  list "&"
-
-list     ::=  conditional
-          |   list ";" conditional
-          |   list "&" conditional
-
-conditional ::=  pipeline
-          |   conditional "&&" pipeline
-          |   conditional "||" pipeline
+commandline ::= pipeline
 
 pipeline ::=  command
           |   pipeline "|" command
@@ -92,7 +76,28 @@ $VAR	expand VAR to the value
 $?		expand to the exit status of the most recently executed foreground pipeline
 */
 
-int			input_is_argv(int argc, char *argv[], char **line);
-void		add_line_in_history(char **line);
+/* Program flow
+1. parser
+1.1. lexer
+1.2. puts the characters together into words called tokens
+1.3. build the command table
+2. expander
+3. executor
+3.1. read command table
+3.x. creating pipes
+3.x. creating processes
+
+To do:
+[X] Header dependency in makefile
+[X] Creata a flag option for giving command through argv
+[ ] Make unit testers
+
+Optional:
+[ ] *.d files in seperate folder
+*/
+int		shell(char *line, char **envp);
+int		input_is_argv(int argc, char *argv[], char **line);
+void	line_reader(char **line, const char *display_name);
+void	add_line_in_history(char **line);
 
 #endif

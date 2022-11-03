@@ -6,13 +6,14 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 14:44:29 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:05:44 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PASER_H
-# define PASER_H
+#ifndef PARSER_H
+# define PARSER_H
 
+# include "../../libs/libft/libft.h"
 # include <stdlib.h>
 
 /*
@@ -31,39 +32,23 @@ typedef struct s_line_lst
 }	t_line_lst;
 
 typedef enum{
-	empty = -1,
-	cmd,
-	file,
-	pipe,
-	text,
-	var,
-	redirect
+	e_start = -1,	
+	e_cmd,
+	e_file,
+	e_pipe,
+	e_word,			// also flags for commands
+	e_var,
+	e_redirect_I,
+	e_redirect_O,
+	e_delimiter,
+	e_append
 }	note_type;
 
-/* Add a node at the end */
-void	add_node_end(t_line_lst **node);
+/* The parser processes the input line and build the list with tokens */
+t_line_lst	*parser(char *line);
 
-/* Add a node before a given node */
-void	insert_node_before(t_line_lst *node);
+void		delete_t_list(t_line_lst **head);
 
-void	insert_node_after(t_line_lst *node);
-
-/* Loop to the first node */
-t_line_lst	*get_first_node(t_line_lst *node);
-
-/* Add a node at the front */
-void	add_node_front(t_line_lst *node);
-
-/* Remove given node */
-void	remode_node(t_line_lst *node);
-
-/* Remove the list */
-void	remove_list(t_line_lst *node);
-
-/* Count length of list */
-int		len_of_list(t_line_lst *node);
-
-/* The parser processes the tokens build the list with */
-t_line_lst	*parser(char **tokens);
+void		show_t_list(t_line_lst *node);
 
 #endif

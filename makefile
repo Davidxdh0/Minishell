@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -g -fsanitize=address -MMD
+FLAGS = -Wall -Werror -Wextra -MMD -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -24,8 +24,8 @@ LEXER_FILES =	lexer.c \
 				handle_variables.c
 
 MAIN_FILES =	main.c \
-				argv_input.c \
-				history.c
+				line_input.c \
+				argv_input.c
 
 PARSER_FILES =	parser.c
 
