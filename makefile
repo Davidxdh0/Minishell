@@ -10,6 +10,15 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -lreadline
 
+EXECUTE_FI	=	executor.c \
+				file.c \
+				paths.c \
+				exit.c \
+				errors.c \
+				redirect.c 
+#export.c
+#builtin.c
+
 LEXER_FILES =	lexer.c \
 				handle_quotes.c \
 				handle_variables.c
@@ -21,6 +30,7 @@ MAIN_FILES =	main.c \
 PARSER_FILES =	parser.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
+				$(addprefix executor/, $(EXECUTE_FI)) \
 				$(addprefix lexer/, $(LEXER_FILES)) \
 				$(addprefix parser/, $(PARSER_FILES))
 
