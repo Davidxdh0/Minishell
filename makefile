@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -MMD #-Wall -MMD -g -fsanitize=address
+FLAGS = -Wall -Werror -Wextra -MMD -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -18,6 +18,7 @@ EXECUTE_FI	=	executor.c \
 				redirect.c 
 #export.c
 #builtin.c
+
 LEXER_FILES =	lexer.c \
 				handle_quotes.c \
 				handle_variables.c

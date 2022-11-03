@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:26 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 18:49:02 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/02 09:25:45 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 	The lexer takes the input line and puts the characters together into words 
 	called tokens.
 */
-char		**lexer(char *line);
-char		*get_data_in_quotes(char *str);
-char		*get_variable(char *str);
+char	**lexer(char *line);
+char	*get_data_in_quotes(char *str);
+char	*get_variable(char *str);
 void	free_double_char_array(char **tokens);
 
 #endif

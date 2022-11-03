@@ -12,19 +12,20 @@
 
 #include "executor.h"
 
-void    execute_redirect(t_line_lst *stack, t_data *data)
+void    redirect(t_line_lst *stack, t_data *data)
 {
-    int status;
     t_line_lst *temp;
 
     temp = stack;
-    while(temp->type != PIPE)
+    while(temp && temp->type != e_pipe )
     {
-        if (temp->type == RIDIRECT_I)
+        if (temp->type == e_redirect_I)
             open_infile(temp->value, data);
-        // if (temp->type == DELIMITER)
+        // if (temp->type == e_delimiter)
         //     open_till(temp->value, data, temp->next->value);
-        if (temp->type == RIDIRECT_O || temp->type == APPEND)
+        if (temp->type == e_redirect_O || temp->type == e_append)
              open_outfile(temp->value , data, temp->type);
+		temp = temp->next;
     }
+	return ;
 }

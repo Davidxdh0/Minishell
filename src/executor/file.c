@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 14:35:08 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/03 16:43:52 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 17:23:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	open_till(char *file, t_data *data, char *str)
 	
 	int fd;
 
+	str++;
 	if (!file)
 		return ;
 	fd = open(file, O_RDONLY, 0777);
@@ -44,11 +45,12 @@ void	open_outfile(char *file, t_data *data, int flag)
 	int fd;
 	int flags;
 
+	flags = 0;
 	if (!file || data)
 		return ;
-	if (flag == RIDIRECT_O)
+	if (flag == e_redirect_O)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	else if (flag == APPEND)
+	else if (flag == e_append)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
 	fd = open(file, flags, 0644);
 	if (fd < 0)

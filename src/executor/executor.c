@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/03 16:41:55 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 18:11:22 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,11 @@
 	
 	https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 
-*/
-
-/*
-
 The strategy for your shell is to have the parent process do all the piping and redirection
 before forking the processes. In this way the children will inherit the redirection. The parent
 needs to save input/output and restore it at the end.
-*/
 
-/*
+
 	Have a working history
 	Search and launch the right executable (based on the PATH variable or using a
 	relative or an absolute path).
@@ -63,7 +58,7 @@ needs to save input/output and restore it at the end.
 	
 	niet: Not interpret unclosed quotes or special characters which are not required by the
 	subject such as \ (backslash) or ; (semicolon).
-*/
+
 
 
 // 4.1. read command table
@@ -71,19 +66,21 @@ needs to save input/output and restore it at the end.
 // 4.x. creating processes
 
 // execute commands op basis van wat het is. 
+*/
 
 void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 {
 	pid_t	pid1;
 	int	wstatus;
 
-	
+	redirect(stack, data);
+	message(stack->value);
 	pid1 = fork();
 	if (pid1 < 0)
 		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
-		//message("child\n");
+		message("child\n");
 		dup2(data->fd[1], 1);
 		close(data->fd[0]);
 		dup2(1, 1);
@@ -92,7 +89,7 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 	}
 	else
 	{
-		//message("parent\n");
+		message("parent\n");
 		close(data->fd[1]);
 		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
@@ -100,6 +97,8 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 		// message(ft_itoa(wstatus));
 		// message("\n");
 	}
+	return ;
+	stack->type = stack->type;
 }
 
 void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
@@ -145,6 +144,7 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 	// stack = stack->next
 	while(stack)
 	{
+		//message(stack->value);
 		data->fd[0] = dup(0);
 		data->fd[1] = dup(1);
 		execute_commands(stack, data, data->envp);
@@ -155,4 +155,24 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 		stack = stack->next;
 	}
 	exit(0);
+}
+
+void	test_lists(t_line_lst *head, char **envp)
+{
+	t_data	data;
+
+	data.envp = envp;
+	head = NULL;
+	add_at_end_of_list(&head, e_cmd, "ls -la");
+	add_at_end_of_list(&head, e_cmd, "grep 17:");
+	add_at_end_of_list(&head, e_cmd, "ls -la");
+	add_at_end_of_list(&head, e_cmd, "grep 17:");
+	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
+	//add_at_end_of_list(&head, e_file, "outfile.txt");
+	show_t_list(head);
+	printf("length of list is %d\n", length_of_list(head));
+	execute_cmd_list(head, &data);
+	//delete_list(&head);
+	//show_list(head);
+	//printf("length of list is %d\n", length_of_list(head));
 }

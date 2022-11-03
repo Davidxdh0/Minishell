@@ -6,13 +6,14 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/28 15:42:41 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 17:46:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PASER_H
-# define PASER_H
+#ifndef PARSER_H
+# define PARSER_H
 
+# include "../../libs/libft/libft.h"
 # include <stdlib.h>
 
 /*
@@ -31,15 +32,24 @@ typedef struct s_line_lst
 }	t_line_lst;
 
 typedef enum{
+	e_start = -1,	
 	e_cmd,
 	e_file,
 	e_pipe,
-	e_text,
+	e_word,			// also flags for commands
 	e_var,
-	e_redirect
+	e_redirect_I,
+	e_redirect_O,
+	e_delimiter,
+	e_append
 }	note_type;
 
-/* The parser processes the tokens build the list with */
-t_line_lst	*parser(t_line_lst *head, char **tokens);
+/* The parser processes the input line and build the list with tokens */
+t_line_lst	*parser(char *line);
+
+void		delete_t_list(t_line_lst **head);
+void		add_at_end_of_list(t_line_lst **head, int type, char *value);
+void		show_t_list(t_line_lst *node);
+int			length_of_list(t_line_lst *node);
 
 #endif

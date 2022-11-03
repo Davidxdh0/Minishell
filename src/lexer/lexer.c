@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 09:15:31 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/31 17:41:20 by yeboa         ########   odam.nl         */
+/*   Updated: 2022/11/02 14:52:41 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,36 +49,39 @@ void	show_tokens(char **tokens)
 	int	i;
 
 	i = 0;
-	printf("tokens\n");
+	printf("\n-- double array with tokens --\n");
 	while (tokens[i])
 	{
 		printf("\t'%s'\n", tokens[i]);
 		i++;
 	}
+	printf("---- end of double array -----\n");
 }
 
-void	test_token_input(void)
-{
-	int		amount_of_tokens;
-	char	**tokens;
+// char	**test_token_array(void)
+// {
+// 	int		amount_of_tokens;
+// 	char	**tokens;
 
-	amount_of_tokens = 3;
-	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
-	tokens[0] = ft_strdup("ls -la");
-	tokens[1] = ft_strdup(">");
-	tokens[2] = ft_strdup("outfile.txt");
-	tokens[3] = NULL;
-	show_tokens(tokens);
-}
+// 	amount_of_tokens = 5;
+// 	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+// 	tokens[0] = ft_strdup("ls -la");
+// 	tokens[1] = ft_strdup("|");
+// 	tokens[2] = ft_strdup("grep Nov");
+// 	tokens[3] = ft_strdup("|");
+// 	tokens[4] = ft_strdup("grep m");
+// 	tokens[5] = NULL;
+// 	return (tokens);
+// }
 
-char	**lexer(char *line)
-{
-	int		amount_of_tokens;
-	char	**tokens;
+// char	**lexer(char *line)
+// {
+// 	int		amount_of_tokens;
+// 	char	**tokens;
 
-	amount_of_tokens = count_tokens(line);
-	tokens = NULL;
-	amount_of_tokens++;
-	// test_token_input();
-	return (tokens);
-}
+// 	amount_of_tokens = count_tokens(line);
+// 	// tokens = test_token_array();
+// 	// show_tokens(tokens);
+// 	tokens = NULL;
+// 	return (tokens);
+// }

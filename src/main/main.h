@@ -6,11 +6,13 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 16:41:28 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 17:29:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* sources
+Example:
+https://github.com/yabtaour/Minishell-42
 bash flow
 http://www.aosabook.org/en/bash.html
 tutorial
@@ -39,20 +41,12 @@ https://github.com/Snaipe/Criterion
 
 # include <stdio.h>
 # include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../../libs/libft/libft.h"
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
 # include "../executor/executor.h"
-
-#define RIDIRECT_I		"<"
-#define RIDIRECT_O		">"
-#define APPEND			">>"
-#define DELIMITER		"<<"
-#define SINGLE_QUOTE	"\'"
-#define DOUBLE_QUOTE	"\""
-#define PIPE			"|"
 
 /* BNF
 commandline ::= pipeline
@@ -84,19 +78,15 @@ $?		expand to the exit status of the most recently executed foreground pipeline
 */
 
 /* Program flow
-1. lexer
-1.1. check syntax
+1. parser
+1.1. lexer
 1.2. puts the characters together into words called tokens
-2. parser
-2.1. read the tokens
-2.2. build the command table
--------(index, command, flags, envp)
--------(in, out, err)
-3. expander
-4. executor
-4.1. read command table
-4.x. creating pipes
-4.x. creating processes
+1.3. build the command table
+2. expander
+3. executor
+3.1. read command table
+3.x. creating pipes
+3.x. creating processes
 
 To do:
 [X] Header dependency in makefile
@@ -110,6 +100,5 @@ int		shell(char *line, char **envp);
 int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
-void	test_list(t_line_lst *head, char **envp);
 
 #endif

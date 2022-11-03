@@ -6,24 +6,14 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:09:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 15:45:44 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdio.h>	// temp
-#include "../main/main.h"
 
-int	amount_of_tokens(char **tokens)
-{
-	int	list_len;
-
-	list_len = 0;
-	tokens =  NULL;
-	return (list_len);
-}
-
-void	delete_list(t_line_lst **head)
+void	delete_t_list(t_line_lst **head)
 {
 	t_line_lst	*temp;
 
@@ -71,19 +61,20 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 	new_node->prev = temp;
 }
 
-void	show_list(t_line_lst *node)
+void	show_t_list(t_line_lst *node)
 {
 	int	i;
 
 	i = 1;
+	printf("\n------ line list table -------\n");
 	printf("index\ttype\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%s\n" ,i, node->type, node->value);
+		printf("%d\t%d\t\"%s\"\n" ,i, node->type, node->value);
 		node = node->next;
 		i++;
 	}
-	printf("\n");
+	printf("---- end line list table -----\n\n");
 }
 
 int	length_of_list(t_line_lst *node)
@@ -99,28 +90,226 @@ int	length_of_list(t_line_lst *node)
 	return (lenght);
 }
 
-void	test_list(t_line_lst *head, char **envp)
+void	test_list(void)
 {
-	t_data	data;
+	t_line_lst	*head;
 
-	data.envp = envp;
 	head = NULL;
 	add_at_end_of_list(&head, e_cmd, "ls -la");
+	add_at_end_of_list(&head, e_pipe, "|");
 	add_at_end_of_list(&head, e_cmd, "grep Nov");
-	add_at_end_of_list(&head, e_cmd, "grep obj");
-	//add_at_end_of_list(&head, e_file, "outfile.txt");
-	show_list(head);
-	printf("length of list is %d\n", length_of_list(head));
-	execute_cmd_list(head, &data);
-	//delete_list(&head);
-	//show_list(head);
-	//printf("length of list is %d\n", length_of_list(head));
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep m");
+	show_t_list(head);
+	delete_t_list(&head);
 }
 
-t_line_lst	*parser(t_line_lst *head, char **tokens)
+int	amount_of_tokens(char **tokens)
 {
-	int			len_list;
+	int	list_len;
 
-	len_list = amount_of_tokens(tokens);
+	list_len = 0;
+	while (tokens[list_len])
+		list_len++;
+	return (list_len);
+}
+
+/* Note
+Option 1: [ ]
+	lexer checkt the grammar (BNF) and detects tokens (a group of caracters).
+	parser checkt grammer (BNF) and create the type of the token and stors it in a list.
+
+Option 2: [ ]
+	lexer chect the grammer (BNF), detekt tokens and type of tokens.
+	parser stores tokens en the type of tokens in a list.
+
+Option 3: [X]
+	use lexer inside of the parser
+	
+Handle in the parser:
+	Variables and Parameters
+	
+Word Expansions: After parsing, but before execution. example $OSTYPE = darwin18.0
+*/
+
+char	**test_token_array(void)
+{
+	int		amount_of_tokens;
+	char	**tokens;
+
+	amount_of_tokens = 5;
+	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+	tokens[0] = ft_strdup("ls -la");
+	tokens[1] = ft_strdup("|");
+	tokens[2] = ft_strdup("grep Nov");
+	tokens[3] = ft_strdup("|");
+	tokens[4] = ft_strdup("grep m");
+	tokens[5] = NULL;
+	return (tokens);
+}
+
+int		is_word(char c)
+{
+	if (ft_isalpha(c))
+		return (1);
+	if (ft_isdigit(c))
+		return (1);
+	return (0);
+}
+
+note_type	get_last_type(t_line_lst *node)
+{
+	note_type	type;
+
+	type = e_start;
+	while (node != NULL)
+	{
+		type = node->type;
+		node = node->next;
+	}
+	return (type);
+}
+
+int	is_valid_cmd(note_type last_type)
+{
+	if (last_type == e_start)
+		return (1);
+	if (last_type == e_pipe)
+		return (1);
+	return (0);
+}
+
+int	is_valid_pipe(note_type last_type)
+{
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
+int	is_valid_file(note_type last_type)
+{
+	if (last_type == e_redirect_I)
+		return (1);
+	if (last_type == e_redirect_O)
+		return (1);
+	if (last_type == e_delimiter)
+		return (1);
+	if (last_type == e_append)
+		return (1);
+	return (0);
+}
+
+int	is_valid_word(note_type last_type)
+{
+	if (last_type == e_cmd)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	if (last_type == e_var)
+		return (1);
+	return (0);
+}
+
+int	is_valid_var(note_type last_type)
+{
+	if (last_type == e_cmd)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
+int	is_valid_type(note_type type, t_line_lst *node)
+{
+	note_type	last_type;
+
+	last_type = get_last_type(node);
+	if (type == e_cmd)
+		return (is_valid_cmd(last_type));
+	if (type == e_file)
+		return (is_valid_file(last_type));
+	if (type == e_pipe)
+		return (is_valid_pipe(last_type));
+	if (type == e_word)
+		return (is_valid_word(last_type));
+	if (type == e_var)
+		return (is_valid_var(last_type));
+	return (0);
+}
+
+t_line_lst	*fil_list(char *line)
+{
+	t_line_lst	*head;
+	int			last_type;
+	int			i;
+	int			len;
+
+	i = 0;
+	head = NULL;
+	line = ft_strtrim(line, " ");
+	last_type = get_last_type(head);
+	while (line[i])
+	{
+		if (ft_isalpha(line[i]))	// command, word or filename. Use the previous type to check the grammer
+		{
+			len = 0;
+			while (ft_isalpha(line[ i + len]))
+				len++;
+			add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
+			i += len - 1;
+		}
+		if (line[i] == '|')
+			add_at_end_of_list(&head, e_pipe, "|");
+		if (line[i] == '<')
+		{
+			i++; 
+			if (line[i] != '<')
+			{
+				add_at_end_of_list(&head, e_redirect_I, "<");
+				continue;
+			}
+			add_at_end_of_list(&head, e_delimiter, "<<");
+		}	
+		if (line[i] == '>')
+		{
+			i++;
+			if (line[i] != '>')
+			{
+				add_at_end_of_list(&head, e_redirect_O, ">");
+				continue;
+			}	
+			add_at_end_of_list(&head, e_append, ">>");
+		}
+		if (line[i] == '$')
+		{
+			i++;
+			if (line[i] == '?')
+			{
+				add_at_end_of_list(&head, e_var, "$?");
+				i++;
+				continue;
+			}
+			if (line[i] == '$')
+			{
+				add_at_end_of_list(&head, e_var, "$$");
+				i++;
+				continue;
+			}	
+			len = 0;
+			while (is_word(line[i + len]))
+				len++;
+			add_at_end_of_list(&head, e_var, ft_substr(line, i, len));
+			i += len - 1;
+		}
+		i++;
+	}
+	return (head);
+}
+
+t_line_lst	*parser(char *line)
+{
+	t_line_lst	*head;
+
+	head = fil_list(line);
 	return (head);
 }

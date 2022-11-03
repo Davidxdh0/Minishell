@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:36:20 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/28 16:10:50 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 17:56:16 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 int	shell(char *line, char **envp)
 {
-	char		**tokens;
 	t_line_lst	*line_lst;
-	t_line_lst	*head;
 
-	line_lst = NULL;
-	tokens = lexer(line);
-	head = parser(line_lst, tokens);
-	test_list(head, envp);	// use for testing
-	envp = NULL;
+	line_lst = parser(line);
+	// show_t_list(line_lst);
+	test_lists(line_lst, envp);
+	delete_t_list(&line_lst);
+	envp = NULL;	// temp until using envp
 	return (0);
 }
 
