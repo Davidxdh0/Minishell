@@ -14,8 +14,10 @@ EXECUTE_FI	=	executor.c \
 				file.c \
 				paths.c \
 				exit.c \
-				errors.c
-
+				errors.c \
+				redirect.c 
+#export.c
+#builtin.c
 LEXER_FILES =	lexer.c \
 				handle_quotes.c \
 				handle_variables.c
