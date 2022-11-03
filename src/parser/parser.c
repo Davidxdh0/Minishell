@@ -6,188 +6,26 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/27 15:26:47 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 15:45:44 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include <stdio.h>
+#include <stdio.h>	// temp
 
-/*
-	Debug function for showing the information in te line list
-*/
-// void	show_line_lst(t_line_lst *node)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	// node = get_first_node(node);
-// 	printf("idex\ttype\tvalue\n");
-// 	while (node != NULL)
-// 	{
-// 		printf("%i\t%d\t%s\n", i, node->type, node->value);
-// 		node = node->next;
-// 		i++;
-// 	}
-// }
-
-int	amount_of_tokens(char **tokens)
+void	delete_t_list(t_line_lst **head)
 {
-	int	list_len;
+	t_line_lst	*temp;
 
-	list_len = 0;
-	tokens =  NULL;
-	return (list_len);
+	while (*head != NULL)
+	{
+		temp = *head;
+		*head = (*head)->next;
+		free(temp);
+	}
 }
 
-// /* Add a node after a given node */
-// void	insert_node_after(t_line_lst **node)
-// {
-// 	t_line_lst	*new_node;
-
-// 	if (node == NULL)
-// 	{
-// 		node = (t_line_lst *)malloc(sizeof(t_line_lst));
-// 		(node)->next = NULL;
-// 		(node)->prev = NULL;
-// 		(node)->type = empty;
-// 		(node)->value = "";
-// 	}
-// 	else
-// 	{
-// 		new_node = NULL;
-// 		new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
-// 		(new_node)->next = (node)->next;
-// 		(node)->next = new_node;
-// 		(new_node)->prev = node;
-// 		(new_node)->type = empty;
-// 		(new_node)->value = "";
-// 	}
-// 	// if (node == NULL)
-// 	// 	node = (t_line_lst *)malloc(sizeof(t_line_lst));
-// 	// else
-// 	// 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
-// 	// if (node == NULL)
-// 	// {
-// 	// 	node->prev = NULL;
-// 	// 	node->next = NULL;
-// 	// 	node->type = empty;
-// 	// 	node->value = "";
-// 	// }
-// 	// else
-// 	// {
-// 	// 	new_node->next = node->next;
-// 	// 	node->next = new_node;
-// 	// 	new_node->prev = node;
-// 	// 	new_node->type = empty;
-// 	// 	node->value = "";
-// 	// }
-// }
-
-// /* Loop to the last node */
-// t_line_lst	*get_last_node(t_line_lst *node)
-// {
-// 	if (node == NULL)
-// 		return (NULL);
-// 	while (1)
-// 	{
-// 		if (node->next == NULL)
-// 			return (node);
-// 		node = node->next;
-// 	}
-// 	return (node);
-// }
-
-// /* Add a node at the end */
-// void	add_node_end(t_line_lst **node)
-// {
-// 	insert_node_after(*get_last_node(&node));
-// }
-
-/* Add a node before a given node */
-// void	insert_node_before(t_line_lst *node)
-// {
-// 	t_line_lst	*new_node;
-
-// 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
-// 	new_node->type = empty;
-// 	new_node->value = "";
-// 	if (node == NULL)
-// 	{
-// 		new_node->prev = NULL;
-// 		new_node->next = NULL;
-// 	}
-// 	else
-// 	{
-// 		new_node->prev = node->prev;
-// 		node->prev = new_node;
-// 		new_node->next = node;
-// 	}
-// }
-
-// /* Loop to the first node */
-// t_line_lst	*get_first_node(t_line_lst *node)
-// {
-// 	if (node == NULL)
-// 		return (NULL);
-// 	while (1)
-// 	{
-// 		if (node->prev == NULL)
-// 			return (node);
-// 		node = node->prev;
-// 	}
-// }
-
-// /* Add a node at the front */
-// void	add_node_front(t_line_lst *node)
-// {
-// 	insert_node_before(get_first_node(node));
-// }
-
-// /* Remove given node */
-// void	remode_node(t_line_lst *node)
-// {
-// 	t_line_lst	*temp;
-
-// 	if (node == NULL)
-// 		return ;
-// 	temp = node;
-// 	node->prev->next = node->next;
-// 	node->next->prev = node->prev;
-// 	free(node);
-// }
-
-// /* Remove the list */
-// void	remove_list(t_line_lst *node)
-// {
-// 	t_line_lst	*del;
-
-// 	node = get_first_node(node);
-// 	while (node)
-// 	{
-// 		del = node;
-// 		node = node->next;
-// 		free(del);
-// 	}
-// }
-
-// /* Count length of list */
-// int		len_of_list(t_line_lst *node)
-// {
-// 	int			counter;
-
-// 	counter = 0;
-// 	while (node)
-// 	{
-// 		node = node->next;
-// 		counter++;
-// 	}
-// 	return (counter);
-// }
-
-
-
-void	insert_at_start(t_line_lst **head, int type, char *value)
+void	add_at_start_of_list(t_line_lst **head, int type, char *value)
 {
 	t_line_lst	*new_node;
 
@@ -201,29 +39,277 @@ void	insert_at_start(t_line_lst **head, int type, char *value)
 	*head = new_node;
 }
 
-void	show_list(t_line_lst *node)
+void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 {
-	int			i;
+	t_line_lst	*new_node;
+	t_line_lst	*temp;
+
+	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
+	new_node->next = NULL;
+	new_node->type = type;
+	new_node->value = value;
+	if (*head == NULL)
+	{
+		*head = new_node;
+		new_node->prev = NULL;
+		return ;
+	}
+	temp = *head;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = new_node;
+	new_node->prev = temp;
+}
+
+void	show_t_list(t_line_lst *node)
+{
+	int	i;
 
 	i = 1;
+	printf("\n------ line list table -------\n");
 	printf("index\ttype\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%s\n" ,i, node->type, node->value);
+		printf("%d\t%d\t\"%s\"\n" ,i, node->type, node->value);
 		node = node->next;
 		i++;
 	}
+	printf("---- end line list table -----\n\n");
 }
 
-/* The parser processes the tokens build the list with */
-t_line_lst	*parser(char **tokens)
+int	length_of_list(t_line_lst *node)
 {
-	int			len_list;
+	int	lenght;
+
+	lenght = 0;
+	while (node != NULL)
+	{
+		node = node->next;
+		lenght++;
+	}
+	return (lenght);
+}
+
+void	test_list(void)
+{
 	t_line_lst	*head;
 
-	len_list = amount_of_tokens(tokens);
 	head = NULL;
-	insert_at_start(&head, empty, "");
-	// show_list(head);
+	add_at_end_of_list(&head, e_cmd, "ls -la");
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep Nov");
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep m");
+	show_t_list(head);
+	delete_t_list(&head);
+}
+
+int	amount_of_tokens(char **tokens)
+{
+	int	list_len;
+
+	list_len = 0;
+	while (tokens[list_len])
+		list_len++;
+	return (list_len);
+}
+
+/* Note
+Option 1: [ ]
+	lexer checkt the grammar (BNF) and detects tokens (a group of caracters).
+	parser checkt grammer (BNF) and create the type of the token and stors it in a list.
+
+Option 2: [ ]
+	lexer chect the grammer (BNF), detekt tokens and type of tokens.
+	parser stores tokens en the type of tokens in a list.
+
+Option 3: [X]
+	use lexer inside of the parser
+	
+Handle in the parser:
+	Variables and Parameters
+	
+Word Expansions: After parsing, but before execution. example $OSTYPE = darwin18.0
+*/
+
+char	**test_token_array(void)
+{
+	int		amount_of_tokens;
+	char	**tokens;
+
+	amount_of_tokens = 5;
+	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+	tokens[0] = ft_strdup("ls -la");
+	tokens[1] = ft_strdup("|");
+	tokens[2] = ft_strdup("grep Nov");
+	tokens[3] = ft_strdup("|");
+	tokens[4] = ft_strdup("grep m");
+	tokens[5] = NULL;
+	return (tokens);
+}
+
+int		is_word(char c)
+{
+	if (ft_isalpha(c))
+		return (1);
+	if (ft_isdigit(c))
+		return (1);
+	return (0);
+}
+
+note_type	get_last_type(t_line_lst *node)
+{
+	note_type	type;
+
+	type = e_start;
+	while (node != NULL)
+	{
+		type = node->type;
+		node = node->next;
+	}
+	return (type);
+}
+
+int	is_valid_cmd(note_type last_type)
+{
+	if (last_type == e_start)
+		return (1);
+	if (last_type == e_pipe)
+		return (1);
+	return (0);
+}
+
+int	is_valid_pipe(note_type last_type)
+{
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
+int	is_valid_file(note_type last_type)
+{
+	if (last_type == e_redirect_I)
+		return (1);
+	if (last_type == e_redirect_O)
+		return (1);
+	if (last_type == e_delimiter)
+		return (1);
+	if (last_type == e_append)
+		return (1);
+	return (0);
+}
+
+int	is_valid_word(note_type last_type)
+{
+	if (last_type == e_cmd)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	if (last_type == e_var)
+		return (1);
+	return (0);
+}
+
+int	is_valid_var(note_type last_type)
+{
+	if (last_type == e_cmd)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
+int	is_valid_type(note_type type, t_line_lst *node)
+{
+	note_type	last_type;
+
+	last_type = get_last_type(node);
+	if (type == e_cmd)
+		return (is_valid_cmd(last_type));
+	if (type == e_file)
+		return (is_valid_file(last_type));
+	if (type == e_pipe)
+		return (is_valid_pipe(last_type));
+	if (type == e_word)
+		return (is_valid_word(last_type));
+	if (type == e_var)
+		return (is_valid_var(last_type));
+	return (0);
+}
+
+t_line_lst	*fil_list(char *line)
+{
+	t_line_lst	*head;
+	int			last_type;
+	int			i;
+	int			len;
+
+	i = 0;
+	head = NULL;
+	line = ft_strtrim(line, " ");
+	last_type = get_last_type(head);
+	while (line[i])
+	{
+		if (ft_isalpha(line[i]))	// command, word or filename. Use the previous type to check the grammer
+		{
+			len = 0;
+			while (ft_isalpha(line[ i + len]))
+				len++;
+			add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
+			i += len - 1;
+		}
+		if (line[i] == '|')
+			add_at_end_of_list(&head, e_pipe, "|");
+		if (line[i] == '<')
+		{
+			i++; 
+			if (line[i] != '<')
+			{
+				add_at_end_of_list(&head, e_redirect_I, "<");
+				continue;
+			}
+			add_at_end_of_list(&head, e_delimiter, "<<");
+		}	
+		if (line[i] == '>')
+		{
+			i++;
+			if (line[i] != '>')
+			{
+				add_at_end_of_list(&head, e_redirect_O, ">");
+				continue;
+			}	
+			add_at_end_of_list(&head, e_append, ">>");
+		}
+		if (line[i] == '$')
+		{
+			i++;
+			if (line[i] == '?')
+			{
+				add_at_end_of_list(&head, e_var, "$?");
+				i++;
+				continue;
+			}
+			if (line[i] == '$')
+			{
+				add_at_end_of_list(&head, e_var, "$$");
+				i++;
+				continue;
+			}	
+			len = 0;
+			while (is_word(line[i + len]))
+				len++;
+			add_at_end_of_list(&head, e_var, ft_substr(line, i, len));
+			i += len - 1;
+		}
+		i++;
+	}
+	return (head);
+}
+
+t_line_lst	*parser(char *line)
+{
+	t_line_lst	*head;
+
+	head = fil_list(line);
 	return (head);
 }
