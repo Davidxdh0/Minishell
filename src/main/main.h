@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/02 18:28:30 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 10:39:23 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ https://github.com/Snaipe/Criterion
 # include "../lexer/lexer.h"
 # include "../parser/parser.h"
 
-// #define RIDIRECT_I		"<"
-// #define RIDIRECT_O		">"
-// #define APPEND			">>"
-// #define DELIMITER		"<<"
-// #define SINGLE_QUOTE	"\'"
-// #define DOUBLE_QUOTE	"\""
-// #define PIPE			"|"
-
 /* BNF
 commandline ::= pipeline
 
@@ -85,19 +77,15 @@ $?		expand to the exit status of the most recently executed foreground pipeline
 */
 
 /* Program flow
-1. lexer
-1.1. check syntax
+1. parser
+1.1. lexer
 1.2. puts the characters together into words called tokens
-2. parser
-2.1. read the tokens
-2.2. build the command table
--------(index, command, flags, envp)
--------(in, out, err)
-3. expander
-4. executor
-4.1. read command table
-4.x. creating pipes
-4.x. creating processes
+1.3. build the command table
+2. expander
+3. executor
+3.1. read command table
+3.x. creating pipes
+3.x. creating processes
 
 To do:
 [X] Header dependency in makefile

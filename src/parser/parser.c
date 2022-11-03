@@ -6,14 +6,14 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:20:57 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 11:32:22 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdio.h>	// temp
 
-void	delete_list(t_line_lst **head)
+void	delete_t_list(t_line_lst **head)
 {
 	t_line_lst	*temp;
 
@@ -61,7 +61,7 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 	new_node->prev = temp;
 }
 
-void	show_list(t_line_lst *node)
+void	show_t_list(t_line_lst *node)
 {
 	int	i;
 
@@ -70,7 +70,7 @@ void	show_list(t_line_lst *node)
 	printf("index\ttype\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%s\n" ,i, node->type, node->value);
+		printf("%d\t%d\t'%s'\n" ,i, node->type, node->value);
 		node = node->next;
 		i++;
 	}
@@ -100,8 +100,8 @@ void	test_list(void)
 	add_at_end_of_list(&head, e_cmd, "grep Nov");
 	add_at_end_of_list(&head, e_pipe, "|");
 	add_at_end_of_list(&head, e_cmd, "grep m");
-	show_list(head);
-	delete_list(&head);
+	show_t_list(head);
+	delete_t_list(&head);
 }
 
 int	amount_of_tokens(char **tokens)
@@ -148,6 +148,26 @@ char	**test_token_array(void)
 	return (tokens);
 }
 
+char	*get_PID_current_shell(void)
+{
+	return ("PID_of_the_current_shell");
+}
+
+char	*get_last_exit_status(void)
+{
+	return ("exit_status_recently_executed_foreground_pipeline");
+}
+
+int		is_word(char c)
+{
+	if (ft_isalpha(c))
+		return (1);
+	if (ft_isdigit(c))
+		return (1);
+	// if (c == '')
+	return (0);
+}
+
 t_line_lst	*fil_list(char *line)
 {
 	t_line_lst	*head;
@@ -157,29 +177,57 @@ t_line_lst	*fil_list(char *line)
 	i = 0;
 	head = NULL;
 	line = ft_strtrim(line, " ");
-	printf("%s\n", line);
 	while (line[i])
 	{
+		if (ft_isalpha(line[i]))	// command, word or filename. Use the previous type to check the grammer
+		{
+			len = 0;
+			while (ft_isalpha(line[ i + len]))
+				len++;
+			add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
+			i += len - 1;
+		}
 		if (line[i] == '|')
 			add_at_end_of_list(&head, e_pipe, "|");
 		if (line[i] == '<')
 		{
-			if (line[i + 1] && line[i + 1] == '<')
+			i++; 
+			if (line[i] != '<')
 			{
-				add_at_end_of_list(&head, e_redirect, "<<");
-				i++;
+				add_at_end_of_list(&head, e_redirect_I, "<");
+				continue;
 			}
-			else
-				add_at_end_of_list(&head, e_redirect, "<");
+			add_at_end_of_list(&head, e_delimiter, "<<");
 		}	
 		if (line[i] == '>')
-			add_at_end_of_list(&head, e_redirect, ">");
+		{
+			i++;
+			if (line[i] != '>')
+			{
+				add_at_end_of_list(&head, e_redirect_O, ">");
+				continue;
+			}	
+			add_at_end_of_list(&head, e_append, ">>");
+		}
 		if (line[i] == '$')
 		{
+			i++;
+			if (line[i] == '?')
+			{
+				add_at_end_of_list(&head, e_word, get_last_exit_status());
+				i++;
+				continue;
+			}
+			if (line[i] == '$')
+			{
+				add_at_end_of_list(&head, e_word, get_PID_current_shell());
+				i++;
+				continue;
+			}	
 			len = 0;
-			while (line[i + len] && line[i + len] != ' ')
+			while (is_word(line[i + len]))
 				len++;
-			add_at_end_of_list(&head, e_var, ft_substr(line, i + 1, len - 1));
+			add_at_end_of_list(&head, e_var, ft_substr(line, i, len));
 			i += len - 1;
 		}
 		i++;
