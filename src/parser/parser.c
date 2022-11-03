@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 20:39:00 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 20:47:44 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,16 +280,16 @@ t_line_lst	*fil_list(char *line)
 	while (line[i])
 	{
 		last_type = get_last_type(head);
-		if (is_word(line[i]))	// command, word or filename. Use the previous type to check the grammer
+		if (is_word(line[i]))
 		{
 			len = 0;
 			while (is_word(line[i + len]))
 				len++;
 			if (last_type == e_start || last_type == e_pipe)
 				add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
-			if (last_type == e_cmd || last_type == e_word)
+			if (last_type == e_cmd || last_type == e_word || last_type == e_delimiter)
 				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
-			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_delimiter || last_type == e_append)
+			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_append)
 				add_at_end_of_list(&head, e_file, ft_substr(line, i, len));
 			i += len - 1;
 		}
