@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 15:45:44 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 18:04:28 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,9 @@ int	is_valid_pipe(note_type last_type)
 
 int	is_valid_file(note_type last_type)
 {
-	if (last_type == e_redirect_I)
+	if (last_type == e_redirect_i)
 		return (1);
-	if (last_type == e_redirect_O)
+	if (last_type == e_redirect_o)
 		return (1);
 	if (last_type == e_delimiter)
 		return (1);
@@ -240,22 +240,27 @@ int	is_valid_type(note_type type, t_line_lst *node)
 t_line_lst	*fil_list(char *line)
 {
 	t_line_lst	*head;
-	int			last_type;
+	note_type	last_type;
 	int			i;
 	int			len;
 
 	i = 0;
 	head = NULL;
 	line = ft_strtrim(line, " ");
-	last_type = get_last_type(head);
 	while (line[i])
 	{
-		if (ft_isalpha(line[i]))	// command, word or filename. Use the previous type to check the grammer
+		last_type = get_last_type(head);
+		if (is_word(line[i]))	// command, word or filename. Use the previous type to check the grammer
 		{
 			len = 0;
-			while (ft_isalpha(line[ i + len]))
+			while (is_word(line[i + len]))
 				len++;
-			add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
+			if (last_type == e_start)
+				add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
+			if (last_type == e_cmd)
+				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
+			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_delimiter || last_type == e_append)
+				add_at_end_of_list(&head, e_file, ft_substr(line, i, len));
 			i += len - 1;
 		}
 		if (line[i] == '|')
@@ -265,7 +270,7 @@ t_line_lst	*fil_list(char *line)
 			i++; 
 			if (line[i] != '<')
 			{
-				add_at_end_of_list(&head, e_redirect_I, "<");
+				add_at_end_of_list(&head, e_redirect_i, "<");
 				continue;
 			}
 			add_at_end_of_list(&head, e_delimiter, "<<");
@@ -275,7 +280,7 @@ t_line_lst	*fil_list(char *line)
 			i++;
 			if (line[i] != '>')
 			{
-				add_at_end_of_list(&head, e_redirect_O, ">");
+				add_at_end_of_list(&head, e_redirect_o, ">");
 				continue;
 			}	
 			add_at_end_of_list(&head, e_append, ">>");
