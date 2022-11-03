@@ -19,11 +19,11 @@ void    redirect(t_line_lst *stack, t_data *data)
     temp = stack;
     while(temp && temp->type != e_pipe )
     {
-        if (temp->type == e_redirect_I)
+        if (temp->type == e_redirect_i)
             open_infile(temp->value, data);
         // if (temp->type == e_delimiter)
         //     open_till(temp->value, data, temp->next->value);
-        if (temp->type == e_redirect_O || temp->type == e_append)
+        if (temp->type == e_redirect_o || temp->type == e_append)
              open_outfile(temp->value , data, temp->type);
 		temp = temp->next;
     }

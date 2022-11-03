@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 14:35:08 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/03 17:23:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 18:40:06 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	open_outfile(char *file, t_data *data, int flag)
 	flags = 0;
 	if (!file || data)
 		return ;
-	if (flag == e_redirect_O)
+	if (flag == e_redirect_o)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	else if (flag == e_append)
 		flags = O_WRONLY | O_CREAT | O_APPEND;

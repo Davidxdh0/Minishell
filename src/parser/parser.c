@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 18:04:28 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 18:51:47 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 	new_node->prev = temp;
 }
 
-void	show_t_list(t_line_lst *node)
+void	show_t_list(t_line_lst *node, char *input_line)
 {
 	int	i;
 
 	i = 1;
+	
+	printf("\ninput_line = \"%s\"", input_line);
 	printf("\n------ line list table -------\n");
 	printf("index\ttype\tvalue\n");
 	while (node != NULL)
@@ -100,7 +102,7 @@ void	test_list(void)
 	add_at_end_of_list(&head, e_cmd, "grep Nov");
 	add_at_end_of_list(&head, e_pipe, "|");
 	add_at_end_of_list(&head, e_cmd, "grep m");
-	show_t_list(head);
+	show_t_list(head, "");
 	delete_t_list(&head);
 }
 

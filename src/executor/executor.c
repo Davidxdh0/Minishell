@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/03 18:11:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/03 18:56:41 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void	test_lists(t_line_lst *head, char **envp)
 	add_at_end_of_list(&head, e_cmd, "grep 17:");
 	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
-	show_t_list(head);
+	show_t_list(head, "David has to change this line ;) For example: ls -la | grep 17 | ls -la | grep 17");
 	printf("length of list is %d\n", length_of_list(head));
 	execute_cmd_list(head, &data);
 	//delete_list(&head);
