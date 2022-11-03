@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 18:51:47 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/03 20:39:00 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,31 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 	new_node->prev = temp;
 }
 
+char	*type_to_string(note_type type)
+{
+	if (type == e_start)
+		return ("start\t");
+	if (type == e_cmd)
+		return ("cmd\t");
+	if (type == e_file)
+		return ("file\t");
+	if (type == e_pipe)
+		return ("pipe\t");
+	if (type == e_word)
+		return ("word\t");
+	if (type == e_var)
+		return ("var\t");
+	if (type == e_redirect_i)
+		return ("redirect_i");
+	if (type == e_redirect_o)
+		return ("redirect_o");
+	if (type == e_delimiter)
+		return ("delimiter");
+	if (type == e_append)
+		return ("append\t");
+	return ("no type");
+}
+
 void	show_t_list(t_line_lst *node, char *input_line)
 {
 	int	i;
@@ -69,10 +94,11 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	
 	printf("\ninput_line = \"%s\"", input_line);
 	printf("\n------ line list table -------\n");
-	printf("index\ttype\tvalue\n");
+	printf("index\ttype\ttype_name\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t\"%s\"\n" ,i, node->type, node->value);
+		printf("%d\t%d\t%s\t\"%s\"\n" ,i, node->type, \
+			type_to_string(node->type), node->value);
 		node = node->next;
 		i++;
 	}
@@ -155,6 +181,8 @@ int		is_word(char c)
 	if (ft_isalpha(c))
 		return (1);
 	if (ft_isdigit(c))
+		return (1);
+	if (c == '-')
 		return (1);
 	return (0);
 }
@@ -257,9 +285,9 @@ t_line_lst	*fil_list(char *line)
 			len = 0;
 			while (is_word(line[i + len]))
 				len++;
-			if (last_type == e_start)
+			if (last_type == e_start || last_type == e_pipe)
 				add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
-			if (last_type == e_cmd)
+			if (last_type == e_cmd || last_type == e_word)
 				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
 			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_delimiter || last_type == e_append)
 				add_at_end_of_list(&head, e_file, ft_substr(line, i, len));
