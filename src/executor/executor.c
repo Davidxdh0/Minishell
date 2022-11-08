@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/03 18:11:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/08 15:43:57 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ needs to save input/output and restore it at the end.
 // execute commands op basis van wat het is. 
 */
 
+void	execute_execve(t_line_lst *stack, t_data *data, char **envp)
+{
+	if (execve(data->path, data->cmd, envp) == -1)
+		message_exit("execve went wrong", 0);
+	exit(1);
+	stack++;
+}
+
 void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 {
 	pid_t	pid1;
@@ -81,9 +89,7 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 	if (pid1 == 0)
 	{
 		message("child\n");
-		dup2(data->fd[1], 1);
 		close(data->fd[0]);
-		dup2(1, 1);
 		if (execve(data->path, data->cmd, envp) == -1)
 			message_exit("execve went wrong", 0);
 	}
@@ -164,9 +170,10 @@ void	test_lists(t_line_lst *head, char **envp)
 	data.envp = envp;
 	head = NULL;
 	add_at_end_of_list(&head, e_cmd, "ls -la");
-	add_at_end_of_list(&head, e_cmd, "grep 17:");
-	add_at_end_of_list(&head, e_cmd, "ls -la");
-	add_at_end_of_list(&head, e_cmd, "grep 17:");
+	add_at_end_of_list(&head, e_cmd, "ls");
+	add_at_end_of_list(&head, e_cmd, "grep obj");
+	add_at_end_of_list(&head, e_cmd, "ls -l");
+	add_at_end_of_list(&head, e_cmd, "ls");
 	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
 	show_t_list(head);
