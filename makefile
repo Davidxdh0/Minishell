@@ -21,10 +21,6 @@ EXECUTE_FI	=	executor.c \
 #export.c
 				
 
-LEXER_FILES =	lexer.c \
-				handle_quotes.c \
-				handle_variables.c
-
 MAIN_FILES =	main.c \
 				line_input.c \
 				argv_input.c
@@ -33,7 +29,6 @@ PARSER_FILES =	parser.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \
-				$(addprefix lexer/, $(LEXER_FILES)) \
 				$(addprefix parser/, $(PARSER_FILES))
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
