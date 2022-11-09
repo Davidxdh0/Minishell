@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 11:36:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 16:49:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 18:09:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data)
 	//write(1, "builtin\n", 9);
 	if (!ft_strncmp(cmdlist->value, "cd", 2))
 		execute_cd(cmd, data);
-	// if (!ft_strcmp(cmdlist->value, "echo"))
-	// 	execute_echo(cmdlist, cmd)
+	if (!ft_strncmp(cmdlist->value, "echo", 4))
+		execute_echo(cmd);
 	// if (!ft_strcmp(cmdlist->value, "pwd"))
 	// 	execute_pwd(cmdlist);
 	// if (!ft_strcmp(cmdlist->value, "export"))

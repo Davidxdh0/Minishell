@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 16:59:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 18:02:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,8 @@ void	test_lists(t_line_lst *head, char **envp)
 	add_at_end_of_list(&head, e_cmd, "ls");
 	add_at_end_of_list(&head, e_word, "ls -l");
 	add_at_end_of_list(&head, e_cmd, "cd .");
-	add_at_end_of_list(&head, e_cmd, "cd ..");
-	add_at_end_of_list(&head, e_cmd, "cd obj");
+	//add_at_end_of_list(&head, e_cmd, "pwd");
+	add_at_end_of_list(&head, e_cmd, "echo");
 	// add_at_end_of_list(&head, e_pipe, "|");
 	add_at_end_of_list(&head, e_cmd, "ls");
 	// add_at_end_of_list(&head, e_word, "-la");

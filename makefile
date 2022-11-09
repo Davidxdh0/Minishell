@@ -17,6 +17,7 @@ EXECUTE_FI	=	executor.c \
 				errors.c \
 				redirect.c \
 				builtin.c \
+				echo.c \
 				cd.c
 #export.c
 				

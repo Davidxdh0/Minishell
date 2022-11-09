@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:54:04 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 15:44:08 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 18:05:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_data
 	int		infile;
 	int		outfile;
 	int		fd[2];
-
 }	t_data;
 
 //executor.c
@@ -71,5 +70,8 @@ void	execute_cd(char **cmd, t_data *data);
 void	update_old_pwd(char *oldpath, t_data *data);
 void	cd_home(char **envp);
 int		change_dir(char *oldpath, char *path);
+
+//echo.c
+void	execute_echo(char **cmd);
 
 #endif
