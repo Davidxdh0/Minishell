@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 10:39:25 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 10:52:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,28 +83,27 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 
 	redirect(stack, data);
 	message(stack->value);
+	data->cmd = ft_split(stack->value, ' ');
+	data->path = get_cmd_path(data->cmd[0], envp);
+	if (!data->path || !data->cmd[0])
+		message("geen path of splitted cmd");
 	pid1 = fork();
 	if (pid1 < 0)
 		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
-		//message("child\n");
 		close(data->fd[0]);
 		if (execve(data->path, data->cmd, envp) == -1)
 			message_exit("execve went wrong", 0);
 	}
 	else
 	{
-		//message("parent\n");
 		close(data->fd[1]);
 		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
-			message("process einde\n");//, (WEXITSTATUS(wstatus)));
-		// message(ft_itoa(wstatus));
-		// message("\n");
+			message("proces einde\n");//, (WEXITSTATUS(wstatus)));
 	}
 	return ;
-	stack->type = stack->type;
 }
 
 void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
@@ -114,10 +113,7 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 	// if (stack->type == builtin)
 	// 	execute_builtins(stack, data)
 	// else if ()
-	data->cmd = ft_split(stack->value, ' ');
-	data->path = get_cmd_path(data->cmd[0], envp);
-	if (!data->path || !data->cmd[0])
-		message("geen path of splitted cmd");
+
 	if(stack)
 	{
 		if (pipe(data->fd) < 0)
@@ -130,6 +126,7 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 		data->infile = data->fd[0];
 		stack = stack->next;
 	}
+	//execute_process(stack, data, envp);
 	if (data->cmd[0][0] == '\0')
 		message_exit("cmd == '\0'", 1);
 	if (ft_isspace(data->cmd[0][0]))
@@ -169,16 +166,16 @@ void	test_lists(t_line_lst *head, char **envp)
 	data.envp = envp;
 	head = NULL;
 	add_at_end_of_list(&head, e_cmd, "ls");
-	add_at_end_of_list(&head, e_word, "-la");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep");
-	add_at_end_of_list(&head, e_word, "17");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "ls");
-	add_at_end_of_list(&head, e_word, "-la");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep");
-	add_at_end_of_list(&head, e_word, "17");
+	add_at_end_of_list(&head, e_word, "ls -l");
+	// add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep obj");
+	// add_at_end_of_list(&head, e_word, "17");
+	// add_at_end_of_list(&head, e_pipe, "|");
+	// add_at_end_of_list(&head, e_cmd, "ls");
+	// add_at_end_of_list(&head, e_word, "-la");
+	// add_at_end_of_list(&head, e_pipe, "|");
+	// add_at_end_of_list(&head, e_cmd, "grep");
+	// add_at_end_of_list(&head, e_word, "17");
 	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
 	show_t_list(head, "Put here the input line as reference");
