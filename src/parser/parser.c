@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 20:47:44 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/09 09:35:27 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	i = 1;
 	
 	printf("\ninput_line = \"%s\"", input_line);
-	printf("\n------ line list table -------\n");
+	printf("\n---------- line list table -----------\n");
 	printf("index\ttype\ttype_name\tvalue\n");
 	while (node != NULL)
 	{
@@ -102,7 +102,7 @@ void	show_t_list(t_line_lst *node, char *input_line)
 		node = node->next;
 		i++;
 	}
-	printf("---- end line list table -----\n\n");
+	printf("-------- end line list table ---------\n\n");
 }
 
 int	length_of_list(t_line_lst *node)
@@ -346,5 +346,6 @@ t_line_lst	*parser(char *line)
 	t_line_lst	*head;
 
 	head = fil_list(line);
+	// check if list is valid
 	return (head);
 }
