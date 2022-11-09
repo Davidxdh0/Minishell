@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 20:39:00 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/09 10:19:11 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	delete_t_list(t_line_lst **head)
 	}
 }
 
-void	add_at_start_of_list(t_line_lst **head, int type, char *value)
-{
-	t_line_lst	*new_node;
+// void	add_at_start_of_list(t_line_lst **head, int type, char *value)
+// {
+// 	t_line_lst	*new_node;
 
-	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
-	new_node->prev = NULL;
-	new_node->next = *head;
-	new_node->type = type;
-	new_node->value = value;
-	if (*head != NULL)
-		(*head)->prev = new_node;
-	*head = new_node;
-}
+// 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
+// 	new_node->prev = NULL;
+// 	new_node->next = *head;
+// 	new_node->type = type;
+// 	new_node->value = value;
+// 	if (*head != NULL)
+// 		(*head)->prev = new_node;
+// 	*head = new_node;
+// }
 
 void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 {
@@ -93,7 +93,7 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	i = 1;
 	
 	printf("\ninput_line = \"%s\"", input_line);
-	printf("\n------ line list table -------\n");
+	printf("\n---------- line list table -----------\n");
 	printf("index\ttype\ttype_name\tvalue\n");
 	while (node != NULL)
 	{
@@ -102,7 +102,7 @@ void	show_t_list(t_line_lst *node, char *input_line)
 		node = node->next;
 		i++;
 	}
-	printf("---- end line list table -----\n\n");
+	printf("-------- end line list table ---------\n\n");
 }
 
 int	length_of_list(t_line_lst *node)
@@ -118,29 +118,29 @@ int	length_of_list(t_line_lst *node)
 	return (lenght);
 }
 
-void	test_list(void)
-{
-	t_line_lst	*head;
+// void	test_list(void)
+// {
+// 	t_line_lst	*head;
 
-	head = NULL;
-	add_at_end_of_list(&head, e_cmd, "ls -la");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep Nov");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep m");
-	show_t_list(head, "");
-	delete_t_list(&head);
-}
+// 	head = NULL;
+// 	add_at_end_of_list(&head, e_cmd, "ls -la");
+// 	add_at_end_of_list(&head, e_pipe, "|");
+// 	add_at_end_of_list(&head, e_cmd, "grep Nov");
+// 	add_at_end_of_list(&head, e_pipe, "|");
+// 	add_at_end_of_list(&head, e_cmd, "grep m");
+// 	show_t_list(head, "");
+// 	delete_t_list(&head);
+// }
 
-int	amount_of_tokens(char **tokens)
-{
-	int	list_len;
+// int	amount_of_tokens(char **tokens)
+// {
+// 	int	list_len;
 
-	list_len = 0;
-	while (tokens[list_len])
-		list_len++;
-	return (list_len);
-}
+// 	list_len = 0;
+// 	while (tokens[list_len])
+// 		list_len++;
+// 	return (list_len);
+// }
 
 /* Note
 Option 1: [ ]
@@ -160,21 +160,21 @@ Handle in the parser:
 Word Expansions: After parsing, but before execution. example $OSTYPE = darwin18.0
 */
 
-char	**test_token_array(void)
-{
-	int		amount_of_tokens;
-	char	**tokens;
+// char	**test_token_array(void)
+// {
+// 	int		amount_of_tokens;
+// 	char	**tokens;
 
-	amount_of_tokens = 5;
-	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
-	tokens[0] = ft_strdup("ls -la");
-	tokens[1] = ft_strdup("|");
-	tokens[2] = ft_strdup("grep Nov");
-	tokens[3] = ft_strdup("|");
-	tokens[4] = ft_strdup("grep m");
-	tokens[5] = NULL;
-	return (tokens);
-}
+// 	amount_of_tokens = 5;
+// 	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+// 	tokens[0] = ft_strdup("ls -la");
+// 	tokens[1] = ft_strdup("|");
+// 	tokens[2] = ft_strdup("grep Nov");
+// 	tokens[3] = ft_strdup("|");
+// 	tokens[4] = ft_strdup("grep m");
+// 	tokens[5] = NULL;
+// 	return (tokens);
+// }
 
 int		is_word(char c)
 {
@@ -280,16 +280,16 @@ t_line_lst	*fil_list(char *line)
 	while (line[i])
 	{
 		last_type = get_last_type(head);
-		if (is_word(line[i]))	// command, word or filename. Use the previous type to check the grammer
+		if (is_word(line[i]))
 		{
 			len = 0;
 			while (is_word(line[i + len]))
 				len++;
 			if (last_type == e_start || last_type == e_pipe)
 				add_at_end_of_list(&head, e_cmd, ft_substr(line, i, len));
-			if (last_type == e_cmd || last_type == e_word)
+			if (last_type == e_cmd || last_type == e_word || last_type == e_delimiter)
 				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
-			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_delimiter || last_type == e_append)
+			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_append)
 				add_at_end_of_list(&head, e_file, ft_substr(line, i, len));
 			i += len - 1;
 		}
@@ -346,5 +346,6 @@ t_line_lst	*parser(char *line)
 	t_line_lst	*head;
 
 	head = fil_list(line);
+	// check if list is valid
 	return (head);
 }

@@ -14,5 +14,11 @@
 ./minishell -p '>> a'
 ./minishell -p '<< a'
 
-# ./minishell -p 'env'
-# ./minishell -p 'top'
+./minishell -p '$'
+./minishell -p '$$'
+./minishell -p '$$$'
+./minishell -p '$?'
+./minishell -p '$?$'
+
+./minishell -p 'env'
+./minishell -p 'top'
