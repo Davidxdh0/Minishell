@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 11:51:52 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 14:54:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 17:01:01 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,49 +31,73 @@ no longer needed by calling free() with the pointer returned by getcwd().
 Copies an absolute pathname of the current working directory to the array 
 pointed to by buf, which is of length size.
 */
-void	update_old_pwd(t_line_lst *stack, char *oldpath)
+
+void	update_old_pwd(char *oldpath, t_data *data)
 {
-	
+	int i;
+	char *updated_pwd;
+
+	updated_pwd = ft_strjoin("OLDPWD=", oldpath);
+	i = 0;
+	while(*data->envp != NULL)
+	{
+		if (!strncmp(*data->envp, "OLDPWD=", 7))
+			ft_strlcpy(*data->envp, updated_pwd, ft_strlen(updated_pwd));
+		data->envp++;
+	}
+	free(updated_pwd);
 }
 
-void	cd_home(t_line_lst *stack, char **cmd)
+void	cd_home(char **envp)
 {
+	int i;
 
+	i = 0;
+	while(*envp != NULL)
+	{
+		if (!strncmp(*envp, "HOME=", 5))
+			change_dir(*envp+5, "");
+		envp++;
+	}
 }
 
-int		check_valid_path(t_line_lst *stack, char *path)
+int		change_dir(char *oldpath, char *path)
 {
+	char *new_dir_slash;
+	char *new_dir;
 
+	new_dir_slash = ft_strjoin(oldpath, "/");
+	new_dir = ft_strjoin(new_dir_slash, path);
+	if (chdir(new_dir) != 0)
+	{
+		//write(1, "chdir\n", 7);
+		return(1);
+	}
+	free(new_dir_slash);
+	free(new_dir);
+	return(0);
 }
 
-void	change_dir(t_line_lst *stack, char *path)
+void	execute_cd(char **cmd, t_data *data)
 {
-	
-}
-
-void	execute_cd(t_line_lst *stack, char **cmd)
-{
-	char 	*cwd;
-	char 	*path;
 	char 	*oldpath;
 	int		status;
 	
 	status = 0;
 	oldpath = getwd(NULL);
+	
 	if (cmd[1] == NULL || (cmd[1][0] == '~' && cmd[1][1] == '\0'))
-		;//ga home directory en change old pwd
+		cd_home(data->envp);
 	else if (cmd[1][0] == '.' && cmd[1][1] == '\0')
-		;//update_old_pwd
+		;//update old pwd
 	else if (cmd[1][0] == '.' && cmd[1][1] == '.')
-		;//check if valid -> remove last word from cwd en chdir, update oldpwd
+	{
+		//werkt niet, laatste woord moet eraf.
+		change_dir(oldpath, cmd[1]);
+	}
 	else
-		status = change_dir();//check if valid dir en change (if not valid return 1)
-	if (status == 0)
-		;// change oldpwd
-	// message(cwd);
-	// path = ft_strjoin(cwd, "/obj");
-	// message(path);
-	// chdir(path);
-	// message(cwd);
-	// stack++;
+		status = change_dir(oldpath, cmd[1]);
+	// if (status == 0)
+	// 	update_old_pwd( oldpath, data);
+	free(oldpath);
 }

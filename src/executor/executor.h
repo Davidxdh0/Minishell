@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:54:04 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 14:36:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 15:44:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,13 @@ void	open_till(char *file, t_data *data, char *str);
 void	open_outfile(char *file, t_data *data, int flag);
 
 //builtin.c
-void	execute_builtin(t_line_lst *cmdlist, char **cmd);
+void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
 int		is_builtin(char *str);
 
 //cd.c
-void	execute_cd(t_line_lst *stack, char **cmd);
+void	execute_cd(char **cmd, t_data *data);
+void	update_old_pwd(char *oldpath, t_data *data);
+void	cd_home(char **envp);
+int		change_dir(char *oldpath, char *path);
 
 #endif

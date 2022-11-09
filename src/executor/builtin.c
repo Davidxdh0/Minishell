@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 11:36:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 14:50:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 16:49:27 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		is_builtin(char *str)
 		i = 1;
 	if (!ft_strncmp(str, "pwd", 3))
 		i = 1;
-	if (!ft_strncmp(str, "export", 5))
+	if (!ft_strncmp(str, "export", 6))
 		i = 1;
 	if (!ft_strncmp(str, "$?", 2))
 		i = 1;;
@@ -41,16 +41,15 @@ int		is_builtin(char *str)
 		i = 1;
 	return (i);
 }
-void	execute_builtin(t_line_lst *cmdlist, char **cmd)
+void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data)
 {
 	if (!cmdlist)
 		return ;
+	//write(1, "builtin\n", 9);
 	if (!ft_strncmp(cmdlist->value, "cd", 2))
-	{
-		execute_cd(cmdlist, cmd);
-	}
+		execute_cd(cmd, data);
 	// if (!ft_strcmp(cmdlist->value, "echo"))
-	// 	execute_echo(cmdlist);
+	// 	execute_echo(cmdlist, cmd)
 	// if (!ft_strcmp(cmdlist->value, "pwd"))
 	// 	execute_pwd(cmdlist);
 	// if (!ft_strcmp(cmdlist->value, "export"))

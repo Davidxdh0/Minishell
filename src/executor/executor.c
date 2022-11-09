@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 14:35:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 16:59:43 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
+		write(1, "child\n", 6);
 		close(data->fd[0]);
 		if (execve(data->path, data->cmd, envp) == -1)
 			message_exit("execve went wrong", 0);
@@ -110,14 +111,12 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 	data->cmd = ft_split(stack->value, ' ');
 	int i = -1;
 	while(data->cmd[++i])
-	{
 		message(data->cmd[i]);
-	}
 	data->path = get_cmd_path(data->cmd[0], envp);
 	if (!data->path || !data->cmd[0])
 		message("geen path of splitted cmd");
 	if (is_builtin(stack->value))
-		execute_builtin(stack, data->cmd);
+		execute_builtin(stack, data->cmd, data);
 	else
 	{
 		if(stack)
@@ -159,7 +158,9 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 		close(data->fd[0]);
 		close(data->fd[1]);
 		stack = stack->next;
+		
 	}
+	message("end of stack");
 	exit(0);
 }
 
@@ -171,11 +172,11 @@ void	test_lists(t_line_lst *head, char **envp)
 	head = NULL;
 	add_at_end_of_list(&head, e_cmd, "ls");
 	add_at_end_of_list(&head, e_word, "ls -l");
+	add_at_end_of_list(&head, e_cmd, "cd .");
+	add_at_end_of_list(&head, e_cmd, "cd ..");
+	add_at_end_of_list(&head, e_cmd, "cd obj");
 	// add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "cd");
-	// add_at_end_of_list(&head, e_word, "17");
-	// add_at_end_of_list(&head, e_pipe, "|");
-	// add_at_end_of_list(&head, e_cmd, "ls");
+	add_at_end_of_list(&head, e_cmd, "ls");
 	// add_at_end_of_list(&head, e_word, "-la");
 	// add_at_end_of_list(&head, e_pipe, "|");
 	// add_at_end_of_list(&head, e_cmd, "grep");
