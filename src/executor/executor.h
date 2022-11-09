@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:54:04 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/03 17:56:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 14:36:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,12 @@ void    redirect(t_line_lst *stack, t_data *data);
 void	open_infile(char *file, t_data *data);
 void	open_till(char *file, t_data *data, char *str);
 void	open_outfile(char *file, t_data *data, int flag);
+
+//builtin.c
+void	execute_builtin(t_line_lst *cmdlist, char **cmd);
+int		is_builtin(char *str);
+
+//cd.c
+void	execute_cd(t_line_lst *stack, char **cmd);
 
 #endif

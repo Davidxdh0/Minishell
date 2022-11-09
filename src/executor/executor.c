@@ -6,12 +6,12 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 10:52:32 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 14:35:27 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
+#include "../main/main.h"
 /* cmd's zijn in linked list -> execute op basis van: links, rechts, type, 
 	eerste keer lezen van fd[1] - kan file zijn.
 	check type - command/var/cd/pipe/&/>/>&/>>/>>&/</<</
@@ -83,10 +83,7 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 
 	redirect(stack, data);
 	message(stack->value);
-	data->cmd = ft_split(stack->value, ' ');
-	data->path = get_cmd_path(data->cmd[0], envp);
-	if (!data->path || !data->cmd[0])
-		message("geen path of splitted cmd");
+
 	pid1 = fork();
 	if (pid1 < 0)
 		message_exit("fork went wrong", 0);
@@ -110,27 +107,37 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 {
 	if (!stack || !data)
 		return ;
-	// if (stack->type == builtin)
-	// 	execute_builtins(stack, data)
-	// else if ()
-
-	if(stack)
+	data->cmd = ft_split(stack->value, ' ');
+	int i = -1;
+	while(data->cmd[++i])
 	{
-		if (pipe(data->fd) < 0)
-			message("pipe werkt niet");
-		data->outfile = data->fd[1];
-		execute_process(stack, data, envp);
-		close(data->outfile);
-		if (data->infile != 0)
-			close(data->infile);
-		data->infile = data->fd[0];
-		stack = stack->next;
+		message(data->cmd[i]);
 	}
-	//execute_process(stack, data, envp);
-	if (data->cmd[0][0] == '\0')
-		message_exit("cmd == '\0'", 1);
-	if (ft_isspace(data->cmd[0][0]))
-		exit(msg_custom_error_code("pipex: command not found: ", "", 0));
+	data->path = get_cmd_path(data->cmd[0], envp);
+	if (!data->path || !data->cmd[0])
+		message("geen path of splitted cmd");
+	if (is_builtin(stack->value))
+		execute_builtin(stack, data->cmd);
+	else
+	{
+		if(stack)
+		{
+			if (pipe(data->fd) < 0)
+				message("pipe werkt niet");
+			data->outfile = data->fd[1];
+			execute_process(stack, data, envp);
+			close(data->outfile);
+			if (data->infile != 0)
+				close(data->infile);
+			data->infile = data->fd[0];
+			stack = stack->next;
+		}
+		//execute_process(stack, data, envp);
+		if (data->cmd[0][0] == '\0')
+			message_exit("cmd == '\0'", 1);
+		if (ft_isspace(data->cmd[0][0]))
+			exit(msg_custom_error_code("pipex: command not found: ", "", 0));
+	}
 }
 
 void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
@@ -140,10 +147,7 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 	if (!cmdlist)
 		return ;
 	stack = cmdlist;
-	// als previous is NULL en stack niet leeg -> voer commando uit met infile als die er is.
-	// if (stack->prev == NULL)
-	// 	execute_infile()
-	// stack = stack->next
+	
 	while(stack)
 	{
 		//message(stack->value);
@@ -168,7 +172,7 @@ void	test_lists(t_line_lst *head, char **envp)
 	add_at_end_of_list(&head, e_cmd, "ls");
 	add_at_end_of_list(&head, e_word, "ls -l");
 	// add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep obj");
+	add_at_end_of_list(&head, e_cmd, "cd");
 	// add_at_end_of_list(&head, e_word, "17");
 	// add_at_end_of_list(&head, e_pipe, "|");
 	// add_at_end_of_list(&head, e_cmd, "ls");
