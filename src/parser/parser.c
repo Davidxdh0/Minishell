@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/13 15:28:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/09 09:35:27 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/09 10:19:11 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	delete_t_list(t_line_lst **head)
 	}
 }
 
-void	add_at_start_of_list(t_line_lst **head, int type, char *value)
-{
-	t_line_lst	*new_node;
+// void	add_at_start_of_list(t_line_lst **head, int type, char *value)
+// {
+// 	t_line_lst	*new_node;
 
-	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
-	new_node->prev = NULL;
-	new_node->next = *head;
-	new_node->type = type;
-	new_node->value = value;
-	if (*head != NULL)
-		(*head)->prev = new_node;
-	*head = new_node;
-}
+// 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
+// 	new_node->prev = NULL;
+// 	new_node->next = *head;
+// 	new_node->type = type;
+// 	new_node->value = value;
+// 	if (*head != NULL)
+// 		(*head)->prev = new_node;
+// 	*head = new_node;
+// }
 
 void	add_at_end_of_list(t_line_lst **head, int type, char *value)
 {
@@ -118,29 +118,29 @@ int	length_of_list(t_line_lst *node)
 	return (lenght);
 }
 
-void	test_list(void)
-{
-	t_line_lst	*head;
+// void	test_list(void)
+// {
+// 	t_line_lst	*head;
 
-	head = NULL;
-	add_at_end_of_list(&head, e_cmd, "ls -la");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep Nov");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep m");
-	show_t_list(head, "");
-	delete_t_list(&head);
-}
+// 	head = NULL;
+// 	add_at_end_of_list(&head, e_cmd, "ls -la");
+// 	add_at_end_of_list(&head, e_pipe, "|");
+// 	add_at_end_of_list(&head, e_cmd, "grep Nov");
+// 	add_at_end_of_list(&head, e_pipe, "|");
+// 	add_at_end_of_list(&head, e_cmd, "grep m");
+// 	show_t_list(head, "");
+// 	delete_t_list(&head);
+// }
 
-int	amount_of_tokens(char **tokens)
-{
-	int	list_len;
+// int	amount_of_tokens(char **tokens)
+// {
+// 	int	list_len;
 
-	list_len = 0;
-	while (tokens[list_len])
-		list_len++;
-	return (list_len);
-}
+// 	list_len = 0;
+// 	while (tokens[list_len])
+// 		list_len++;
+// 	return (list_len);
+// }
 
 /* Note
 Option 1: [ ]
@@ -160,21 +160,21 @@ Handle in the parser:
 Word Expansions: After parsing, but before execution. example $OSTYPE = darwin18.0
 */
 
-char	**test_token_array(void)
-{
-	int		amount_of_tokens;
-	char	**tokens;
+// char	**test_token_array(void)
+// {
+// 	int		amount_of_tokens;
+// 	char	**tokens;
 
-	amount_of_tokens = 5;
-	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
-	tokens[0] = ft_strdup("ls -la");
-	tokens[1] = ft_strdup("|");
-	tokens[2] = ft_strdup("grep Nov");
-	tokens[3] = ft_strdup("|");
-	tokens[4] = ft_strdup("grep m");
-	tokens[5] = NULL;
-	return (tokens);
-}
+// 	amount_of_tokens = 5;
+// 	tokens = (char **)malloc(sizeof(char *) * (amount_of_tokens + 1));
+// 	tokens[0] = ft_strdup("ls -la");
+// 	tokens[1] = ft_strdup("|");
+// 	tokens[2] = ft_strdup("grep Nov");
+// 	tokens[3] = ft_strdup("|");
+// 	tokens[4] = ft_strdup("grep m");
+// 	tokens[5] = NULL;
+// 	return (tokens);
+// }
 
 int		is_word(char c)
 {
