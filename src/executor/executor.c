@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 10:37:25 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 10:39:25 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,14 +168,20 @@ void	test_lists(t_line_lst *head, char **envp)
 
 	data.envp = envp;
 	head = NULL;
-	add_at_end_of_list(&head, e_cmd, "ls -la");
 	add_at_end_of_list(&head, e_cmd, "ls");
-	add_at_end_of_list(&head, e_cmd, "grep obj");
-	add_at_end_of_list(&head, e_cmd, "ls -l");
+	add_at_end_of_list(&head, e_word, "-la");
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep");
+	add_at_end_of_list(&head, e_word, "17");
+	add_at_end_of_list(&head, e_pipe, "|");
 	add_at_end_of_list(&head, e_cmd, "ls");
+	add_at_end_of_list(&head, e_word, "-la");
+	add_at_end_of_list(&head, e_pipe, "|");
+	add_at_end_of_list(&head, e_cmd, "grep");
+	add_at_end_of_list(&head, e_word, "17");
 	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
-	show_t_list(head);
+	show_t_list(head, "Put here the input line as reference");
 	printf("length of list is %d\n", length_of_list(head));
 	execute_cmd_list(head, &data);
 	//delete_list(&head);

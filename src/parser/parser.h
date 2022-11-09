@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:46:28 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 18:23:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 10:19:02 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ typedef struct s_line_lst
 }	t_line_lst;
 
 typedef enum{
-	e_start = -1,	
+	e_start = -1,
 	e_cmd,
 	e_file,
 	e_pipe,
 	e_word,			// also flags for commands
 	e_var,
-	e_redirect_I,
-	e_redirect_O,
+	e_redirect_i,
+	e_redirect_o,
 	e_delimiter,
 	e_append
 }	note_type;
@@ -49,7 +49,8 @@ t_line_lst	*parser(char *line);
 
 void		delete_t_list(t_line_lst **head);
 void		add_at_end_of_list(t_line_lst **head, int type, char *value);
-void		show_t_list(t_line_lst *node);
+void		show_t_list(t_line_lst *node, char *line);
+char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 
 #endif
