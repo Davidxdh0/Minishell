@@ -23,10 +23,15 @@ MAIN_FILES =	main.c \
 				line_input.c \
 				argv_input.c
 
-PARSER_FILES =	parser.c
+PARSER_FILES =	parser.c \
+				list.c \
+				special_charakters.c
+
+GRAMMER_CKECKER_FILES =	grammer_checker.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \
+				$(addprefix grammer_checker/, $(GRAMMER_CKECKER_FILES)) \
 				$(addprefix parser/, $(PARSER_FILES))
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

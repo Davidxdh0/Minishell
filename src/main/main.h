@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/03 18:23:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 11:27:08 by bprovoos      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ https://github.com/Snaipe/Criterion
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../../libs/libft/libft.h"
-# include "../lexer/lexer.h"
 # include "../parser/parser.h"
+# include "../grammer_checker/grammer_checker.h"
 # include "../executor/executor.h"
 
 /* BNF
