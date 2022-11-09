@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/08 15:43:57 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/09 10:37:25 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,14 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
-		message("child\n");
+		//message("child\n");
 		close(data->fd[0]);
 		if (execve(data->path, data->cmd, envp) == -1)
 			message_exit("execve went wrong", 0);
 	}
 	else
 	{
-		message("parent\n");
+		//message("parent\n");
 		close(data->fd[1]);
 		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
@@ -118,7 +118,7 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 	data->path = get_cmd_path(data->cmd[0], envp);
 	if (!data->path || !data->cmd[0])
 		message("geen path of splitted cmd");
-	while(stack->next)
+	if(stack)
 	{
 		if (pipe(data->fd) < 0)
 			message("pipe werkt niet");
@@ -130,7 +130,6 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 		data->infile = data->fd[0];
 		stack = stack->next;
 	}
-	execute_process(stack, data, envp);
 	if (data->cmd[0][0] == '\0')
 		message_exit("cmd == '\0'", 1);
 	if (ft_isspace(data->cmd[0][0]))
