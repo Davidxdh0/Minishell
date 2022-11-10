@@ -6,12 +6,12 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 09:38:51 by bprovoos      ########   odam.nl         */
+/*   Updated: 2022/11/10 21:20:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
+#include "../main/main.h"
 /* cmd's zijn in linked list -> execute op basis van: links, rechts, type, 
 	eerste keer lezen van fd[1] - kan file zijn.
 	check type - command/var/cd/pipe/&/>/>&/>>/>>&/</<</
@@ -68,6 +68,14 @@ needs to save input/output and restore it at the end.
 // execute commands op basis van wat het is. 
 */
 
+void	execute_execve(t_line_lst *stack, t_data *data, char **envp)
+{
+	if (execve(data->path, data->cmd, envp) == -1)
+		message_exit("execve went wrong", 0);
+	exit(1);
+	stack++;
+}
+
 void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 {
 	pid_t	pid1;
@@ -75,60 +83,63 @@ void	execute_process(t_line_lst *stack, t_data *data, char **envp)
 
 	redirect(stack, data);
 	message(stack->value);
+
 	pid1 = fork();
 	if (pid1 < 0)
 		message_exit("fork went wrong", 0);
 	if (pid1 == 0)
 	{
-		message("child\n");
-		dup2(data->fd[1], 1);
+		write(1, "child\n", 6);
 		close(data->fd[0]);
-		dup2(1, 1);
 		if (execve(data->path, data->cmd, envp) == -1)
 			message_exit("execve went wrong", 0);
 	}
 	else
 	{
-		message("parent\n");
 		close(data->fd[1]);
 		waitpid(pid1, &wstatus, 0);
 		if (WIFEXITED(wstatus))
-			message("process einde\n");//, (WEXITSTATUS(wstatus)));
-		// message(ft_itoa(wstatus));
-		// message("\n");
+			message("proces einde\n");//, (WEXITSTATUS(wstatus)));
 	}
 	return ;
-	stack->type = stack->type;
 }
 
 void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 {
 	if (!stack || !data)
 		return ;
-	// if (stack->type == builtin)
-	// 	execute_builtins(stack, data)
-	// else if ()
 	data->cmd = ft_split(stack->value, ' ');
-	data->path = get_cmd_path(data->cmd[0], envp);
-	if (!data->path || !data->cmd[0])
-		message("geen path of splitted cmd");
-	while(stack->next)
+	// int i = -1;
+	// while(data->cmd[++i])
+	// 	message(data->cmd[i]);
+	message_nl("value = ");
+	message(data->cmd[0]);
+	if (is_builtin(stack->value) == 1)
+		execute_builtin(stack, data->cmd, data);
+	else
 	{
-		if (pipe(data->fd) < 0)
-			message("pipe werkt niet");
-		data->outfile = data->fd[1];
-		execute_process(stack, data, envp);
-		close(data->outfile);
-		if (data->infile != 0)
-			close(data->infile);
-		data->infile = data->fd[0];
-		stack = stack->next;
+		data->path = get_cmd_path(data->cmd[0], envp);
+		if (!data->path || !data->cmd[0])
+			message("geen path of splitted cmd");
+		message("DGEDFGDF");
+		if(stack)
+		{
+			if (pipe(data->fd) < 0)
+				message("pipe werkt niet");
+			data->outfile = data->fd[1];
+			execute_process(stack, data, envp);
+			close(data->outfile);
+			if (data->infile != 0)
+				close(data->infile);
+			data->infile = data->fd[0];
+			stack = stack->next;
+		}
+		//execute_process(stack, data, envp);
+		if (data->cmd[0][0] == '\0')
+			message_exit("cmd == '\0'", 1);
+		if (ft_isspace(data->cmd[0][0]))
+			exit(msg_custom_error_code("pipex: command not found: ", "", 0));
 	}
-	execute_process(stack, data, envp);
-	if (data->cmd[0][0] == '\0')
-		message_exit("cmd == '\0'", 1);
-	if (ft_isspace(data->cmd[0][0]))
-		exit(msg_custom_error_code("pipex: command not found: ", "", 0));
 }
 
 void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
@@ -138,10 +149,7 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 	if (!cmdlist)
 		return ;
 	stack = cmdlist;
-	// als previous is NULL en stack niet leeg -> voer commando uit met infile als die er is.
-	// if (stack->prev == NULL)
-	// 	execute_infile()
-	// stack = stack->next
+	
 	while(stack)
 	{
 		//message(stack->value);
@@ -153,32 +161,43 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 		close(data->fd[0]);
 		close(data->fd[1]);
 		stack = stack->next;
+		
 	}
+	message("end of stack");
 	exit(0);
 }
 
 void	test_lists(t_line_lst *head, char **envp)
 {
 	t_data	data;
+	t_line_lst *cmdlist;
+	char *str;
 
 	data.envp = envp;
-	head = NULL;
-	add_at_end_of_list(&head, e_cmd, "ls");
-	add_at_end_of_list(&head, e_word, "-la");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep");
-	add_at_end_of_list(&head, e_word, "17");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "ls");
-	add_at_end_of_list(&head, e_word, "-la");
-	add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "grep");
-	add_at_end_of_list(&head, e_word, "17");
+	str = NULL;
+	//add_at_end_of_list(&cmdlist, e_word, "ls");
+	while(head)
+	{
+		if (head->type == 0)
+		{
+			str = head->value;
+			head = head->next;
+		}
+		while(head && head->type != 0)
+		{
+			str = ft_strjoin(str, " ");
+			str = ft_strjoin(str, head->value);
+			head = head->next;
+		}
+		add_at_end_of_list(&cmdlist, e_cmd, str);
+	}
+	//execute_cmd_list(cmdlist, &data);
+
+	// add_at_end_of_list(&head, e_word, "17");
 	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
-	show_t_list(head, "Put here the input line as reference");
-	printf("length of list is %d\n", length_of_list(head));
-	execute_cmd_list(head, &data);
+	// show_t_list(head, "Put here the input line as reference");
+	//printf("length of list is %d\n", length_of_list(head));
 	//delete_list(&head);
 	//show_list(head);
 	//printf("length of list is %d\n", length_of_list(head));

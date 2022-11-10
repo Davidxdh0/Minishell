@@ -15,9 +15,12 @@ EXECUTE_FI	=	executor.c \
 				paths.c \
 				exit.c \
 				errors.c \
-				redirect.c 
-#export.c
-#builtin.c
+				redirect.c \
+				builtin.c \
+				echo.c \
+				cd.c \
+				export.c
+				
 
 MAIN_FILES =	main.c \
 				line_input.c \
