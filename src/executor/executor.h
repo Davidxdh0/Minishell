@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:54:04 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 18:05:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/10 18:14:16 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		msg_custom_error_code(char *err, char *cmd, int code);
 //exit.c
 void	message_exit(char *message, int errornumber);
 void	message(char *msg);
+void	message_nl(char *msg);
 
 //paths.c
 char	*get_env_paths(char **envp);
@@ -73,5 +74,9 @@ int		change_dir(char *oldpath, char *path);
 
 //echo.c
 void	execute_echo(char **cmd);
+int		check_option(char **cmd);
 
+//export.c
+void	execute_export(char **cmd, t_data *data);
+int		check_env_exist(char **cmd, t_data *data);
 #endif

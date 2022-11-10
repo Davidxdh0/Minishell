@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 18:02:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/10 19:27:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,16 +109,19 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
 	if (!stack || !data)
 		return ;
 	data->cmd = ft_split(stack->value, ' ');
-	int i = -1;
-	while(data->cmd[++i])
-		message(data->cmd[i]);
-	data->path = get_cmd_path(data->cmd[0], envp);
-	if (!data->path || !data->cmd[0])
-		message("geen path of splitted cmd");
-	if (is_builtin(stack->value))
+	// int i = -1;
+	// while(data->cmd[++i])
+	// 	message(data->cmd[i]);
+	message_nl("value = ");
+	message(data->cmd[0]);
+	if (is_builtin(stack->value) == 1)
 		execute_builtin(stack, data->cmd, data);
 	else
 	{
+		data->path = get_cmd_path(data->cmd[0], envp);
+		if (!data->path || !data->cmd[0])
+			message("geen path of splitted cmd");
+		message("DGEDFGDF");
 		if(stack)
 		{
 			if (pipe(data->fd) < 0)
@@ -167,25 +170,33 @@ void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
 void	test_lists(t_line_lst *head, char **envp)
 {
 	t_data	data;
+	t_line_lst *cmdlist;
+	char *str;
 
 	data.envp = envp;
-	head = NULL;
-	add_at_end_of_list(&head, e_cmd, "ls");
-	add_at_end_of_list(&head, e_word, "ls -l");
-	add_at_end_of_list(&head, e_cmd, "cd .");
-	//add_at_end_of_list(&head, e_cmd, "pwd");
-	add_at_end_of_list(&head, e_cmd, "echo");
-	// add_at_end_of_list(&head, e_pipe, "|");
-	add_at_end_of_list(&head, e_cmd, "ls");
-	// add_at_end_of_list(&head, e_word, "-la");
-	// add_at_end_of_list(&head, e_pipe, "|");
-	// add_at_end_of_list(&head, e_cmd, "grep");
+	str = NULL;
+	while(head)
+	{
+		if (head->type == 0)
+		{
+			str = head->value;
+			head = head->next;
+		}
+		while(head && head->type != 0)
+		{
+			str = ft_strjoin(str, " ");
+			str = ft_strjoin(str, head->value);
+			head = head->next;
+		}
+		add_at_end_of_list(&cmdlist, e_cmd, str);
+	}
+	execute_cmd_list(cmdlist, &data);
+
 	// add_at_end_of_list(&head, e_word, "17");
 	// add_at_end_of_list(&head, e_cmd, "grep gitignore");
 	//add_at_end_of_list(&head, e_file, "outfile.txt");
-	show_t_list(head, "Put here the input line as reference");
-	printf("length of list is %d\n", length_of_list(head));
-	execute_cmd_list(head, &data);
+	// show_t_list(head, "Put here the input line as reference");
+	//printf("length of list is %d\n", length_of_list(head));
 	//delete_list(&head);
 	//show_list(head);
 	//printf("length of list is %d\n", length_of_list(head));

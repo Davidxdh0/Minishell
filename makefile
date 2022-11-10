@@ -18,8 +18,8 @@ EXECUTE_FI	=	executor.c \
 				redirect.c \
 				builtin.c \
 				echo.c \
-				cd.c
-#export.c
+				cd.c \
+				export.c
 				
 
 MAIN_FILES =	main.c \

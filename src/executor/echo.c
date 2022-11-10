@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:47:26 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 18:10:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/10 16:03:21 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,38 @@
 int	check_option(char **cmd)
 {
 	int i;
+	int j;
 	int flag;
 	
 	flag = 0;
 	i = 0;
-	if (cmd[1][0] == '-' && cmd[1][1] == 'n')
+	while (cmd[i])
 	{
-		while ((cmd[1][i] == '-' && cmd[1][i + 1] && cmd[1][i + 1] == 'n') || (cmd[1][i] == 'n'))
+		j = 2;
+		while ((cmd[i][0] == '-' && cmd[i][1] == 'n') && cmd[i][j])
 		{
-			flag = i;
-			if (cmd[1][i] == 'n' || cmd[1][i] == '-')
-				i++;
-			while(cmd[1][i] == ' ')
-				i++;
-			if (flag != i)
-				i++;
-			if (cmd[1][i+1] == '\0')
-				break ;
+			if (cmd[i][j] != 'n')
+				return (i);
+			j++;
 		}
+		i++;
 	}
-	return(i);
+	return(0);
 }
+
 void	execute_echo(char **cmd)
 {
-	int i;
 	int option;
 	
-	option = check_option(cmd);
-	i = option;
-	//cmd[1] += option;
-
-	// printf("%s", cmd[1]);
-	//message(*cmd);
+	option = 0;
+	if (cmd[1])
+		if (cmd[1][0] == '-' && cmd[1][1] == 'n')
+			option = check_option(cmd);
+	while (option != 0 && cmd[option])
+	{
+		printf("%s", cmd[option]);
+		if (cmd[option + 1] != NULL)
+			printf(" ");
+		option++;
+	}
 }

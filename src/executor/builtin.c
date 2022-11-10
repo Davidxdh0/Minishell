@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 11:36:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 18:15:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2022/11/10 19:03:31 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,23 @@ int		is_builtin(char *str)
 		i = 1;;
 	if (!ft_strncmp(str, "unset", 5))
 		i = 1;
+	message(ft_itoa(i));
 	return (i);
 }
+
 void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data)
 {
 	if (!cmdlist)
 		return ;
-	//write(1, "builtin\n", 9);
+	write(1, "builtin\n", 9);
 	if (!ft_strncmp(cmdlist->value, "cd", 2))
 		execute_cd(cmd, data);
-	// if (!ft_strncmp(cmdlist->value, "echo", 4))
-	// 	execute_echo(cmd);
+	if (!ft_strncmp(cmdlist->value, "echo", 4))
+		execute_echo(cmd);
 	// if (!ft_strcmp(cmdlist->value, "pwd"))
 	// 	execute_pwd(cmdlist);
-	// if (!ft_strcmp(cmdlist->value, "export"))
-	// 	execute_export(cmdlist);
+	if (!ft_strncmp(cmdlist->value, "export", 6))
+		execute_export(cmd, data);
 	// if (!ft_strcmp(cmdlist->value, "$?"))
 	// 	execute_exit_code(cmdlist);
 	// if (!ft_strcmp(cmdlist->value, "unset"))
