@@ -1,20 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   grammer_checker.h                                  :+:    :+:            */
+/*   exit.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 11:25:38 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/09 11:48:39 by bprovoos      ########   odam.nl         */
+/*   Created: 2022/11/25 17:17:43 by dyeboa        #+#    #+#                 */
+/*   Updated: 2022/11/25 17:17:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GRAMMER_CHEKER_H
-# define GRAMMER_CHEKER_H
-
-# include "../parser/parser.h"
-
-int	is_valid_grammer(t_line_lst *head);
-
-#endif

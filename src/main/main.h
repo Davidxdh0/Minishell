@@ -6,7 +6,7 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/10 20:14:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/03 16:02:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,61 +44,144 @@ https://github.com/Snaipe/Criterion
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../../libs/libft/libft.h"
-# include "../parser/parser.h"
-# include "../grammer_checker/grammer_checker.h"
-# include "../executor/executor.h"
+# include <stddef.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <string.h>
+# include <errno.h>
 
-/* BNF
-commandline ::= pipeline
+typedef struct s_line_lst
+{
+	int					type;
+	char				*value;
+	int					len;
+	char				*state;
+	struct s_line_lst	*next;
+	struct s_line_lst	*prev;
+}	t_line_lst;
 
-pipeline ::=  command
-          |   pipeline "|" command
+typedef enum{
+	e_start = -1,
+	e_cmd,
+	e_file,
+	e_whitespace,
+	e_dquote,
+	e_quote,
+	e_pipe,
+	e_word,			// also flags for commands
+	e_var,
+	e_redirect_i,
+	e_redirect_o,
+	e_delimiter,
+	e_append
+}	note_type;
 
-command  ::=  word
-          |   redirection
-          |   command word
-          |   command redirection
+typedef struct s_data
+{
+	char	**envp;
+	char	**cmd;
+	char	*path;
+	int		infile;
+	int		outfile;
+	int		fd[2];
+	int		exitcode;
+}	t_data;
 
-redirection  ::=  redirectionop filename
-redirectionop  ::=  "<"  |  ">"  |  "<<"  |  ">>"
-*/
+t_data	g_data;
 
-/* command list
-''		should prevent the shell from interpreting the meta- characters in the quoted sequence
-""		hould prevent the shell from interpreting the meta- characters in the quoted sequence except for $
-|		(pipe) & (fork)
-<		(dup2) redirect input
->		(dup2) redirect output
-<<		heredoc, repeat reading input and execute command until delimiter?
->>		(dup2) redirect output in append mode
-cmd		(execve)
-file	(open)
-$VAR	expand VAR to the value
-$?		expand to the exit status of the most recently executed foreground pipeline
-*/
 
-/* Program flow
-1. parser
-1.1. lexer
-1.2. puts the characters together into words called tokens
-1.3. build the command table
-2. expander
-3. executor
-3.1. read command table
-3.x. creating pipes
-3.x. creating processes
+/* Executer  & builtins*/
+//executor.c
+void	execute_cmd_list(t_line_lst *cmdlist, t_data *data);
+void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
+void	execute_process(t_line_lst *stack, t_data *data, char **envp);
+void	close_fd_dup(t_data *data, int *stin, int *stout);
+void	test_lists(t_line_lst *head, char **envp);
 
-To do:
-[X] Header dependency in makefile
-[X] Creata a flag option for giving command through argv
-[ ] Make unit testers
+//errors.c
+int		msg_error_code(char *err, int code);
+int		msg_error(char *err);
+int		msg_custom_error_code(char *err, char *cmd, int code);
 
-Optional:
-[ ] *.d files in seperate folder
-*/
+//exit.c
+void	message_exit(char *message, int errornumber);
+void	message(char *msg);
+void	message_nl(char *msg);
+
+//paths.c
+char	*get_env_paths(char **envp);
+char	*get_cmd_path(char *cmd, char **envp);
+
+//redirect
+void    redirect(t_line_lst *stack, t_data *data);
+
+//file.c
+void	open_infile(char *file);
+void	redir_outfile(char *file, t_data *data, int flag);
+void    redirect(t_line_lst *stack, t_data *data);
+
+//builtin.c
+void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
+int		is_builtin(char *str);
+
+//cd.c
+void	execute_cd(char **cmd, t_data *data);
+void	update_old_pwd(char *oldpath, t_data *data);
+void	cd_home(char **envp);
+int		change_dir(char *oldpath, char *path);
+
+//echo.c
+void	execute_echo(char **cmd);
+int		check_option(char **cmd);
+
+//export.c
+void	execute_export(char **cmd, t_data *data);
+int		check_env_exist(char **cmd, t_data *data);
+
+/* LEXER*/
+int			is_valid_type(note_type type, t_line_lst *node);
+int			is_valid_var(note_type last_type);
+int			is_valid_word(note_type last_type);
+int			is_valid_file(note_type last_type);
+int			is_valid_pipe(note_type last_type);
+int			is_valid_cmd(note_type last_type);
+char		*type_to_string(note_type type);
+note_type	get_last_type(t_line_lst *node);
+int			is_word(char c);
+t_line_lst	*lexer(char *line);
+t_line_lst	*parser(char *line);
+t_line_lst	*fil_list(char *line);
+
+//specialchar.c
+int			pipe_case(t_line_lst **line_lst);
+int			less_than_case(t_line_lst **line_lst, char *line);
+int			greater_than_case(t_line_lst **line_lst, char *line);
+int			dolar_special_case(t_line_lst **line_lst, char next_char);
+int			dolar_sign_case(t_line_lst **line_lst, char *line);
+
+// unknown
+int			word_case(t_line_lst **line_lst, char *line);
+
+//grammarchecker.c
+int		is_valid_grammer(t_line_lst *head);
+
+/* PARSER
+The parser processes the input line and build the list with tokens */
+void		delete_t_list(t_line_lst **head);
+void		add_at_end_of_list(t_line_lst **head, int type, char *value);
+void		show_t_list(t_line_lst *node, char *line);
+char		*type_to_string(note_type type);
+int			length_of_list(t_line_lst *node);
+
+/* Main */
 int		shell(char *line, char **envp);
 int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
+int		str_isspaces(char **line);
 
 #endif

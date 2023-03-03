@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   special_charakters.c                               :+:    :+:            */
+/*   specialchar.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 14:38:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:03:47 by bprovoos      ########   odam.nl         */
+/*   Updated: 2023/03/03 15:59:37 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../main/main.h"
 
 int	pipe_case(t_line_lst **line_lst)
 {
@@ -42,7 +42,7 @@ int	greater_than_case(t_line_lst **line_lst, char *line)
 
 int	dolar_special_case(t_line_lst **line_lst, char next_char)
 {
-	t_note	type;
+	note_type	type;
 
 	type = get_last_type(*line_lst);
 	if (type == e_start || type == e_pipe)
@@ -58,8 +58,8 @@ int	dolar_special_case(t_line_lst **line_lst, char next_char)
 
 int	dolar_sign_case(t_line_lst **line_lst, char *line)
 {
-	int		len;
-	t_note	type;
+	int			len;
+	note_type	type;
 
 	type = get_last_type(*line_lst);
 	if (type == e_start || type == e_pipe)

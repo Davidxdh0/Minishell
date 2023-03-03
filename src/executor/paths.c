@@ -6,11 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 19:56:13 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 15:02:00 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/03 15:02:27 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../main/main.h"
 
 char	*get_env_paths(char **envp)
 {

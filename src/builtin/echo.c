@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:47:26 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/10 16:03:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/02 12:03:22 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	check_option(char **cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		j = 2;
+		j = 1;
+		message(cmd[i]);
 		while ((cmd[i][0] == '-' && cmd[i][1] == 'n') && cmd[i][j])
 		{
 			if (cmd[i][j] != 'n')
@@ -42,15 +43,20 @@ void	execute_echo(char **cmd)
 {
 	int option;
 	
-	option = 0;
+	option = -1;
 	if (cmd[1])
 		if (cmd[1][0] == '-' && cmd[1][1] == 'n')
 			option = check_option(cmd);
-	while (option != 0 && cmd[option])
+	message_nl("option = ");
+	message(ft_itoa(option));
+	printf("word = %s\n", cmd[option + 1]);
+	printf("word = %s\n", cmd[1]);
+	while (cmd[option + 2])
 	{
-		printf("%s", cmd[option]);
-		if (cmd[option + 1] != NULL)
+		printf("%s", cmd[option + 2]);
+		if (cmd[option + 3] != NULL)
 			printf(" ");
 		option++;
+		
 	}
 }

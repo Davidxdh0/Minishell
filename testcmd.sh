@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # ./minishell -p 'ls'
-
-./minishell -p 'export'
-./minishell -p 'export test'
-./minishell -p 'export test=mooi'
-./minishell -p 'export test='
+#./minishell -p 'export'
+# ./minishell -p 'export'  'export' 'export'
+# ./minishell -p 'export test'
+# ./minishell -p 'export test=mooi'
+# ./minishell -p 'export test='
 
 # ./minishell -p 'cd'
 # ./minishell -p 'cd ~'
@@ -14,11 +14,17 @@
 # ./minishell -p 'cd obj'
 # ./minishell -p 'cd ob'
 
-# ./minishell -p 'echo Hello'
-# ./minishell -p 'echo -n Hello'
+# ./minishell -p '<< echo %<<$He llo' '|' 'echo Hello' 
+# ./minishell -p 'echo -nn Hello'
+# ./minishell -p 'echo -nns Hello World'
+
+./minishell -p 'echo "hello  $USER " > file | grep h | cat >> file | echo "done"'
+./minishell -p 'echo -n -n Hello'
+# ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'
 # ./minishell -p 'echo USER'
 # ./minishell -p 'echo $USER'
+# ./minishell -p 'echo ~'
 
 # ./minishell -p '> a'
 # ./minishell -p '< a'

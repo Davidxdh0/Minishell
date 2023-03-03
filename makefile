@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -MMD -g -fsanitize=address
+FLAGS =  -Wall -Wextra -Werror -MMD #-g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -13,28 +13,29 @@ READLINE_LIB = -lreadline
 EXECUTE_FI	=	executor.c \
 				file.c \
 				paths.c \
-				exit.c \
 				errors.c \
 				redirect.c \
 				builtin.c \
-				echo.c \
-				cd.c \
-				export.c
+				messages.c
 				
+BUILTIN_FI  =	echo.c \
+				cd.c \
+				exit.c \
+				export.c
 
 MAIN_FILES =	main.c \
 				line_input.c \
 				argv_input.c
 
-PARSER_FILES =	parser.c \
+PARSER_FILES =	lexer.c \
+				parser.c \
 				list.c \
-				special_charakters.c
-
-GRAMMER_CKECKER_FILES =	grammer_checker.c
+				specialchar.c \
+				grammer_checker.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \
-				$(addprefix grammer_checker/, $(GRAMMER_CKECKER_FILES)) \
+				$(addprefix builtin/, $(BUILTIN_FI)) \
 				$(addprefix parser/, $(PARSER_FILES))
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
@@ -43,7 +44,6 @@ OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 
 INC = -I $(INC_DIR)
 
-DEP = $(OBJ:%.o=%.d)
 
 all: $(NAME)
 
@@ -54,10 +54,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(INC) $(READLINE_INC) -c -o $@ $<
 
--include $(DEP)
 
 $(LIBFT):
 	@$(MAKE) bonus -C $(LIBFT_DIR)
+
+lldb: $(NAME)
+	lldb ./$(NAME) -- $(ARGS)
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)

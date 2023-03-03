@@ -6,11 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 11:36:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/10 19:03:31 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/03 15:02:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../main/main.h"
 
 /* check testers voor alle builtins.
 cd
@@ -20,6 +20,8 @@ export
 $?
 exit
 unset
+SHLVL tot max 1000.
+OLDPWD - als niet geset, set NULL
 */
 
 int		is_builtin(char *str)
@@ -39,6 +41,9 @@ int		is_builtin(char *str)
 		i = 1;;
 	if (!ft_strncmp(str, "unset", 5))
 		i = 1;
+	if (!ft_strncmp(str, "|", 1))
+		i = 1;
+	message_nl("is_builtin = ");
 	message(ft_itoa(i));
 	return (i);
 }
@@ -48,10 +53,19 @@ void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data)
 	if (!cmdlist)
 		return ;
 	write(1, "builtin\n", 9);
+	int i = 0;
+	while(data->cmd[i])
+	{
+		printf("data->cmd = %s\n", data->cmd[i]);
+		i++;
+	}
 	if (!ft_strncmp(cmdlist->value, "cd", 2))
 		execute_cd(cmd, data);
 	if (!ft_strncmp(cmdlist->value, "echo", 4))
+	{
+		message("execute_echo");
 		execute_echo(cmd);
+	}
 	// if (!ft_strcmp(cmdlist->value, "pwd"))
 	// 	execute_pwd(cmdlist);
 	if (!ft_strncmp(cmdlist->value, "export", 6))

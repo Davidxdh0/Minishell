@@ -6,11 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 17:08:05 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/10/28 12:14:09 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/03 15:02:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../main/main.h"
 
 int	msg_error_code(char *err, int code)
 {

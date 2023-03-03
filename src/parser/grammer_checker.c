@@ -6,13 +6,13 @@
 /*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 11:23:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:02:11 by bprovoos      ########   odam.nl         */
+/*   Updated: 2023/03/03 16:19:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "grammer_checker.h"
+#include "../main/main.h"
 
-int	is_valid_cmd(t_note last_type)
+int	is_valid_cmd(note_type last_type)
 {
 	if (last_type == e_start)
 		return (1);
@@ -21,14 +21,14 @@ int	is_valid_cmd(t_note last_type)
 	return (0);
 }
 
-int	is_valid_pipe(t_note last_type)
+int	is_valid_pipe(note_type last_type)
 {
 	if (last_type == e_word)
 		return (1);
 	return (0);
 }
 
-int	is_valid_file(t_note last_type)
+int	is_valid_file(note_type last_type)
 {
 	if (last_type == e_redirect_i)
 		return (1);
@@ -41,7 +41,7 @@ int	is_valid_file(t_note last_type)
 	return (0);
 }
 
-int	is_valid_word(t_note last_type)
+int	is_valid_word(note_type last_type)
 {
 	if (last_type == e_cmd)
 		return (1);
@@ -52,7 +52,7 @@ int	is_valid_word(t_note last_type)
 	return (0);
 }
 
-int	is_valid_var(t_note last_type)
+int	is_valid_var(note_type last_type)
 {
 	if (last_type == e_cmd)
 		return (1);
@@ -61,9 +61,9 @@ int	is_valid_var(t_note last_type)
 	return (0);
 }
 
-int	is_valid_type(t_note type, t_line_lst *node)
+int	is_valid_type(note_type type, t_line_lst *node)
 {
-	t_note	last_type;
+	note_type	last_type;
 
 	last_type = get_last_type(node);
 	if (type == e_cmd)
@@ -73,6 +73,8 @@ int	is_valid_type(t_note type, t_line_lst *node)
 	if (type == e_pipe)
 		return (is_valid_pipe(last_type));
 	if (type == e_word)
+		return (is_valid_word(last_type));
+	if (type == e_whitespace)
 		return (is_valid_word(last_type));
 	if (type == e_var)
 		return (is_valid_var(last_type));
