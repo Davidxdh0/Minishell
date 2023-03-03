@@ -1,1 +1,1 @@
-# This project is a small version of bash
+# 42 Minishell a bash knockoff
