@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS =  -Wall -Wextra -Werror -MMD #-g -fsanitize=address
+FLAGS =  -Wall -Wextra -Werror -MMD -g #-g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -59,7 +59,7 @@ $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 lldb: $(NAME)
-	lldb ./$(NAME) -- $(ARGS)
+	lldb ./$(NAME) -- -p 'ls'
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)
