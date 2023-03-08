@@ -3,16 +3,14 @@
 /*                                                        ::::::::            */
 /*   ft_isalpha.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/28 15:13:08 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 17:59:20 by bprovoos      ########   odam.nl         */
+/*   Created: 2020/12/18 14:54:27 by david         #+#    #+#                 */
+/*   Updated: 2021/11/04 14:53:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 int	ft_isalpha(int c)
 {
-	return (ft_islower(c) || ft_isupper(c));
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }

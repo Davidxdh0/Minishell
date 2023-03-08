@@ -3,37 +3,28 @@
 /*                                                        ::::::::            */
 /*   ft_memmove.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: yeboa <yeboa@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/27 19:50:04 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 20:55:30 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/14 22:51:37 by yeboa         #+#    #+#                 */
+/*   Updated: 2021/04/14 23:31:00 by yeboa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-/*
-	Copies len bytes from string src to string dst. The two strings may overlap; 
-	the copy is always done in a non-destructive manner.
-*/
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	size_t			i;
-	unsigned char	*pdst;
-	unsigned char	*psrc;
+	char		*new_dst;
+	char		*new_src;
 
-	pdst = (unsigned char *)dst;
-	psrc = (unsigned char *)src;
-	i = 0;
-	if (len > 0 && pdst == psrc)
-		return (pdst);
-	while (i < len)
+	new_dst = (char *)dest;
+	new_src = (char *)src;
+	if (dest < src)
+		ft_memcpy(dest, src, n);
+	else if (dest > src)
 	{
-		if (dst < src)
-			pdst[i] = psrc[i];
-		else
-			pdst[len - i - 1] = psrc[len - i - 1];
-		i++;
+		while (n--)
+			new_dst[n] = new_src[n];
 	}
-	return (pdst);
+	return ((void *)dest);
 }

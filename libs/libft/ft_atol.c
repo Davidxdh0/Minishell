@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_atoi.c                                          :+:    :+:            */
+/*   ft_atol.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/18 15:21:41 by david         #+#    #+#                 */
-/*   Updated: 2023/03/08 09:00:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/08 09:00:25 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	ft_isspace(int c)
 		|| c == '\f' || c == '\r' || c == ' ');
 }
 
-int	ft_atoi(const char *str)
+long int	ft_atol(const char *str)
 {
 	int			i;
 	int			minorplus;
-	int			number;
+	long		number;
 
 	number = 0;
 	i = 0;

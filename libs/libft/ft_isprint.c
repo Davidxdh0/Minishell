@@ -3,14 +3,14 @@
 /*                                                        ::::::::            */
 /*   ft_isprint.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/27 22:26:25 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/05/27 17:57:20 by bprovoos      ########   odam.nl         */
+/*   Created: 2020/12/18 15:11:30 by david         #+#    #+#                 */
+/*   Updated: 2021/11/04 14:53:58 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_isprint(int c)
 {
-	return (c >= ' ' && c <= '~');
+	return (c >= 32 && c <= 126);
 }

@@ -3,27 +3,29 @@
 /*                                                        ::::::::            */
 /*   ft_strchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/10 12:20:24 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/10/28 08:19:14 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/09 14:53:48 by dyeboa        #+#    #+#                 */
+/*   Updated: 2022/01/24 15:18:14 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-char	*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	int	needle;
+	size_t	i;
+	size_t	j;
 
-	needle = 0;
-	while (str[needle])
+	j = 0;
+	i = ft_strlen(s);
+	if (c == 0)
+		return ((char *)s + i);
+	while (j <= i)
 	{
-		if (str[needle] == c)
-			return ((char *)&str[needle]);
-		needle++;
+		if (s[j] == (char) c)
+			return ((char *)s + j);
+		j++;
 	}
-	if (str[needle] == c)
-		return ((char *)&str[needle]);
-	return (NULL);
+	return (0);
 }

@@ -3,32 +3,26 @@
 /*                                                        ::::::::            */
 /*   ft_strrchr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/10 13:07:49 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/04/20 09:25:43 by bprovoos      ########   odam.nl         */
+/*   Created: 2020/12/18 21:04:07 by david         #+#    #+#                 */
+/*   Updated: 2022/01/24 17:49:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-char	*ft_strrchr(const char *str, int c)
+char	*ft_strrchr(const char *s, int c)
 {
-	char	needle;
-	int		counter;
+	size_t	i;
 
-	counter = 0;
-	needle = (unsigned char)c;
-	while (str[counter])
-		counter++;
-	if (str[counter] == needle)
-		return ((char *)&str[counter]);
-	counter--;
-	while (counter >= 0)
+	i = ft_strlen((char *)s);
+	if ((char)c == 0)
+		return ((char *)s + i);
+	while (i-- != 0)
 	{
-		if (str[counter] == needle)
-			return ((char *)&str[counter]);
-		counter--;
+		if (s[i] == (char)c)
+			return ((char *)s + i);
 	}
-	return (NULL);
+	return (0);
 }

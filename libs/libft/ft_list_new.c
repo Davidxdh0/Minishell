@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strlendump.c                                    :+:    :+:            */
+/*   ft_list_new.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/09/30 12:19:23 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/09/30 12:28:16 by bprovoos      ########   odam.nl         */
+/*   Created: 2023/03/08 08:56:55 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/08 08:58:41 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
-char	*ft_strlendump(const char *str, size_t length)
+t_stack	*list_new(int i)
 {
-	char	*temp;
+	t_stack	*list_new;
 
-	temp = (char *)malloc(sizeof(*str) * (length + 1));
-	if (!temp)
+	list_new = malloc(sizeof(t_stack));
+	if (!list_new)
 		return (NULL);
-	temp[length] = '\0';
-	while (length > 0)
-	{
-		length--;
-		temp[length] = str[length];
-	}
-	return (temp);
+	list_new->i = i;
+	list_new->previous = NULL;
+	list_new->next = NULL;
+	return (list_new);
 }

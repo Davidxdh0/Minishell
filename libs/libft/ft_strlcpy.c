@@ -3,41 +3,33 @@
 /*                                                        ::::::::            */
 /*   ft_strlcpy.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/12 14:11:40 by bramjr        #+#    #+#                 */
-/*   Updated: 2022/01/19 08:24:18 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/09 12:00:48 by dyeboa        #+#    #+#                 */
+/*   Updated: 2021/04/14 16:43:42 by yeboa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-/*
-** This function is protected against segfaults.
-** Remove the following lines for the same behavior as the original function:
-** 27|	if (!dst || !src)
-** 28|		return (0);
-*/
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	size_t	i;
+	size_t	len_src;
 
+	len_src = ft_strlen(src);
 	i = 0;
-	if (dstsize < 1)
+	while (src[i] && (i < size) && i < len_src)
 	{
-		while (src[i])
-			i++;
-		return (i);
-	}
-	while (src[i] && i < dstsize - 1)
-	{
-		dst[i] = src[i];
+		dest[i] = src[i];
 		i++;
+		if (i == size)
+		{
+			dest[--i] = '\0';
+			return (len_src);
+		}
 	}
-	if (i < dstsize)
-		dst[i] = '\0';
-	while (src[i])
-		i++;
-	return (i);
+	if (i < size)
+		dest[i] = '\0';
+	return (len_src);
 }

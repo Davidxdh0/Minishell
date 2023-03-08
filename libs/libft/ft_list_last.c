@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_isupper.c                                       :+:    :+:            */
+/*   ft_list_last.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/29 13:16:01 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 17:56:37 by bprovoos      ########   odam.nl         */
+/*   Created: 2023/03/08 08:56:31 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/08 08:58:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isupper(int c)
+#include "libft.h"
+
+t_stack	*list_last(t_stack *stack)
 {
-	return (c >= 'A' && c <= 'Z');
+	while (stack)
+	{
+		if (stack->next == NULL)
+			return (stack);
+		stack = stack->next;
+	}
+	return (NULL);
 }

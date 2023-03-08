@@ -3,33 +3,34 @@
 /*                                                        ::::::::            */
 /*   ft_strstr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/29 13:22:34 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 18:06:32 by bprovoos      ########   odam.nl         */
+/*   Created: 2020/12/18 15:28:51 by david         #+#    #+#                 */
+/*   Updated: 2021/11/04 15:15:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
-char	*ft_strstr(const char *haystack, const char *needle)
+char	*ft_strstr(const char *str, const char *to_find)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	j;
 
 	i = 0;
-	if (!needle[0])
-		return ((char *)haystack);
-	while (haystack[i])
+	j = 0;
+	if (to_find[i] == '\0')
+		return ((char *)str);
+	while (str[i] != '\0')
 	{
-		j = 0;
-		while (needle[j] == haystack[i + j])
+		while ((str[i + j] == to_find[j]) && str[i + j] != '\0')
 		{
-			if (!needle[j + 1])
-				return ((char *)haystack + i);
+			if (to_find[j + 1] == '\0')
+				return ((char *)&str[i]);
 			j++;
 		}
+		j = 0;
 		i++;
 	}
-	return (NULL);
+	return (0);
 }

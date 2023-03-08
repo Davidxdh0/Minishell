@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstsize.c                                       :+:    :+:            */
+/*   ft_list_add_back.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/16 20:49:11 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 17:54:07 by bprovoos      ########   odam.nl         */
+/*   Created: 2023/03/08 08:55:58 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/08 08:58:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+void	listadd_back(t_stack **stack, t_stack *current)
 {
-	int	len;
+	t_stack	*last;
 
-	len = 0;
-	while (lst)
+	last = list_last(*stack);
+	if (last != NULL)
 	{
-		lst = lst->next;
-		len++;
+		last->next = current;
+		current->previous = last;
 	}
-	return (len);
+	else
+		*stack = current;
 }

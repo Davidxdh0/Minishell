@@ -3,39 +3,38 @@
 /*                                                        ::::::::            */
 /*   ft_substr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/01 20:44:17 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 16:29:21 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/16 12:28:53 by dyeboa        #+#    #+#                 */
+/*   Updated: 2022/03/29 18:54:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stdlib.h>
 
-/*
-	Allocates (with malloc(3)) and returns a substring from the string ’s’.
-	The substring begins at index ’start’ and is of maximum size ’len’.
-*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	i;
-	size_t	j;
-	char	*str;
+	char			*substring;
+	unsigned int	i;
 
-	str = (char *)malloc(sizeof(*s) * (len + 1));
-	if (!str || !s)
-		return (NULL);
 	i = 0;
-	j = 0;
-	while (s[i])
+	if (!s)
+		return (NULL);
+	if (ft_strlen(s) < (size_t)start)
+		return (ft_strdup(""));
+	if (ft_strlen(s) <= (len - start))
+		substring = malloc(sizeof (char) * ft_strlen(s) + 1);
+	else
+		substring = malloc(sizeof(char) * len + 1);
+	if (!substring)
+		return (NULL);
+	while (s[start] && i < len)
 	{
-		if (i >= start && j < len)
-		{
-			str[j] = s[i];
-			j++;
-		}
+		substring[i] = s[start];
 		i++;
+		start++;
 	}
-	str[j] = 0;
-	return (str);
+	substring[i] = '\0';
+	return (substring);
 }

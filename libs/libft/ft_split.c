@@ -3,98 +3,89 @@
 /*                                                        ::::::::            */
 /*   ft_split.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/03 16:11:48 by bramjr        #+#    #+#                 */
-/*   Updated: 2022/10/14 16:33:19 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/16 16:01:58 by dyeboa        #+#    #+#                 */
+/*   Updated: 2022/07/15 13:32:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void	free_split(char **splits)
+static int	delim(const char *s, char c)
+{
+	int		countwords;
+	int		i;
+	int		j;
+
+	countwords = 0;
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] != c && j == 0)
+		{
+			countwords++;
+			j = 1;
+		}
+		if (s[i] == c && j == 1)
+			j = 0;
+		i++;
+	}
+	return (countwords);
+}
+
+static	int	ft_strlenarray(char *s, char c)
 {
 	int	i;
 
 	i = 0;
-	while (splits[i])
+	while (s[i] != c && s[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void	*my_free(char **str, int i)
+{
+	i = 0;
+	while (str[i])
 	{
-		free(splits[i]);
+		free(str[i]);
 		i++;
 	}
-	free(splits);
+	free(str);
+	return (NULL);
 }
 
-int	count_splits(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	int		i;
-	int		amount;
-
-	i = 0;
-	amount = 0;
-	while (s[i])
-	{
-		while (s[i] && s[i] == c)
-			i++;
-		while (s[i] && s[i] != c)
-			i++;
-		if (s[i - 1] != c)
-			amount++;
-	}
-	return (amount);
-}
-
-int	start_stop(char const *s, char c, int *i, int mode)
-{
-	while (s[*i] && s[*i] == c && mode == 1)
-		(*i)++;
-	while (s[*i] && s[*i] != c && mode == 2)
-		(*i)++;
-	return (*i);
-}
-
-char	**splitting(char const *s, char c, char **splits, int amount)
-{
+	char	**str;
 	int		i;
 	int		j;
-	int		start;
-	int		stop;
+	int		k;
 
 	i = 0;
 	j = 0;
-	while (j < amount)
+	if (!s || s[0] == '\0')
+		return (NULL);
+	k = delim((char *)s, c);
+	str = (char **)malloc(sizeof(char *) * (delim(s, c) + 1));
+	if (!str)
+		return (NULL);
+	while (k--)
 	{
-		start = start_stop(s, c, &i, 1);
-		stop = start_stop(s, c, &i, 2);
-		if (s[i - 1] != c)
-			splits[j] = ft_substr(s, start, stop - start);
-		if (!splits[j])
-		{
-			free_split(splits);
-			return (0);
-		}
+		while (*s == c && s != '\0')
+			s++;
+		str[j] = ft_substr((char *)s, 0, ft_strlenarray((char *)s, c));
+		if (!str[j])
+			my_free(str, j);
+		s += ft_strlenarray((char *)s, c);
 		j++;
 	}
-	splits[j] = NULL;
-	return (splits);
-}
-
-/*
-	Allocates (with malloc(3)) and returns an array of strings obtained by 
-	splitting ’s’ using the character ’c’ as a delimiter. The array ends
-	with a NULL pointer.
-*/
-char	**ft_split(char const *s, char c)
-{
-	int		amount;
-	char	**splits;
-
-	if (!s)
-		return (NULL);
-	amount = (count_splits(s, c));
-	splits = (char **)malloc(sizeof(char *) * (amount + 1));
-	if (!splits)
-		return (NULL);
-	splits = splitting(s, c, splits, amount);
-	return (splits);
+	str[j] = NULL;
+	return (str);
 }

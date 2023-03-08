@@ -3,36 +3,40 @@
 /*                                                        ::::::::            */
 /*   ft_strlcat.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/17 15:14:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/10/19 17:29:56 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/09 12:00:59 by dyeboa        #+#    #+#                 */
+/*   Updated: 2021/12/16 12:43:34 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+size_t	ft_strlcat(char *dest, const char *src, size_t dstsize)
 {
-	size_t	i;
-	size_t	j;
+	size_t		len_dest;
+	const char	*tempsrc;
+	char		*tempdest;
+	size_t		tempsize;
 
-	i = 0;
-	j = 0;
-	while (i < size && dst[i])
-		i++;
-	while (i + 1 < size && src[j])
+	tempdest = dest;
+	tempsrc = src;
+	tempsize = dstsize;
+	while (tempsize-- != 0 && *tempdest != '\0')
+		tempdest++;
+	len_dest = tempdest - dest;
+	tempsize = dstsize - len_dest;
+	if (tempsize == 0)
+		return (len_dest + ft_strlen(tempsrc));
+	while (*tempsrc != '\0')
 	{
-		dst[i] = src[j];
-		i++;
-		j++;
+		if (tempsize != 1)
+		{
+			*tempdest++ = *tempsrc;
+			tempsize--;
+		}
+		tempsrc++;
 	}
-	if (j > 0)
-		dst[i] = '\0';
-	while (src[j])
-	{
-		i++;
-		j++;
-	}
-	return (i);
+	*tempdest = '\0';
+	return (len_dest + tempsrc - src);
 }

@@ -3,26 +3,23 @@
 /*                                                        ::::::::            */
 /*   ft_calloc.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/23 18:25:50 by bramjr        #+#    #+#                 */
-/*   Updated: 2022/10/14 16:57:40 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/04/02 15:21:24 by dyeboa        #+#    #+#                 */
+/*   Updated: 2021/12/10 10:21:57 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-/*
-	Writes n zeroed bytes to the string s. If n is zero, bzero() does nothing.
-	It returns a pointer to allocated memory.
-*/
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*ptr;
+	void	*pointer;
 
-	ptr = malloc(count * size);
-	if (ptr == NULL)
-		return (ptr);
-	ft_bzero(ptr, size * count);
-	return (ptr);
+	pointer = malloc(count * size);
+	if (pointer == NULL)
+		return (NULL);
+	ft_bzero(pointer, count * size);
+	return (pointer);
 }

@@ -54,9 +54,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(INC) $(READLINE_INC) -c -o $@ $<
 
-
+#libft
 $(LIBFT):
-	@$(MAKE) bonus -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 
 lldb: $(NAME)
 	lldb ./$(NAME) -- $(ARGS)

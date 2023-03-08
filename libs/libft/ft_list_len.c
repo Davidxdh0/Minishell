@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_islower.c                                       :+:    :+:            */
+/*   ft_list_len.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/29 13:12:24 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 17:57:23 by bprovoos      ########   odam.nl         */
+/*   Created: 2023/03/08 09:03:00 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/08 09:03:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_islower(int c)
+#include "libft.h"
+
+int	list_len(t_stack *stack)
 {
-	return (c >= 'a' && c <= 'z');
+	int	len;
+
+	len = 0;
+	while (stack)
+	{
+		len++;
+		stack = stack->next;
+	}
+	return (len);
 }

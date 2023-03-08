@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_isdigit.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bramjr <bramjr@student.codam.nl>             +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/28 15:04:31 by bramjr        #+#    #+#                 */
-/*   Updated: 2021/05/27 17:57:28 by bprovoos      ########   odam.nl         */
+/*   Created: 2020/12/18 14:58:51 by david         #+#    #+#                 */
+/*   Updated: 2021/11/04 14:53:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

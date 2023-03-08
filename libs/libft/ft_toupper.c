@@ -3,18 +3,16 @@
 /*                                                        ::::::::            */
 /*   ft_toupper.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/27 22:21:40 by bprovoos      #+#    #+#                 */
-/*   Updated: 2021/05/27 18:12:54 by bprovoos      ########   odam.nl         */
+/*   Created: 2020/12/18 15:02:30 by david         #+#    #+#                 */
+/*   Updated: 2021/11/04 15:15:43 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 int	ft_toupper(int c)
 {
-	if (ft_islower(c))
-		return ((c + 'A' - 'a'));
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
 	return (c);
 }

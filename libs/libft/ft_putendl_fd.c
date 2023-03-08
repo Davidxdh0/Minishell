@@ -3,23 +3,18 @@
 /*                                                        ::::::::            */
 /*   ft_putendl_fd.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: david <david@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/08 16:31:27 by bprovoos      #+#    #+#                 */
-/*   Updated: 2022/10/14 16:48:24 by bprovoos      ########   odam.nl         */
+/*   Created: 2021/02/08 15:16:54 by david         #+#    #+#                 */
+/*   Updated: 2022/01/24 15:16:00 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-	Outputs the string ’s’ to the given file descriptor followed by a newline.
-*/
-int	ft_putendl_fd(char *str, int fd)
+void	ft_putendl_fd(char *s, int fd)
 {
-	int	i;
-
-	i = ft_putstr_fd(str, fd);
-	i += ft_putchar_fd('\n', fd);
-	return (i);
+	ft_putstr_fd(s, fd);
+	if (s)
+		ft_putchar_fd('\n', fd);
 }

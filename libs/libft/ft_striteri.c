@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strrev.c                                        :+:    :+:            */
+/*   ft_striteri.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/01 10:22:44 by bprovoos      #+#    #+#                 */
-/*   Updated: 2020/12/29 09:14:46 by bramjr        ########   odam.nl         */
+/*   Created: 2021/10/26 12:43:22 by dyeboa        #+#    #+#                 */
+/*   Updated: 2022/01/24 16:55:59 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_strrev(char *src, char *dst)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	int		i;
-	int		len;
-	char	temp;
+	unsigned int	i;
 
 	i = 0;
-	len = ft_strlen(src) - 1;
-	while (i < len / 2)
+	if (!s || !f)
+		return ;
+	while (s[i])
 	{
-		temp = src[i];
-		dst[i] = src[len - i];
-		dst[len - i] = temp;
+		f(i, s + i);
 		i++;
 	}
-	dst[len + 1] = '\0';
 }
