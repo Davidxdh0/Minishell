@@ -64,11 +64,9 @@ static void	*my_free(char **str, int i)
 char	**ft_split(char const *s, char c)
 {
 	char	**str;
-	int		i;
 	int		j;
 	int		k;
 
-	i = 0;
 	j = 0;
 	if (!s || s[0] == '\0')
 		return (NULL);
@@ -78,7 +76,7 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	while (k--)
 	{
-		while (*s == c && s != '\0')
+		while (*s == c && *s)
 			s++;
 		str[j] = ft_substr((char *)s, 0, ft_strlenarray((char *)s, c));
 		if (!str[j])

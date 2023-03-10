@@ -20,9 +20,7 @@ int	check_option(char **cmd)
 {
 	int i;
 	int j;
-	int flag;
-	
-	flag = 0;
+
 	i = 0;
 	while (cmd[i])
 	{

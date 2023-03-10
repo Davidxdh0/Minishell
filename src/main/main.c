@@ -25,7 +25,7 @@ int	shell(char *line, char **envp)
 	// test_lists(line_lst, envp);
 	// execute_cmd_list(line_lst, &data);
 	delete_t_list(&line_lst);
-	envp = NULL;	// temp until using envp
+	envp++;	// temp until using envp
 	return (0);
 }
 

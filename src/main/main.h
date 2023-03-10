@@ -41,8 +41,6 @@ https://github.com/Snaipe/Criterion
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include "../../libs/libft/libft.h"
 # include <stddef.h>
 # include <unistd.h>
@@ -53,6 +51,8 @@ https://github.com/Snaipe/Criterion
 # include <sys/wait.h>
 # include <string.h>
 # include <errno.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_line_lst
 {
