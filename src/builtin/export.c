@@ -140,9 +140,7 @@ void	export_(char **cmd, t_data *data)
 	char *str;
 	int exists;
 	int varlen;
-	int flag;
-
-	flag = 0;
+	
 	varlen = ft_strlen(cmd[1]);
 	exists = check_env_exist(cmd, data);
 	if (varlen == 0)
@@ -153,7 +151,6 @@ void	export_(char **cmd, t_data *data)
 		// geen = met tekst betekent niets doen.
 		if(ft_strncmp(cmd[1], "=", 1))
 		{
-			flag = 1;
 			str = ft_strjoin(cmd[1], "=");
 			message("doe niets");
 		}

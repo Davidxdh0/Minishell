@@ -34,11 +34,9 @@ pointed to by buf, which is of length size.
 
 void	update_old_pwd(char *oldpath, t_data *data)
 {
-	int i;
 	char *updated_pwd;
 
 	updated_pwd = ft_strjoin("OLDPWD=", oldpath);
-	i = 0;
 	while(*data->envp != NULL)
 	{
 		if (!strncmp(*data->envp, "OLDPWD=", 7))
@@ -50,9 +48,6 @@ void	update_old_pwd(char *oldpath, t_data *data)
 
 void	cd_home(char **envp)
 {
-	int i;
-
-	i = 0;
 	while(*envp != NULL)
 	{
 		if (!strncmp(*envp, "HOME=", 5))
@@ -98,7 +93,7 @@ void	execute_cd(char **cmd, t_data *data)
 	}
 	else
 		status = change_dir(oldpath, cmd[1]);
-	// if (status == 0)
+	if (status == 0)
 	// 	update_old_pwd( oldpath, data);
 	free(oldpath);
 }
