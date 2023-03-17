@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 15:25:59 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/17 18:22:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ typedef struct s_data
 	int		fd[2];
 	int		exitcode;
 }	t_data;
+
+// typedef struct s_execute
+// {
+// 	char	**cmd;
+
+// }
 
 t_data	g_data;
 
