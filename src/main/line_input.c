@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   line_input.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/27 16:57:52 by bprovoos      #+#    #+#                 */
-/*   Updated: 2023/03/02 12:51:08 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/17 15:25:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

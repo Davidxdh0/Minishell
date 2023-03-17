@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   specialchar.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 14:38:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2023/03/03 15:59:37 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/03/17 15:26:33 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/17 15:26:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

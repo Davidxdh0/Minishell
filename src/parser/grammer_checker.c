@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   grammer_checker.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 11:23:56 by bprovoos      #+#    #+#                 */
-/*   Updated: 2023/03/03 16:19:33 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/03/17 15:26:02 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/17 15:26:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

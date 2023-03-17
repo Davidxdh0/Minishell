@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.h                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/12 09:55:42 by bprovoos      #+#    #+#                 */
-/*   Updated: 2023/03/03 16:02:35 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/17 15:25:59 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

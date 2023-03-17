@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   list.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprovoos <bprovoos@student.codam.nl>         +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 13:50:10 by bprovoos      #+#    #+#                 */
-/*   Updated: 2023/03/03 15:59:41 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/17 15:26:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
