@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 15:26:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 12:09:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,11 +164,11 @@ t_line_lst	*parser(char *line)
 	
 		else if (is_word(line[i]))
 			i += word_case(&line_lst, &line[i]);
-		// else if (line[i] == ' ')
-		// {
-		// 	add_at_end_of_list(&line_lst, e_whitespace, " ");
-		// 	i++;
-		// }
+		else if (line[i] == ' ')
+		{
+			add_at_end_of_list(&line_lst, e_whitespace, " ");
+			i++;
+		}
 		else
 			i++;
 	}

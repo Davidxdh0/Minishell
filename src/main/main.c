@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 18:23:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 13:32:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	shell(char *line, char **envp)
 	show_t_list(line_lst, line);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
-	test_lists(line_lst, envp);
+	// test_lists(line_lst, envp);
 	// execute_cmd_list(line_lst, &data);
 	delete_t_list(&line_lst);
 	envp++;	// temp until using envp
@@ -68,6 +68,8 @@ int	main(int argc, char *argv[], char **envp)
 	while (1)
 	{	
 		line_reader(&line, "minishell$ ");
+		if (ft_strncmp(argv[0], "exit", 5))
+			exit(1);
 		shell(line, envp);
 	}
 	return (0);

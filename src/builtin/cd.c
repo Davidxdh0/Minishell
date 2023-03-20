@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 11:51:52 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/09 17:01:01 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 11:58:30 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ void	execute_cd(char **cmd, t_data *data)
 	else
 		status = change_dir(oldpath, cmd[1]);
 	if (status == 0)
-	// 	update_old_pwd( oldpath, data);
-	free(oldpath);
+		;//update_old_pwd( oldpath, data);
+	//free(oldpath);
 }
