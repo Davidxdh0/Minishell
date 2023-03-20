@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/20 15:36:05 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 15:41:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ void	alloc_execute_list(t_line_lst *head)
 		}
 		if (head && !ft_strncmp(head->value,"|", 1))
 		{
-			
+			printf("value | == %s", head->value);
 		}
+		head = head->next;
 	}
 }
 // void	parser_acco(t_line_lst *head, char **envp)
