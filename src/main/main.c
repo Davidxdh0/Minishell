@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/20 13:32:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 13:57:39 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	shell(char *line, char **envp)
 	t_line_lst	*line_lst;
 
 	line_lst = parser(line);
-
 	show_t_list(line_lst, line);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);

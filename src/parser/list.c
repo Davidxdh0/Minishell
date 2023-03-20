@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 15:26:12 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 13:48:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	show_t_list(t_line_lst *node, char *input_line)
 
 	i = 1;
 	
-	printf("\ninput_line = \"%s\"", input_line);
+	printf("\ninput_line = %s", input_line);
 	printf("\n---------- line list table -----------\n");
 	printf("index\ttype\tlen\ttype_name\tstate\tvalue\n");
 	while (node != NULL)
