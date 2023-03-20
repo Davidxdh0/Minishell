@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 18:22:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 14:57:59 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,17 @@ typedef struct s_data
 	char	**envp;
 	char	**cmd;
 	char	*path;
-	int		infile;
-	int		outfile;
-	int		fd[2];
 	int		exitcode;
 }	t_data;
 
-// typedef struct s_execute
-// {
-// 	char	**cmd;
-
-// }
+typedef struct s_execute
+{
+	char	**cmd;
+	int		infile;
+	int		outfile;
+	struct s_execute *prev;
+  	struct s_execute *next;
+}	t_execute;
 
 t_data	g_data;
 

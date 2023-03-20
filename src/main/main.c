@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/20 13:32:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/20 15:36:05 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,94 @@ void	test_lists(t_line_lst *head, char **envp)
 	//printf("length of list is %d\n", length_of_list(head));
 }
 
+// count de commands tot |. if | count as 1.
+// malloc per command de **cmd
+// fil per command de cmd
+int		count_commands(t_line_lst *head)
+{
+	int i;
+
+	t_line_lst *temp;
+	temp = head;
+	i = 0;
+	while (ft_strncmp(temp->value,"|", 1))
+	{
+		i++;
+		printf("value = %s\n", temp->value);
+		temp = temp->next;
+	}
+	return (i);
+}
+
+void	alloc_execute_list(t_line_lst *head)
+{
+	int i;
+	t_execute *cmdlist;
+
+	cmdlist = malloc(sizeof(t_execute));
+	while (head)
+	{
+		i = count_commands(head);
+		cmdlist->cmd = malloc(sizeof(char *) * i + 1);
+		while (i > 0 && head)
+		{
+			head = head->next;
+			i--;
+		}
+		if (head && !ft_strncmp(head->value,"|", 1))
+		{
+			
+		}
+	}
+}
+// void	parser_acco(t_line_lst *head, char **envp)
+// {
+// 	int i;
+// 	t_execute *cmdlist;
+
+// 	t_line_lst *temp;
+// 	temp = head;
+// 	cmdlist->cmd = malloc(sizeof(t_execute));
+// 	while (temp)
+// 	{
+// 		i = 0;
+// 		if (temp->value != "|")
+// 		{	
+// 			i++;
+// 		}
+// 		temp = temp->next;
+// 		cmdlist->cmd = malloc(sizeof(char *) * i + 1);
+// 	}
+// 	temp = head;
+// 	while(temp)
+// 	{
+// 		if(temp->value != "|")
+// 		{
+// 			cmdlist->cmd[i] = temp->value;
+// 			i++;
+// 		}
+// 		else
+// 		{
+// 			cmdlist = cmdlist->next;
+// 			cmdlist->cmd
+// 		}
+// 		temp = temp->next;
+// 	}
+// }
+
+// void	fill_parser(t_line_lst *head, char **envp)
+// {
+
+	
+// }
 
 int	shell(char *line, char **envp)
 {
 	t_line_lst	*line_lst;
 
 	line_lst = parser(line);
-
 	show_t_list(line_lst, line);
+	printf("countcommands = %d", count_commands(line_lst));
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
 	// test_lists(line_lst, envp);
