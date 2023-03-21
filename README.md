@@ -1,5 +1,6 @@
 # 42 Minishell a bash knockoff
 
+van branch naar master pushen:
 How do I push a local Git branch to master branch in the remote?
 I would say:
 
@@ -16,3 +17,6 @@ or, more generally
 
 $ git push <remote> <local branch name>:<remote branch to push into>
 
+vanuit branch up to date met master:
+git checkout david
+git pull origin master
