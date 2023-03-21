@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/20 15:41:04 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/21 14:27:42 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		count_commands(t_line_lst *head)
 	t_line_lst *temp;
 	temp = head;
 	i = 0;
-	while (ft_strncmp(temp->value,"|", 1))
+	while (temp && ft_strncmp(temp->value,"|", 1))
 	{
 		i++;
 		printf("value = %s\n", temp->value);
@@ -60,22 +60,30 @@ int		count_commands(t_line_lst *head)
 void	alloc_execute_list(t_line_lst *head)
 {
 	int i;
+	int k;
 	t_execute *cmdlist;
 
 	cmdlist = malloc(sizeof(t_execute));
-	while (head)
+	while (head != NULL)
 	{
 		i = count_commands(head);
+		if (i == 0)
+			i++;
+		k = 0;
 		cmdlist->cmd = malloc(sizeof(char *) * i + 1);
-		while (i > 0 && head)
+		while (k < i && head)
 		{
+			cmdlist->cmd[k] = head->value;
 			head = head->next;
-			i--;
+			k++;
+			printf("cmdlist->cmd[%d] == %s\n", k, cmdlist->cmd[k]);
 		}
 		if (head && !ft_strncmp(head->value,"|", 1))
 		{
-			printf("value | == %s", head->value);
+			printf("value | == %s\n", head->value);
 		}
+		cmdlist = cmdlist->next;
+		cmdlist->next = NULL;
 		head = head->next;
 	}
 }
@@ -126,7 +134,8 @@ int	shell(char *line, char **envp)
 
 	line_lst = parser(line);
 	show_t_list(line_lst, line);
-	printf("countcommands = %d", count_commands(line_lst));
+	// alloc_execute_list(line_lst);
+	// printf("countcommands = %d", count_commands(line_lst));
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
 	// test_lists(line_lst, envp);
