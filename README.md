@@ -1,5 +1,7 @@
 # 42 Minishell a bash knockoff
 
+https://blog.greenroots.info/top-10-git-commands-every-developer-should-know
+
 van branch naar master pushen:
 How do I push a local Git branch to master branch in the remote?
 I would say:

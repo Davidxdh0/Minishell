@@ -6,11 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/03/20 14:03:52 by dyeboa        ########   odam.nl         */
-=======
-/*   Updated: 2023/03/20 15:04:34 by dyeboa        ########   odam.nl         */
->>>>>>> david
+/*   Updated: 2023/03/21 15:26:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,13 +151,8 @@ t_line_lst	*parser(char *line)
 	line_lst = NULL;
 	while (line[i])
 	{
-<<<<<<< HEAD
-		printf("%c=", line[i]);
-		printf("%d\n", i);
-=======
 		// printf("%c=", line[i]);
 		// printf("%d\n", i);
->>>>>>> david
 		if (line[i] == '|')
 			i += pipe_case(&line_lst);
 		else if (line[i] == '<')
@@ -170,19 +161,11 @@ t_line_lst	*parser(char *line)
 			i += greater_than_case(&line_lst, &line[i]);
 		else if (line[i] == '$')
 			i += dolar_sign_case(&line_lst, &line[i]);
-<<<<<<< HEAD
-		else if (line[i] == ' ')
-		{
-			add_at_end_of_list(&line_lst, e_whitespace, " ");
-			i++;
-		}
-=======
 		// else if (line[i] == ' ')
 		// {
 		// 	add_at_end_of_list(&line_lst, e_whitespace, " ");
 		// 	i++;
 		// }
->>>>>>> david
 		else if (is_word(line[i]))
 			i += word_case(&line_lst, &line[i]);
 		else
