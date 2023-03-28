@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/20 15:42:06 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/28 16:24:00 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_data
 typedef struct s_execute
 {
 	char	**cmd;
+	char	**redirects; //redirect zoals gegeven, split op iets, redirects
 	int		infile;
 	int		outfile;
 	struct s_execute *prev;

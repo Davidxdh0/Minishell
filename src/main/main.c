@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/21 15:49:58 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/03/28 15:13:41 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
             head = head->next;
             k++;
 		}
+		new_node->cmd[k] = NULL;
 		if (last == NULL)
             cmdlist = new_node;
         else
@@ -64,6 +65,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
 		if (head != NULL)
 			head = head->next;
 	}
+	
 	return (cmdlist);
 }
 
