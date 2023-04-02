@@ -77,6 +77,9 @@ int	shell(char *line, char **envp)
 	line_lst = parser(line);
 	show_t_list(line_lst, line);
 	cmd = alloc_execute_list(line_lst);
+
+	executor_dcs(cmd); //DCS
+
 	// execute_cmd_list(cmd, &data);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);

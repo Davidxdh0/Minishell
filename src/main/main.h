@@ -112,6 +112,7 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
 void	execute_process(t_line_lst *stack, t_data *data, char **envp);
 void	close_fd_dup(t_data *data, int *stin, int *stout);
 void	test_lists(t_line_lst *head, char **envp);
+void	executor_dcs(t_execute *cmd_struct); //DCS
 
 //errors.c
 int		msg_error_code(char *err, int code);
