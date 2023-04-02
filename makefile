@@ -1,6 +1,7 @@
 NAME = minishell
 
-FLAGS =  -Wall -Wextra -Werror 
+FLAGS =  -Wall -Wextra
+# FLAGS += -Werror 
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
@@ -17,7 +18,9 @@ EXECUTE_FI	=	executor.c \
 				errors.c \
 				redirect.c \
 				builtin.c \
-				messages.c
+				messages.c \
+				executor_dcs.c \
+				builtin_dcs.c
 				
 BUILTIN_FI  =	echo.c \
 				cd.c \
@@ -74,3 +77,6 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+test: all
+	bash testcmd.sh

@@ -1,5 +1,24 @@
 #!/bin/bash
 
+
+
+
+
+
+
+
+./minishell -p 'ls | cat -e'
+
+
+
+
+
+
+
+
+
+
+
 # ./minishell -p 'ls'
 #./minishell -p 'export'
 # ./minishell -p 'export'  'export' 'export'
@@ -18,7 +37,7 @@
 # ./minishell -p 'echo -nn Hello'
 # ./minishell -p 'echo -nns Hello World'
 
-./minishell -p 'echo "hello  $USER " > file | grep h | cat >> file | echo "done"'
+# ./minishell -p 'echo "hello  $USER " > file | grep h | cat >> file | echo "done"'
 # ./minishell -p 'echo -n -n Hello'
 # ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'

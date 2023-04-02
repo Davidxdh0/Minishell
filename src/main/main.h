@@ -96,6 +96,7 @@ typedef struct s_execute
 {
 	char	**cmd;
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects
+	int		count_cmd; //DCS, can be loaded in during initialization?
 	int		infile;
 	int		outfile;
 	struct s_execute *prev;
@@ -139,6 +140,8 @@ void    redirect(t_line_lst *stack, t_data *data);
 //builtin.c
 void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
 int		is_builtin(char *str);
+void	ft_pwd(int fd); //DCS
+void	ft_echo(t_execute *cmd_struct, int fd); //DCS
 
 //cd.c
 void	execute_cd(char **cmd, t_data *data);

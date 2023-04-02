@@ -501,21 +501,16 @@ printf("#i after middle loop = %d\n", i);
 void	executor_dcs(t_execute *cmd_struct)
 {
 printf("\nStart Executing\n");
-// printf("%s\n", cmd_struct->infile);
-// int count_cmd;
 
-// char	**test;
-// test = malloc(1000000);
-// int i = 0;
-// // test[i++] = "ls";
-// // test[i++] = "-l";
-// // test[i++] = "-a";
-// // test[i++] = "";
-// // test[i++] = "";
-// // test[i++] = NULL;
-// printf("WTF: %s\n", cmd_struct->cmd[0]);
-// printf("WTF: %s\n", cmd_struct->cmd[1]);
-// cmd_struct->cmd[1] = NULL;
+ft_pwd(1);
+int	i = 0;
+	cmd_struct->cmd[i++] = ft_strdup("echo");
+	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
+	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
+	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
+	cmd_struct->cmd[i++] = NULL;
+ft_echo(cmd_struct, 1);
+exit(117);
 
 	t_execute *next;
 	next = cmd_struct->next;
