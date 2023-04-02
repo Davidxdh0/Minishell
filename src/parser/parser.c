@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/21 15:26:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/02 12:40:29 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int	word_case(t_line_lst **line_lst, char *line)
 	{
 		len = 0;
 		while (is_word(line[i + len]))
+		{
+			// printf("character = %c\n", line[i + len]);
 			len++;
+		}
 		if (last == e_start || last == e_pipe)
 			add_at_end_of_list(line_lst, e_cmd, ft_substr(line, i, len));
 		if (last == e_cmd || last == e_word || last == e_delimiter)
@@ -61,87 +64,6 @@ note_type	get_last_type(t_line_lst *node)
 	return (type);
 }
 
-t_line_lst	*fil_list(char *line)
-{
-	t_line_lst	*head;
-	note_type	last_type;
-	int			i;
-	int			len;
-
-	i = 0;
-	head = NULL;
-	//line = ft_strtrim(line, " ");
-	while (line[i])
-	{
-		last_type = get_last_type(head);
-
-		if (line[i] == '|')
-			add_at_end_of_list(&head, e_pipe, "|");
-		else if (line[i] == '"')
-			add_at_end_of_list(&head, e_dquote, "\"");
-		else if (line[i] == ' ')
-			add_at_end_of_list(&head, e_whitespace, " ");
-		else if (line[i] == '<')
-		{
-			i++; 
-			if (line[i] != '<')
-			{
-				add_at_end_of_list(&head, e_redirect_i, "<");
-				continue;
-			}
-			add_at_end_of_list(&head, e_delimiter, "<<");
-		}	
-		else if (line[i] == '>')
-		{
-			i++;
-			if (line[i] != '>')
-			{
-				add_at_end_of_list(&head, e_redirect_o, ">");
-				continue;
-			}	
-			add_at_end_of_list(&head, e_append, ">>");
-		}
-		else if (line[i] == '$')
-		{
-			i++;
-			if (line[i] == '?')
-			{
-				add_at_end_of_list(&head, e_var, "$?");
-				i++;
-				continue;
-			}
-			if (line[i] == '$')
-			{
-				add_at_end_of_list(&head, e_var, "$$");
-				i++;
-				continue;
-			}	
-			len = 0;
-			while (line[i + len] && ft_isascii(line[i + len]) && line[i + len] != ' ')
-				len++;
-			add_at_end_of_list(&head, e_var, ft_substr(line, i, len));
-			i += len - 1;
-		}
-		else if (ft_isascii(line[i]) && line[i] != ' ')
-		{
-			len = 0;
-			while (line[i + len] && ft_isascii(line[i + len]) && line[i + len] != ' ')
-				len++;
-			if (last_type == e_start || last_type == e_pipe)
-				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
-			if (last_type == e_cmd || last_type == e_word || last_type == e_delimiter ||  last_type == e_whitespace)
-				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
-			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_append)
-				add_at_end_of_list(&head, e_file, ft_substr(line, i, len));
-			if (line[i + len] != ' ')
-				len++;
-			i += len - 1;
-		}
-		i++;
-	}
-	return (head);
-}
-
 t_line_lst	*parser(char *line)
 {
 	int			i;
@@ -149,6 +71,7 @@ t_line_lst	*parser(char *line)
 
 	i = 0;
 	line_lst = NULL;
+	printf("%s\n", line);
 	while (line[i])
 	{
 		// printf("%c=", line[i]);
@@ -161,13 +84,17 @@ t_line_lst	*parser(char *line)
 			i += greater_than_case(&line_lst, &line[i]);
 		else if (line[i] == '$')
 			i += dolar_sign_case(&line_lst, &line[i]);
-		// else if (line[i] == ' ')
-		// {
-		// 	add_at_end_of_list(&line_lst, e_whitespace, " ");
-		// 	i++;
-		// }
 		else if (is_word(line[i]))
 			i += word_case(&line_lst, &line[i]);
+		else if (line[i] == ' ')
+		{
+			while(line[i] == 32)
+			{
+				add_at_end_of_list(&line_lst, e_whitespace, " ");
+				printf("character = '%c' at %d\n", line[i], i);
+				i++;
+			}
+		}
 		else
 			i++;
 	}

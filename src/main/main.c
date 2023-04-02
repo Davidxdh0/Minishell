@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/28 15:13:41 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/02 08:11:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
 		while (head != NULL && k < i)
 		{
             new_node->cmd[k] = ft_strdup(head->value);
-            printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
+            // printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
             head = head->next;
             k++;
 		}
