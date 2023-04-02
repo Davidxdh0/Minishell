@@ -53,6 +53,7 @@ https://github.com/Snaipe/Criterion
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdbool.h>
 
 typedef struct s_line_lst
 {
