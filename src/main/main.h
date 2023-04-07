@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/28 16:24:00 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/07 18:19:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_line_lst
 	int					type;
 	char				*value;
 	int					len;
-	char				*state;
+	enum enum_state		*state;
 	struct s_line_lst	*next;
 	struct s_line_lst	*prev;
 }	t_line_lst;
@@ -79,6 +79,13 @@ typedef enum{
 	e_delimiter,
 	e_append
 }	note_type;
+
+enum enum_state
+{
+	in_quote = 0,
+	in_dquote,
+	normal,
+};
 
 typedef struct s_data
 {
@@ -162,6 +169,8 @@ int			is_valid_cmd(note_type last_type);
 char		*type_to_string(note_type type);
 note_type	get_last_type(t_line_lst *node);
 int			is_word(char c);
+int			ft_isspecial(char chr);
+int 		space_case(t_line_lst **line_lst);
 t_line_lst	*lexer(char *line);
 t_line_lst	*parser(char *line);
 t_line_lst	*fil_list(char *line);
@@ -174,7 +183,7 @@ int			dolar_special_case(t_line_lst **line_lst, char next_char);
 int			dolar_sign_case(t_line_lst **line_lst, char *line);
 
 // unknown
-int			word_case(t_line_lst **line_lst, char *line);
+int			word_case(t_line_lst **line_lst, char *line, enum enum_state *state);
 
 //grammarchecker.c
 int		is_valid_grammer(t_line_lst *head);
@@ -182,7 +191,7 @@ int		is_valid_grammer(t_line_lst *head);
 /* PARSER
 The parser processes the input line and build the list with tokens */
 void		delete_t_list(t_line_lst **head);
-void		add_at_end_of_list(t_line_lst **head, int type, char *value);
+void		add_at_end_of_list(t_line_lst **head, int type, char *value, enum enum_state *state);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);

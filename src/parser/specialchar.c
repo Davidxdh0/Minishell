@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 15:26:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/07 17:20:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 int	pipe_case(t_line_lst **line_lst)
 {
 	add_at_end_of_list(line_lst, e_pipe, "|");
+	return (1);
+}
+
+int space_case(t_line_lst **line_lst)
+{
+	add_at_end_of_list(line_lst, e_whitespace, " ");
 	return (1);
 }
 
@@ -76,7 +82,7 @@ int	dolar_sign_case(t_line_lst **line_lst, char *line)
 		return (1);
 	}
 	len = 1;
-	while (is_word(line[len]))
+	while (!ft_isspecial(line[len]))
 		len++;
 	add_at_end_of_list(line_lst, e_var, ft_substr(line, 1, len));
 	return (len);
