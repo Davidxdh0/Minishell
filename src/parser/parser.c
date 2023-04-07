@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/02 12:40:29 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/07 12:04:10 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int		is_word(char c)
 	if (ft_isdigit(c))
 		return (1);
 	if (c == '-')
+		return (1);
+	if (c == ' ')
 		return (1);
 	return (0);
 }
@@ -64,6 +66,27 @@ note_type	get_last_type(t_line_lst *node)
 	return (type);
 }
 
+int	quotes(t_line_lst *line_lst, char c)
+{
+	int i = 0;
+	int j = 0;
+	int dquote = 0;
+	int quote = 0;
+
+	
+	if (c == '\'')
+		if (quote == 0)
+			quote = 1; //open
+		else
+			quote = 0; // closed
+	else if (c == '\"')
+		if (dquote == 0)
+			dquote = 1; //open
+		else
+			dquote = 0; // closed
+	i++;
+}
+
 t_line_lst	*parser(char *line)
 {
 	int			i;
@@ -86,15 +109,17 @@ t_line_lst	*parser(char *line)
 			i += dolar_sign_case(&line_lst, &line[i]);
 		else if (is_word(line[i]))
 			i += word_case(&line_lst, &line[i]);
-		else if (line[i] == ' ')
-		{
-			while(line[i] == 32)
-			{
-				add_at_end_of_list(&line_lst, e_whitespace, " ");
-				printf("character = '%c' at %d\n", line[i], i);
-				i++;
-			}
-		}
+		// else if (line[i] == ' ')
+		// {
+		// 	// printf("%d\n", i);
+		// 	// while(line[i] == 32)
+		// 	// {
+		// 		printf("%d", i);
+		// 		add_at_end_of_list(&line_lst, e_whitespace, " ");
+		// 		// printf("character = '%c' at %d\n", line[i], i);
+		// 		i++;
+		// 	// }
+		// }
 		else
 			i++;
 	}
