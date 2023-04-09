@@ -498,18 +498,26 @@ printf("#i after middle loop = %d\n", i);
 }
 
 
-void	executor_dcs(t_execute *cmd_struct)
+void	executor_dcs(t_execute *cmd_struct, char **envp)
 {
 printf("\nStart Executing\n");
 
-ft_pwd(1);
-int	i = 0;
-	cmd_struct->cmd[i++] = ft_strdup("echo");
-	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
-	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
-	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
-	cmd_struct->cmd[i++] = NULL;
-ft_echo(cmd_struct, 1);
+int	fd;
+
+fd = 1;
+// ft_pwd(fd);
+// int	i = 0;
+// 	cmd_struct->cmd[i++] = ft_strdup("echo");
+// 	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
+// 	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
+// 	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
+// 	cmd_struct->cmd[i++] = NULL;
+// ft_echo(cmd_struct, 1);
+// ft_env(envp, 1);
+ft_cd(cmd_struct, envp, "");
+// ft_export(cmd_struct, envp, fd);
+// ft_unset(cmd_struct, envp, fd);
+ft_env(envp, 1);
 exit(117);
 
 	t_execute *next;

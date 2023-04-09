@@ -113,7 +113,8 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
 void	execute_process(t_line_lst *stack, t_data *data, char **envp);
 void	close_fd_dup(t_data *data, int *stin, int *stout);
 void	test_lists(t_line_lst *head, char **envp);
-void	executor_dcs(t_execute *cmd_struct); //DCS
+
+void	executor_dcs(t_execute *cmd_struct, char **envp); //DCS
 
 //errors.c
 int		msg_error_code(char *err, int code);
@@ -140,8 +141,13 @@ void    redirect(t_line_lst *stack, t_data *data);
 //builtin.c
 void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
 int		is_builtin(char *str);
+
 void	ft_pwd(int fd); //DCS
 void	ft_echo(t_execute *cmd_struct, int fd); //DCS
+bool	ft_env(char **envp, int fd); //DCS
+void	ft_cd(t_execute *cmd_struct, char **envp, char *path); //DCS
+void	ft_export(char *cmd, char **envp, int fd); //DCS
+void	ft_unset(char *cmd, char **envp, int fd); //DCS
 
 //cd.c
 void	execute_cd(char **cmd, t_data *data);
