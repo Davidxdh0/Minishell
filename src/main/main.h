@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/07 18:19:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/13 18:07:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,6 @@ typedef enum{
 	e_delimiter,
 	e_append
 }	note_type;
-
-enum enum_state
-{
-	in_quote = 0,
-	in_dquote,
-	normal,
-};
 
 typedef struct s_data
 {
@@ -191,7 +184,7 @@ int		is_valid_grammer(t_line_lst *head);
 /* PARSER
 The parser processes the input line and build the list with tokens */
 void		delete_t_list(t_line_lst **head);
-void		add_at_end_of_list(t_line_lst **head, int type, char *value, enum enum_state *state);
+void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
