@@ -6,7 +6,7 @@
 #    By: dyeboa <dyeboa@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/26 15:54:34 by dyeboa        #+#    #+#                  #
-#    Updated: 2023/03/08 09:03:26 by dyeboa        ########   odam.nl          #
+#    Updated: 2023/04/14 12:06:36 by dyeboa        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS=		ft_atoi_base.c \
 			ft_putnbr_fd.c \
 			ft_strlcat.c \
 			ft_strlen.c \
+			ft_strcmp.c \
 			ft_strncmp.c \
 			ft_strrchr.c \
 			ft_strnstr.c \

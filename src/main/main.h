@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/13 18:07:53 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/14 13:56:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_line_lst
 	int					type;
 	char				*value;
 	int					len;
-	enum enum_state		*state;
+	int					state;
 	struct s_line_lst	*next;
 	struct s_line_lst	*prev;
 }	t_line_lst;
@@ -94,9 +94,9 @@ typedef struct s_data
 typedef struct s_execute
 {
 	char	**cmd;
-	char	**redirects; //redirect zoals gegeven, split op iets, redirects
-	int		infile;
-	int		outfile;
+	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
+	// [<][file]
+	// [>][filename]
 	struct s_execute *prev;
   	struct s_execute *next;
 }	t_execute;
@@ -162,21 +162,26 @@ int			is_valid_cmd(note_type last_type);
 char		*type_to_string(note_type type);
 note_type	get_last_type(t_line_lst *node);
 int			is_word(char c);
-int			ft_isspecial(char chr);
-int 		space_case(t_line_lst **line_lst);
+
 t_line_lst	*lexer(char *line);
 t_line_lst	*parser(char *line);
 t_line_lst	*fil_list(char *line);
 
 //specialchar.c
-int			pipe_case(t_line_lst **line_lst);
-int			less_than_case(t_line_lst **line_lst, char *line);
-int			greater_than_case(t_line_lst **line_lst, char *line);
-int			dolar_special_case(t_line_lst **line_lst, char next_char);
-int			dolar_sign_case(t_line_lst **line_lst, char *line);
+int 		space_case(t_line_lst **line_lst, int state);
+int			pipe_case(t_line_lst **line_lst, int state);
+int			less_than_case(t_line_lst **line_lst, char *line, int state);
+int			greater_than_case(t_line_lst **line_lst, char *line, int state);
+int			dolar_special_case(t_line_lst **line_lst, char next_char, int state);
+int			dolar_sign_case(t_line_lst **line_lst, char *line, int state);
 
-// unknown
-int			word_case(t_line_lst **line_lst, char *line, enum enum_state *state);
+// lexer.c
+int			ft_isspecial(char chr);
+int			word_case(t_line_lst **line_lst, char *line, int state);
+int			quotes(t_line_lst *line_lst, char c, int state);
+
+// expander.c
+t_line_lst	*expander(t_line_lst *line_lst);
 
 //grammarchecker.c
 int		is_valid_grammer(t_line_lst *head);
@@ -188,6 +193,7 @@ void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
+char 		*make_string(t_line_lst *line_lst);
 
 /* Main */
 int		shell(char *line, char **envp);
@@ -195,5 +201,5 @@ int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
-
+int	ft_isredirect(char *str);
 #endif

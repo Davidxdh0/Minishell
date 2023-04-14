@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/07 18:20:11 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/13 21:59:40 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	printf("index\ttype\tlen\ttype_name\tstate\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%d\t%s\t%d\t\"%s\"\n" ,i, node->type, node->len, \
+		printf("%d\t%d\t%d\t%s\t%d\t%s\n" ,i, node->type, node->len, \
 			type_to_string(node->type), (int)node->state, node->value);
 		node = node->next;
 		i++;
@@ -76,7 +76,7 @@ void	delete_t_list(t_line_lst **head)
 	}
 }
 
-void	add_at_end_of_list(t_line_lst **head, int type, char *value, enum enum_state *state)
+void	add_at_end_of_list(t_line_lst **head, int type, char *value, int state)
 {
 	t_line_lst	*new_node;
 	t_line_lst	*temp;

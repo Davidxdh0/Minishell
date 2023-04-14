@@ -17,7 +17,7 @@ int	ft_isspecial(char chr)
 		|| chr == '|' || chr == '\0' ||  chr == '\'' || chr == '\"');
 }
 
-int	word_case(t_line_lst **line_lst, char *line, enum enum_state *state)
+int	word_case(t_line_lst **line_lst, char *line, int state)
 {
 	int		i;
 	int		len;
@@ -25,18 +25,19 @@ int	word_case(t_line_lst **line_lst, char *line, enum enum_state *state)
 
 	i = 0;
 	last = get_last_type(*line_lst);
+	// printf("last = %d", last);
 	if (!ft_isspecial(line[i]))
 	{
 		len = 0;
 		while (!ft_isspecial(line[i + len]))
 		{
-			printf("character = %c\n", line[i + len]);
+			// printf("character = %c\n", line[i + len]);
 			len++;
 		}
-		printf("state = %d", (int)state);
+		// printf("state = %d", (int)state);
 		if (last == e_start || last == e_pipe)
 			add_at_end_of_list(line_lst, e_cmd, ft_substr(line, i, len), state);
-		if (last == e_cmd || last == e_word || last == e_delimiter || last == e_quote || last == e_dquote)
+		if (last == e_cmd || last == e_word || last == e_delimiter || last == e_quote || last == e_dquote || last == e_whitespace )
 			add_at_end_of_list(line_lst, e_word, ft_substr(line, i, len), state);
 		if (last == e_redirect_i || last == e_redirect_o || last == e_append)
 			add_at_end_of_list(line_lst, e_file, ft_substr(line, i, len), state);
@@ -45,35 +46,32 @@ int	word_case(t_line_lst **line_lst, char *line, enum enum_state *state)
 	return (i);
 }
 
-int	quotes(t_line_lst *line_lst, char c, enum enum_state *state)
+int	quotes(t_line_lst *line_lst, char c, int state)
 {
-	// int i = 0;
-	// // int j = 0;
-	// int dquote = 0;
-	// int quote = 0;
-	char chr  = c;
-	if (chr == 's')
-		return (1);
-	// printf("s %s\n", line_lst->state);
-	// printf("%s\n", line_lst->value);
-	state = 0;
-	add_at_end_of_list(&line_lst, e_quote, "\"", state);
-	// if (c == '\'')
-	// 	if (quote == 0)
-	// 		quote = 1; //open
-	// 	else
-	// 		quote = 0; // closed
-	// else if (c == '\"')
-	// {
-	// 	if (dquote == 0)
-	// 	{
-	// 		dquote = 1;
-	// 	}
-	// 	else
-	// 	{
-	// 		dquote = 0; // closed
-	// 	}
-	// }
-	// i++;
-	return (1);
+	int flag;
+
+	flag = state;
+	if (c == '\'')
+	{
+		if (state == 0)
+			state = 1;
+		else if (state == 1)
+			state = 0;
+	}
+	else
+	{
+		if (state == 0)
+			state = 2;
+		else if (state == 2)
+			state = 0;
+	}
+	if (flag > 0 && c == '\'')
+		add_at_end_of_list(&line_lst, e_quote, "\'", flag);
+	else if ((flag > 0 && c == '\"'))
+		add_at_end_of_list(&line_lst, e_quote, "\"", flag);
+	else if (c == '\'')
+		add_at_end_of_list(&line_lst, e_quote, "\'", state);
+	else
+		add_at_end_of_list(&line_lst, e_quote, "\"", state);
+	return (state);
 }
