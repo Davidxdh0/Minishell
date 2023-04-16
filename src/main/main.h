@@ -115,6 +115,7 @@ void	close_fd_dup(t_data *data, int *stin, int *stout);
 void	test_lists(t_line_lst *head, char **envp);
 
 void	executor_dcs(t_execute *cmd_struct, char **envp); //DCS
+int		ft_heredoc(t_execute *cmd_struct, char **envp, char *eof); //DCS
 
 //errors.c
 int		msg_error_code(char *err, int code);

@@ -20,7 +20,8 @@ EXECUTE_FI	=	executor.c \
 				builtin.c \
 				messages.c \
 				executor_dcs.c \
-				builtin_dcs.c
+				builtin_dcs.c \
+				heredoc_dcs.c
 				
 BUILTIN_FI  =	echo.c \
 				cd.c \

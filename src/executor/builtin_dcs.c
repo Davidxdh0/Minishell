@@ -12,7 +12,7 @@
 
 #include "../main/main.h"
 
-static bool		echo_option(char *str)
+static bool	echo_option(char *str)
 {
 	int	i;
 
@@ -27,13 +27,14 @@ static bool		echo_option(char *str)
 			return (false);
 		i++;
 	}
-	return(true);
+	return (true);
 }
 
 void	ft_echo(t_execute *cmd_struct, int fd)
 {
 	int		i;
 	bool	n;
+
 	i = 1;
 	if (cmd_struct->cmd[i])
 		n = echo_option(cmd_struct->cmd[i]);
@@ -52,7 +53,7 @@ void	ft_echo(t_execute *cmd_struct, int fd)
 
 void	ft_pwd(int fd)
 {
-	char	*buf;  // working directory name is capped (at 1024) by a certain rule, source needed
+	char	*buf; // working directory name is capped (at 1024) by a certain rule, source needed
 
 	buf = getcwd(NULL, 0);
 	write(fd, buf, ft_strlen(buf));
@@ -74,7 +75,6 @@ bool	ft_env(char **envp, int fd)
 	}
 	return (true);
 }
-
 
 int	ft_getenv_int(const char *name, char **envp)
 {
@@ -100,9 +100,8 @@ void	ft_export(char *cmd, char **envp, int fd)
 {
 	char	*target;
 	int		env;
-	// char	*envstr;
 	int		i;
-	
+
 	target = NULL;
 	i = 0;
 	// cmd_struct->cmd[1] = ft_strdup("TERM=YATTAAAA");
@@ -142,12 +141,13 @@ void	ft_export(char *cmd, char **envp, int fd)
 	// // If no need to free, this should work, but depending on space, just write into it?
 	// ft_env(envp, 1);
 }
+
 void	ft_unset(char *cmd, char **envp, int fd)
 {
 	char	*target;
 	int		env;
 	int		i;
-	
+
 	i = 0;
 	target = NULL;
 	// cmd = ft_strdup("TERM=YATTAAAA");
@@ -201,7 +201,19 @@ void	ft_cd(t_execute *cmd_struct, char **envp, char *path)
 	printf("Current PWD = %s\n", getcwd(NULL, 0));
 }
 
-void	ft_exit(t_execute *cmd_struct, char **envp)
+void	ft_exit(t_execute *cmd_struct, char **envp) // add an fd?
 {
-	
+	// write(1, "Exit\n", 5);
+	// if (cmd_struct->next || cmd_struct->prev)
+	// 	return (EXIT_FAILURE); // it doesnt work when piped, still needs to throw errors first
+	// if (!cmd_struct->cmd[1])
+	// {
+	// 	// free(shit that needs freeing);
+	// 	// return (exit status)
+	// }
+	// else if (cmd_struct->cmd[2])
+	// {
+	// 	// error: too many argument
+	// }
+	// // check if arg 1 is 
 }

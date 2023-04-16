@@ -18,198 +18,6 @@ int	ft_exit_error(char *str, int err)
 	exit (err);
 }
 
-/*
-bool	malloc_perror(void *str, char **arr)
-{
-	if (!(str || arr))
-	{
-		perror("Malloc Failed");
-		return (true);
-	}
-	return (false);
-}
-
-char	**free_char_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return (NULL);
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-	return (NULL);
-}
-
-bool	is_path(char *exec_argv)
-{
-	if (exec_argv[0] == '/')
-		return (true);
-	if (exec_argv[0] == '.' && exec_argv[1] == '/')
-		return (true);
-	if (exec_argv[0] == '.' && exec_argv[1] == '.' && \
-	exec_argv[2] == '/')
-		return (true);
-	return (false);
-}
-
-char	*ft_getenv(const char *name, char **envp)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (envp[i])
-	{
-		j = 0;
-		while (name[j] == envp[i][j])
-		{
-			j++;
-			if (!name[j])
-				return (envp[i] + j);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-char	*find_command(char **path, char *basepath)
-{
-	int		i;
-	char	*access_path;
-
-	i = 0;
-	access_path = NULL;
-	while (!access_path)
-	{
-		access_path = ft_strjoin(path[i], basepath);
-		if (malloc_perror(access_path, NULL))
-			exit(errno);
-		if (path[i + 1] && access(access_path, F_OK))
-		{
-			free(access_path);
-			access_path = NULL;
-			i++;
-		}
-	}
-	return (access_path);
-}
-
-char	*get_path(char *exec_argv, char **path)
-{
-	char	*base_path;
-	char	*access_path;
-
-	access_path = NULL;
-	base_path = ft_strjoin("/", exec_argv);
-	if (malloc_perror(base_path, NULL))
-		exit(errno);
-	access_path = find_command(path, base_path);
-	free_char_array(path);
-	free(base_path);
-	return (access_path);
-}
-
-char	*check_path(char *exec_argv, char **envp)
-{
-	char	**path;
-	char	*env_hold;
-
-	if (!exec_argv)
-		return (NULL);
-	if (!exec_argv[0])
-		return ("");
-	if (is_path(exec_argv))
-		return (ft_strdup(exec_argv));
-	env_hold = ft_getenv("PATH=", envp);
-	if (env_hold)
-	{
-		path = ft_split(env_hold, ':');
-		if (malloc_perror(NULL, path))
-			exit(errno);
-		return (get_path(exec_argv, path));
-	}
-	else
-		return (ft_strdup(exec_argv));
-}
-
-
-static void	child1(int *p, char **argv, char **envp)
-{
-	char	**exec_argv;
-	char	*access_path;
-
-	close(p[0]);
-	if (dup2(open(argv[1], O_RDONLY), STDIN_FILENO) == -1)
-		exit(errno);
-	if (dup2(p[1], STDOUT_FILENO) == -1)
-		exit(errno);
-	close(p[1]);
-	exec_argv = ft_split(argv[2], ' ');
-	if (malloc_perror(NULL, exec_argv))
-		exit(errno);
-	access_path = check_path(exec_argv[0], envp);
-	execve(access_path, exec_argv, envp);
-	exit(127);
-}
-
-static void	child2(int *p, char **argv, char **envp)
-{
-	char	**exec_argv;
-	char	*access_path;
-
-	if (!argv[4][0])
-	{
-		printf("Error: Cannot Create File With Empty Name\n");
-		exit(258);
-	}
-	close(p[1]);
-	if (dup2(p[0], STDIN_FILENO) == -1)
-		exit(errno);
-	if (dup2(open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644) \
-	, STDOUT_FILENO) == -1)
-		exit(errno);
-	close(p[0]);
-	exec_argv = ft_split(argv[3], ' ');
-	if (malloc_perror(NULL, exec_argv))
-		exit(errno);
-	access_path = check_path(exec_argv[0], envp);
-	execve(access_path, exec_argv, envp);
-	exit(127);
-}
-
-static int	ft_pipex(char **argv, char **envp)
-{
-	int		p[2]; // use clear variable names
-	int		pid[2];
-	int		exit_code;
-	int		status;
-
-	if (pipe(p) == -1)
-		exit(errno);
-	pid[0] = fork();
-	if (pid[0] == -1)
-		exit (errno);
-	if (pid[0] == 0)
-		child1(p, argv, envp);
-	pid[1] = fork();
-	if (pid[1] == -1)
-		exit (errno);
-	if (pid[1] == 0)
-		child2(p, argv, envp);
-	close(p[0]);
-	close(p[1]);
-	waitpid(pid[0], &status, 0); // only wait for last command
-	waitpid(pid[1], &status, 0);
-	exit_code = WEXITSTATUS(status);
-	return (exit_code);
-}
-*/
-
 bool	malloc_perror(void *str, char **arr)
 {
 	if (!(str || arr))
@@ -438,7 +246,6 @@ static void	last_child(int *pipes, t_execute *cmd_struct)
 
 void	ft_needsname(t_execute *cmd_struct)
 {
-	// char	*cmd_path;
 	int		**pipes;
 	int		*pid;
 	int		i;
@@ -497,7 +304,6 @@ printf("#i after middle loop = %d\n", i);
 	// ft_exit_error("Execve Failed", 11);
 }
 
-
 void	executor_dcs(t_execute *cmd_struct, char **envp)
 {
 printf("\nStart Executing\n");
@@ -505,7 +311,7 @@ printf("\nStart Executing\n");
 int	fd;
 
 fd = 1;
-// ft_pwd(fd);
+ft_pwd(fd);
 // int	i = 0;
 // 	cmd_struct->cmd[i++] = ft_strdup("echo");
 // 	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
@@ -514,15 +320,16 @@ fd = 1;
 // 	cmd_struct->cmd[i++] = NULL;
 // ft_echo(cmd_struct, 1);
 // ft_env(envp, 1);
-ft_cd(cmd_struct, envp, "");
+// ft_cd(cmd_struct, envp, "");
 // ft_export(cmd_struct, envp, fd);
 // ft_unset(cmd_struct, envp, fd);
-ft_env(envp, 1);
+// ft_env(envp, 1);
+ft_heredoc(cmd_struct, envp, " ");
 exit(117);
 
-	t_execute *next;
+	t_execute	*next;
 	next = cmd_struct->next;
-	cmd_struct->count_cmd = 1; 
+	cmd_struct->count_cmd = 1;
 	while (next)
 	{
 		next = next->next;
