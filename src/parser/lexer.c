@@ -1,113 +1,77 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        ::::::::            */
-// /*   lexer.c                                            :+:    :+:            */
-// /*                                                     +:+                    */
-// /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
-// /*                                                   +#+                      */
-// /*   Created: 2023/03/03 15:20:47 by dyeboa        #+#    #+#                 */
-// /*   Updated: 2023/03/03 15:34:18 by dyeboa        ########   odam.nl         */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   lexer.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/03/03 15:20:47 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/03 15:34:18 by dyeboa        ########   odam.nl         */                                                           
+/* ************************************************************************** */
 
-// #include "../main/main.h"
+#include "../main/main.h"
 
-// t_line_lst	*lexer(char *line)
-// {
-// 	t_line_lst	*head;
+int	ft_isspecial(char chr)
+{
+	return(ft_isspace(chr) || chr == '$' || chr ==  '<' || chr == '>' || chr == '\n' \
+		|| chr == '|' || chr == '\0' ||  chr == '\'' || chr == '\"');
+}
 
-// 	head = fil_list(line);
-// 	// check if list is valid
-// 	return (head);
-// }
+int	word_case(t_line_lst **line_lst, char *line, int state)
+{
+	int		i;
+	int		len;
+	note_type	last;
 
-// t_line_lst	*parser(char *line)
-// {
-// 	t_line_lst	*head;
+	i = 0;
+	last = get_last_type(*line_lst);
+	// printf("last = %d", last);
+	if (!ft_isspecial(line[i]))
+	{
+		len = 0;
+		while (!ft_isspecial(line[i + len]))
+		{
+			// printf("character = %c\n", line[i + len]);
+			len++;
+		}
+		// printf("state = %d", (int)state);
+		if (last == e_start || last == e_pipe)
+			add_at_end_of_list(line_lst, e_cmd, ft_substr(line, i, len), state);
+		if (last == e_cmd || last == e_word || last == e_delimiter || last == e_quote || last == e_dquote || last == e_whitespace )
+			add_at_end_of_list(line_lst, e_word, ft_substr(line, i, len), state);
+		if (last == e_redirect_i || last == e_redirect_o || last == e_append)
+			add_at_end_of_list(line_lst, e_file, ft_substr(line, i, len), state);
+		i += len;
+	}
+	return (i);
+}
 
-// 	head = fil_list(line);
-// 	// check if list is valid
-// 	return (head);
-// }
+int	quotes(t_line_lst *line_lst, char c, int state)
+{
+	int flag;
 
-
-// t_line_lst	*fil_list(char *line)
-// {
-// 	t_line_lst	*head;
-// 	note_type	last_type;
-// 	int			i;
-// 	int			len;
-
-// 	i = 0;
-// 	head = NULL;
-// 	//line = ft_strtrim(line, " ");
-// 	while (line[i])
-// 	{
-// 		last_type = get_last_type(head);
-
-// 		if (line[i] == '|')
-// 			add_at_end_of_list(&head, e_pipe, "|");
-// 		else if (line[i] == '"')
-// 			add_at_end_of_list(&head, e_dquote, "\"");
-// 		else if (line[i] == ' ')
-// 			add_at_end_of_list(&head, e_whitespace, " ");
-// 		else if (line[i] == '<')
-// 		{
-// 			i++; 
-// 			if (line[i] != '<')
-// 			{
-// 				add_at_end_of_list(&head, e_redirect_i, "<");
-// 				continue;
-// 			}
-// 			add_at_end_of_list(&head, e_delimiter, "<<");
-// 		}	
-// 		else if (line[i] == '>')
-// 		{
-// 			i++;
-// 			if (line[i] != '>')
-// 			{
-// 				add_at_end_of_list(&head, e_redirect_o, ">");
-// 				continue;
-// 			}	
-// 			add_at_end_of_list(&head, e_append, ">>");
-// 		}
-// 		else if (line[i] == '$')
-// 		{
-// 			i++;
-// 			if (line[i] == '?')
-// 			{
-// 				add_at_end_of_list(&head, e_var, "$?");
-// 				i++;
-// 				continue;
-// 			}
-// 			if (line[i] == '$')
-// 			{
-// 				add_at_end_of_list(&head, e_var, "$$");
-// 				i++;
-// 				continue;
-// 			}	
-// 			len = 0;
-// 			while (line[i + len] && ft_isascii(line[i + len]) && line[i + len] != ' ')
-// 				len++;
-// 			add_at_end_of_list(&head, e_var, ft_substr(line, i, len));
-// 			i += len - 1;
-// 		}
-// 		else if (ft_isascii(line[i]) && line[i] != ' ')
-// 		{
-// 			len = 0;
-// 			while (line[i + len] && ft_isascii(line[i + len]) && line[i + len] != ' ')
-// 				len++;
-// 			if (last_type == e_start || last_type == e_pipe)
-// 				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
-// 			if (last_type == e_cmd || last_type == e_word || last_type == e_delimiter ||  last_type == e_whitespace)
-// 				add_at_end_of_list(&head, e_word, ft_substr(line, i, len));
-// 			if (last_type == e_redirect_i || last_type == e_redirect_o || last_type == e_append)
-// 				add_at_end_of_list(&head, e_file, ft_substr(line, i, len));
-// 			if (line[i + len] != ' ')
-// 				len++;
-// 			i += len - 1;
-// 		}
-// 		i++;
-// 	}
-// 	return (head);
-// }
+	flag = state;
+	if (c == '\'')
+	{
+		if (state == 0)
+			state = 1;
+		else if (state == 1)
+			state = 0;
+	}
+	else
+	{
+		if (state == 0)
+			state = 2;
+		else if (state == 2)
+			state = 0;
+	}
+	if (flag > 0 && c == '\'')
+		add_at_end_of_list(&line_lst, e_quote, "\'", flag);
+	else if ((flag > 0 && c == '\"'))
+		add_at_end_of_list(&line_lst, e_quote, "\"", flag);
+	else if (c == '\'')
+		add_at_end_of_list(&line_lst, e_quote, "\'", state);
+	else
+		add_at_end_of_list(&line_lst, e_quote, "\"", state);
+	return (state);
+}
