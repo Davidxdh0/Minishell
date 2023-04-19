@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/26 15:50:48 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/08 09:03:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/14 12:06:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ size_t	    ft_strlcat(char	*dest, const char *src, size_t dstsize);
 size_t	    ft_strlen(const char *s);
 void	    ft_putstr_fd(char *s, int fd);
 void	    ft_putendl_fd(char *s, int fd);
+int			ft_strcmp(const char *str1, const char *str2);
 int		    ft_strncmp(const char *str1, const char *str2, size_t n);
 char	    *ft_strnstr(const char *big, const char *little, size_t len);
 char	    *ft_strstr(const char *str, const char *to_find);

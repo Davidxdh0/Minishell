@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:02 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/17 15:26:04 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/07 17:52:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,19 @@ int	is_valid_var(note_type last_type)
 	return (0);
 }
 
+int	is_valid_quote(note_type last_type)
+{
+	if (last_type == e_whitespace)
+		return (1);
+	if (last_type == e_quote)
+		return (1);
+		if (last_type == e_dquote)
+		return (1);
+	if (last_type == e_word)
+		return (1);
+	return (0);
+}
+
 int	is_valid_type(note_type type, t_line_lst *node)
 {
 	note_type	last_type;
@@ -78,6 +91,10 @@ int	is_valid_type(note_type type, t_line_lst *node)
 		return (is_valid_word(last_type));
 	if (type == e_var)
 		return (is_valid_var(last_type));
+	if (type == e_quote)
+		return (is_valid_var(last_type));	
+	if (type == e_dquote)
+		return (is_valid_var(last_type));	
 	return (0);
 }
 
