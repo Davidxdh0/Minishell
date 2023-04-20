@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 13:27:48 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/20 14:20:41 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,48 +26,35 @@ t_line_lst	*expander(t_line_lst *line_lst)
 			// printf("next");
 			line_lst->prev->next = line_lst->next;
 		}
-		while (line_lst->next != NULL && line_lst->next->state > 0)
+		else if (line_lst != NULL && line_lst->state > 0)
 		{
-			line_lst = line_lst->next;
-			tempstring = ft_strjoin(tempstring, line_lst->value);
+			// printf("value = %s\n", line_lst->value);
+			line_lst = word_list(line_lst);
 		}
-		line_lst = line_lst->next;
+		if (line_lst != NULL)
+			line_lst = line_lst->next;
 	}
 	// printf("string = %s\n", tempstring);
 	return (temp);
 }
 
-// t_execute *alloc_execute_list(t_line_lst *head)
-// {
-// 	int i;
-// 	int k;
-// 	t_execute *cmdlist = NULL;
-//  	t_execute *last = NULL;
-	
-// 	while (head != NULL)
-// 	{
-// 		i = count_commands(head);
-// 		k = 0;
-// 		t_execute *new_node = malloc(sizeof(t_execute));
-//         new_node->cmd = malloc(sizeof(char *) * (i + 1));
-//         new_node->next = NULL;
-// 		while (head != NULL && k < i)
-// 		{
-//             new_node->cmd[k] = ft_strdup(head->value);
-//             // printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
-//             head = head->next;
-//             k++;
-// 		}
-// 		new_node->cmd[k] = NULL;
-// 		if (last == NULL)
-//             cmdlist = new_node;
-//         else
-//             last->next = new_node;
-// 		last = new_node;
-// 		if (head != NULL && !ft_strncmp(head->value,"|", 1))
-// 			;// printf("value head == %s\n", head->value);
-// 		if (head != NULL)
-// 			head = head->next;
-// 	}
-// 	return (cmdlist);
-// }
+t_line_lst	*word_list(t_line_lst *line)
+{
+	t_line_lst *temp;
+	temp = line;
+	char *str;
+	int i = 0;
+	while (temp != NULL && temp->state > 0)
+	{
+		printf("tempvalue = %s en str = %s\n", temp->value, str);
+		str = ft_strjoin(str, temp->value);
+		temp = temp->next;
+		i++;
+	}
+
+	// // free(line->value);
+	line->value = NULL;
+	line->value = ft_strdup(str);
+	line->next = temp;
+	return (line);
+}

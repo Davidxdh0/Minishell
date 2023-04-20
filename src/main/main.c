@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 15:17:05 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/20 14:09:29 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,17 +234,19 @@ int	shell(char *line, char **envp)
 	int i;
 	i = 0;
 	line_lst = parser(line);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	line_lst = expander(line_lst);
-	// show_t_list(line_lst, line);
-	cmd = alloc_execute_list(line_lst);
-	cmd = acco(cmd);
-	show(cmd);
+	show_t_list(line_lst, line);
+	// cmd = alloc_execute_list(line_lst);
+	// cmd = acco(cmd);
+	// show(cmd);
+	printf("\n");
 	// execute_cmd_list(cmd, &data);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
 	// test_lists(line_lst, envp);
 	i++;
+	cmd = NULL;
 	delete_t_list(&line_lst);
 	envp++;	// temp until using envp
 	return (1);

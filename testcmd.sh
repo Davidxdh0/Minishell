@@ -22,7 +22,7 @@
 # ./minishell -p 'echo -n -n Hello'
 # ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'
-# ./minishell -p 'echo "s ' USER ' s"' 
+# ./minishell -p 'echo "s ' USER ' s" | echo "USER"'
 # ./minishell -p 'echo "USER"'
 # ./minishell -p 'echo $USER
 # ./minishell -p 'echo $USER'

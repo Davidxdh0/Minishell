@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 13:56:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/20 13:49:48 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ int			quotes(t_line_lst *line_lst, char c, int state);
 
 // expander.c
 t_line_lst	*expander(t_line_lst *line_lst);
+t_line_lst	*word_list(t_line_lst *line);
 
 //grammarchecker.c
 int		is_valid_grammer(t_line_lst *head);
