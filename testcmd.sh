@@ -18,11 +18,11 @@
 # ./minishell -p 'echo -nn Hello'
 # ./minishell -p 'echo -nns Hello World'
 
-./minishell -p 'echo "hello  $USER" > file | grep h | cat >> file | echo "done"'
+# ./minishell -p 'echo "hello  $USER" > file | grep h | cat >> file | echo "done"'
 # ./minishell -p 'echo -n -n Hello'
 # ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'
-# ./minishell -p 'echo "s ' USER ' s" | echo "USER"'
+# ./minishell -p 'echo "s ' USER ' s" | echo "USER"          s '
 # ./minishell -p 'echo "USER"'
 # ./minishell -p 'echo $USER
 # ./minishell -p 'echo $USER'
@@ -43,3 +43,6 @@
 
 # ./minishell -p 'env'
 # ./minishell -p 'top'
+
+./minishell -p '  ls | cat | cat | cat           | cat -e'
+# ./minishell -p 'ls | cat | cat -e | cat | cat -e'

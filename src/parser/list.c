@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/13 21:59:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/20 18:04:21 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value, int state)
 {
 	t_line_lst	*new_node;
 	t_line_lst	*temp;
-	static int i;
 
-	i = 0;
 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
 	new_node->next = NULL;
 	new_node->type = type;

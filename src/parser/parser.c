@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 15:18:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/20 18:02:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_line_lst	*parser(char *line)
 	// printf("%s\n", line);
 	while (line[i])
 	{
-		// printf("%c\n", line[i]);
+		printf("c = %c\n", line[i]);
 		if (!ft_isspecial(line[i]))
 			i += word_case(&line_lst, line + i, state);
 		else if (line[i] == '\"')
@@ -67,9 +67,13 @@ t_line_lst	*parser(char *line)
 		else if (line[i] == '$')
 			i += dolar_sign_case(&line_lst, &line[i], state);
 		else if (ft_isspace(line[i]))
+		{
+			printf("sd\n");
 			i += space_case(&line_lst, state);
+		}
 		else
 			i++;
+		printf("list = %s", line_lst->value);
 	}
 	return (line_lst);
 }
