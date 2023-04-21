@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/20 18:02:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 08:56:50 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,8 +235,8 @@ int	shell(char *line, char **envp)
 	i = 0;
 	line_lst = parser(line);
 	show_t_list(line_lst, line);
-	// line_lst = expander(line_lst);
-	// show_t_list(line_lst, line);
+	line_lst = expander(line_lst);
+	show_t_list(line_lst, line);
 	// cmd = alloc_execute_list(line_lst);
 	// cmd = acco(cmd);
 	// show(cmd);

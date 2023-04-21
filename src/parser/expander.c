@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/20 17:06:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 09:18:22 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,22 @@ t_line_lst	*expander(t_line_lst *line_lst)
 			line_lst = word_list(line_lst);
 		}
 		// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
-		if (line_lst->type == e_whitespace && line_lst->state == 0)
+		else if (line_lst->type == e_whitespace && line_lst->state == 0)
 		{
+			printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);
 			line_lst = whitespaces_list(line_lst);
 			if (line_lst->prev == NULL) // check if it's the head node
 			{
 				temp = line_lst->next;
 				free(line_lst);
 				line_lst = temp;
-				continue; // skip to the next node
+				// continue; // skip to the next node
 			}
 
-			// line_lst->value = ft_strjoin(line_lst->value, "whitespace");
-			// line_lst->prev->next = line_lst->next;
+			line_lst->value = ft_strjoin(line_lst->value, "-----------------");
+			
+			line_lst->prev->next = line_lst->next;
+			// printf("last = %s\n", line_lst->value);
 		}
 		if (line_lst != NULL)
 			line_lst = line_lst->next;
