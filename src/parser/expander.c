@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 09:18:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 12:07:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,22 @@ t_line_lst	*expander(t_line_lst *line_lst)
 	while (line_lst != NULL)
 	{
 		tempstring = ft_strdup(line_lst->value);
-		// if (line_lst->type == e_whitespace && line_lst->state == 0)
-		// {
-		// 	line_lst->prev->next = line_lst->next;
-		// }
+		
 		if (line_lst != NULL && line_lst->state > 0)
 		{
 			// printf("value = %s\n", line_lst->value);
 			line_lst = word_list(line_lst);
+			// if (line_lst->next != NULL)
+			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
+			if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
+			{
+				line_lst->next = line_lst->next->next;
+			}
 		}
 		// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
 		else if (line_lst->type == e_whitespace && line_lst->state == 0)
 		{
-			printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);
+			// printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);
 			line_lst = whitespaces_list(line_lst);
 			if (line_lst->prev == NULL) // check if it's the head node
 			{
@@ -43,7 +46,7 @@ t_line_lst	*expander(t_line_lst *line_lst)
 				line_lst = temp;
 				// continue; // skip to the next node
 			}
-
+			// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
 			line_lst->value = ft_strjoin(line_lst->value, "-----------------");
 			
 			line_lst->prev->next = line_lst->next;
@@ -61,6 +64,7 @@ t_line_lst	*word_list(t_line_lst *line)
 	temp = line;
 	char *str;
 	int i = 0;
+	str = "";
 	while (temp != NULL && temp->state > 0)
 	{
 		// printf("tempvalue = %s en str = %s\n", temp->value, str);
@@ -86,6 +90,32 @@ t_line_lst	*whitespaces_list(t_line_lst *line)
 	{
 		temp = temp->next;
 		i++;
+	}
+	line->next = temp;
+	return (line);
+}
+
+t_line_lst	*lookup_env(t_line_lst *line)
+{
+	t_line_lst *temp;
+	temp = line;
+
+	int i = 0;
+	while (temp != NULL)
+	{
+		if (temp->type == e_quote && temp->state == 2)
+		{
+			while (temp->value[i])
+			{
+				if (temp->value[i] != "$")
+				{
+					if (temp->value[i+1])
+				}
+						
+			}
+
+		}
+		temp = temp->next;
 	}
 	line->next = temp;
 	return (line);

@@ -1,12 +1,10 @@
-enkel quotes
-cmdlist
-	- dubbele quotes begin en eind weghalen
-redirects
-	- files eruit halen en in lijst
+Vandaag:
 checken of de quotes goed staan
 input check
 checken of er geen twee speciale tekens achter elkaar staan.
 expander
 testen
-signals
+toets
+testen
+
 

@@ -52,6 +52,7 @@ int	quotes(t_line_lst *line_lst, char c, int state)
 	int flag;
 
 	flag = state;
+	printf("c = %c\n", c);
 	if (c == '\'')
 	{
 		if (state == 0)

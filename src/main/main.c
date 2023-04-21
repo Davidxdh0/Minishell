@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 08:56:50 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 11:38:09 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
 			if (head->state > 0)
 			{
 				temp = make_string(head);
-				if (temp[0] == '\"')
+				if (temp[0] == '\"' || temp[0] == '\'')
 					new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
 				while (head != NULL && head->state > 0)
 					head = head->next;
@@ -237,9 +237,9 @@ int	shell(char *line, char **envp)
 	show_t_list(line_lst, line);
 	line_lst = expander(line_lst);
 	show_t_list(line_lst, line);
-	// cmd = alloc_execute_list(line_lst);
-	// cmd = acco(cmd);
-	// show(cmd);
+	cmd = alloc_execute_list(line_lst);
+	cmd = acco(cmd);
+	show(cmd);
 	printf("\n");
 	// execute_cmd_list(cmd, &data);
 	// if (!is_valid_grammer(line_lst))
