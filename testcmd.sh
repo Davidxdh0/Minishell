@@ -6,8 +6,31 @@
 
 
 
+# ./minishell -p 'ls -la | cat | wc -l'
+# ./minishell -p 'ls -la | wc | cat -e'
+# ./minishell -p 'ls -la | ls | cat'
+# ./minishell -p 'ls -la | cat -e | cat | cat | cat -e'
+# ./minishell -p 'ls -la | wc | ls'
+# ./minishell -p 'ls -la > outfile | < Makefile wc -l > outfile | cat -e > outfile'
+./minishell -p 'ls -la > outfile | unset | cat -e'
 
-./minishell -p 'ls | cat -e'
+# ./minishell -p 'ls | cat | grep m | ls -la | cat | wc | cat -e'
+# ./minishell -p 'ls | cat | grep m | ls -la | cat -e | cat | cat -e'
+
+# ./minishell -p 'cat file.txt'
+# ./minishell -p 'cat file.txt | cat | cat'
+# ./minishell -p 'cat file.txt | cat | cat'
+# ./minishell -p 'cat file.txt | cat | cat'
+# ./minishell -p 'cat file.txt | cat | cat'
+# ./minishell -p 'cat file.txt | cat | cat'
+# ./minishell -p 'cat file.txt | cat -e file.txt'
+# ./minishell -p 'cat file.txt | cat | cat -e'
+# ./minishell -p 'cat file.txt | cat | cat -e'
+# ./minishell -p 'cat file.txt | cat | cat -e'
+# ./minishell -p 'cat file.txt | cat | cat -e'
+# ./minishell -p 'cat file.txt | cat -e'
+
+# ./minishell -p 'ls | ls | ls | ls'
 
 
 
@@ -19,7 +42,8 @@
 
 
 
-# ./minishell -p 'ls'
+
+# ./minishell -p 'ls -l'
 #./minishell -p 'export'
 # ./minishell -p 'export'  'export' 'export'
 # ./minishell -p 'export test'
@@ -38,7 +62,7 @@
 # ./minishell -p 'echo -nns Hello World'
 
 # ./minishell -p 'echo "hello  $USER " > file | grep h | cat >> file | echo "done"'
-./minishell -p 'echo "hello  $USER" > file | grep h | cat >> file | echo "done"'
+# ./minishell -p 'echo "hello  $USER" > file | grep h | cat >> file | echo "done"'
 # ./minishell -p 'echo -n -n Hello'
 # ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'

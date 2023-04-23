@@ -215,7 +215,7 @@ void	show(t_execute *cmd)
 		i = 0;
 		while (cmd->cmd[i] != NULL)
 		{
-			printf("cmd = %s\n", cmd->cmd[i]);
+			printf("cmd[%d] = %s\n",i, cmd->cmd[i]);
 			i++;
 		}
 		i = 0;
@@ -238,11 +238,10 @@ int	shell(char *line, char **envp)
 	line_lst = expander(line_lst);
 	// show_t_list(line_lst, line);
 	cmd = alloc_execute_list(line_lst);
-	// cmd = acco(cmd);
+	cmd = acco(cmd);
 	show(cmd);
-
+	
 	executor_dcs(cmd, envp); //DCS
-
 	// execute_cmd_list(cmd, &data);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
@@ -250,7 +249,7 @@ int	shell(char *line, char **envp)
 	i++;
 	delete_t_list(&line_lst);
 	envp++;	// temp until using envp
-	return (1);
+	return (0);
 }
 
 int	main(int argc, char *argv[], char **envp)

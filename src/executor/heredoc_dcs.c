@@ -12,7 +12,6 @@
 
 #include "../main/main.h"
 
-
 static int	ft_exit_error(char *str, int err)
 {
 	printf("Error\n%s\n", str);
@@ -23,7 +22,6 @@ static int	ft_exit_error(char *str, int err)
 int	ft_heredoc(t_execute *cmd_struct, char **envp, char *eof)
 {
 printf("\nHere In This DOC\n");
-
 	char	*line;
 	int		len;
 	int		fd;
@@ -31,7 +29,7 @@ printf("\nHere In This DOC\n");
 	// eof will end up being in the struct
 	line = NULL;
 	len = ft_strlen(eof);
-	fd = open(".heredoc",O_CREAT, 0644);
+	fd = open(".heredoc", O_CREAT, 0644);
 	if (fd < 0)
 		ft_exit_error("Heredoc Tempfile Create Error", 16);
 	while (!line || ft_strncmp(line, eof, len))

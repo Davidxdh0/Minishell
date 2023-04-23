@@ -53,7 +53,7 @@ void	ft_echo(t_execute *cmd_struct, int fd)
 
 void	ft_pwd(int fd)
 {
-	char	*buf; // working directory name is capped (at 1024) by a certain rule, source needed
+	char	*buf; // wd name capped (at 1024) by a certain rule, source needed
 
 	buf = getcwd(NULL, 0);
 	write(fd, buf, ft_strlen(buf));
@@ -175,6 +175,7 @@ void	ft_unset(char *cmd, char **envp, int fd)
 	}
 	// ft_env(envp, 1);
 }
+
 void	ft_cd(t_execute *cmd_struct, char **envp, char *path)
 {
 	int		i;
