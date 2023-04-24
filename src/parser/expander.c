@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 12:07:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 12:14:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,28 +95,48 @@ t_line_lst	*whitespaces_list(t_line_lst *line)
 	return (line);
 }
 
-t_line_lst	*lookup_env(t_line_lst *line)
+char	*ft_getenv(const char *name, char **envp)
 {
-	t_line_lst *temp;
-	temp = line;
+	int	i;
+	int	j;
 
-	int i = 0;
-	while (temp != NULL)
+	i = 0;
+	while (envp[i])
 	{
-		if (temp->type == e_quote && temp->state == 2)
+		j = 0;
+		while (name[j] == envp[i][j])
 		{
-			while (temp->value[i])
-			{
-				if (temp->value[i] != "$")
-				{
-					if (temp->value[i+1])
-				}
-						
-			}
-
+			j++;
+			if (!name[j])
+				return (envp[i] + j);
 		}
-		temp = temp->next;
+		i++;
 	}
-	line->next = temp;
-	return (line);
+	return (NULL);
 }
+
+// t_line_lst	*lookup_env(t_line_lst *line)
+// {
+// 	t_line_lst *temp;
+// 	temp = line;
+
+// 	int i = 0;
+// 	while (temp != NULL)
+// 	{
+// 		if (temp->type == e_quote && temp->state == 2)
+// 		{
+// 			while (temp->value[i])
+// 			{
+// 				if (temp->value[i] == "$")
+// 				{
+// 					if (temp->value[i+1])
+// 				}
+						
+// 			}
+
+// 		}
+// 		temp = temp->next;
+// 	}
+// 	line->next = temp;
+// 	return (line);
+// }

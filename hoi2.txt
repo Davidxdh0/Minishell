@@ -1,4 +1,5 @@
 Vandaag:
+quotes nog beter testen.
 checken of de quotes goed staan
 input check
 checken of er geen twee speciale tekens achter elkaar staan.
@@ -6,5 +7,3 @@ expander
 testen
 toets
 testen
-
-

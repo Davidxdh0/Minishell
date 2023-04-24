@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 11:38:09 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/24 15:42:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ void	show(t_execute *cmd)
 			i++;
 		}
 		i = 0;
-		while (cmd->redirects[i] != NULL)
+		while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
 		{
 			printf("redir = %s\n", cmd->redirects[i]);
 			i++;
