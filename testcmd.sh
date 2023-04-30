@@ -12,7 +12,7 @@
 # ./minishell -p 'ls -la | cat -e | cat | cat | cat -e'
 # ./minishell -p 'ls -la | wc | ls'
 # ./minishell -p 'ls -la > outfile | < Makefile wc -l > outfile | cat -e > outfile'
-./minishell -p 'ls -la > outfile | unset | cat -e'
+./minishell -p 'ls -la > outfile | unset TEST | cat -e'
 
 # ./minishell -p 'ls | cat | grep m | ls -la | cat | wc | cat -e'
 # ./minishell -p 'ls | cat | grep m | ls -la | cat -e | cat | cat -e'

@@ -196,26 +196,6 @@ static bool	redirect_outfile(char **list)
 	return (file);
 }
 
-bool	check_builtin(char *arg)
-{printf("Checking Builtins\n"); //execute immediately in the builtins?
-
-	if (ft_strcmp(arg, "echo") == EXIT_SUCCESS)
-		return (true);
-	if (ft_strcmp(arg, "cd") == EXIT_SUCCESS)
-		return (true);
-	if (ft_strcmp(arg, "pwd") == EXIT_SUCCESS)
-		return (true);
-	if (ft_strcmp(arg, "export") == EXIT_SUCCESS)
-		return (true);
-	if (ft_strcmp(arg, "unset") == EXIT_SUCCESS)
-		return (true);
-	if (ft_strcmp(arg, "env") == EXIT_SUCCESS)
-		return (true);
-	if (ft_strcmp(arg, "exit") == EXIT_SUCCESS)
-		return (true);
-	return (false);
-}
-
 static void	first_child(int *pipe, t_execute *cmd_struct)
 {
 	char	*cmd_path;
@@ -231,20 +211,19 @@ static void	first_child(int *pipe, t_execute *cmd_struct)
 	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
 	// printf("\n Command Path = %s\n", cmd_path);
 	if (check_builtin(cmd_struct->cmd[0]))
-		// exec_builtin(cmd_struct, g_data.envp);
-		printf("EXEC Builtin\n");
-	else
 	{
-		execve(cmd_path, cmd_struct->cmd, g_data.envp);
-		ft_exit_error("Execve Failed", 13);
+		printf("EXEC Builtin, First\n");
+		exec_builtin(cmd_struct, g_data.envp);
 	}
+	else
+		execve(cmd_path, cmd_struct->cmd, g_data.envp);
+	ft_exit_error("First Child Survived", 13);
 }
 
 static void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct)
 {
 	char	*cmd_path;
 
-	// printf("This should be the same pointer, %p\n", pipe_out);
 	close(pipe_in[1]);
 	if (!redirect_infile(cmd_struct->redirects))
 	{	
@@ -262,20 +241,19 @@ static void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct)
 	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
 	// printf("\n Command Path = %s\n", cmd_path);
 	if (check_builtin(cmd_struct->cmd[0]))
-		// exec_builtin(cmd_struct, g_data.envp);
-		printf("EXEC Builtin\n");
-	else
 	{
-		execve(cmd_path, cmd_struct->cmd, g_data.envp);
-		ft_exit_error("Execve Failed", 17);
+		printf("EXEC Builtin, Middle\n");
+		exec_builtin(cmd_struct, g_data.envp);
 	}
+	else
+		execve(cmd_path, cmd_struct->cmd, g_data.envp);
+	ft_exit_error("Middle Child Survived", 17);
 }
 
 static void	last_child(int *pipe, t_execute *cmd_struct)
 {
 	char	*cmd_path;
 
-	// printf("This should be the same pointer, %p\n", pipe);
 	close(pipe[1]);
 	if (!redirect_infile(cmd_struct->redirects))
 	{	
@@ -290,13 +268,13 @@ static void	last_child(int *pipe, t_execute *cmd_struct)
 	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
 	// printf("\nCommand Path = %s\n", cmd_path);
 	if (check_builtin(cmd_struct->cmd[0]))
-		// exec_builtin(cmd_struct, g_data.envp);
-		printf("EXEC Builtin\n");
-	else
 	{
-		execve(cmd_path, cmd_struct->cmd, g_data.envp);
-		ft_exit_error("Execve Failed", 19);
+		printf("EXEC Builtin, Last\n");
+		exec_builtin(cmd_struct, g_data.envp);
 	}
+	else
+		execve(cmd_path, cmd_struct->cmd, g_data.envp);
+	ft_exit_error("Last Child Survived", 19);
 }
 
 void	ft_execute_command(t_execute *cmd_struct)

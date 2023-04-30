@@ -81,6 +81,17 @@ typedef enum{
 	e_append
 }	note_type;
 
+typedef enum builtin_names
+{
+	ECHO = 1,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}	e_builtin_names;
+
 typedef struct s_data
 {
 	char	**envp;
@@ -116,6 +127,7 @@ void	test_lists(t_line_lst *head, char **envp);
 
 void	executor_dcs(t_execute *cmd_struct, char **envp); //DCS
 int		ft_heredoc(t_execute *cmd_struct, char **envp, char *eof); //DCS
+int		ft_exit_error(char *str, int err); //DCS
 
 //errors.c
 int		msg_error_code(char *err, int code);
@@ -147,8 +159,10 @@ void	ft_pwd(int fd); //DCS
 void	ft_echo(t_execute *cmd_struct, int fd); //DCS
 bool	ft_env(char **envp, int fd); //DCS
 void	ft_cd(t_execute *cmd_struct, char **envp, char *path); //DCS
-void	ft_export(char *cmd, char **envp, int fd); //DCS
-void	ft_unset(char *cmd, char **envp, int fd); //DCS
+void	ft_export(t_execute *cmd_struct, char **envp, int fd); //DCS
+void	ft_unset(t_execute *cmd_struct, char **envp, int fd); //DCS
+void	ft_exit(t_execute *cmd_struct, char **envp); //DCS
+int		check_builtin(char *arg); //DCS
 
 //cd.c
 void	execute_cd(char **cmd, t_data *data);
