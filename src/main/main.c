@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 15:17:05 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/29 04:02:50 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
 			if (head->state > 0)
 			{
 				temp = make_string(head);
-				if (temp[0] == '\"')
+				if (temp[0] == '\"' || temp[0] == '\'')
 					new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
 				while (head != NULL && head->state > 0)
 					head = head->next;
@@ -149,82 +149,119 @@ t_execute *alloc_execute_list(t_line_lst *head)
 	return (cmdlist);
 }
 
+int ft_arrlen(char **arr)
+{
+    int i = 0;
+    while (arr[i] != NULL)
+        i++;
+    return (i);
+}
+
+int count_redirects(char **cmd_list)
+{
+    int num_redirects = 0;
+    int i = 0;
+    while (cmd_list[i])
+    {
+        if (!ft_strcmp(cmd_list[i], ">") || !ft_strcmp(cmd_list[i], ">>") || !ft_strcmp(cmd_list[i], "<") || !ft_strcmp(cmd_list[i], "<<"))
+            num_redirects++;
+        i++;
+    }
+    return (num_redirects);
+}
+
+t_execute *create_new_node(int num_commands, int num_redirects)
+{
+    t_execute *new_node = malloc(sizeof(t_execute));
+    new_node->cmd = malloc(sizeof(char *) * (num_commands + 1));
+    new_node->redirects = malloc(sizeof(char *) * (num_redirects * 2 + 1));
+    new_node->next = NULL;
+    return (new_node);
+}
+
+void copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_redirects)
+{
+    int i = 0;
+    int j = 0;
+    int cmd_index = 0;
+    while (cmd_list[i])
+    {
+        if (!ft_strcmp(cmd_list[i], ">") || !ft_strcmp(cmd_list[i], ">>") || !ft_strcmp(cmd_list[i], "<") || !ft_strcmp(cmd_list[i], "<<"))
+        {
+            dest_node->redirects[j] = ft_strdup(cmd_list[i]);
+            j++;
+            i++;
+            dest_node->redirects[j] = ft_strdup(cmd_list[i]);
+            j++;
+            num_redirects--;
+        }
+        else
+        {
+            dest_node->cmd[cmd_index] = ft_strdup(cmd_list[i]);
+            cmd_index++;
+        }
+        i++;
+    }
+    dest_node->cmd[cmd_index] = NULL;
+    dest_node->redirects[j] = NULL;
+}
+
+/*
+** Splits a command list into separate nodes of commands and redirects
+*/
 t_execute *acco(t_execute *cmds)
 {
-    int i;
-    int ir;
-    t_execute *new_node;
-    t_execute *temp;
+    t_execute *new_list;
+    t_execute *current_node;
+    int num_redirects;
+    int num_commands;
 
-    new_node = malloc(sizeof(t_execute));
-    ir = 0;
-    temp = new_node;
-    int ic;
+	current_node = NULL;
+	new_list = NULL;
+	num_redirects = 0;
     while (cmds != NULL)
     {
-        i = 0;
-        while (cmds->cmd[i])
+        num_commands = 0;
+        num_redirects = count_redirects(cmds->cmd);
+        num_commands = ft_arrlen(cmds->cmd) - num_redirects;
+        if (new_list == NULL)
         {
-            if (!ft_strcmp(cmds->cmd[i], ">") || !ft_strcmp(cmds->cmd[i], ">>") || !ft_strcmp(cmds->cmd[i], "<") || !ft_strcmp(cmds->cmd[i], "<<"))
-                ir++;
-            i++;
+            new_list = create_new_node(num_commands, num_redirects);
+            current_node = new_list;
         }
-        i = i - ir;
-        new_node->cmd = malloc(sizeof(char *) * (i + 1));
-        new_node->redirects = malloc(sizeof(char *) * (ir * 2 + 1));
-        i = 0;
-        ic = 0;
-        ir = 0;
-        while (cmds->cmd[i] != NULL && cmds->cmd[ir] && cmds->cmd[ic])
+        else
         {
-            if (!ft_strcmp(cmds->cmd[i], ">") || !ft_strcmp(cmds->cmd[i], ">>") || !ft_strcmp(cmds->cmd[i], "<") || !ft_strcmp(cmds->cmd[i], "<<"))
-            {
-                new_node->redirects[ir] = ft_strdup(cmds->cmd[i]);
-                // printf("redir string[%d] = %s\n", ir, new_node->redirects[ir]);
-                i++;
-                ir++;
-                new_node->redirects[ir] = ft_strdup(cmds->cmd[i]);
-                // printf("redir string[%d] = %s\n", ir, new_node->redirects[ir]);
-                ir++;
-            }
-            else
-            {
-                new_node->cmd[ic] = ft_strdup(cmds->cmd[i]);
-                // printf("cmd string[%d] = %s\n", i, new_node->cmd[i]);
-                ic++;
-            }
-            i++;
+            current_node->next = create_new_node(num_commands, num_redirects);
+            current_node = current_node->next;
         }
-        new_node->cmd[ic] = NULL;
-        new_node->redirects[ir] = NULL;
+        copy_commands_and_redirects(current_node, cmds->cmd, num_redirects);
         cmds = cmds->next;
-        if (cmds != NULL)
-        {
-            new_node->next = malloc(sizeof(t_execute));
-            new_node = new_node->next;
-        }
     }
-    return(temp);
+
+    return new_list;
 }
 
 void	show(t_execute *cmd)
 {
 	int i;
+
+	printf("\n");
 	while (cmd != NULL)
 	{
 		i = 0;
 		while (cmd->cmd[i] != NULL)
 		{
-			printf("cmd[%d] = %s\n",i, cmd->cmd[i]);
+			printf("cmd[%d] = %s\n", i, cmd->cmd[i]);
 			i++;
 		}
 		i = 0;
-		while (cmd->redirects[i] != NULL)
+		while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
 		{
 			printf("redir = %s\n", cmd->redirects[i]);
 			i++;
 		}
 		cmd = cmd->next;
+		printf("\n");
 	}
 }
 int	shell(char *line, char **envp)
@@ -234,9 +271,9 @@ int	shell(char *line, char **envp)
 	int i;
 	i = 0;
 	line_lst = parser(line);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	line_lst = expander(line_lst);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	cmd = alloc_execute_list(line_lst);
 	cmd = acco(cmd);
 	show(cmd);
@@ -247,6 +284,7 @@ int	shell(char *line, char **envp)
 	// 	return (1);
 	// test_lists(line_lst, envp);
 	i++;
+	cmd = NULL;
 	delete_t_list(&line_lst);
 	envp++;	// temp until using envp
 	return (0);

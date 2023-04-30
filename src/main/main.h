@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 13:56:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 12:12:22 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void	ft_export(t_execute *cmd_struct, char **envp, int fd); //DCS
 void	ft_unset(t_execute *cmd_struct, char **envp, int fd); //DCS
 void	ft_exit(t_execute *cmd_struct, char **envp); //DCS
 int		check_builtin(char *arg); //DCS
+void	exec_builtin(t_execute *cmd_struct, char **envp); //DCS
 
 //cd.c
 void	execute_cd(char **cmd, t_data *data);
@@ -208,6 +209,9 @@ int			quotes(t_line_lst *line_lst, char c, int state);
 
 // expander.c
 t_line_lst	*expander(t_line_lst *line_lst);
+t_line_lst	*word_list(t_line_lst *line);
+t_line_lst	*whitespaces_list(t_line_lst *line);
+char	*ft_getenv(const char *name, char **envp);
 
 //grammarchecker.c
 int		is_valid_grammer(t_line_lst *head);

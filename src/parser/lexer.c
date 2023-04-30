@@ -24,6 +24,7 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 	note_type	last;
 
 	i = 0;
+	// printf("sd\n");
 	last = get_last_type(*line_lst);
 	// printf("last = %d", last);
 	if (!ft_isspecial(line[i]))
@@ -51,6 +52,7 @@ int	quotes(t_line_lst *line_lst, char c, int state)
 	int flag;
 
 	flag = state;
+	printf("c = %c\n", c);
 	if (c == '\'')
 	{
 		if (state == 0)

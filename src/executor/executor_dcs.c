@@ -14,7 +14,10 @@
 
 int	ft_exit_error(char *str, int err)
 {
-	printf("Error\n%s\n", str);
+	// printf("Error\n%s\n", str);
+	write(2, "Error\n", 6);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
 	exit (err);
 }
 
@@ -148,19 +151,19 @@ static bool	redirect_infile(char **list)
 
 	file = false;
 	i = 0;
-	while (list[i])
+	while (list && list[i])
 	{
 		if (list[i][0] == '<')
 		{
 			i++;
 			if (dup2(open(list[i], O_RDONLY), STDIN_FILENO) == -1)
-				exit(errno); //errors and stuff
+				ft_exit_error("Couldn't Redirect Infile", errno); //errors and stuff
 			file = true;
 		}
 		i++;
 	}
 	// printf("No Redirect To Infile Found\n");
-	return (file);
+	return (file); //close fds
 }
 
 static bool	redirect_outfile(char **list)
@@ -170,14 +173,14 @@ static bool	redirect_outfile(char **list)
 
 	file = false;
 	i = 0;
-	while (list[i])
+	while (list && list[i])
 	{
 		if (list[i][0] == '>' && !list[i][1])
 		{
 			i++;
 			if (dup2(open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644) \
 			, STDOUT_FILENO) == -1)
-				exit(errno); //errors and stuff
+				ft_exit_error("Couldn't Redirect Outfile", errno); //errors and stuff
 			// return (true);
 			file = true;
 		}
@@ -193,7 +196,7 @@ static bool	redirect_outfile(char **list)
 		i++;
 	}
 	// printf("No Redirect To Outfile Found\n");
-	return (file);
+	return (file); //close fds
 }
 
 static void	first_child(int *pipe, t_execute *cmd_struct)
@@ -222,6 +225,7 @@ static void	first_child(int *pipe, t_execute *cmd_struct)
 
 static void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct)
 {
+// printf("Middle Command = %s\n", cmd_struct->cmd[0]);
 	char	*cmd_path;
 
 	close(pipe_in[1]);
@@ -329,41 +333,48 @@ void	ft_multiple_commands(t_execute *cmd_struct)
 			ft_exit_error("Some Pipes Fucked Up, Parent - Loop", errno);
 		pid[i] = fork();
 		if (pid[i] == 0)
-		{
-// printf("Middle Command = %s\n", cmd_struct->cmd[0]);
 			middle_child(pipes[i - 1], pipes[i], cmd_struct);
-		}
 		close(pipes[i - 1][0]);
 		close(pipes[i - 1][1]);
 		i++;
 		cmd_struct = cmd_struct->next;
 	}
-// printf("#i after middle loop = %d\n", i);
 	pid[i] = fork();
 	// if (pid[i] == -1) //looped checks?
 	// 	exit (errno);
 	if (pid[i] == 0)
-	{
-		// waitpid(0, NULL, 0);
 		last_child(pipes[i - 1], cmd_struct);
-	}
-	if (close(pipes[i - 1][1]) == -1 || close(pipes[i - 1][0] == -1))
+	if (close(pipes[i - 1][0]) == -1)
 		ft_exit_error("Closing The Pipe Went Wrong", errno);
+	if (close(pipes[i - 1][1]) == -1)
+		ft_exit_error("Closing The Pipe Went Wrong", errno);
+
+	// if (close(pipes[i - 1][0]) == -1 || close(pipes[i - 1][1] == -1))
+	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
 	
 		/*	WHY IS THIS NOT THE SAME?
 
 	if (close(pipes[i - 1][0]) == -1 || close(pipes[i - 1][1] == -1))
 		ft_exit_error("Closing The Pipe Went Wrong", errno);
 	
+	// if (close(pipes[i - 1][1]) == -1 || close(pipes[i - 1][0] == -1))
+	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
+
 	if (close(pipes[i - 1][0]) == -1)
 		ft_exit_error("Closing The Pipe Went Wrong", errno);
 	if (close(pipes[i - 1][1]) == -1)
 		ft_exit_error("Closing The Pipe Went Wrong", errno);
+
+	// if (close(pipes[i - 1][1]) == -1)
+	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
+	// if (close(pipes[i - 1][0]) == -1)
+	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
 	
 		*/
 	i = 0;
 	while (i < cmd_struct->count_cmd)
 		waitpid(pid[i++], NULL, 0);
+		//free pid + pipes
 }
 
 void	executor_dcs(t_execute *cmd_struct, char **envp)

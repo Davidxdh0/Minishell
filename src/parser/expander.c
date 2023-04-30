@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 13:27:48 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 12:14:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,59 +15,128 @@
 t_line_lst	*expander(t_line_lst *line_lst)
 {
 	t_line_lst *temp;
+	// t_line_lst *temps;
 	char *tempstring;
 	
 	temp = line_lst;
 	while (line_lst != NULL)
 	{
 		tempstring = ft_strdup(line_lst->value);
-		if (line_lst->type == e_whitespace && line_lst->state == 0)
+		
+		if (line_lst != NULL && line_lst->state > 0)
 		{
-			// printf("next");
+			// printf("value = %s\n", line_lst->value);
+			line_lst = word_list(line_lst);
+			// if (line_lst->next != NULL)
+			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
+			if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
+			{
+				line_lst->next = line_lst->next->next;
+			}
+		}
+		// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
+		else if (line_lst->type == e_whitespace && line_lst->state == 0)
+		{
+			// printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);
+			line_lst = whitespaces_list(line_lst);
+			if (line_lst->prev == NULL) // check if it's the head node
+			{
+				temp = line_lst->next;
+				free(line_lst);
+				line_lst = temp;
+				// continue; // skip to the next node
+			}
+			// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
+			line_lst->value = ft_strjoin(line_lst->value, "-----------------");
+			
 			line_lst->prev->next = line_lst->next;
+			// printf("last = %s\n", line_lst->value);
 		}
-		while (line_lst->next != NULL && line_lst->next->state > 0)
-		{
+		if (line_lst != NULL)
 			line_lst = line_lst->next;
-			tempstring = ft_strjoin(tempstring, line_lst->value);
-		}
-		line_lst = line_lst->next;
 	}
-	// printf("string = %s\n", tempstring);
 	return (temp);
 }
 
-// t_execute *alloc_execute_list(t_line_lst *head)
+t_line_lst	*word_list(t_line_lst *line)
+{
+	t_line_lst *temp;
+	temp = line;
+	char *str;
+	int i = 0;
+	str = "";
+	while (temp != NULL && temp->state > 0)
+	{
+		// printf("tempvalue = %s en str = %s\n", temp->value, str);
+		str = ft_strjoin(str, temp->value);
+		temp = temp->next;
+		i++;
+	}
+
+	// // free(line->value);
+	line->value = NULL;
+	line->value = ft_strdup(str);
+	line->next = temp;
+	return (line);
+}
+
+t_line_lst	*whitespaces_list(t_line_lst *line)
+{
+	t_line_lst *temp;
+	temp = line;
+
+	int i = 0;
+	while (temp != NULL && temp->type == e_whitespace && temp->state == 0)
+	{
+		temp = temp->next;
+		i++;
+	}
+	line->next = temp;
+	return (line);
+}
+
+// char	*ft_getenv(const char *name, char **envp)
 // {
-// 	int i;
-// 	int k;
-// 	t_execute *cmdlist = NULL;
-//  	t_execute *last = NULL;
-	
-// 	while (head != NULL)
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	while (envp[i])
 // 	{
-// 		i = count_commands(head);
-// 		k = 0;
-// 		t_execute *new_node = malloc(sizeof(t_execute));
-//         new_node->cmd = malloc(sizeof(char *) * (i + 1));
-//         new_node->next = NULL;
-// 		while (head != NULL && k < i)
+// 		j = 0;
+// 		while (name[j] == envp[i][j])
 // 		{
-//             new_node->cmd[k] = ft_strdup(head->value);
-//             // printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
-//             head = head->next;
-//             k++;
+// 			j++;
+// 			if (!name[j])
+// 				return (envp[i] + j);
 // 		}
-// 		new_node->cmd[k] = NULL;
-// 		if (last == NULL)
-//             cmdlist = new_node;
-//         else
-//             last->next = new_node;
-// 		last = new_node;
-// 		if (head != NULL && !ft_strncmp(head->value,"|", 1))
-// 			;// printf("value head == %s\n", head->value);
-// 		if (head != NULL)
-// 			head = head->next;
+// 		i++;
 // 	}
-// 	return (cmdlist);
+// 	return (NULL);
+// }
+
+// t_line_lst	*lookup_env(t_line_lst *line)
+// {
+// 	t_line_lst *temp;
+// 	temp = line;
+
+// 	int i = 0;
+// 	while (temp != NULL)
+// 	{
+// 		if (temp->type == e_quote && temp->state == 2)
+// 		{
+// 			while (temp->value[i])
+// 			{
+// 				if (temp->value[i] == "$")
+// 				{
+// 					if (temp->value[i+1])
+// 				}
+						
+// 			}
+
+// 		}
+// 		temp = temp->next;
+// 	}
+// 	line->next = temp;
+// 	return (line);
 // }

@@ -12,12 +12,6 @@
 
 #include "../main/main.h"
 
-static int	ft_exit_error(char *str, int err)
-{
-	printf("Error\n%s\n", str);
-	exit (err);
-}
-
 // make ft_strcmp_exact
 int	ft_heredoc(t_execute *cmd_struct, char **envp, char *eof)
 {
