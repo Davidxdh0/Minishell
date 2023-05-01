@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 12:14:13 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/01 15:33:22 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_line_lst	*expander(t_line_lst *line_lst)
 	while (line_lst != NULL)
 	{
 		tempstring = ft_strdup(line_lst->value);
-		
+		// printf("value = %s\ttype = %d en state = %d\n", line_lst->value, line_lst->type, line_lst->state);
 		if (line_lst != NULL && line_lst->state > 0)
 		{
 			// printf("value = %s\n", line_lst->value);
@@ -34,7 +34,7 @@ t_line_lst	*expander(t_line_lst *line_lst)
 				line_lst->next = line_lst->next->next;
 			}
 		}
-		// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
+		
 		else if (line_lst->type == e_whitespace && line_lst->state == 0)
 		{
 			// printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);

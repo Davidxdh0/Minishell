@@ -18,9 +18,9 @@
 # ./minishell -p 'echo -nn Hello'
 # ./minishell -p 'echo -nns Hello World'
 
-# ./minishell -p 'ls -la > outfile > outfile2 | cat -e | cat -e'
+./minishell -p "| < mooi ls -la > outfile > outfile2 | cat -e | cat -e"
 ./minishell -p 'ls -la > outfile | cat -e | cat -e'
-# ./minishell -p 'ls -la > outfile | cat -e | cat -e'
+./minishell -p 'ls -la > outfile | cat -e | cat -e'
 # ./minishell -p 'echo ""hello  $USER"" > file | grep h | cat >> file | echo "done"'
 # ./minishell -p 'echo 'hello  "$USEsR"' > file | grep h | cat >> file | echo 'done''
 # echo 'hello  "$USEsR"' > file | grep h | cat >> file | echo 'done

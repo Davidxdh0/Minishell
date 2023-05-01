@@ -1,9 +1,52 @@
 Vandaag:
+voor start:
+if argc != 1 -> exit 1
+malloc met exit code + tekst perror("executable: " )
+global error code
+copy env - zonder oldpwd en SHLVL?
+ctrl + c attributes aan
+signals
+minishell
+ctrl c uit - voor cat
+free alles
+return (0);
+
+
+minishell:
+als !readline str
+write exit STDOUT_FILENO
+exit(0) 
+isempty?
+	parse-exectute
+		tokenize 
+		syntax errors: pipe - redirects - quotes open?
+		expand - get env and stop erin.
+		make commands
+	voor executer- redirect = ?
+
+	na executer redirect = ?
+hoe heredoc? commandize -> get_command
+add file
+fath . jami
+fhol . werd
+free alles
+
+
+
+
+
 quotes nog beter testen.
-checken of de quotes goed staan
+checken of de quotes goed staan - mini1
 input check
 checken of er geen twee speciale tekens achter elkaar staan.
 expander
 testen
 toets
 testen
+
+
+
+
+edge cases:
+begin "|" of command = NULL
+
