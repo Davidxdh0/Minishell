@@ -17,10 +17,13 @@
 # ./minishell -p '<< echo %<<$He llo' '|' 'echo Hello' 
 # ./minishell -p 'echo -nn Hello'
 # ./minishell -p 'echo -nns Hello World'
-
-# ./minishell -p '<< redirect < redirect > $redirect >> redirect'
-# ./minishell -p "| < mooi ls -la > outfile > outfile2 | cat -e | cat -e"
+# PARSING
 # ./minishell -p 'ls -la > outfile | cat -e | cat -e'
+# ./minishell -p '<< redirect < redirect > $redirect >> redirect'
+# EXPANDING
+# ./minishell -p '<< redirect < redirect > $redirect >> redirect'
+# ./minishell -p " < mooi ls -la > outfile > outfile2 | cat -e | cat -e"
+
 # ./minishell -p 'ls -la > outfile | cat -e | cat -e'
 # ./minishell -p 'echo ""hello  $USER"" > file | grep h | cat >> file | echo "done"'
 # ./minishell -p 'echo 'hello  "$USEsR"' > file | grep h | cat >> file | echo 'done''
@@ -37,10 +40,10 @@
 # ./minishell -p 'echo ~'
 
 #		redirects < 
-./minishell -p '< "  a"' #werkt niet
-./minishell -p '< "a"' #werkt niet
-./minishell -p '< "$USER"' #NIET = VAR
-./minishell -p '< ""' #NIET = VAR
+# ./minishell -p '< "  a"' #werkt niet
+# ./minishell -p '< "a"' #werkt niet
+# ./minishell -p '< "$USER"' #NIET = VAR
+# ./minishell -p '< ""' #NIET = VAR
 # ./minishell -p '< 'a'' # V
 # ./minishell -p '< '$a'' # ?
 # ./minishell -p '< $USER' #V

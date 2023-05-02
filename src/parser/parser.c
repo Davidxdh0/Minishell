@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/02 15:02:48 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/02 18:18:31 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ int syntax_pipe(t_line_lst *line)
 {
 	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
 	{
-		printf("syntax_pipe\tfaalt");
+		printf("syntax_pipe faalt\n");
 		return (1);
 	}
-	printf("syntax_pipe\tpass");
+	printf("syntax_pipe pass\n");
 	return (0);
 }
 
@@ -113,7 +113,7 @@ int	syntax_redirects(t_line_lst *line)
 
 	if (line->type == e_delimiter && line->next != NULL)
 
-	printf("syntax_redirects pass");
+	printf("syntax_redirects pass\n");
 	return (0);
 
 }
