@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/02 14:18:44 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/02 18:06:42 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ https://github.com/Snaipe/Criterion
 # include <stdio.h>
 # include <stdlib.h>
 # include "../../libs/libft/libft.h"
+# include <termios.h>
 # include <stddef.h>
 # include <unistd.h>
 # include <stdio.h>

@@ -1,7 +1,13 @@
+expander
+exit codes
+signals
+ctrl + c, ctr d
+
+
 Vandaag:
 voor start:
 if argc != 1 -> exit 1
-malloc met exit code + tekst perror("executable: " )
+	malloc met exit code + tekst perror("executable: " )
 global error code
 copy env - zonder oldpwd en SHLVL?
 ctrl + c attributes aan
@@ -18,21 +24,14 @@ isempty?
 		tokenize 
 		syntax errors: pipe - redirects - quotes open?
 		expand - get env and stop erin.
-		make commands
-	voor executer- redirect = ?
+		make
+		 commands
+	voor executer- signal redirect = ?
 
-	na executer redirect = ?
-hoe heredoc? commandize -> get_command
-add file
-fath . jami
-fhol . werd
+	na executer signal redirect = ?
 free alles
 
 
-
-
-
-quotes nog beter testen.
 checken of de quotes goed staan - mini1
 input check
 checken of er geen twee speciale tekens achter elkaar staan.
