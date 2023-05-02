@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/01 15:33:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/02 15:19:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_line_lst	*word_list(t_line_lst *line)
 	temp = line;
 	char *str;
 	int i = 0;
+	
 	str = "";
 	while (temp != NULL && temp->state > 0)
 	{
@@ -72,10 +73,14 @@ t_line_lst	*word_list(t_line_lst *line)
 		temp = temp->next;
 		i++;
 	}
-
 	// // free(line->value);
 	line->value = NULL;
 	line->value = ft_strdup(str);
+	if (line->value)
+		line->type = e_word;
+	i = ft_strlen(line->value);
+	if (i > 1 && line->value[0] == '\"' && line->value[i - 1] == '\"')
+		line->value = ft_substr(line->value, 1, i - 2);
 	line->next = temp;
 	return (line);
 }

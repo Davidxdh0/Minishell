@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 12:12:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/02 14:18:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
+int			syntax_check(t_line_lst *line);
 
 /* Main */
 int		shell(char *line, char **envp);

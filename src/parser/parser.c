@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/01 15:36:50 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/02 15:02:48 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,64 @@ t_line_lst	*parser(char *line)
 		// printf("list = %s", line_lst->value);
 	}
 	return (line_lst);
+}
+
+
+int syntax_pipe(t_line_lst *line)
+{
+	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
+	{
+		printf("syntax_pipe\tfaalt");
+		return (1);
+	}
+	printf("syntax_pipe\tpass");
+	return (0);
+}
+
+// int syntax_quotes(t_line_lst *line)
+// {
+
+// }
+
+int	syntax_redirects(t_line_lst *line)
+{
+	// < file   of < $file
+	if (line->type == e_redirect_i && line->next != NULL)
+		if (line->next->type != e_file || line->next->type != e_var)
+		{
+			printf("syntax_redirects\tfaalt");
+			return (1);
+		}
+	// file > of $file
+	if (line->type == e_redirect_o && line->prev != NULL)
+		
+	if (line->type == e_append && line->prev != NULL)
+
+	if (line->type == e_delimiter && line->next != NULL)
+
+	printf("syntax_redirects pass");
+	return (0);
+
+}
+
+int	syntax_check(t_line_lst *line)
+{
+	t_line_lst *temp;
+
+	temp = line;
+	// pipes
+	while(temp)
+	{
+		if (temp->type == e_pipe)
+			syntax_pipe(temp);
+		// quotes
+		if (temp->type == e_quote || temp->type == e_dquote)
+			printf("quote\n");
+		// redirects
+		if (temp->type == e_redirect_i || temp->type == e_append || \
+			temp->type == e_redirect_o || temp->type == e_delimiter )
+			printf("redirect\n");
+		temp = temp->next;
+	}
+	return (0);
 }

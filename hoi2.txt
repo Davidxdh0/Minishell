@@ -13,9 +13,6 @@ return (0);
 
 
 minishell:
-als !readline str
-write exit STDOUT_FILENO
-exit(0) 
 isempty?
 	parse-exectute
 		tokenize 
