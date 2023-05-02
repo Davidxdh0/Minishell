@@ -1,12 +1,18 @@
 #!/bin/bash
 
 
+# ./minishell -p 'echo WORK'
+# ./minishell -p 'cd ..'
+# ./minishell -p '<< EOF pwd > out'
+# ./minishell -p 'export GUZZY="A Legend!"'
+# ./minishell -p 'env'
+# ./minishell -p 'exit'
 
 
+./minishell -p 'pwd >> out | echo RAtaTATA '
 
 
-
-# ./minishell -p 'ls -la | ls -a'
+# ./minishell -p 'ls -la > out | cat -e'
 # ./minishell -p 'ls -la | echo KAAS | cat -e'
 # ./minishell -p 'ls -la | ls | cat'
 # ./minishell -p 'ls -la | cat -e | cat | cat | cat -e'
@@ -23,9 +29,16 @@
 # ./minishell -p 'ls | cat | grep m | ls -la | cat | wc | cat -e'
 # ./minishell -p 'ls | cat | grep m | ls -la | cat -e | cat | cat -e'
 
-./minishell -p 'cat | ls'
+# ./minishell -p 'cat | ls'
 # ./minishell -p 'cat > outfile2| ls'
 # ./minishell -p 'cat | cat | ls'
+
+# ./minishell -p 'ls'
+# ./minishell -p 'ls > out'
+
+# ./minishell -p ''
+# ./minishell -p 'pwd > out'
+
 
 # ./minishell -p 'cat file.txt | cat | cat'
 # ./minishell -p 'cat file.txt | cat | cat'

@@ -286,7 +286,6 @@ int	shell(char *line, char **envp)
 	i++;
 	cmd = NULL;
 	delete_t_list(&line_lst);
-	envp++;	// temp until using envp
 	return (0);
 }
 

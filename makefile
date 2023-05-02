@@ -21,7 +21,8 @@ EXECUTE_FI	=	executor.c \
 				messages.c \
 				executor_dcs.c \
 				builtin_dcs.c \
-				heredoc_dcs.c
+				heredoc_dcs.c \
+				clean_exe.c
 				
 BUILTIN_FI  =	echo.c \
 				cd.c \
@@ -82,3 +83,6 @@ re: fclean all
 
 test: all
 	bash testcmd.sh
+
+run: all
+	./minishell

@@ -144,7 +144,7 @@ char	*check_path(char *exec_argv, char **envp)
 
 // }
 
-static bool	redirect_infile(char **list)
+bool	redirect_infile(char **list)
 {
 	int		i;
 	bool	file;
@@ -166,7 +166,7 @@ static bool	redirect_infile(char **list)
 	return (file); //close fds
 }
 
-static bool	redirect_outfile(char **list)
+bool	redirect_outfile(char **list)
 {
 	int		i;
 	bool	file;
@@ -199,7 +199,7 @@ static bool	redirect_outfile(char **list)
 	return (file); //close fds
 }
 
-static void	first_child(int *pipe, t_execute *cmd_struct)
+static void	first_child(int *pipe, t_execute *cmd_struct, char **envp)
 {
 	char	*cmd_path;
 
@@ -211,19 +211,23 @@ static void	first_child(int *pipe, t_execute *cmd_struct)
 			ft_exit_error("Some Pipe Fucked Up, First Child", errno);
 	}
 	close(pipe[1]);
-	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
-	// printf("\n Command Path = %s\n", cmd_path);
-	if (check_builtin(cmd_struct->cmd[0]))
-	{
-		printf("EXEC Builtin, First\n");
-		exec_builtin(cmd_struct, g_data.envp);
-	}
-	else
-		execve(cmd_path, cmd_struct->cmd, g_data.envp);
+	// cmd_path = check_path(cmd_struct->cmd[0], envp);
+	// if (check_builtin(cmd_struct->cmd[0]))
+	// {
+	// 	printf("EXEC Builtin, First\n");
+	// 	exec_builtin(cmd_struct, envp);
+	// }
+	// else
+	// {
+	// 	cmd_path = check_path(cmd_struct->cmd[0], envp);
+	// 	execve(cmd_path, cmd_struct->cmd, envp);
+	// }
+	ft_execute_cmd(cmd_struct, envp);
 	ft_exit_error("First Child Survived", 13);
 }
 
-static void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct)
+static void	middle_child
+(int *pipe_in, int *pipe_out, t_execute *cmd_struct, char **envp)
 {
 // printf("Middle Command = %s\n", cmd_struct->cmd[0]);
 	char	*cmd_path;
@@ -242,19 +246,23 @@ static void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct)
 			ft_exit_error("Some Pipe Fucked Up, Middle Child - Out", errno);
 	}
 	close(pipe_out[1]);
-	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
-	// printf("\n Command Path = %s\n", cmd_path);
-	if (check_builtin(cmd_struct->cmd[0]))
-	{
-		printf("EXEC Builtin, Middle\n");
-		exec_builtin(cmd_struct, g_data.envp);
-	}
-	else
-		execve(cmd_path, cmd_struct->cmd, g_data.envp);
+	// cmd_path = check_path(cmd_struct->cmd[0], envp);
+	// // printf("\n Command Path = %s\n", cmd_path);
+	// if (check_builtin(cmd_struct->cmd[0]))
+	// {
+	// 	printf("EXEC Builtin, Middle\n");
+	// 	exec_builtin(cmd_struct, envp);
+	// }
+	// else
+	// {
+	// 	cmd_path = check_path(cmd_struct->cmd[0], envp);
+	// 	execve(cmd_path, cmd_struct->cmd, envp);
+	// }
+	ft_execute_cmd(cmd_struct, envp);
 	ft_exit_error("Middle Child Survived", 17);
 }
 
-static void	last_child(int *pipe, t_execute *cmd_struct)
+static void	last_child(int *pipe, t_execute *cmd_struct, char **envp)
 {
 	char	*cmd_path;
 
@@ -269,28 +277,41 @@ static void	last_child(int *pipe, t_execute *cmd_struct)
 	// if (dup2(open("./outfile", O_WRONLY | O_TRUNC | O_CREAT, 0644) \
 	// , STDOUT_FILENO) == -1)
 	// 	exit(errno);
-	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
 	// printf("\nCommand Path = %s\n", cmd_path);
-	if (check_builtin(cmd_struct->cmd[0]))
-	{
-		printf("EXEC Builtin, Last\n");
-		exec_builtin(cmd_struct, g_data.envp);
-	}
-	else
-		execve(cmd_path, cmd_struct->cmd, g_data.envp);
+	// if (check_builtin(cmd_struct->cmd[0]))
+	// {
+	// 	printf("EXEC Builtin, Last\n");
+	// 	exec_builtin(cmd_struct, envp);
+	// }
+	// else
+	// {
+	// 	cmd_path = check_path(cmd_struct->cmd[0], envp);
+	// 	execve(cmd_path, cmd_struct->cmd, envp);
+	// }
+	ft_execute_cmd(cmd_struct, envp);
 	ft_exit_error("Last Child Survived", 19);
 }
 
-void	ft_execute_command(t_execute *cmd_struct)
+void	ft_execute_cmd(t_execute *cmd_struct, char **envp)
 {
 	char	*cmd_path;
 
-	cmd_path = check_path(cmd_struct->cmd[0], g_data.envp);
-	execve(cmd_path, cmd_struct->cmd, g_data.envp);
-	ft_exit_error("Execve Failed", 13);
+	// cmd_path = check_path(cmd_struct->cmd[0], envp);
+	if (check_builtin(cmd_struct->cmd[0]))
+	{
+		printf("EXEC Builtin, Start\n");
+		exec_builtin(cmd_struct, envp);
+	}
+	else
+	{
+		// add pid + fork + waitpid
+		cmd_path = check_path(cmd_struct->cmd[0], envp);
+		execve(cmd_path, cmd_struct->cmd, envp);
+		ft_exit_error("Execve Failed", 13);
+	}
 }
 
-void	ft_single_command(t_execute *cmd_struct)
+void	ft_single_command(t_execute *cmd_struct, char **envp)
 {
 	int	pid;
 
@@ -298,10 +319,16 @@ void	ft_single_command(t_execute *cmd_struct)
 	if (pid == -1)
 		ft_exit_error("Fork Failed", 177);
 	if (pid == 0)
-		ft_execute_command(cmd_struct);
+	{
+		redirect_infile(cmd_struct->redirects);
+		redirect_outfile(cmd_struct->redirects);
+		ft_execute_cmd(cmd_struct, envp);
+	}
+	waitpid(pid, NULL, 0);
+	ft_env(envp, 1);
 }
 
-void	ft_multiple_commands(t_execute *cmd_struct)
+void	ft_multiple_commands(t_execute *cmd_struct, char **envp)
 {
 	int		**pipes;
 	int		*pid;
@@ -321,7 +348,7 @@ void	ft_multiple_commands(t_execute *cmd_struct)
 	// if (pid[i] == -1) //looped checks?
 	// 	exit (errno);
 	if (pid[i] == 0)
-		first_child(pipes[i], cmd_struct);
+		first_child(pipes[i], cmd_struct, envp);
 	i++;
 	cmd_struct = cmd_struct->next;
 	while (i + 1 < cmd_struct->count_cmd)
@@ -333,7 +360,7 @@ void	ft_multiple_commands(t_execute *cmd_struct)
 			ft_exit_error("Some Pipes Fucked Up, Parent - Loop", errno);
 		pid[i] = fork();
 		if (pid[i] == 0)
-			middle_child(pipes[i - 1], pipes[i], cmd_struct);
+			middle_child(pipes[i - 1], pipes[i], cmd_struct, envp);
 		close(pipes[i - 1][0]);
 		close(pipes[i - 1][1]);
 		i++;
@@ -343,63 +370,27 @@ void	ft_multiple_commands(t_execute *cmd_struct)
 	// if (pid[i] == -1) //looped checks?
 	// 	exit (errno);
 	if (pid[i] == 0)
-		last_child(pipes[i - 1], cmd_struct);
+		last_child(pipes[i - 1], cmd_struct, envp);
 	if (close(pipes[i - 1][0]) == -1)
 		ft_exit_error("Closing The Pipe Went Wrong", errno);
 	if (close(pipes[i - 1][1]) == -1)
 		ft_exit_error("Closing The Pipe Went Wrong", errno);
-
-	// if (close(pipes[i - 1][0]) == -1 || close(pipes[i - 1][1] == -1))
-	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
-	
-		/*	WHY IS THIS NOT THE SAME?
-
-	if (close(pipes[i - 1][0]) == -1 || close(pipes[i - 1][1] == -1))
-		ft_exit_error("Closing The Pipe Went Wrong", errno);
-	
-	// if (close(pipes[i - 1][1]) == -1 || close(pipes[i - 1][0] == -1))
-	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
-
-	if (close(pipes[i - 1][0]) == -1)
-		ft_exit_error("Closing The Pipe Went Wrong", errno);
-	if (close(pipes[i - 1][1]) == -1)
-		ft_exit_error("Closing The Pipe Went Wrong", errno);
-
-	// if (close(pipes[i - 1][1]) == -1)
-	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
-	// if (close(pipes[i - 1][0]) == -1)
-	// 	ft_exit_error("Closing The Pipe Went Wrong", errno);
-	
-		*/
 	i = 0;
 	while (i < cmd_struct->count_cmd)
 		waitpid(pid[i++], NULL, 0);
-		//free pid + pipes
+	free(pid);
+	i = 0;
+	while (i + 1 < cmd_struct->count_cmd)
+	{
+		free(pipes[i]);
+		i++;
+	}
+	free(pipes);
 }
 
 void	executor_dcs(t_execute *cmd_struct, char **envp)
 {
 printf("\n\tStarted Executing\n");
-
-int	fd;
-
-fd = 1;
-// ft_pwd(fd);
-// int	i = 0;
-// 	cmd_struct->cmd[i++] = ft_strdup("echo");
-// 	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
-// 	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
-// 	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
-// 	cmd_struct->cmd[i++] = NULL;
-// ft_echo(cmd_struct, 1);
-// ft_env(envp, 1);
-// ft_cd(cmd_struct, envp, "");
-// ft_export(cmd_struct, envp, fd);
-// ft_unset(cmd_struct, envp, fd);
-// ft_env(envp, 1);
-// ft_heredoc(cmd_struct, envp, " ");
-// exit(117);
-
 	t_execute	*next;
 	next = cmd_struct->next;
 	cmd_struct->count_cmd = 1;
@@ -414,19 +405,46 @@ fd = 1;
 		next->count_cmd = cmd_struct->count_cmd;
 		next = next->next;
 	}
+
+	// cmd_struct->std_in = dup(STDIN_FILENO);
+	// cmd_struct->std_out = dup(STDOUT_FILENO);
+	// if (cmd_struct->std_fds[0] == -1 || cmd_struct->std_fds[1] == -1)
+	// 	ft_exit_error("Couldn't Duplicate Standard In/Out\n", 25);
+
 // printf("Number Of Commands = #%d\n", cmd_struct->count_cmd);
 	if (cmd_struct->count_cmd > 1)
-		ft_multiple_commands(cmd_struct);
+		ft_multiple_commands(cmd_struct, envp);
 	else
-	{
-		printf("Make A Function Running 1 Command\n");
-		ft_single_command(cmd_struct);
-	}
-	// make a seperate function for splicing builtins/commands
+		ft_single_command(cmd_struct, envp);
+
+
+	// ft_execute_command_struct(cmd_struct, envp);
 
 printf("\tFinished Executing\n\n");
+// system("leaks -q minishell");
 }
 
-// Read after filename
-// Read white space
-// Read Empty String
+
+	/* 
+
+	copy the envp, in order to add/remove stuff
+
+
+if (commands > 1)
+{
+	fork for each command
+	do everything as is
+}
+if (commands == 1)
+{
+	fork only if not a builtin
+	if (fork)
+		normal shit
+	else
+	{
+		open AND close infiles (but dont dup2)
+		open and close outfiles (saving the open fd of the last one)
+		call the builtin, using the fd saved.
+	}
+}
+	*/

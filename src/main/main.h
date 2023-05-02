@@ -108,6 +108,9 @@ typedef struct s_execute
 	char	**cmd;
 	int		count_cmd; //DCS, can be loaded in during initialization?
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
+	int		std_fds[2];
+	int		std_in;
+	int		std_out;
 	// [<][file]
 	// [>][filename]
 	struct s_execute *prev;
@@ -128,6 +131,11 @@ void	test_lists(t_line_lst *head, char **envp);
 void	executor_dcs(t_execute *cmd_struct, char **envp); //DCS
 int		ft_heredoc(t_execute *cmd_struct, char **envp, char *eof); //DCS
 int		ft_exit_error(char *str, int err); //DCS
+void	ft_execute_cmd(t_execute *cmd_struct, char **envp); //DCS
+void	ft_execute_command(t_execute *cmd_struct, char **envp, int pipe1[2], int pipe2[2]); //DCS
+bool	redirect_infile(char **list);
+bool	redirect_outfile(char **list);
+void	ft_execute_command_struct(t_execute *cmd_struct, char **envp);
 
 //errors.c
 int		msg_error_code(char *err, int code);
