@@ -12,21 +12,27 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -lreadline
 
-EXECUTE_FI	=	executor.c \
-				file.c \
-				paths.c \
-				errors.c \
-				redirect.c \
-				builtin.c \
-				messages.c \
-				executor_dcs.c \
-				builtin_dcs.c \
+EXECUTE_FI	=	executor_dcs.c \
+				executor_utils.c \
 				heredoc_dcs.c \
-				clean_exe.c
+				single_command.c
 				
-BUILTIN_FI  =	echo.c \
+# executor.c
+# messages.c
+# file.c
+# paths.c
+# errors.c
+# redirect.c
+# builtin.c
+				
+BUILTIN_FI  =	builtin.c \
+				builtin_utils.c \
+				echo.c \
 				cd.c \
 				exit.c \
+				env.c \
+				pwd.c \
+				unset.c \
 				export.c
 
 MAIN_FILES =	main.c \

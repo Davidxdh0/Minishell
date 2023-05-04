@@ -3,176 +3,79 @@
 /*                                                        ::::::::            */
 /*   export.c                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
+/*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/26 20:08:09 by dyeboa        #+#    #+#                 */
-/*   Updated: 2022/11/25 12:39:08 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/05/04 10:35:14 by abarteld      #+#    #+#                 */
+/*   Updated: 2023/05/04 10:35:15 by abarteld      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-char	**append_env(char **envp, char *variable)
+void	ft_export_argless(t_execute *cmd_struct, char **envp, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		printf("declare -x %s\n", envp[i]);
+		i++;
+	}
+}
+
+void	ft_export_cmd(char *cmd, char **envp, int fd)
 {
 	int		i;
-	int		j;
-	char	**new_envp;
+	char	*target;
 
+	target = NULL;
 	i = 0;
-	
-	if (!envp)
-		return(NULL);
-	while(envp[i])
-		i++;
-	new_envp = malloc(sizeof(char *) * i + 2);
-	if (!new_envp)
-		return (NULL);
-	j = 0;
-	while(j < i)
+	while (cmd[i])
 	{
-		new_envp[j] = ft_strdup(envp[j]);
-		j++;
+		if (cmd[i] == '=')
+		{
+			target = ft_substr(cmd, 0, i + 1);
+			if (!target)
+				ft_exit_error("Malloc Failed", 2);
+			printf("Export Target: %s\n", target);
+			break ;
+		}
+		i++;
 	}
-	new_envp[j] = ft_strdup(variable);
-	return (new_envp);
+	// target = ft_export_validation(cmd); //instead of all of the above
+	if (target)
+	{
+		ft_getenv_int(&i, target, envp);
+		free(target);
+		if (i >= 0)
+			envp[i] = ft_strdup(cmd);
+		else
+		{
+			i = 0;
+			while (envp[i])
+				i++;
+			envp[i] = ft_strdup(cmd);
+			envp[i + 1] = NULL;
+		}
+	}
 }
 
-char	**change_env(char **envp, char *variable, char *change)
+void	ft_export(t_execute *cmd_struct, char **envp, int fd)
 {
 	int		i;
-	int		j;
-	char	**new_envp;
 
-	i = 0;
-	
-	if (!envp)
-		return(NULL);
-	while(envp[i])
-		i++;
-	new_envp = malloc(sizeof(char *) * i + 1);
-	if (!new_envp)
-		return (NULL);
-	j = 0;
-	while(j < i)
-	{
-		if (ft_strncmp(new_envp[j], variable, ft_strlen(variable) - 1 ) == 0)
-			new_envp[j] = ft_strdup(change);
-		else
-			new_envp[j] = ft_strdup(envp[j]);
-		j++;
-	}
-	return (new_envp);
-}
-
-char	**remove_env(char **envp, char *variable)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	**new_envp;
-
-	i = 0;
-	
-	if (!envp)
-		return(NULL);
-	while(envp[i])
-		i++;
-	new_envp = malloc(sizeof(char *) * i);
-	if (!new_envp)
-		return (NULL);
-	j = 0;
-	k = 0;
-	while(j < i)
-	{
-		if (ft_strncmp(new_envp[k], variable, ft_strlen(variable) - 1) == 0)
-		{
-			new_envp[j] = ft_strdup(variable);
-			k++;
-		}
-		else
-			new_envp[j] = ft_strdup(envp[k]);
-		k++;
-	}
-	while(*new_envp++)
-		message(*new_envp);
-	return (new_envp);
-}
-
-// export in env, zonder =, zet = erachter.
-// anders de rest van de string
-int	check_env_exist(char **cmd, t_data *data)
-{
-	int i;
-	int j;
-	char *str;
-
-	i = 0;
-	j = 0;
-	
-	while((cmd[1][i] && cmd[1][i] != '=') && j == 0)
-		i++;
-	str = malloc(i + 1 * (sizeof(char)));
-	ft_strlcpy(str, cmd[1], i + 1);
-	message_nl("cmd1 = ");
-	message(str);
-	while(data->envp[j])
-	{
-		if(!ft_strncmp(data->envp[j], str, i))
-			break;
-		j++;
-	}
-	if (data->envp[j])
-	{
-		message_nl("exists ");
-		message(data->envp[j]);
-		return(1);
-	}
+printf("Entered Export\n");
+	if (!cmd_struct->cmd[1])
+		ft_export_argless(cmd_struct, envp, fd);
 	else
 	{
-		message("doesnt exists ");
-		message(cmd[1]);
-		return(0);
-	}
-}
-
-void	export_(char **cmd, t_data *data)
-{
-	char *str;
-	int exists;
-	int varlen;
-	
-	varlen = ft_strlen(cmd[1]);
-	exists = check_env_exist(cmd, data);
-	if (varlen == 0)
-		while(data->envp++)
-			printf("%s\n", *data->envp);
-	else if (exists == 1)
-	{
-		// geen = met tekst betekent niets doen.
-		if(ft_strncmp(cmd[1], "=", 1))
+		i = 1;
+		while (cmd_struct->cmd[i])
 		{
-			str = ft_strjoin(cmd[1], "=");
-			message("doe niets");
+			ft_export_cmd(cmd_struct->cmd[i], envp, fd);
+			i++;
 		}
-		else
-			change_env(data->envp, cmd[1], "test");
 	}
-	else
-		message("verander niet bestaande env");
-}
-
-void	execute_export(char **cmd, t_data *data)
-{
-	int i;
-
-	i = 0;
-	if (cmd[1])
-		export_(cmd, data);
-	else
-		while(data->envp[i++] && data->envp[i+1])
-		{
-			message(data->envp[i]);
-		}
-		if (data->envp[i])
-			message(data->envp[i]);
+printf("Exiting Export\n");
 }

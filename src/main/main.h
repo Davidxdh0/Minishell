@@ -106,11 +106,9 @@ typedef struct s_data
 typedef struct s_execute
 {
 	char	**cmd;
-	int		count_cmd; //DCS, can be loaded in during initialization?
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
-	int		std_fds[2];
-	int		std_in;
-	int		std_out;
+	int		count_cmd; //DCS, can be loaded in during initialization?
+	char	*heredoc_name;
 	// [<][file]
 	// [>][filename]
 	struct s_execute *prev;
@@ -127,15 +125,6 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
 void	execute_process(t_line_lst *stack, t_data *data, char **envp);
 void	close_fd_dup(t_data *data, int *stin, int *stout);
 void	test_lists(t_line_lst *head, char **envp);
-
-void	executor_dcs(t_execute *cmd_struct, char **envp); //DCS
-int		ft_heredoc(t_execute *cmd_struct, char **envp, char *eof); //DCS
-int		ft_exit_error(char *str, int err); //DCS
-void	ft_execute_cmd(t_execute *cmd_struct, char **envp); //DCS
-void	ft_execute_command(t_execute *cmd_struct, char **envp, int pipe1[2], int pipe2[2]); //DCS
-bool	redirect_infile(char **list);
-bool	redirect_outfile(char **list);
-void	ft_execute_command_struct(t_execute *cmd_struct, char **envp);
 
 //errors.c
 int		msg_error_code(char *err, int code);
@@ -162,16 +151,6 @@ void    redirect(t_line_lst *stack, t_data *data);
 //builtin.c
 void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
 int		is_builtin(char *str);
-
-void	ft_pwd(int fd); //DCS
-void	ft_echo(t_execute *cmd_struct, int fd); //DCS
-bool	ft_env(char **envp, int fd); //DCS
-void	ft_cd(t_execute *cmd_struct, char **envp, char *path); //DCS
-void	ft_export(t_execute *cmd_struct, char **envp, int fd); //DCS
-void	ft_unset(t_execute *cmd_struct, char **envp, int fd); //DCS
-void	ft_exit(t_execute *cmd_struct, char **envp); //DCS
-int		check_builtin(char *arg); //DCS
-void	exec_builtin(t_execute *cmd_struct, char **envp); //DCS
 
 //cd.c
 void	execute_cd(char **cmd, t_data *data);
@@ -240,4 +219,48 @@ void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
 int	ft_isredirect(char *str);
+
+
+
+// Executor
+void	executor_dcs(t_execute *cmd_struct, char **envp);
+void	ft_execute_cmd(t_execute *cmd_struct, char **envp);
+// void	ft_execute_command(t_execute *cmd_struct, char **envp, int pipe1[2], int pipe2[2]);
+// void	ft_execute_command_struct(t_execute *cmd_struct, char **envp);
+void	ft_single_command(t_execute *cmd_struct, char **envp);
+// Builtins
+int		check_builtin(char *arg);
+void	exec_builtin(t_execute *cmd_struct, char **envp, int fd);
+
+void	ft_cd(t_execute *cmd_struct, char **envp, char *path);
+void	ft_echo(t_execute *cmd_struct, int fd);
+bool	ft_env(char **envp, int fd);
+void	ft_exit(t_execute *cmd_struct, char **envp);
+void	ft_export(t_execute *cmd_struct, char **envp, int fd);
+void	ft_export_cmd(char *cmd, char **envp, int fd);
+void	ft_export_argless(t_execute *cmd_struct, char **envp, int fd);
+void	ft_pwd(int fd);
+void	ft_unset(t_execute *cmd_struct, char **envp, int fd);
+
+void	builtin_infile(char **list);
+bool	builtin_outfile(char **list, int *fd);
+// Utils
+int		ft_exit_error(char *str, int err);
+
+bool	redirect_infile(char **list, char *name);
+bool	redirect_outfile(char **list);
+
+char	*get_path(char *exec_argv, char **path);
+char	*check_path(char *exec_argv, char **envp);
+char	*find_command(char **path, char *basepath);
+char	*ft_getenv(const char *name, char **envp);
+bool	ft_getenv_int(int *env, const char *name, char **envp);
+bool	is_path(char *exec_argv);
+
+//HereDoc
+void	ft_heredoc_init(t_execute *cmd_struct);
+bool	ft_heredoc(char *eof, char *name);
+void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
+void	ft_heredoc_cleanup(t_execute *cmd_struct);
+
 #endif
