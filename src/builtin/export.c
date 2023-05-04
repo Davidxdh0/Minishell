@@ -137,7 +137,6 @@ int	check_env_exist(char **cmd, t_data *data)
 
 void	export_(char **cmd, t_data *data)
 {
-	char *str;
 	int exists;
 	int varlen;
 	
@@ -151,7 +150,7 @@ void	export_(char **cmd, t_data *data)
 		// geen = met tekst betekent niets doen.
 		if(ft_strncmp(cmd[1], "=", 1))
 		{
-			str = ft_strjoin(cmd[1], "=");
+			//str = ft_strjoin(cmd[1], "=");
 			message("doe niets");
 		}
 		else

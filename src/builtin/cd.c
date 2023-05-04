@@ -94,6 +94,6 @@ void	execute_cd(char **cmd, t_data *data)
 	else
 		status = change_dir(oldpath, cmd[1]);
 	if (status == 0)
-		;//update_old_pwd( oldpath, data);
+		printf("test"); //update_old_pwd( oldpath, data);
 	//free(oldpath);
 }

@@ -141,7 +141,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
             last->next = new_node;
 		last = new_node;
 		if (head != NULL && !ft_strncmp(head->value,"|", 1))
-			;// printf("value head == %s\n", head->value);
+			printf("value head == %s\n", head->value);
 		if (head != NULL)
 			head = head->next;
 	}
