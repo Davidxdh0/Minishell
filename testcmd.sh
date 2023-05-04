@@ -59,11 +59,18 @@
 # ./minishell -p '> "$a"'
 
 # ./minishell -p '>> a'
-# ./minishell -p '<< a'
+# ./minishell -p '<< ""'
 
+#	VARIABLE
 # ./minishell -p '$'
 # ./minishell -p '$$'
-# ./minishell -p '$$$'
+# ./minishell -p 'echo $'
+./minishell -p 'echo "ss $USER sss" | echo $?'
+./minishell -p 'echo "$USER" | echo $?'
+./minishell -p 'echo "$USER" | echo $?'
+./minishell -p 'echo '$USER' | echo $?'
+# ./minishell -p 'echo $'
+# ./minishell -p 'echo $'
 # ./minishell -p '$?'
 # ./minishell -p '$?$'
 
