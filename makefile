@@ -6,11 +6,12 @@ FLAGS =  -Wall -Wextra
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
-INC_DIR = includes
+INC_DIR = includes -I $(HOME)/.brew/Cellar/readline/8.2.1/include
 LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -lreadline
+# -L $(HOME)/.brew/Cellar/readline/8.2.1/lib 
 
 EXECUTE_FI	=	executor_dcs.c \
 				executor_utils.c \
@@ -44,7 +45,8 @@ PARSER_FILES =	lexer.c \
 				list.c \
 				specialchar.c \
 				grammer_checker.c \
-				expander.c
+				expander.c \
+				signals.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \

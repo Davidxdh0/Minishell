@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 12:12:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/04 20:27:21 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ https://github.com/Snaipe/Criterion
 */
 #ifndef MAIN_H
 # define MAIN_H
-
 # include <stdio.h>
 # include <stdlib.h>
+# include <readline/readline.h>
 # include "../../libs/libft/libft.h"
+# include <termios.h>
 # include <stddef.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -49,9 +50,9 @@ https://github.com/Snaipe/Criterion
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <sys/signal.h>
 # include <string.h>
 # include <errno.h>
-# include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
 
@@ -83,7 +84,7 @@ typedef enum{
 
 typedef enum builtin_names
 {
-	ECHO = 1,
+	ECH = 1,
 	CD,
 	PWD,
 	EXPORT,
@@ -199,6 +200,9 @@ t_line_lst	*expander(t_line_lst *line_lst);
 t_line_lst	*word_list(t_line_lst *line);
 t_line_lst	*whitespaces_list(t_line_lst *line);
 char	*ft_getenv(const char *name, char **envp);
+int find_variable(char *str);
+t_line_lst	*variable_expand(t_line_lst *line, char **envp);
+char 		*change_str(char *str, int begin, int eind, char **envp);\
 
 //grammarchecker.c
 int		is_valid_grammer(t_line_lst *head);
@@ -211,6 +215,10 @@ void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
+int			syntax_check(t_line_lst *line);
+
+//signals.c
+void	redirect_signal(int signal);
 
 /* Main */
 int		shell(char *line, char **envp);
@@ -218,7 +226,7 @@ int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
-int	ft_isredirect(char *str);
+int		ft_isredirect(char *str);
 
 
 

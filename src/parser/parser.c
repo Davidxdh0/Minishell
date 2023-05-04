@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/21 11:34:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/04 20:36:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ t_line_lst	*parser(char *line)
 	state = 0;
 	i = 0;
 	line_lst = NULL;
-	printf("lijn = %s\n", line);
+	// printf("lijn = %s\n", line);
 	while (line[i])
 	{
 		// printf("c = %c\n", line[i]);
 		if (!ft_isspecial(line[i]))
+		{
+			// printf("isnotspecial = %c\n", line[i]);
 			i += word_case(&line_lst, line + i, state);
+		}
 		else if (line[i] == '\"')
 		{
 			state = quotes(line_lst, line[i], state);
@@ -54,7 +57,7 @@ t_line_lst	*parser(char *line)
 		}
 		else if (line[i] == '\'')
 		{
-			printf("quotes");
+			// printf("quotes");
 			state = quotes(line_lst, line[i], state);
 			i++;
 		}
@@ -75,4 +78,64 @@ t_line_lst	*parser(char *line)
 		// printf("list = %s", line_lst->value);
 	}
 	return (line_lst);
+}
+
+
+int syntax_pipe(t_line_lst *line)
+{
+	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
+	{
+		printf("syntax_pipe faalt\n");
+		return (1);
+	}
+	// printf("syntax_pipe pass\n");
+	return (0);
+}
+
+// int syntax_quotes(t_line_lst *line)
+// {
+
+// }
+
+int	syntax_redirects(t_line_lst *line)
+{
+	// < file   of < $file
+	if (line->type == e_redirect_i && line->next != NULL)
+		if (line->next->type != e_file || line->next->type != e_var)
+		{
+			printf("syntax_redirects\tfaalt");
+			return (1);
+		}
+	// file > of $file
+	if (line->type == e_redirect_o && line->prev != NULL)
+		
+	if (line->type == e_append && line->prev != NULL)
+
+	if (line->type == e_delimiter && line->next != NULL)
+
+	printf("syntax_redirects pass\n");
+	return (0);
+
+}
+
+int	syntax_check(t_line_lst *line)
+{
+	t_line_lst *temp;
+
+	temp = line;
+	// pipes
+	while(temp)
+	{
+		if (temp->type == e_pipe)
+			syntax_pipe(temp);
+		// quotes
+		if (temp->type == e_quote || temp->type == e_dquote)
+			;//printf("quote\n");
+		// redirects
+		if (temp->type == e_redirect_i || temp->type == e_append || \
+			temp->type == e_redirect_o || temp->type == e_delimiter )
+			printf("redirect\n");
+		temp = temp->next;
+	}
+	return (0);
 }

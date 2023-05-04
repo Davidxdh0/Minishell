@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/13 19:47:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/02 13:58:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ void	line_reader(char **line, const char *display_name)
 	*line = readline(display_name);
 	if (!line)
 	{
+		//op de stdout? welke exit code?
 		printf("exit\n");
-		exit(1);
+		exit(0);
 	}
 	if (*line && **line && !str_isspaces(line))
 		add_history (*line);

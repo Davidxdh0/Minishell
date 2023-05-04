@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/29 04:02:50 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/04 20:51:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,21 +264,37 @@ void	show(t_execute *cmd)
 		printf("\n");
 	}
 }
+
 int	shell(char *line, char **envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
 	int i;
 	i = 0;
+	//tokenizer
 	line_lst = parser(line);
-	show_t_list(line_lst, line);
+	// show_t_list(line_lst, line);
+	//removes whitespaces
 	line_lst = expander(line_lst);
-	show_t_list(line_lst, line);
-	cmd = alloc_execute_list(line_lst);
-	cmd = acco(cmd);
-	show(cmd);
-	
-	executor_dcs(cmd, envp); //DCS
+	// show_t_list(line_lst, line);
+	line_lst = variable_expand(line_lst, envp);
+	// show_t_list(line_lst, line);
+	//checks syntax
+	if (!syntax_check(line_lst))
+	{
+		cmd = alloc_execute_list(line_lst);
+		// show(cmd);
+		// printf("-----\n");
+		cmd = acco(cmd);
+		show(cmd);
+		executor_dcs(cmd, envp); //DCS
+		// execute
+		// execute_cmd_list(cmd, &data);
+		// free
+	}
+	else
+		printf("syntax_check\telse"); //free line_lst
+	// printf("hm");
 	// execute_cmd_list(cmd, &data);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
@@ -292,7 +308,7 @@ int	shell(char *line, char **envp)
 int	main(int argc, char *argv[], char **envp)
 {
 	static char	*line;
-
+	
 	if (!*envp)
 		return (1);
 	g_data.exitcode = 0;
@@ -301,6 +317,9 @@ int	main(int argc, char *argv[], char **envp)
 		return (shell(line, envp));
 	while (1)
 	{	
+		// if (argc != 1)
+		// 	exit(1); 1?
+		signal(SIGINT, redirect_signal);
 		line_reader(&line, "minishell$ ");
 		if (!ft_strncmp(line, "exit", 5))
 			exit(1);
