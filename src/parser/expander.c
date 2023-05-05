@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/04 20:12:45 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/05 13:54:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,13 +123,13 @@ char	*ft_getenv(const char *name, char **envp)
 int find_variable(char *str)
 {
 	int i;
+	
 	i = 0;
-
-	while(str[i])
+	while(str[i] && ft_strlen(str) > 1)
 	{
 		if (str[i] == '$')
 		{
-			if (str[i + 1] == '$' | str[i + 1] == '?' )
+			if (str[i + 1] == '$' || str[i + 1] == '?' )
 				return (0);
 			return (1);
 		}
@@ -191,9 +191,7 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 {
 	t_line_lst *temp;
 	int i;
-	// char *str;
 	int begin;
-	// int len;
 	char *str;
 
 	begin = 0;
@@ -201,14 +199,22 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 	temp = line;
 	while (temp != NULL)
 	{
+		printf("var = %s\n", temp->value);
 		if (find_variable(temp->value))
 		{
+			printf("variable found = %s\n", temp->value);
 			if (temp->type == e_var)
 			{
 				temp->value = ft_substr(temp->value, 1, ft_strlen(temp->value));
 				str = ft_getenv(temp->value, envp);
-				str = ft_substr(str, 1, ft_strlen(str));
-				temp->value = str;
+				if (!str)
+				{
+					str = ft_strdup("");
+					temp->value = str;
+				}
+				else
+					str = ft_substr(str, 1, ft_strlen(str));
+					temp->value = str;
 			}
 			else if (temp->state == 2 || temp->state == 0)
 			{

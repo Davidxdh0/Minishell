@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/04 20:36:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/05 13:59:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,20 @@ int	syntax_redirects(t_line_lst *line)
 		}
 	// file > of $file
 	if (line->type == e_redirect_o && line->prev != NULL)
-		
+	{
+		if (line->prev->type != e_file || line->prev->type != e_var || line->prev->type != e_word)
+			return (1);
+	}
 	if (line->type == e_append && line->prev != NULL)
-
+	{
+		if (line->prev->type != e_file || line->prev->type != e_var || line->prev->type != e_word)
+			return (1);
+	}
 	if (line->type == e_delimiter && line->next != NULL)
-
+	{
+		if (line->next->type != e_file || line->next->type != e_var || line->next->type != e_word)
+			return (1);
+	}
 	printf("syntax_redirects pass\n");
 	return (0);
 
@@ -134,7 +143,11 @@ int	syntax_check(t_line_lst *line)
 		// redirects
 		if (temp->type == e_redirect_i || temp->type == e_append || \
 			temp->type == e_redirect_o || temp->type == e_delimiter )
-			printf("redirect\n");
+			{
+				// if (syntax_redirects(line))
+				printf("redirect ?\n");
+			}
+			
 		temp = temp->next;
 	}
 	return (0);
