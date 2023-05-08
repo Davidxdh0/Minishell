@@ -5,11 +5,11 @@ FLAGS =  #-Wall -Wextra -Werror
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
-INC_DIR = includes
+INC_DIR = includes -I $(HOME)/.brew/Cellar/readline/8.2.1/include
 LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-READLINE_LIB = -lreadline
+READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
 
 EXECUTE_FI	=	executor.c \
 				file.c \
@@ -33,7 +33,8 @@ PARSER_FILES =	lexer.c \
 				list.c \
 				specialchar.c \
 				grammer_checker.c \
-				expander.c
+				expander.c \
+				signals.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \

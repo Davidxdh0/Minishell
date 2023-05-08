@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/02 18:18:31 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/04 20:36:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_line_lst	*parser(char *line)
 	state = 0;
 	i = 0;
 	line_lst = NULL;
-	printf("lijn = %s\n", line);
+	// printf("lijn = %s\n", line);
 	while (line[i])
 	{
 		// printf("c = %c\n", line[i]);
@@ -57,7 +57,7 @@ t_line_lst	*parser(char *line)
 		}
 		else if (line[i] == '\'')
 		{
-			printf("quotes");
+			// printf("quotes");
 			state = quotes(line_lst, line[i], state);
 			i++;
 		}
@@ -88,7 +88,7 @@ int syntax_pipe(t_line_lst *line)
 		printf("syntax_pipe faalt\n");
 		return (1);
 	}
-	printf("syntax_pipe pass\n");
+	// printf("syntax_pipe pass\n");
 	return (0);
 }
 
@@ -130,7 +130,7 @@ int	syntax_check(t_line_lst *line)
 			syntax_pipe(temp);
 		// quotes
 		if (temp->type == e_quote || temp->type == e_dquote)
-			printf("quote\n");
+			;//printf("quote\n");
 		// redirects
 		if (temp->type == e_redirect_i || temp->type == e_append || \
 			temp->type == e_redirect_o || temp->type == e_delimiter )
