@@ -40,25 +40,36 @@
 # ./minishell -p 'echo ~'
 
 #		redirects < 
-# ./minishell -p '< "  a"' #werkt niet
-# ./minishell -p '< "a"' #werkt niet
-# ./minishell -p '< "$USER"' #NIET = VAR
-# ./minishell -p '< ""' #NIET = VAR
+# ./minishell -p '< "  a"' #werkt
+# ./minishell -p '< "a"' #werkt 
+# ./minishell -p '< "$USER"' #
+# ./minishell -p '< ""' #
 # ./minishell -p '< 'a'' # V
-# ./minishell -p '< '$a'' # ?
+# ./minishell -p '< '$a'' # 
 # ./minishell -p '< $USER' #V
 # ./minishell -p '< $a'
 
 #		redirects >
 # ./minishell -p '> a'
 # ./minishell -p '> 'a''
-./minishell -p '> "USER"'
-./minishell -p '> "USER "'
-./minishell -p '> $a'
-./minishell -p '> '$a''
-./minishell -p '> "$a"' #faalt
+# ./minishell -p '> "USER"'
+# ./minishell -p '> "USER "'
+# ./minishell -p 'Hello > $a'
+# ./minishell -p 'echo test > $USER $A'
+# ./minishell -p '> "$a"' #faalt
 
+#		redirects >> 
 # ./minishell -p '>> a'
+# ./minishell -p '>> a'
+# ./minishell -p '>> 'a''
+# ./minishell -p '>> "USER"'
+# ./minishell -p '>> "USER "'
+# ./minishell -p 'Hello >> $a'
+# ./minishell -p 'echo test >> $A'
+# ./minishell -p 'ls >> "$a"' #faalt
+
+
+#		redirects <<
 # ./minishell -p '<< ""'
 
 #	VARIABLE
@@ -78,5 +89,53 @@
 # ./minishell -p 'top'
 
 # ./minishell -p '  ls | cat | cat | cat           | cat -e'
-# ./minishell -p 'ls | cat | cat -e | cat | cat -e'
+./minishell -p 'ls | cat | cat -e | cat | cat -e'
 
+# 		syntax check pipe
+# ./minishell -p 'echo "|" | cat e'
+# ./minishell -p 'echo "hoi" | cat e'
+# ./minishell -p '|'
+# ./minishell -p '||'
+# ./minishell -p 'ls ||'
+
+# 		syntax check redirects
+# ./minishell -p '<'
+# ./minishell -p '<<'
+# ./minishell -p '>'
+# ./minishell -p '>>'
+# ./minishell -p 'ss < '
+# ./minishell -p 'ss << '
+# ./minishell -p '> ss'
+# ./minishell -p 'ss >>'
+#EVAL
+# ./minishell -p '' # ?
+# ./minishell -p ' '
+# ./minishell -p '   ' #segmentation fault.
+# ./minishell -p '   \t ' #
+ 
+# ./minishell -p '\t \t' #  cmd[0] = \t en cmd[1] = \t
+# ./minishell -p '/bin/ls '
+# ./minishell -p '/bin/ls | cat'
+# ./minishell -p 'echo HELLO'
+# ./minishell -p 'echo -nnn HELLo'
+# ./minishell -p 'exit' 
+# ./minishell -p 'exit | echo $?' # = 0 en exit niet'
+# ./minishell -p 'exit(1)' # bash: syntax error near unexpected token `1'
+# ./minishell -p '/bin/ls '
+# ./minishell -p '/bin/ls'
+# ./minishell -p '/bin/ls filethatdoesntexist' #TEST!! ls: filethatdoesntexist: No such file or directory
+
+# #SIGNALS check
+
+# ./minishell -p 'echo "cat lol.c | cat > lol.c"'
+# ./minishell -p 'echo "HELLO"'
+# ./minishell -p 'ECHO 'hello'' 
+# ./minishell -p 'echo '$USER''
+# ./minishell -p 'env'
+# ./minishell -p 'export'
+# ./minishell -p 'cd . | /bin/ls'
+# ./minishell -p 'cd .. | /bin/ls'
+#unset path
+#redirections
+#pipes
+#history

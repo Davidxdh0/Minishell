@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/05 13:59:47 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/09 15:15:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int syntax_pipe(t_line_lst *line)
 {
 	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
 	{
-		printf("syntax_pipe faalt\n");
+		printf("syntax error near unexpected token `|'\n");
 		return (1);
 	}
 	// printf("syntax_pipe pass\n");
@@ -99,27 +99,33 @@ int syntax_pipe(t_line_lst *line)
 
 int	syntax_redirects(t_line_lst *line)
 {
-	// < file   of < $file
-	if (line->type == e_redirect_i && line->next != NULL)
-		if (line->next->type != e_file || line->next->type != e_var)
+	//  < file   of < $file 
+	if (line->type == e_redirect_i)
+	{
+		printf("shfje");
+		if (line->next == NULL || line->next->type != e_file || line->next->type != e_var || line->prev->type != e_word || line->next->type != e_quote)
 		{
 			printf("syntax_redirects\tfaalt");
+			// exit(1);
 			return (1);
 		}
-	// file > of $file
-	if (line->type == e_redirect_o && line->prev != NULL)
+	}
+	//  file > of  $file >
+	if (line->type == e_redirect_o )
 	{
-		if (line->prev->type != e_file || line->prev->type != e_var || line->prev->type != e_word)
+		if (line->prev == NULL || line->prev->type != e_file || line->prev->type != e_var || line->prev->type != e_word || line->next->type != e_quote)
 			return (1);
 	}
-	if (line->type == e_append && line->prev != NULL)
+	// >> append 
+	if (line->type == e_append)
 	{
-		if (line->prev->type != e_file || line->prev->type != e_var || line->prev->type != e_word)
+		if (line->next == NULL || line->next->type != e_file || line->next->type != e_var || line->next->type != e_word || line->next->type != e_quote)
 			return (1);
 	}
-	if (line->type == e_delimiter && line->next != NULL)
+	// << heredoc
+	if (line->type == e_delimiter)
 	{
-		if (line->next->type != e_file || line->next->type != e_var || line->next->type != e_word)
+		if (line->next == NULL || line->next->type != e_file || line->next->type != e_var || line->next->type != e_word || line->next->type != e_quote)
 			return (1);
 	}
 	printf("syntax_redirects pass\n");
@@ -144,8 +150,8 @@ int	syntax_check(t_line_lst *line)
 		if (temp->type == e_redirect_i || temp->type == e_append || \
 			temp->type == e_redirect_o || temp->type == e_delimiter )
 			{
-				// if (syntax_redirects(line))
-				printf("redirect ?\n");
+				if (syntax_redirects(line))
+					printf("redirect fails\n");
 			}
 			
 		temp = temp->next;

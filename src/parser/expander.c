@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/05 13:54:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/09 17:02:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ t_line_lst	*expander(t_line_lst *line_lst)
 			line_lst = word_list(line_lst);
 			// if (line_lst->next != NULL)
 			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
-			if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
-			{
-				line_lst->next = line_lst->next->next;
-			}
+			// if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
+			// {
+			// 	line_lst->next = line_lst->next->next;
+			// }
 		}
 		
 		else if (line_lst->type == e_whitespace && line_lst->state == 0)
 		{
 			// printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);
 			line_lst = whitespaces_list(line_lst);
-			if (line_lst->prev == NULL) // check if it's the head node
+			if (line_lst->prev == NULL && line_lst->next != NULL) // check if it's the head node
 			{
 				temp = line_lst->next;
 				free(line_lst);
@@ -47,9 +47,9 @@ t_line_lst	*expander(t_line_lst *line_lst)
 				// continue; // skip to the next node
 			}
 			// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
-			line_lst->value = ft_strjoin(line_lst->value, "-----------------");
-			
-			line_lst->prev->next = line_lst->next;
+			// line_lst->value = ft_strjoin(line_lst->value, "-----------------");
+			if (line_lst->next != NULL)
+				line_lst->prev->next = line_lst->next;
 			// printf("last = %s\n", line_lst->value);
 		}
 		if (line_lst != NULL)
@@ -153,6 +153,8 @@ char *change_str(char *str, int begin, int eind, char **envp)
 	len -= (ft_strlen(env));
 	// printf("str = %s, len = %d begin %d eind %d env = %s\n",str, len, begin, eind, env);
 	env = ft_getenv(env, envp);
+	// if (!env)
+	// 	return ("");
 	// printf("str = %s, len = %d begin %d eind %d env = %s\n",str, len, begin, eind, env);
 	env = ft_substr(env, 1, ft_strlen(env));
 	len += ft_strlen(env);
@@ -182,8 +184,8 @@ char *change_str(char *str, int begin, int eind, char **envp)
 		i++;
 	}
 	// printf("env = %s\n", env);
-	// printf("newstr = %s\n", newstr);
 	newstr[i] = '\0';
+	printf("newstr = %s\n", newstr);
 	return (newstr);
 }
 
@@ -199,10 +201,10 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 	temp = line;
 	while (temp != NULL)
 	{
-		printf("var = %s\n", temp->value);
+		// printf("var = %s\n", temp->value);
 		if (find_variable(temp->value))
 		{
-			printf("variable found = %s\n", temp->value);
+			// printf("dollar sign found = %s\n", temp->value);
 			if (temp->type == e_var)
 			{
 				temp->value = ft_substr(temp->value, 1, ft_strlen(temp->value));

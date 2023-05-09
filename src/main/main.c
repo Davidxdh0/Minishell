@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/05 13:33:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/09 15:46:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void	show(t_execute *cmd)
 	while (cmd != NULL)
 	{
 		i = 0;
-		while (cmd->cmd[i] != NULL)
+		while (cmd->cmd != NULL && cmd->cmd[i] != NULL)
 		{
 			printf("cmd[%d] = %s\n", i, cmd->cmd[i]);
 			i++;
@@ -270,7 +270,7 @@ int	shell(char *line, char **envp)
 	i = 0;
 	//tokenizer
 	line_lst = parser(line);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	//removes whitespaces
 	line_lst = expander(line_lst);
 	show_t_list(line_lst, line);
@@ -280,8 +280,8 @@ int	shell(char *line, char **envp)
 	if (!syntax_check(line_lst))
 	{
 		cmd = alloc_execute_list(line_lst);
-		// show(cmd);
-		// printf("-----\n");
+		show(cmd);
+		printf("-----\n");
 		cmd = acco(cmd);
 		show(cmd);
 		// execute
