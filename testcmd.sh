@@ -89,11 +89,11 @@
 # ./minishell -p 'top'
 
 # ./minishell -p '  ls | cat | cat | cat           | cat -e'
-./minishell -p 'ls | cat | cat -e | cat | cat -e'
+# ./minishell -p 'ls | cat | cat -e | cat | cat -e'
 
 # 		syntax check pipe
-# ./minishell -p 'echo "|" | cat e'
-# ./minishell -p 'echo "hoi" | cat e'
+./minishell -p 'echo "|" | cat e'
+./minishell -p 'echo "hoi" | cat "e" '
 # ./minishell -p '|'
 # ./minishell -p '||'
 # ./minishell -p 'ls ||'

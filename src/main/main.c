@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/09 15:46:51 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/09 17:06:57 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,11 +279,11 @@ int	shell(char *line, char **envp)
 	//checks syntax
 	if (!syntax_check(line_lst))
 	{
-		cmd = alloc_execute_list(line_lst);
-		show(cmd);
-		printf("-----\n");
-		cmd = acco(cmd);
-		show(cmd);
+		// cmd = alloc_execute_list(line_lst);
+		// show(cmd);
+		// printf("-----\n");
+		// cmd = acco(cmd);
+		// show(cmd);
 		// execute
 		// execute_cmd_list(cmd, &data);
 		// free
