@@ -14,7 +14,7 @@
 int	ft_isspecial(char chr)
 {
 	return(ft_isspace(chr) || chr == '$' || chr ==  '<' || chr == '>' || chr == '\n' \
-		|| chr == '|' || chr == '\0' ||  chr == '\'' || chr == '\"');
+		|| chr == '|' || chr == '\0' || chr == '\t' || chr == '\'' || chr == '\"');
 }
 
 int	word_case(t_line_lst **line_lst, char *line, int state)

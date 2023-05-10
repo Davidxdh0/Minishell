@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 16:18:59 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 16:28:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,81 +66,3 @@ t_line_lst	*parser(char *line)
 	return (line_lst);
 }
 
-
-int syntax_pipe(t_line_lst *line)
-{
-	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
-	{
-		printf("syntax error near unexpected token `|'\n");
-		return (1);
-	}
-	// printf("syntax_pipe pass\n");
-	return (0);
-}
-
-// int syntax_quotes(t_line_lst *line)
-// {
-
-// }
-
-int	syntax_redirects(t_line_lst *line)
-{
-	//  < file   of < $file 
-	if (line->type == e_redirect_i)
-	{
-		printf("shfje");
-		if (line->next == NULL || line->next->type != e_file || line->next->type != e_var || line->prev->type != e_word || line->next->type != e_quote)
-		{
-			printf("syntax_redirects\tfaalt");
-			// exit(1);
-			return (1);
-		}
-	}
-	//  file > of  $file >
-	if (line->type == e_redirect_o )
-	{
-		if (line->prev == NULL || line->prev->type != e_file || line->prev->type != e_var || line->prev->type != e_word || line->next->type != e_quote)
-			return (1);
-	}
-	// >> append 
-	if (line->type == e_append)
-	{
-		if (line->next == NULL || line->next->type != e_file || line->next->type != e_var || line->next->type != e_word || line->next->type != e_quote)
-			return (1);
-	}
-	// << heredoc
-	if (line->type == e_delimiter)
-	{
-		if (line->next == NULL || line->next->type != e_file || line->next->type != e_var || line->next->type != e_word || line->next->type != e_quote)
-			return (1);
-	}
-	printf("syntax_redirects pass\n");
-	return (0);
-
-}
-
-int	syntax_check(t_line_lst *line)
-{
-	t_line_lst *temp;
-
-	temp = line;
-	// pipes
-	while(temp)
-	{
-		if (temp->type == e_pipe)
-			syntax_pipe(temp);
-		// quotes
-		if (temp->type == e_quote || temp->type == e_dquote)
-			;//printf("quote\n");
-		// redirects
-		if (temp->type == e_redirect_i || temp->type == e_append || \
-			temp->type == e_redirect_o || temp->type == e_delimiter )
-			{
-				if (syntax_redirects(line))
-					printf("redirect fails\n");
-			}
-			
-		temp = temp->next;
-	}
-	return (0);
-}

@@ -1,7 +1,9 @@
-parser
 exit codes
 signals
+kleine pars dingen
 ctrl + c, ctr d
+norminette
+functies kleiner
 
 
 Vandaag:

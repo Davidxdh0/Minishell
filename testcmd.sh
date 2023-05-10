@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #te fixen echo $? goed expanden met als het tweede command = 0
-
-
+./minishell -p 'export a=b"end"'
+./minishell -p '> "echo "USER  s"'
 # ./minishell -p 'ls'
-#./minishell -p 'export'
+./minishell -p 'export'
 # ./minishell -p 'export'  'export' 'export'
 # ./minishell -p 'export test'
 # ./minishell -p 'export test=mooi'
@@ -80,7 +80,7 @@
 # ./minishell -p '$?'
 # ./minishell -p '$$'
 # ./minishell -p 'echo $'
-./minishell -p 'echo "ss $USER sss" | echo $?'
+# ./minishell -p 'echo "ss $USER sss" | echo $?'
 # ./minishell -p 'echo "$USER" | echo $?' 
 # ./minishell -p 'echo "$USER$USER" | echo $?'
 # ./minishell -p 'echo '$USER' | echo $?'
@@ -97,7 +97,7 @@
 
 # 		syntax check pipe
 # ./minishell -p 'echo "|" | cat e'
-./minishell -p 'echo "hoi 1 2 3" | cat "e" '
+# ./minishell -p 'echo "hoi 1 2 3" | cat "e" '
 # ./minishell -p '|'
 # ./minishell -p '||'
 # ./minishell -p 'ls ||'

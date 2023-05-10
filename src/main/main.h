@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 14:39:20 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 16:38:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,3 +216,8 @@ void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
 int		ft_isredirect(char *str);
 #endif
+
+//Syntax
+int		syntax_pipe(t_line_lst *line);
+int		syntax_redirects(t_line_lst *line);
+int		syntax_quotes(t_line_lst *line, note_type type);

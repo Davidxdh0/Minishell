@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 16:17:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 17:16:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,15 +298,12 @@ int	shell(char *line, char **envp)
 	cmd = NULL;
 	//tokenizer
 	line_lst = parser(line);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	//removes whitespaces
 	line_lst = expander(line_lst);
-	// show_t_list(line_lst, line);
-	// line_lst = whitespaces_list(line_lst);
-	// line_lst = wspacer(line_lst);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	line_lst = variable_expand(line_lst, envp);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	//checks syntax
 	if (!syntax_check(line_lst))
 	{
