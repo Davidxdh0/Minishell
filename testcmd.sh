@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#te fixen echo $? goed expanden met als het tweede command = 0
+
+
 # ./minishell -p 'ls'
 #./minishell -p 'export'
 # ./minishell -p 'export'  'export' 'export'
@@ -74,10 +77,11 @@
 
 #	VARIABLE
 # ./minishell -p '$'
+# ./minishell -p '$?'
 # ./minishell -p '$$'
 # ./minishell -p 'echo $'
-# ./minishell -p 'echo "ss $USER sss" | echo $?'
-# ./minishell -p 'echo "$USER" | echo $?'
+./minishell -p 'echo "ss $USER sss" | echo $?'
+# ./minishell -p 'echo "$USER" | echo $?' 
 # ./minishell -p 'echo "$USER$USER" | echo $?'
 # ./minishell -p 'echo '$USER' | echo $?'
 # ./minishell -p 'echo $'
@@ -92,8 +96,8 @@
 # ./minishell -p 'ls | cat | cat -e | cat | cat -e'
 
 # 		syntax check pipe
-./minishell -p 'echo "|" | cat e'
-./minishell -p 'echo "hoi" | cat "e" '
+# ./minishell -p 'echo "|" | cat e'
+./minishell -p 'echo "hoi 1 2 3" | cat "e" '
 # ./minishell -p '|'
 # ./minishell -p '||'
 # ./minishell -p 'ls ||'

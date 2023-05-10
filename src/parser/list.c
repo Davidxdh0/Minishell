@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/20 18:04:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 13:23:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,14 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	printf("index\ttype\tlen\ttype_name\tstate\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%d\t%s\t%d\t%s\n" ,i, node->type, node->len, \
+		printf("%d\t%d\t%d\t%s\t%d\t%s\n", i, node->type, node->len,
 			type_to_string(node->type), (int)node->state, node->value);
+		// if (node->next == NULL) {
+		// 	printf("Next pointer of node %d is NULL\n", i);
+		// }
+		// if (node->prev == NULL) {
+		// 	printf("Prev pointer of node %d is NULL\n", i);
+		// }
 		node = node->next;
 		i++;
 	}
@@ -84,7 +90,7 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value, int state)
 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
 	new_node->next = NULL;
 	new_node->type = type;
-	new_node->value = value;
+	new_node->value = ft_strdup(value);
 	new_node->len = ft_strlen(value);
 	new_node->state = state;
 	if (*head == NULL)

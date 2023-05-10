@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/04 20:27:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 14:39:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_execute
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
 	// [<][file]
 	// [>][filename]
+	int		count_cmd;
 	struct s_execute *prev;
   	struct s_execute *next;
 }	t_execute;
@@ -182,6 +183,7 @@ int			word_case(t_line_lst **line_lst, char *line, int state);
 int			quotes(t_line_lst *line_lst, char c, int state);
 
 // expander.c
+void 	delete_node(t_line_lst *node_to_delete);
 t_line_lst	*expander(t_line_lst *line_lst);
 t_line_lst	*word_list(t_line_lst *line);
 t_line_lst	*whitespaces_list(t_line_lst *line);

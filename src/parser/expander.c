@@ -6,11 +6,31 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/09 17:02:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 16:17:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
+
+void delete_node(t_line_lst *node_to_delete)
+{
+    if (node_to_delete == NULL) {
+        return;
+    }
+
+    // Update the next node's "prev" pointer
+    if (node_to_delete->next != NULL) {
+        node_to_delete->next->prev = node_to_delete->prev;
+    }
+    // Update the previous node's "next" pointer
+    if (node_to_delete->prev != NULL) 
+	{
+        node_to_delete->prev->next = node_to_delete->next;
+    }
+
+    // Free the memory used by the node
+    // free(node_to_delete);
+}
 
 t_line_lst	*expander(t_line_lst *line_lst)
 {
@@ -23,21 +43,9 @@ t_line_lst	*expander(t_line_lst *line_lst)
 	{
 		tempstring = ft_strdup(line_lst->value);
 		// printf("value = %s\ttype = %d en state = %d\n", line_lst->value, line_lst->type, line_lst->state);
-		if (line_lst != NULL && line_lst->state > 0)
+		if (line_lst->type == e_whitespace && line_lst->state == 0)
 		{
-			// printf("value = %s\n", line_lst->value);
-			line_lst = word_list(line_lst);
-			// if (line_lst->next != NULL)
-			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
-			// if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
-			// {
-			// 	line_lst->next = line_lst->next->next;
-			// }
-		}
-		
-		else if (line_lst->type == e_whitespace && line_lst->state == 0)
-		{
-			// printf("prev = %s\tcurrent = %s, next = %s\n", line_lst->prev->value, line_lst->value, line_lst->next->value);
+			// printf("prev = %s\tcurrent = %s\n", line_lst->prev->value, line_lst->value);
 			line_lst = whitespaces_list(line_lst);
 			if (line_lst->prev == NULL && line_lst->next != NULL) // check if it's the head node
 			{
@@ -48,12 +56,24 @@ t_line_lst	*expander(t_line_lst *line_lst)
 			}
 			// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
 			// line_lst->value = ft_strjoin(line_lst->value, "-----------------");
+			// delete_node(line_lst);
 			if (line_lst->next != NULL)
 				line_lst->prev->next = line_lst->next;
-			// printf("last = %s\n", line_lst->value);
+		}
+		else if (line_lst != NULL && line_lst->state > 0)
+		{
+			// printf("value = %s\n", line_lst->value);
+			line_lst = word_list(line_lst);
+			// if (line_lst->next != NULL)
+			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
+			// if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
+			// {
+			// 	line_lst->next = line_lst->next->next;
+			// }
 		}
 		if (line_lst != NULL)
 			line_lst = line_lst->next;
+		
 	}
 	return (temp);
 }
@@ -68,20 +88,16 @@ t_line_lst	*word_list(t_line_lst *line)
 	str = "";
 	while (temp != NULL && temp->state > 0)
 	{
-		// printf("tempvalue = %s en str = %s\n", temp->value, str);
 		str = ft_strjoin(str, temp->value);
 		temp = temp->next;
+		free(temp);
 		i++;
 	}
-	// // free(line->value);
 	line->value = NULL;
 	line->value = ft_strdup(str);
-	// if (line->value)
-	// 	line->type = e_word;
-	// i = ft_strlen(line->value);
-	// if (i > 1 && line->value[0] == '\"' && line->value[i - 1] == '\"')
-	// 	line->value = ft_substr(line->value, 1, i - 2);
-	line->next = temp;
+	line->type = e_word;
+	line->state = 0;
+	line->next = temp->next;
 	return (line);
 }
 
@@ -208,6 +224,8 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 			if (temp->type == e_var)
 			{
 				temp->value = ft_substr(temp->value, 1, ft_strlen(temp->value));
+		
+				printf("dsgsd %s\n", temp->value);
 				str = ft_getenv(temp->value, envp);
 				if (!str)
 				{
@@ -227,6 +245,8 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 				while(ft_isalpha(temp->value[i]))
 					i++;
 				temp->value = change_str(temp->value, begin, i, envp);
+				
+				
 				//stop in string
 			}
 		}
@@ -234,30 +254,3 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 	}
 	return (line);
 }
-
-// t_line_lst	*lookup_env(t_line_lst *line)
-// {
-// 	t_line_lst *temp;
-// 	temp = line;
-
-// 	int i = 0;
-// 	while (temp != NULL)
-// 	{
-// 		if (temp->type == e_quote && temp->state == 2)
-// 		{
-// 			while (temp->value[i])
-// 			{
-// 				if (temp->value[i] == '$')
-// 				{
-// 					if (temp->value[i+1])
-// 						;
-// 				}
-						
-// 			}
-
-// 		}
-// 		temp = temp->next;
-// 	}
-// 	line->next = temp;
-// 	return (line);
-// }

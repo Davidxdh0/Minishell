@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/09 17:06:57 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/10 16:17:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ char **make_redirects(t_line_lst *line_lst)
 
 t_execute *alloc_execute_list(t_line_lst *head)
 {
-	int i;
 	int k;
 	t_execute *cmdlist = NULL;
  	t_execute *last = NULL;
@@ -112,11 +111,12 @@ t_execute *alloc_execute_list(t_line_lst *head)
 	while (head != NULL)
 	{
 		k = 0;
-		i = count_commands(head);
 		t_execute *new_node = malloc(sizeof(t_execute));
-        new_node->cmd = malloc(sizeof(char *) * (i + 1));
+		new_node->count_cmd = count_commands(head);
+		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
         new_node->next = NULL;
-		while (head != NULL && k < i)
+		
+		while (head != NULL && k < new_node->count_cmd )
 		{
 			if (head->state > 0)
 			{
@@ -131,7 +131,6 @@ t_execute *alloc_execute_list(t_line_lst *head)
             	new_node->cmd[k] = ft_strdup(head->value);
 				head = head->next;
 			}
-            // printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
             k++;
 		}
 		new_node->cmd[k] = NULL;
@@ -237,7 +236,8 @@ t_execute *acco(t_execute *cmds)
         copy_commands_and_redirects(current_node, cmds->cmd, num_redirects);
         cmds = cmds->next;
     }
-
+	if (num_commands == 0)
+		new_list->cmd = NULL;
     return new_list;
 }
 
@@ -262,28 +262,59 @@ void	show(t_execute *cmd)
 	}
 }
 
+t_line_lst	*wspacer(t_line_lst *line_lst)
+{
+	t_line_lst *temp;
+
+	temp = line_lst;
+	while (line_lst != NULL)
+	{
+		if (line_lst->type == e_whitespace && line_lst->state == 0)
+		{
+			// printf("gsdfg '%s'\n", line_lst->value);
+			// if (line_lst->next != NULL) 
+			// {
+        	// 	line_lst->next->prev = line_lst->prev;
+    		// }
+			// if (line_lst->prev != NULL) 
+			// {
+        	// 	line_lst->prev->next = line_lst->next;
+    		// }
+			// // free(line_lst);
+			delete_node(line_lst);
+		}
+		line_lst = line_lst->next;
+	}
+	show_t_list(temp, "nowhite");
+	return (temp);
+}
+
 int	shell(char *line, char **envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
 	int i;
 	i = 0;
+	cmd = NULL;
 	//tokenizer
 	line_lst = parser(line);
-	show_t_list(line_lst, line);
+	// show_t_list(line_lst, line);
 	//removes whitespaces
 	line_lst = expander(line_lst);
-	show_t_list(line_lst, line);
+	// show_t_list(line_lst, line);
+	// line_lst = whitespaces_list(line_lst);
+	// line_lst = wspacer(line_lst);
+	// show_t_list(line_lst, line);
 	line_lst = variable_expand(line_lst, envp);
 	// show_t_list(line_lst, line);
 	//checks syntax
 	if (!syntax_check(line_lst))
 	{
-		// cmd = alloc_execute_list(line_lst);
+		cmd = alloc_execute_list(line_lst);
 		// show(cmd);
-		// printf("-----\n");
-		// cmd = acco(cmd);
-		// show(cmd);
+		printf("-----\n");
+		cmd = acco(cmd);
+		show(cmd);
 		// execute
 		// execute_cmd_list(cmd, &data);
 		// free
