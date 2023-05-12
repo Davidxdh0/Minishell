@@ -5,13 +5,20 @@ ctrl + c, ctr d
 norminette
 functies kleiner
 
+parsing
+	Tokenizer
+	Strjoins
+	whitespaces
+	cmds naar array
+	redirects in array
+leaks
+signals
+norminette
 
 Vandaag:
 voor start:
 if argc != 1 -> exit 1
 	malloc met exit code + tekst perror("executable: " )
-global error code
-copy env - zonder oldpwd en SHLVL?
 ctrl + c attributes aan
 signals
 minishell

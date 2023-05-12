@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 16:38:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/12 15:11:31 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,17 +183,18 @@ int			word_case(t_line_lst **line_lst, char *line, int state);
 int			quotes(t_line_lst *line_lst, char c, int state);
 
 // expander.c
-void 	delete_node(t_line_lst *node_to_delete);
-t_line_lst	*expander(t_line_lst *line_lst);
+void 		delete_node(t_line_lst *node_to_delete);
+t_line_lst	*remove_whitespace_list(t_line_lst *line_lst);
 t_line_lst	*word_list(t_line_lst *line);
 t_line_lst	*whitespaces_list(t_line_lst *line);
-char	*ft_getenv(const char *name, char **envp);
-int find_variable(char *str);
+t_line_lst	*string_quotes(t_line_lst *line_lst);
+char		*ft_getenv(const char *name, char **envp);
+int 		find_variable(char *str);
 t_line_lst	*variable_expand(t_line_lst *line, char **envp);
 char 		*change_str(char *str, int begin, int eind, char **envp);\
 
 //grammarchecker.c
-int		is_valid_grammer(t_line_lst *head);
+int			is_valid_grammer(t_line_lst *head);
 
 /* PARSER
 The parser processes the input line and build the list with tokens */
@@ -204,6 +205,8 @@ char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
+void		delete_node(t_line_lst *node_to_delete);
+
 
 //signals.c
 void	redirect_signal(int signal);

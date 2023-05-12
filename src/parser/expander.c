@@ -6,115 +6,12 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 18:13:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/12 13:52:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-void delete_node(t_line_lst *node_to_delete)
-{
-    if (node_to_delete == NULL) {
-        return;
-    }
-
-    // Update the next node's "prev" pointer
-    if (node_to_delete->next != NULL) {
-        node_to_delete->next->prev = node_to_delete->prev;
-    }
-    // Update the previous node's "next" pointer
-    if (node_to_delete->prev != NULL) 
-	{
-        node_to_delete->prev->next = node_to_delete->next;
-    }
-
-    // Free the memory used by the node
-    // free(node_to_delete);
-}
-
-t_line_lst	*expander(t_line_lst *line_lst)
-{
-	t_line_lst *temp;
-	// t_line_lst *temps;
-	char *tempstring;
-	
-	temp = line_lst;
-	while (line_lst != NULL)
-	{
-		tempstring = ft_strdup(line_lst->value);
-		// printf("value = %s\ttype = %d en state = %d\n", line_lst->value, line_lst->type, line_lst->state);
-		if (line_lst->type == e_whitespace && line_lst->state == 0)
-		{
-			// printf("prev = %s\tcurrent = %s\n", line_lst->prev->value, line_lst->value);
-			line_lst = whitespaces_list(line_lst);
-			if (line_lst->prev == NULL && line_lst->next != NULL) // check if it's the head node
-			{
-				temp = line_lst->next;
-				free(line_lst);
-				line_lst = temp;
-				// continue; // skip to the next node
-			}
-			// printf("type= %d en state = %d\n", line_lst->type, line_lst->state);
-			// line_lst->value = ft_strjoin(line_lst->value, "-----------------");
-			// delete_node(line_lst);
-			if (line_lst->next != NULL)
-				line_lst->prev->next = line_lst->next;
-		}
-		else if (line_lst != NULL && line_lst->state > 0)
-		{
-			// printf("value = %s\n", line_lst->value);
-			line_lst = word_list(line_lst);
-			// if (line_lst->next != NULL)
-			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
-			// if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
-			// {
-			// 	line_lst->next = line_lst->next->next;
-			// }
-		}
-		if (line_lst != NULL)
-			line_lst = line_lst->next;
-		
-	}
-	return (temp);
-}
-
-t_line_lst	*word_list(t_line_lst *line)
-{
-	t_line_lst *temp;
-	temp = line;
-	char *str;
-	int i = 0;
-	
-	str = "";
-	while (temp != NULL && temp->state > 0)
-	{
-		str = ft_strjoin(str, temp->value);
-		temp = temp->next;
-		free(temp);
-		i++;
-	}
-	line->value = NULL;
-	line->value = ft_strdup(str);
-	line->type = e_word;
-	line->state = 0;
-	line->next = temp->next;
-	return (line);
-}
-
-t_line_lst	*whitespaces_list(t_line_lst *line)
-{
-	t_line_lst *temp;
-	temp = line;
-
-	int i = 0;
-	while (temp != NULL && temp->type == e_whitespace && temp->state == 0)
-	{
-		temp = temp->next;
-		i++;
-	}
-	line->next = temp;
-	return (line);
-}
 
 char	*ft_getenv(const char *name, char **envp)
 {

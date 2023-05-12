@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 16:37:29 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/12 16:56:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ int syntax_quotes(t_line_lst *line, note_type type)
 			break ;
 	}
 	if (!line)
-		printf("Quotes are not balanced");
+	{
+		printf("Quotes are not balanced\n");
+		return (1);
+	}
+	printf("quotes pass");
 	return (0);
 }
 // }
@@ -84,7 +88,7 @@ int	syntax_check(t_line_lst *line)
 			syntax_pipe(temp);
 		// quotes
 		if (temp->type == e_quote || temp->type == e_dquote)
-			;//printf("quote\n");
+			syntax_quotes(temp, temp->type);//printf("quote\n");
 		// redirects
 		if (temp->type == e_redirect_i || temp->type == e_append || \
 			temp->type == e_redirect_o || temp->type == e_delimiter )
