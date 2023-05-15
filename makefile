@@ -35,7 +35,8 @@ PARSER_FILES =	lexer.c \
 				grammer_checker.c \
 				expander.c \
 				signals.c \
-				syntax.c
+				syntax.c \
+				util.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \

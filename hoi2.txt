@@ -41,7 +41,7 @@ isempty?
 free alles
 
 
-checken of de quotes goed staan - mini1
+checken of de quotes goed staan
 input check
 checken of er geen twee speciale tekens achter elkaar staan.
 expander

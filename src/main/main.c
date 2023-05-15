@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/12 11:41:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/15 12:27:21 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,16 +302,18 @@ int	shell(char *line, char **envp)
 	//makes string of quotes
 	// line_lst = string_quotes(line);
 	//removes whitespaces en strjoins
-	line_lst = remove_whitespace_list(line_lst);
-	// show_t_list(line_lst, line);
-	line_lst = variable_expand(line_lst, envp);
 	show_t_list(line_lst, line);
 	//checks syntax
 	if (!syntax_check(line_lst))
 	{
+		show_t_list(line_lst, line);
+		line_lst = remove_whitespace_list(line_lst);
+		// show_t_list(line_lst, line);
+		line_lst = variable_expand(line_lst, envp);
+		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
 		// show(cmd);
-		printf("-----\n");
+		
 		cmd = acco(cmd);
 		show(cmd);
 		// execute
