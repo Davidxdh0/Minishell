@@ -25,7 +25,8 @@ minishell
 ctrl c uit - voor cat
 free alles
 return (0);
-
+enkelquotes = if state != 2 count
+doublequotes = if state != 1 count
 
 minishell:
 isempty?

@@ -17,6 +17,12 @@ int	ft_isspecial(char chr)
 		|| chr == '|' || chr == '\0' || chr == '\t' || chr == '\'' || chr == '\"');
 }
 
+int	ft_isspecials(char chr)
+{
+	return(ft_isspace(chr) || chr ==  '<' || chr == '>' || chr == '\n' \
+		|| chr == '|' || chr == '\0' || chr == '\t' || chr == '\'' || chr == '\"');
+}
+
 int	word_case(t_line_lst **line_lst, char *line, int state)
 {
 	int		i;
@@ -30,11 +36,8 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 	if (!ft_isspecial(line[i]))
 	{
 		len = 0;
-		while (!ft_isspecial(line[i + len]))
-		{
-			// printf("character = %c\n", line[i + len]);
+		while (!ft_isspecials(line[i + len]))
 			len++;
-		}
 		// printf("state = %d", (int)state);
 		if (last == e_start || last == e_pipe || last == e_file)
 			add_at_end_of_list(line_lst, e_cmd, ft_substr(line, i, len), state);
