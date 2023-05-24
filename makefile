@@ -66,6 +66,19 @@ $(LIBFT):
 lldb: $(NAME)
 	lldb ./$(NAME) -- -p 'ls'
 
+tests:
+
+TEST_DIR =	tests
+
+TEST =	$(TEST_DIR)/simple.c 
+
+TEST_BIN =	unit-tests
+
+tests_run:
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(TEST_BIN) $(SRC) $(TEST) $(READLINE_LIB)--coverage -lcriterion $(LDFLAGS) -g
+	./$(TEST_BIN)
+# gcc -o tests simple.c -lcriterion -I /Users/dyeboa/.brew/include
+
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)
 	@rm -rf $(OBJ_DIR)
