@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/15 12:04:25 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 18:12:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,14 +198,14 @@ int			is_valid_grammer(t_line_lst *head);
 
 /* PARSER
 The parser processes the input line and build the list with tokens */
-void		delete_t_list(t_line_lst **head);
+void		delete_t_list(t_line_lst *head);
 void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
-void		delete_node(t_line_lst *node_to_delete);
+void 		delete_node(t_line_lst *node_to_delete);
 
 
 //signals.c
@@ -224,6 +224,8 @@ int		ft_isredirect(char *str);
 int		syntax_pipe(t_line_lst *line);
 int		syntax_redirects(t_line_lst *line);
 int		syntax_quotes(t_line_lst *line, note_type type);
+int		syntax_count_quotes(t_line_lst *line);
 
 //util
 int	perror_return(char *msg, char *msg2);
+void	delete_t_exec(t_execute *head);

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/10 13:23:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 18:17:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,44 @@ void	show_t_list(t_line_lst *node, char *input_line)
 }
 
 
-void	delete_t_list(t_line_lst **head)
+void	delete_t_list(t_line_lst *head)
 {
 	t_line_lst	*temp;
 
-	while (*head != NULL)
+	while (head != NULL)
 	{
-		temp = *head;
-		*head = (*head)->next;
+		temp = head;
+		head = head->next;
+		free(temp->value);
+		free(temp);
+	}
+}
+
+void	delete_t_exec(t_execute *head)
+{
+	t_execute *temp;
+	int i;
+
+	i = 0;
+	while (head != NULL)
+	{
+		temp = head;
+		head = head->next;
+	
+		i = 0;
+		while(temp->cmd[i])
+		{
+			free(temp->cmd[i]);
+			i++;
+		}
+		i = 0;
+		while(temp->redirects[i])
+		{
+			i++;
+			free(temp->redirects[i]);
+		}
+		free(temp->cmd);
+		free(temp->redirects);
 		free(temp);
 	}
 }

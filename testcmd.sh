@@ -2,10 +2,10 @@
 
 #te fixen echo $? goed expanden met als het tweede command = 0
 # ./minishell -p 'export a=b"end"'
-./minishell -p '> "echo "USER  s"'
+# ./minishell -p '> "echo "USER  s"'
 # ./minishell -p 'ls'
 # ./minishell -p 'export'
-./minishell -p 'export'  'export' 'export'
+# ./minishell -p 'export'  'export' 'export'
 # ./minishell -p 'export test'
 # ./minishell -p 'export test=mooi'
 # ./minishell -p 'export test='
@@ -35,11 +35,11 @@
 # ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'
 # ./minishell -p 'echo "s ' USER ' s" | echo "USER"          s '
-./minishell -p 'echo "USER"'
-./minishell -p 'echo $USER'
-./minishell -p 'echo $USER'
-./minishell -p 'echo $USER 'plus''
-./minishell -p 'echo "$USER 'plus'"""'
+# ./minishell -p 'echo "USER" '
+# ./minishell -p 'echo $USER'
+# ./minishell -p 'echo $USER'
+# ./minishell -p 'echo $USER 'plus''
+# ./minishell -p 'echo "$USER 'plus'"""'
 # ./minishell -p 'echo ~'
 
 #		redirects < 
@@ -102,20 +102,24 @@
 # ./minishell -p '||'
 # ./minishell -p 'ls ||'
 
-# 		syntax check redirects
-# ./minishell -p '<'
-# ./minishell -p '<<'
-# ./minishell -p '>'
-# ./minishell -p '>>'
+# 		syntax check redirects fout
+./minishell -p '<'
+./minishell -p '<<'
+./minishell -p '>'
+./minishell -p '>>'
 # ./minishell -p 'ss < '
 # ./minishell -p 'ss << '
-# ./minishell -p '> ss'
 # ./minishell -p 'ss >>'
+
+#		syntax check redirects goed
+./minishell -p '> ss' 
+./minishell -p '>> $USER' 
+
 #EVAL
-# ./minishell -p '' # ?
-# ./minishell -p ' '
-# ./minishell -p '   ' #segmentation fault.
-# ./minishell -p '   \t ' #
+# ./minishell -p '' 
+# ./minishell -p ' ' 
+# ./minishell -p '   '
+# ./minishell -p '   \t ' 
  
 # ./minishell -p '\t \t' #  cmd[0] = \t en cmd[1] = \t
 # ./minishell -p '/bin/ls '

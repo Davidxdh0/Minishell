@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/15 12:27:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 18:17:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ t_execute *alloc_execute_list(t_line_lst *head)
 		new_node->count_cmd = count_commands(head);
 		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
         new_node->next = NULL;
-		
 		while (head != NULL && k < new_node->count_cmd )
 		{
 			if (head->state > 0)
@@ -218,6 +217,8 @@ t_execute *acco(t_execute *cmds)
 	current_node = NULL;
 	new_list = NULL;
 	num_redirects = 0;
+	if (cmds == NULL)
+		return (NULL);
     while (cmds != NULL)
     {
         num_commands = 0;
@@ -244,6 +245,8 @@ t_execute *acco(t_execute *cmds)
 void	show(t_execute *cmd)
 {
 	int i;
+	// if (cmd == NULL)
+	// 	return ;
 	while (cmd != NULL)
 	{
 		i = 0;
@@ -253,84 +256,57 @@ void	show(t_execute *cmd)
 			i++;
 		}
 		i = 0;
-		while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
+		if (cmd->redirects != NULL && cmd->redirects[0] != NULL)
 		{
-			printf("redir = %s\n", cmd->redirects[i]);
-			i++;
+			while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
+			{
+				printf("redir = %s\n", cmd->redirects[i]);
+				i++;
+			}
 		}
 		cmd = cmd->next;
 	}
-}
-
-t_line_lst	*wspacer(t_line_lst *line_lst)
-{
-	t_line_lst *temp;
-
-	temp = line_lst;
-	while (line_lst != NULL)
-	{
-		if (line_lst->type == e_whitespace && line_lst->state == 0)
-		{
-			// printf("gsdfg '%s'\n", line_lst->value);
-			// if (line_lst->next != NULL) 
-			// {
-        	// 	line_lst->next->prev = line_lst->prev;
-    		// }
-			// if (line_lst->prev != NULL) 
-			// {
-        	// 	line_lst->prev->next = line_lst->next;
-    		// }
-			// // free(line_lst);
-			delete_node(line_lst);
-		}
-		line_lst = line_lst->next;
-	}
-	show_t_list(temp, "nowhite");
-	return (temp);
 }
 
 int	shell(char *line, char **envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
-	int i;
-	i = 0;
+	
 	cmd = NULL;
 	//tokenizer
 	line_lst = parser(line);
 	// show_t_list(line_lst, line);
-	//makes string of quotes
-	// line_lst = string_quotes(line);
-	//removes whitespaces en strjoins
-	show_t_list(line_lst, line);
-	//checks syntax
+	line_lst = remove_whitespace_list(line_lst);
+	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		show_t_list(line_lst, line);
-		line_lst = remove_whitespace_list(line_lst);
+		// printf("syntax check gaat verder\n");
 		// show_t_list(line_lst, line);
 		line_lst = variable_expand(line_lst, envp);
 		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
+		cmd = acco(cmd);	
 		// show(cmd);
-		
-		cmd = acco(cmd);
-		show(cmd);
-		// execute
 		// execute_cmd_list(cmd, &data);
 		// free
+		delete_t_list(line_lst);
+		delete_t_exec(cmd);
 	}
 	else
-		printf("syntax_check\telse"); //free line_lst
-	// printf("hm");
-	// if (!is_valid_grammer(line_lst))
-	// 	return (1);
-	// test_lists(line_lst, envp);
-	i++;
-	cmd = NULL;
-	delete_t_list(&line_lst);
-	envp++;	// temp until using envp
+	{
+		printf("syntax_check false\n"); //free line_lst
+		// exit(1);
+	}
+	// if (cmd != NULL)
+	// 	free(cmd);
+	
 	return (1);
+}
+
+void	ft_atexit(void)
+{
+	system("leaks -q minishell");
 }
 
 int	main(int argc, char *argv[], char **envp)
@@ -343,15 +319,20 @@ int	main(int argc, char *argv[], char **envp)
 	g_data.envp = envp;
 	if (input_is_argv(argc, argv, &line))
 		return (shell(line, envp));
+	atexit(ft_atexit);
 	while (1)
 	{	
 		// if (argc != 1)
 		// 	exit(1); 1?
-		signal(SIGINT, redirect_signal);
+		// signal(SIGINT, redirect_signal);
 		line_reader(&line, "minishell$ ");
 		if (!ft_strncmp(line, "exit", 5))
+		{
+			// free(line);
 			exit(1);
+		}
 		shell(line, envp);
+		free(line);
 	}
 	return (0);
 }
