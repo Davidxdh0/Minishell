@@ -6,68 +6,132 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 13:27:48 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 14:40:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-t_line_lst	*expander(t_line_lst *line_lst)
+
+char	*ft_getenv(const char *name, char **envp)
 {
-	t_line_lst *temp;
-	char *tempstring;
-	
-	temp = line_lst;
-	while (line_lst != NULL)
+	int	i;
+	int	j;
+
+	i = 0;
+	while (envp[i])
 	{
-		tempstring = ft_strdup(line_lst->value);
-		if (line_lst->type == e_whitespace && line_lst->state == 0)
+		j = 0;
+		while (name[j] == envp[i][j])
 		{
-			// printf("next");
-			line_lst->prev->next = line_lst->next;
+			j++;
+			if (!name[j])
+				return (envp[i] + j);
 		}
-		while (line_lst->next != NULL && line_lst->next->state > 0)
-		{
-			line_lst = line_lst->next;
-			tempstring = ft_strjoin(tempstring, line_lst->value);
-		}
-		line_lst = line_lst->next;
+		i++;
 	}
-	// printf("string = %s\n", tempstring);
-	return (temp);
+	return (NULL);
 }
 
-// t_execute *alloc_execute_list(t_line_lst *head)
-// {
-// 	int i;
-// 	int k;
-// 	t_execute *cmdlist = NULL;
-//  	t_execute *last = NULL;
+int find_variable(char *str)
+{
+	int i;
 	
-// 	while (head != NULL)
-// 	{
-// 		i = count_commands(head);
-// 		k = 0;
-// 		t_execute *new_node = malloc(sizeof(t_execute));
-//         new_node->cmd = malloc(sizeof(char *) * (i + 1));
-//         new_node->next = NULL;
-// 		while (head != NULL && k < i)
-// 		{
-//             new_node->cmd[k] = ft_strdup(head->value);
-//             // printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
-//             head = head->next;
-//             k++;
-// 		}
-// 		new_node->cmd[k] = NULL;
-// 		if (last == NULL)
-//             cmdlist = new_node;
-//         else
-//             last->next = new_node;
-// 		last = new_node;
-// 		if (head != NULL && !ft_strncmp(head->value,"|", 1))
-// 			;// printf("value head == %s\n", head->value);
-// 		if (head != NULL)
-// 			head = head->next;
-// 	}
-// 	return (cmdlist);
-// }
+	i = 0;
+	while(str[i] && ft_strlen(str) > 1)
+	{
+		if (str[i] == '$')
+		{
+			if (str[i + 1] == '$' || str[i + 1] == '?' )
+				return (0);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char *change_str(char *str, int begin, int eind, char **envp)
+{
+	int len;
+	char *newstr;
+	char *env;
+	
+	int i = 0;
+	int k = 0;
+	// printf("str = %s", str);
+	len = ft_strlen(str);
+	env = ft_substr(str, begin + 1, eind - begin - 1);
+	len -= (ft_strlen(env));
+	env = ft_getenv(env, envp);
+	if (!env)
+		return ("");
+	// printf("str = %s, len = %d begin %d eind %d env = %s\n",str, len, begin, eind, env);
+	env = ft_substr(env, 1, ft_strlen(env));
+	len += ft_strlen(env);
+	newstr = malloc(sizeof(char *) * len + 1);
+	while (i < len)
+	{
+		while (i < begin)
+		{
+			newstr[i] = str[i];
+			i++;
+		}
+		while (begin <= i && begin <= eind)
+		{
+			newstr[i] = env[k];
+			k++;
+			begin++;
+			i++;
+		}
+		newstr[i] = str[i-1];
+		i++;
+	}
+	newstr[i] = '\0';
+	// printf("newstr = %s\n", newstr);
+	return (newstr);
+}
+
+t_line_lst	*variable_expand(t_line_lst *line, char **envp)
+{
+	t_line_lst *temp;
+	int i;
+	int begin;
+	char *str;
+
+	begin = 0;
+	i = 0;
+	temp = line;
+	while (temp != NULL)
+	{
+		if (find_variable(temp->value))
+		{
+			if (temp->type == e_var)
+			{
+				temp->value = ft_substr(temp->value, 1, ft_strlen(temp->value));
+				str = ft_getenv(temp->value, envp);
+				if (!str)
+				{
+					str = ft_strdup("");
+					temp->value = str;
+				}
+				else
+					str = ft_substr(str, 1, ft_strlen(str));
+					temp->value = str;
+			}
+			else if (temp->state == 2 || temp->state == 0)
+			{
+				while(temp->value[i] != '$')
+					i++;
+				begin = i;
+				i++;
+				while(ft_isalpha(temp->value[i]))
+					i++;
+				temp->value = change_str(temp->value, begin, i, envp);
+				//stop in string
+			}
+		}
+		temp = temp->next;
+	}
+	return (line);
+}

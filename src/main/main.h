@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 13:56:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 18:12:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ https://github.com/Snaipe/Criterion
 */
 #ifndef MAIN_H
 # define MAIN_H
-
 # include <stdio.h>
 # include <stdlib.h>
+# include <readline/readline.h>
 # include "../../libs/libft/libft.h"
+# include <termios.h>
 # include <stddef.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -49,9 +50,9 @@ https://github.com/Snaipe/Criterion
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <sys/signal.h>
 # include <string.h>
 # include <errno.h>
-# include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
 
@@ -98,6 +99,7 @@ typedef struct s_execute
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
 	// [<][file]
 	// [>][filename]
+	int		count_cmd;
 	struct s_execute *prev;
   	struct s_execute *next;
 }	t_execute;
@@ -182,19 +184,33 @@ int			word_case(t_line_lst **line_lst, char *line, int state);
 int			quotes(t_line_lst *line_lst, char c, int state);
 
 // expander.c
-t_line_lst	*expander(t_line_lst *line_lst);
+void 		delete_node(t_line_lst *node_to_delete);
+t_line_lst	*remove_whitespace_list(t_line_lst *line_lst);
+t_line_lst	*word_list(t_line_lst *line);
+t_line_lst	*whitespaces_list(t_line_lst *line);
+t_line_lst	*string_quotes(t_line_lst *line_lst);
+char		*ft_getenv(const char *name, char **envp);
+int 		find_variable(char *str);
+t_line_lst	*variable_expand(t_line_lst *line, char **envp);
+char 		*change_str(char *str, int begin, int eind, char **envp);\
 
 //grammarchecker.c
-int		is_valid_grammer(t_line_lst *head);
+int			is_valid_grammer(t_line_lst *head);
 
 /* PARSER
 The parser processes the input line and build the list with tokens */
-void		delete_t_list(t_line_lst **head);
+void		delete_t_list(t_line_lst *head);
 void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
+int			syntax_check(t_line_lst *line);
+void 		delete_node(t_line_lst *node_to_delete);
+
+
+//signals.c
+void	redirect_signal(int signal);
 
 /* Main */
 int		shell(char *line, char **envp);
@@ -202,5 +218,15 @@ int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
-int	ft_isredirect(char *str);
+int		ft_isredirect(char *str);
 #endif
+
+//Syntax
+int		syntax_pipe(t_line_lst *line);
+int		syntax_redirects(t_line_lst *line);
+int		syntax_quotes(t_line_lst *line, note_type type);
+int		syntax_count_quotes(t_line_lst *line);
+
+//util
+int	perror_return(char *msg, char *msg2);
+void	delete_t_exec(t_execute *head);

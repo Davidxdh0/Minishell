@@ -1,15 +1,15 @@
 NAME = minishell
 
-FLAGS =  -Wall -Wextra -Werror 
+FLAGS =  -Wall -Wextra -Werror -g
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
-INC_DIR = includes
+INC_DIR = includes -I $(HOME)/.brew/Cellar/readline/8.2.1/include
 LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-READLINE_LIB = -lreadline
+READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
 
 EXECUTE_FI	=	executor.c \
 				file.c \
@@ -33,7 +33,10 @@ PARSER_FILES =	lexer.c \
 				list.c \
 				specialchar.c \
 				grammer_checker.c \
-				expander.c
+				expander.c \
+				signals.c \
+				syntax.c \
+				util.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \
@@ -61,7 +64,20 @@ $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 lldb: $(NAME)
-	lldb ./$(NAME) -- -p 'ls'
+	lldb ./$(NAME) -- -p 'ls' 'exit'
+
+tests:
+
+TEST_DIR =	tests
+
+TEST =	$(TEST_DIR)/simple.c 
+
+TEST_BIN =	unit-tests
+
+tests_run:
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(TEST_BIN) $(SRC) $(TEST) $(READLINE_LIB)--coverage -lcriterion $(LDFLAGS) -g
+	./$(TEST_BIN)
+# gcc -o tests simple.c -lcriterion -I /Users/dyeboa/.brew/include
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)

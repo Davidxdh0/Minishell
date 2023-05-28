@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/13 21:59:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 17:45:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,14 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	printf("index\ttype\tlen\ttype_name\tstate\tvalue\n");
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%d\t%s\t%d\t%s\n" ,i, node->type, node->len, \
+		printf("%d\t%d\t%d\t%s\t%d\t%s\n", i, node->type, node->len,
 			type_to_string(node->type), (int)node->state, node->value);
+		// if (node->next == NULL) {
+		// 	printf("Next pointer of node %d is NULL\n", i);
+		// }
+		// if (node->prev == NULL) {
+		// 	printf("Prev pointer of node %d is NULL\n", i);
+		// }
 		node = node->next;
 		i++;
 	}
@@ -64,29 +70,60 @@ void	show_t_list(t_line_lst *node, char *input_line)
 }
 
 
-void	delete_t_list(t_line_lst **head)
+void	delete_t_list(t_line_lst *head)
 {
 	t_line_lst	*temp;
 
-	while (*head != NULL)
+	while (head != NULL)
 	{
-		temp = *head;
-		*head = (*head)->next;
+		temp = head;
+		head = head->next;
+		if (temp->value)
+			free(temp->value);
 		free(temp);
 	}
 }
+
+void delete_t_exec(t_execute *cmd)
+{
+    t_execute *current_node = cmd;
+    t_execute *next_node;
+
+    while (current_node != NULL)
+    {
+        next_node = current_node->next;
+        int i = 0;
+        while (current_node->cmd != NULL && current_node->cmd[i] != NULL)
+        {
+            free(current_node->cmd[i]);
+            i++;
+        }
+        free(current_node->cmd);
+
+        i = 0;
+        while (current_node->redirects != NULL && current_node->redirects[i] != NULL)
+        {
+            free(current_node->redirects[i]);
+            i++;
+        }
+        free(current_node->redirects);
+
+        free(current_node);
+
+        current_node = next_node;
+    }
+}
+
 
 void	add_at_end_of_list(t_line_lst **head, int type, char *value, int state)
 {
 	t_line_lst	*new_node;
 	t_line_lst	*temp;
-	static int i;
 
-	i = 0;
 	new_node = (t_line_lst *)malloc(sizeof(t_line_lst));
 	new_node->next = NULL;
 	new_node->type = type;
-	new_node->value = value;
+	new_node->value = ft_strdup(value);
 	new_node->len = ft_strlen(value);
 	new_node->state = state;
 	if (*head == NULL)

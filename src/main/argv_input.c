@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:32 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/04/14 07:14:59 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/04/21 08:28:28 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	put_argv_in_line(int argc, char *argv[], char **line)
 		if (index < argc)
 			*line = ft_strjoin(*line, " ");
 	}
-	
 }
 
 int	argv_has_flag(int argc, char *argv[])
