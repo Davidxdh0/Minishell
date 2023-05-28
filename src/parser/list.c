@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/26 18:17:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 17:45:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,39 +78,42 @@ void	delete_t_list(t_line_lst *head)
 	{
 		temp = head;
 		head = head->next;
-		free(temp->value);
+		if (temp->value)
+			free(temp->value);
 		free(temp);
 	}
 }
 
-void	delete_t_exec(t_execute *head)
+void delete_t_exec(t_execute *cmd)
 {
-	t_execute *temp;
-	int i;
+    t_execute *current_node = cmd;
+    t_execute *next_node;
 
-	i = 0;
-	while (head != NULL)
-	{
-		temp = head;
-		head = head->next;
-	
-		i = 0;
-		while(temp->cmd[i])
-		{
-			free(temp->cmd[i]);
-			i++;
-		}
-		i = 0;
-		while(temp->redirects[i])
-		{
-			i++;
-			free(temp->redirects[i]);
-		}
-		free(temp->cmd);
-		free(temp->redirects);
-		free(temp);
-	}
+    while (current_node != NULL)
+    {
+        next_node = current_node->next;
+        int i = 0;
+        while (current_node->cmd != NULL && current_node->cmd[i] != NULL)
+        {
+            free(current_node->cmd[i]);
+            i++;
+        }
+        free(current_node->cmd);
+
+        i = 0;
+        while (current_node->redirects != NULL && current_node->redirects[i] != NULL)
+        {
+            free(current_node->redirects[i]);
+            i++;
+        }
+        free(current_node->redirects);
+
+        free(current_node);
+
+        current_node = next_node;
+    }
 }
+
 
 void	add_at_end_of_list(t_line_lst **head, int type, char *value, int state)
 {

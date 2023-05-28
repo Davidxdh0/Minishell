@@ -64,7 +64,7 @@ $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 lldb: $(NAME)
-	lldb ./$(NAME) -- -p 'ls'
+	lldb ./$(NAME) -- -p 'ls' 'exit'
 
 tests:
 

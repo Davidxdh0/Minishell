@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/26 18:17:13 by dyeboa        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "main.h"
 
 // count de commands tot |. if | count as 1.
@@ -48,6 +36,7 @@ char *make_string(t_line_lst *line_lst)
 {
 	char *tempstring;
 
+	tempstring = NULL;
 	if (line_lst->value)
 		tempstring = ft_strdup(line_lst->value);
 	while (line_lst != NULL && ft_strncmp(line_lst->value, "|", 1))
@@ -76,6 +65,7 @@ char **make_redirects(t_line_lst *line_lst)
 	t_line_lst *temp;
 	int i;
 
+	tempstring = NULL;
 	i = 0;
 	temp = line_lst;
 	while (temp != NULL && ft_strcmp(line_lst->value, "|"))
@@ -104,48 +94,52 @@ char **make_redirects(t_line_lst *line_lst)
 
 t_execute *alloc_execute_list(t_line_lst *head)
 {
-	int k;
-	t_execute *cmdlist = NULL;
- 	t_execute *last = NULL;
-	char *temp;
-	while (head != NULL)
-	{
-		k = 0;
-		t_execute *new_node = malloc(sizeof(t_execute));
-		new_node->count_cmd = count_commands(head);
-		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
+    int k;
+    t_execute *cmdlist = NULL;
+    t_execute *last = NULL;
+    char *temp;
+    while (head != NULL)
+    {
+        k = 0;
+        t_execute *new_node = malloc(sizeof(t_execute));
+        new_node->count_cmd = count_commands(head);
+        new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
+		new_node->redirects = NULL;
         new_node->next = NULL;
-		while (head != NULL && k < new_node->count_cmd )
-		{
-			if (head->state > 0)
-			{
-				temp = make_string(head);
-				if (temp[0] == '\"' || temp[0] == '\'')
-					new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
-				while (head != NULL && head->state > 0)
-					head = head->next;
-			}
-			else
-			{
-            	new_node->cmd[k] = ft_strdup(head->value);
-				head = head->next;
-			}
+        while (head != NULL && k < new_node->count_cmd)
+        {
+            if (head->state > 0)
+            {
+                temp = make_string(head);
+                if (temp[0] == '\"' || temp[0] == '\'')
+                    new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
+                while (head != NULL && head->state > 0)
+                    head = head->next;
+				free(temp);
+				temp = NULL;
+            }
+            else
+            {
+                new_node->cmd[k] = ft_strdup(head->value);
+                head = head->next;
+            }
             k++;
-		}
-		new_node->cmd[k] = NULL;
-		if (last == NULL)
+        }
+        new_node->cmd[k] = NULL;
+        if (last == NULL)
             cmdlist = new_node;
         else
             last->next = new_node;
-		last = new_node;
-		if (head != NULL && !ft_strncmp(head->value,"|", 1))
-			;// printf("value head == %s\n", head->value);
-		if (head != NULL)
-			head = head->next;
-	}
-	// printf("cmdlist = %s", cmdlist->cmd[0]);
-	return (cmdlist);
+        last = new_node;
+        if (head != NULL && !ft_strncmp(head->value, "|", 1))
+            ;
+        if (head != NULL)
+            head = head->next;
+    }
+    // printf("cmdlist = %s", cmdlist->cmd[0]);
+    return (cmdlist);
 }
+
 
 int ft_arrlen(char **arr)
 {
@@ -207,13 +201,16 @@ void copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_
 /*
 ** Splits a command list into separate nodes of commands and redirects
 */
+
 t_execute *acco(t_execute *cmds)
 {
     t_execute *new_list;
     t_execute *current_node;
+	t_execute *head;
     int num_redirects;
     int num_commands;
 
+	head = cmds;
 	current_node = NULL;
 	new_list = NULL;
 	num_redirects = 0;
@@ -239,14 +236,13 @@ t_execute *acco(t_execute *cmds)
     }
 	if (num_commands == 0)
 		new_list->cmd = NULL;
-    return new_list;
+	delete_t_exec(head);
+    return (new_list);
 }
 
 void	show(t_execute *cmd)
 {
 	int i;
-	// if (cmd == NULL)
-	// 	return ;
 	while (cmd != NULL)
 	{
 		i = 0;
@@ -290,17 +286,20 @@ int	shell(char *line, char **envp)
 		// show(cmd);
 		// execute_cmd_list(cmd, &data);
 		// free
-		delete_t_list(line_lst);
-		delete_t_exec(cmd);
+		
+		
 	}
 	else
 	{
 		printf("syntax_check false\n"); //free line_lst
 		// exit(1);
 	}
+	delete_t_list(line_lst);
+	delete_t_exec(cmd);
 	// if (cmd != NULL)
 	// 	free(cmd);
-	
+	// delete_t_exec(cmd);
+	// show(cmd);
 	return (1);
 }
 
