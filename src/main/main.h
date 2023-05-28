@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/26 18:12:20 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 18:23:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ typedef struct s_data
 typedef struct s_execute
 {
 	char	**cmd;
-	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
-	// [<][file]
-	// [>][filename]
-	int		count_cmd;
+	char	**redirects; //redirect zoals gegeven, split op iets, redirects
+	int		count_cmd; //DCS, can be loaded in during initialization?
+	int		infile;
+	int		outfile;
 	struct s_execute *prev;
   	struct s_execute *next;
 }	t_execute;
@@ -114,6 +114,7 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
 void	execute_process(t_line_lst *stack, t_data *data, char **envp);
 void	close_fd_dup(t_data *data, int *stin, int *stout);
 void	test_lists(t_line_lst *head, char **envp);
+void	executor_dcs(t_execute *cmd_struct); //DCS
 
 //errors.c
 int		msg_error_code(char *err, int code);
@@ -140,6 +141,8 @@ void    redirect(t_line_lst *stack, t_data *data);
 //builtin.c
 void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
 int		is_builtin(char *str);
+void	ft_pwd(int fd); //DCS
+void	ft_echo(t_execute *cmd_struct, int fd); //DCS
 
 //cd.c
 void	execute_cd(char **cmd, t_data *data);
