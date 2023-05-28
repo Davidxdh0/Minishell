@@ -6,42 +6,33 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 17:45:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 22:19:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 #include <stdio.h>	// temp for show_t_list function 
 
-char	*type_to_string(note_type type)
+char	*type_to_string(node_type type)
 {
-	if (type == e_start)
-		return ("start\t");
-	if (type == e_cmd)
-		return ("cmd\t");
-	if (type == e_file)
-		return ("file\t");
-	if (type == e_pipe)
-		return ("pipe\t");
-	if (type == e_word)
-		return ("word\t");
-	if (type == e_quote)
-		return ("quote\t");
-	if (type == e_dquote)
-		return ("dquote\t");
-	if (type == e_whitespace)
-		return ("wspace\t");
-	if (type == e_var)
-		return ("var\t");
-	if (type == e_redirect_i)
-		return ("redirect_i");
-	if (type == e_redirect_o)
-		return ("redirect_o");
-	if (type == e_delimiter)
-		return ("delimiter");
-	if (type == e_append)
-		return ("append\t");
-	return ("no type");
+    static char* type_strings[13];
+	
+    type_strings[e_start] = "start\t";
+    type_strings[e_cmd] = "cmd\t";
+    type_strings[e_file] = "file\t";
+    type_strings[e_pipe] = "pipe\t";
+    type_strings[e_word] = "word\t";
+    type_strings[e_quote] = "quote\t";
+    type_strings[e_dquote] = "dquote\t";
+    type_strings[e_whitespace] = "wspace\t";
+    type_strings[e_var] = "var\t";
+    type_strings[e_redirect_i] = "redirect_i";
+    type_strings[e_redirect_o] = "redirect_o";
+    type_strings[e_delimiter] = "delimiter";
+    type_strings[e_append] = "append\t";
+    if (type >= e_start && type <= e_append)
+        return type_strings[type];
+    return "Not in my list";
 }
 
 void	show_t_list(t_line_lst *node, char *input_line)
@@ -57,12 +48,6 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	{
 		printf("%d\t%d\t%d\t%s\t%d\t%s\n", i, node->type, node->len,
 			type_to_string(node->type), (int)node->state, node->value);
-		// if (node->next == NULL) {
-		// 	printf("Next pointer of node %d is NULL\n", i);
-		// }
-		// if (node->prev == NULL) {
-		// 	printf("Prev pointer of node %d is NULL\n", i);
-		// }
 		node = node->next;
 		i++;
 	}
@@ -78,8 +63,7 @@ void	delete_t_list(t_line_lst *head)
 	{
 		temp = head;
 		head = head->next;
-		if (temp->value)
-			free(temp->value);
+		free(temp->value);
 		free(temp);
 	}
 }
@@ -107,9 +91,7 @@ void delete_t_exec(t_execute *cmd)
             i++;
         }
         free(current_node->redirects);
-
         free(current_node);
-
         current_node = next_node;
     }
 }

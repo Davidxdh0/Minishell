@@ -3,58 +3,50 @@
 /*                                                        ::::::::            */
 /*   echo.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
+/*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 15:47:26 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/02 12:03:22 by dyeboa        ########   odam.nl         */
+/*   Created: 2023/05/04 10:34:34 by abarteld      #+#    #+#                 */
+/*   Updated: 2023/05/04 10:34:35 by abarteld      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-/* echo with option -n
-	iets met -nnnnnnn
-*/
-
-int	check_option(char **cmd)
+static bool	echo_option(char *str)
 {
-	int i;
-	int j;
+	int	i;
 
-	i = 0;
-	while (cmd[i])
+	if (str[0] != '-' && str[1] != 'n')
+		return (false);
+	i = 2;
+	while (str[i])
 	{
-		j = 1;
-		message(cmd[i]);
-		while ((cmd[i][0] == '-' && cmd[i][1] == 'n') && cmd[i][j])
-		{
-			if (cmd[i][j] != 'n')
-				return (i);
-			j++;
-		}
+		if (str[i] == ' ') // might be a problem, test "-nnn XX"
+			break ;
+		if (str[i] != 'n')
+			return (false);
 		i++;
 	}
-	return(0);
+	return (true);
 }
 
-void	execute_echo(char **cmd)
+void	ft_echo(t_execute *cmd_struct, int fd)
 {
-	int option;
-	
-	option = -1;
-	if (cmd[1])
-		if (cmd[1][0] == '-' && cmd[1][1] == 'n')
-			option = check_option(cmd);
-	message_nl("option = ");
-	message(ft_itoa(option));
-	printf("word = %s\n", cmd[option + 1]);
-	printf("word = %s\n", cmd[1]);
-	while (cmd[option + 2])
+	int		i;
+	bool	n;
+
+	i = 1;
+	if (cmd_struct->cmd[i])
+		n = echo_option(cmd_struct->cmd[i]);
+	else
+		n = false;
+	if (n)
+		i++;
+	while (cmd_struct->cmd[i])
 	{
-		printf("%s", cmd[option + 2]);
-		if (cmd[option + 3] != NULL)
-			printf(" ");
-		option++;
-		
+		write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
+		i++;
 	}
+	if (!n)
+		write(fd, "\n", 1);
 }

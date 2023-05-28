@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/05/28 18:44:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 19:26:14 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ printf("\n\tStarted Executing\n");
 		next = next->next;
 	}
 printf("Number Of Commands = #%d\n", cmd_struct->count_cmd);
-
+	free(next);
 	ft_heredoc_init(cmd_struct);
 	if (cmd_struct->count_cmd > 1)
 		ft_multiple_commands(cmd_struct, envp);
@@ -230,6 +230,7 @@ printf("Number Of Commands = #%d\n", cmd_struct->count_cmd);
 		ft_single_command(cmd_struct, envp);
 	ft_heredoc_cleanup(cmd_struct);
 printf("\tFinished Executing\n\n");
+	
 // system("leaks -q minishell");
 }
 

@@ -28,11 +28,11 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 	int		i;
 	int		len;
 	char	*substr;
-	note_type	last;
+	node_type	last;
 
 	i = 0;
 	// printf("sd\n");
-	last = get_last_type(*line_lst);
+	last = get_previous_type(*line_lst);
 	// printf("last = %d", last);
 	if (!ft_isspecial(line[i]))
 	{

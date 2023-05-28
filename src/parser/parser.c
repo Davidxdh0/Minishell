@@ -6,54 +6,35 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/26 17:58:30 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 21:27:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 #include <stdio.h>
 
-// Update the next node's "prev" pointer
-// Free the memory used by the node
-// free(node_to_delete);
-// Update the previous node's "next" pointer
-
-// void	delete_node(t_line_lst *node_to_delete)
-// {
-// 	if (node_to_delete == NULL) 
-// 		return ;
-//     if (node_to_delete->next != NULL)
-//         node_to_delete->next->prev = node_to_delete->prev;
-// 	if (node_to_delete->prev != NULL)
-// 		node_to_delete->prev->next = node_to_delete->next;
-// }
-
 void delete_node(t_line_lst *node_to_delete)
 {
     if (node_to_delete == NULL)
-        return;
-
-    if (node_to_delete->prev == NULL) {
+        return ;
+    if (node_to_delete->prev == NULL)
+	{
         if (node_to_delete->next != NULL)
             node_to_delete->next->prev = NULL;
-    }
-    else {
+	}
+    else
         node_to_delete->prev->next = node_to_delete->next;
-    }
-
-    if (node_to_delete->next != NULL) {
+    if (node_to_delete->next != NULL)
         node_to_delete->next->prev = node_to_delete->prev;
-    }
-    else if (node_to_delete->prev != NULL) {
-        node_to_delete->prev->next = NULL; // Set the previous node's next pointer to NULL
-    }
+    else if (node_to_delete->prev != NULL)
+        node_to_delete->prev->next = NULL;
     free(node_to_delete);
 }
 
 
-note_type	get_last_type(t_line_lst *node)
+node_type	get_previous_type(t_line_lst *node)
 {
-	note_type	type;
+	node_type	type;
 
 	type = e_start;
 	while (node != NULL)
@@ -104,20 +85,35 @@ t_line_lst	*parser(char *line)
 	return (line_lst);
 }
 
-t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
+t_line_lst *remove_whitespace_list(t_line_lst *line_lst)
 {
-	t_line_lst *temp;
-	
-	temp = line_lst;
-	while (temp != NULL)
+    t_line_lst *new_head = NULL;
+    t_line_lst *prev = NULL;
+
+    while (line_lst != NULL)
     {
-        t_line_lst *next = temp->next;
-        if (temp->type == e_whitespace && temp->state == 0)
-            delete_node(temp);
-        temp = next;
+        t_line_lst *next = line_lst->next;
+        if (line_lst->type == e_whitespace && line_lst->state == 0)
+        {
+            if (prev != NULL)
+                prev->next = next;
+            if (next != NULL)
+                next->prev = prev;
+
+            free(line_lst->value);
+            free(line_lst);
+        }
+        else
+        {
+            if (new_head == NULL)
+                new_head = line_lst;
+            prev = line_lst;
+        }
+        line_lst = next;
     }
-	return (line_lst);
+    return new_head;
 }
+
 
 // t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
 // {

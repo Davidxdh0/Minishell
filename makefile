@@ -1,7 +1,7 @@
 NAME = minishell
 
 FLAGS =  -Wall -Wextra
-FLAGS += -Werror 
+# FLAGS += -Werror 
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
@@ -12,19 +12,27 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
 
-EXECUTE_FI	=	executor.c \
-				file.c \
-				paths.c \
-				errors.c \
-				redirect.c \
-				builtin.c \
-				messages.c \
-				executor_dcs.c \
-				builtin_dcs.c
+EXECUTE_FI	=	executor_dcs.c \
+				executor_utils.c \
+				heredoc_dcs.c \
+				single_command.c
 				
-BUILTIN_FI  =	echo.c \
+# executor.c
+# messages.c
+# file.c
+# paths.c
+# errors.c
+# redirect.c
+# builtin.c
+				
+BUILTIN_FI  =	builtin.c \
+				builtin_utils.c \
+				echo.c \
 				cd.c \
 				exit.c \
+				env.c \
+				pwd.c \
+				unset.c \
 				export.c
 
 MAIN_FILES =	main.c \
@@ -33,6 +41,8 @@ MAIN_FILES =	main.c \
 
 PARSER_FILES =	lexer.c \
 				parser.c \
+				parser_util.c \
+				parser_util2.c \
 				list.c \
 				specialchar.c \
 				grammer_checker.c \
@@ -97,3 +107,6 @@ re: fclean all
 
 test: all
 	bash testcmd.sh
+
+run: all
+	./minishell

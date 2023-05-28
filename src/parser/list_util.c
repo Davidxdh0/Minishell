@@ -1,22 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   list_util.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: abarteld <abarteld@student.codam.n>          +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/04 10:35:22 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/05/04 10:35:24 by abarteld      ########   odam.nl         */
+/*   Created: 2023/05/28 21:43:50 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/05/28 21:43:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main/main.h"
-
-void	ft_pwd(int fd)
-{
-	char	*buf; // wd name capped (at 1024) by a certain rule, source needed
-
-	buf = getcwd(NULL, 0);
-	write(fd, buf, ft_strlen(buf));
-	write(fd, "\n", 1);
-}

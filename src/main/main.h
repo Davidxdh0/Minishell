@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 18:38:01 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 21:52:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,10 @@ https://github.com/Snaipe/Criterion
 # include <errno.h>
 # include <readline/history.h>
 # include <stdbool.h>
-
-typedef struct s_line_lst
-{
-	int					type;
-	char				*value;
-	int					len;
-	int					state;
-	struct s_line_lst	*next;
-	struct s_line_lst	*prev;
-}	t_line_lst;
+# include "../parser/parser.h"
 
 typedef enum{
-	e_start = -1,
+	e_start = 0,
 	e_cmd,
 	e_file,
 	e_whitespace,
@@ -80,7 +71,18 @@ typedef enum{
 	e_redirect_o,
 	e_delimiter,
 	e_append
-}	note_type;
+}	node_type;
+
+typedef enum builtin_names
+{
+	ECH = 1,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}	e_builtin_names;
 
 typedef struct s_data
 {
@@ -93,16 +95,7 @@ typedef struct s_data
 	int		exitcode;
 }	t_data;
 
-typedef struct s_execute
-{
-	char	**cmd;
-	char	**redirects; //redirect zoals gegeven, split op iets, redirects
-	int		count_cmd; //DCS, can be loaded in during initialization?
-	int		infile;
-	int		outfile;
-	struct s_execute *prev;
-  	struct s_execute *next;
-}	t_execute;
+
 
 t_data	g_data;
 
@@ -114,7 +107,6 @@ void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
 void	execute_process(t_line_lst *stack, t_data *data, char **envp);
 void	close_fd_dup(t_data *data, int *stin, int *stout);
 void	test_lists(t_line_lst *head, char **envp);
-void	executor_dcs(t_execute *cmd_struct); //DCS
 
 //errors.c
 int		msg_error_code(char *err, int code);
@@ -159,14 +151,14 @@ void	execute_export(char **cmd, t_data *data);
 int		check_env_exist(char **cmd, t_data *data);
 
 /* LEXER*/
-int			is_valid_type(note_type type, t_line_lst *node);
-int			is_valid_var(note_type last_type);
-int			is_valid_word(note_type last_type);
-int			is_valid_file(note_type last_type);
-int			is_valid_pipe(note_type last_type);
-int			is_valid_cmd(note_type last_type);
-char		*type_to_string(note_type type);
-note_type	get_last_type(t_line_lst *node);
+int			is_valid_type(node_type type, t_line_lst *node);
+int			is_valid_var(node_type last_type);
+int			is_valid_word(node_type last_type);
+int			is_valid_file(node_type last_type);
+int			is_valid_pipe(node_type last_type);
+int			is_valid_cmd(node_type last_type);
+char		*type_to_string(node_type type);
+node_type	get_previous_type(t_line_lst *node);
 int			is_word(char c);
 
 t_line_lst	*lexer(char *line);
@@ -205,7 +197,7 @@ The parser processes the input line and build the list with tokens */
 void		delete_t_list(t_line_lst *head);
 void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
 void		show_t_list(t_line_lst *node, char *line);
-char		*type_to_string(note_type type);
+char		*type_to_string(node_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
@@ -223,14 +215,56 @@ void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
 int		ft_isredirect(char *str);
 void	show(t_execute *cmd);
+int		count_commands(t_line_lst *head);
 #endif
 
 //Syntax
 int		syntax_pipe(t_line_lst *line);
 int		syntax_redirects(t_line_lst *line);
-int		syntax_quotes(t_line_lst *line, note_type type);
+int		syntax_quotes(t_line_lst *line, node_type type);
 int		syntax_count_quotes(t_line_lst *line);
 
 //util
 int	perror_return(char *msg, char *msg2);
 void	delete_t_exec(t_execute *head);
+
+// Executor
+void	executor_dcs(t_execute *cmd_struct, char **envp);
+void	ft_execute_cmd(t_execute *cmd_struct, char **envp);
+// void	ft_execute_command(t_execute *cmd_struct, char **envp, int pipe1[2], int pipe2[2]);
+// void	ft_execute_command_struct(t_execute *cmd_struct, char **envp);
+void	ft_single_command(t_execute *cmd_struct, char **envp);
+// Builtins
+int		check_builtin(char *arg);
+void	exec_builtin(t_execute *cmd_struct, char **envp, int fd);
+
+void	ft_cd(t_execute *cmd_struct, char **envp, char *path);
+void	ft_echo(t_execute *cmd_struct, int fd);
+bool	ft_env(char **envp, int fd);
+void	ft_exit(t_execute *cmd_struct, char **envp);
+void	ft_export(t_execute *cmd_struct, char **envp, int fd);
+void	ft_export_cmd(char *cmd, char **envp, int fd);
+void	ft_export_argless(t_execute *cmd_struct, char **envp, int fd);
+void	ft_pwd(int fd);
+void	ft_unset(t_execute *cmd_struct, char **envp, int fd);
+
+void	builtin_infile(char **list);
+bool	builtin_outfile(char **list, int *fd);
+// Utils
+int		ft_exit_error(char *str, int err);
+
+bool	redirect_infile(char **list, char *name);
+bool	redirect_outfile(char **list);
+
+char	*get_path(char *exec_argv, char **path);
+char	*check_path(char *exec_argv, char **envp);
+char	*find_command(char **path, char *basepath);
+char	*ft_getenv(const char *name, char **envp);
+bool	ft_getenv_int(int *env, const char *name, char **envp);
+bool	is_path(char *exec_argv);
+
+//HereDoc
+void	ft_heredoc_init(t_execute *cmd_struct);
+bool	ft_heredoc(char *eof, char *name);
+void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
+void	ft_heredoc_cleanup(t_execute *cmd_struct);

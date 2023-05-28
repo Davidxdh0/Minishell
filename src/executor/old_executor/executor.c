@@ -54,103 +54,103 @@ Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash
 // execute commands op basis van wat het is. 
 */
 
-void	execute_execve(t_line_lst *stack, t_data *data, char **envp)
-{
-	if (execve(data->path, data->cmd, envp) == -1)
-		message_exit("execve went wrong", 0);
-	exit(1);
-	stack++;
-}
-
-void	execute_process(t_line_lst *stack, t_data *data, char **envp)
-{
-	pid_t	pid1;
-	int	wstatus;
-
-	redirect(stack, data);
-	message(stack->value);
-
-	pid1 = fork();
-	if (pid1 < 0)
-		message("fork went wrong");
-	if (pid1 == 0)
-	{
-		//write(1, "child\n", 6);
-		close(data->fd[0]);
-		if (execve(data->path, data->cmd, envp) == -1)
-			message_exit("execve went wrong", 0);
-	}
-	else
-	{
-		close(data->fd[1]);
-		waitpid(pid1, &wstatus, 0);
-		// if (WIFEXITED(wstatus))
-		// 	message("proces einde\n");//, (WEXITSTATUS(wstatus)));
-	}
-	return ;
-}
-
-void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
-{
-	if (!stack || !data)
-		return ;
-	data->cmd = ft_split(stack->value, ' ');
-	int i = -1;
-	while(data->cmd[++i])
-		message(data->cmd[i]);
-	message_nl("value = ");
-	message(data->cmd[0]);
-	if (is_builtin(stack->value) == 1)
-		execute_builtin(stack, data->cmd, data);
-	else
-	{
-		data->path = get_cmd_path(data->cmd[0], envp);
-		if (!data->path || !data->cmd[0])
-			message("geen path of splitted cmd");
-		if(stack)
-		{
-			// if (pipe(data->fd) < 0)
-			// 	message("pipe werkt niet");
-			data->outfile = data->fd[1];
-			execute_process(stack, data, envp);
-			close(data->outfile);
-			if (data->infile != 0)
-				close(data->infile);
-			data->infile = data->fd[0];
-			stack = stack->next;
-		}
-		if (data->cmd[0][0] == '\0')
-			message_exit("cmd == '\0'", 1);
-		if (ft_isspace(data->cmd[0][0]))
-			exit(msg_custom_error_code("pipex: command not found: ", "", 0));
-	}
-}
-
-// void	dup_all(t_data *data)
+// void	execute_execve(t_line_lst *stack, t_data *data, char **envp)
 // {
-	
+// 	if (execve(data->path, data->cmd, envp) == -1)
+// 		message_exit("execve went wrong", 0);
+// 	exit(1);
+// 	stack++;
 // }
-void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
-{ t_line_lst *stack;
+
+// void	execute_process(t_line_lst *stack, t_data *data, char **envp)
+// {
+// 	pid_t	pid1;
+// 	int	wstatus;
+
+// 	redirect(stack, data);
+// 	message(stack->value);
+
+// 	pid1 = fork();
+// 	if (pid1 < 0)
+// 		message("fork went wrong");
+// 	if (pid1 == 0)
+// 	{
+// 		//write(1, "child\n", 6);
+// 		close(data->fd[0]);
+// 		if (execve(data->path, data->cmd, envp) == -1)
+// 			message_exit("execve went wrong", 0);
+// 	}
+// 	else
+// 	{
+// 		close(data->fd[1]);
+// 		waitpid(pid1, &wstatus, 0);
+// 		// if (WIFEXITED(wstatus))
+// 		// 	message("proces einde\n");//, (WEXITSTATUS(wstatus)));
+// 	}
+// 	return ;
+// }
+
+// void	execute_commands(t_line_lst *stack, t_data *data, char **envp)
+// {
+// 	if (!stack || !data)
+// 		return ;
+// 	data->cmd = ft_split(stack->value, ' ');
+// 	int i = -1;
+// 	while(data->cmd[++i])
+// 		message(data->cmd[i]);
+// 	message_nl("value = ");
+// 	message(data->cmd[0]);
+// 	if (is_builtin(stack->value) == 1)
+// 		execute_builtin(stack, data->cmd, data);
+// 	else
+// 	{
+// 		data->path = get_cmd_path(data->cmd[0], envp);
+// 		if (!data->path || !data->cmd[0])
+// 			message("geen path of splitted cmd");
+// 		if(stack)
+// 		{
+// 			// if (pipe(data->fd) < 0)
+// 			// 	message("pipe werkt niet");
+// 			data->outfile = data->fd[1];
+// 			execute_process(stack, data, envp);
+// 			close(data->outfile);
+// 			if (data->infile != 0)
+// 				close(data->infile);
+// 			data->infile = data->fd[0];
+// 			stack = stack->next;
+// 		}
+// 		if (data->cmd[0][0] == '\0')
+// 			message_exit("cmd == '\0'", 1);
+// 		if (ft_isspace(data->cmd[0][0]))
+// 			exit(msg_custom_error_code("pipex: command not found: ", "", 0));
+// 	}
+// }
+
+// // void	dup_all(t_data *data)
+// // {
 	
-	if (!cmdlist)
-		return ;
-	stack = cmdlist;
-	while(stack)
-	{
-		if (stack->next)
-			pipe(data->fd);
-		// ;
-		//heredock checken
-		execute_commands(stack, data, data->envp);
-		if (data->fd[0] != 0)
-			close(data->fd[0]);
-		if (data->fd[1] != 1)
-			close(data->fd[1]);
-		data->infile = data->fd[0];
-		stack = stack->next;	
-	}
-	message("\nend of executes\n");
-}
+// // }
+// void	execute_cmd_list(t_line_lst *cmdlist, t_data *data)
+// { t_line_lst *stack;
+	
+// 	if (!cmdlist)
+// 		return ;
+// 	stack = cmdlist;
+// 	while(stack)
+// 	{
+// 		if (stack->next)
+// 			pipe(data->fd);
+// 		// ;
+// 		//heredock checken
+// 		execute_commands(stack, data, data->envp);
+// 		if (data->fd[0] != 0)
+// 			close(data->fd[0]);
+// 		if (data->fd[1] != 1)
+// 			close(data->fd[1]);
+// 		data->infile = data->fd[0];
+// 		stack = stack->next;	
+// 	}
+// 	message("\nend of executes\n");
+// }
 
 
