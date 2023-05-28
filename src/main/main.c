@@ -284,10 +284,9 @@ int	shell(char *line, char **envp)
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
 		// show(cmd);
-		execute_cmd_list(cmd, &data);
+		executor_dcs(cmd)
 		// free
 		// executor_dcs(cmd); //DCS
-		
 	}
 	else
 	{
