@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 18:23:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 18:36:16 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
 int		ft_isredirect(char *str);
+void	show(t_execute *cmd);
 #endif
 
 //Syntax

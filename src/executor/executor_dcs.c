@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/04/28 12:31:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 18:34:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -502,15 +502,15 @@ void	executor_dcs(t_execute *cmd_struct)
 {
 printf("\nStart Executing\n");
 
-ft_pwd(1);
-int	i = 0;
-	cmd_struct->cmd[i++] = ft_strdup("echo");
-	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
-	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
-	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
-	cmd_struct->cmd[i++] = NULL;
-ft_echo(cmd_struct, 1);
-exit(117);
+// ft_pwd(1);
+// int	i = 0;
+// 	cmd_struct->cmd[i++] = ft_strdup("echo");
+// 	cmd_struct->cmd[i++] = ft_strdup("-nnnnnnnnnnnnnnnn");
+// 	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
+// 	cmd_struct->cmd[i++] = ft_strdup("TESTING ECHO\n");
+// 	cmd_struct->cmd[i++] = NULL;
+// ft_echo(cmd_struct, 1);
+// exit(117);
 
 	t_execute *next;
 	next = cmd_struct->next;
@@ -527,7 +527,8 @@ exit(117);
 		next = next->next;
 	}
 printf("Number Of Commands = #%d\n", cmd_struct->count_cmd);
-	ft_needsname(cmd_struct);
+	// show(cmd_struct);
+	// ft_needsname(cmd_struct);
 
 printf("Finished Executing\n\n");
 }

@@ -6,32 +6,32 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/26 14:40:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/28 18:27:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
 
-char	*ft_getenv(const char *name, char **envp)
-{
-	int	i;
-	int	j;
+// char	*ft_getenv(const char *name, char **envp)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (envp[i])
-	{
-		j = 0;
-		while (name[j] == envp[i][j])
-		{
-			j++;
-			if (!name[j])
-				return (envp[i] + j);
-		}
-		i++;
-	}
-	return (NULL);
-}
+// 	i = 0;
+// 	while (envp[i])
+// 	{
+// 		j = 0;
+// 		while (name[j] == envp[i][j])
+// 		{
+// 			j++;
+// 			if (!name[j])
+// 				return (envp[i] + j);
+// 		}
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
 
 int find_variable(char *str)
 {
