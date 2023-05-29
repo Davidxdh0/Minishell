@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/02 13:58:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 13:29:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ void	line_reader(char **line, const char *display_name)
 		exit(0);
 	}
 	if (*line && **line && !str_isspaces(line))
-		add_history (*line);
+		add_history(*line);
 }

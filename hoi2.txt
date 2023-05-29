@@ -1,22 +1,32 @@
-parser
 exit codes
 signals
+kleine pars dingen
 ctrl + c, ctr d
+norminette
+functies kleiner
 
+parsing
+	Tokenizer
+	Strjoins
+	whitespaces
+	cmds naar array
+	redirects in array
+leaks
+signals
+norminette
 
 Vandaag:
 voor start:
 if argc != 1 -> exit 1
 	malloc met exit code + tekst perror("executable: " )
-global error code
-copy env - zonder oldpwd en SHLVL?
 ctrl + c attributes aan
 signals
 minishell
 ctrl c uit - voor cat
 free alles
 return (0);
-
+enkelquotes = if state != 2 count
+doublequotes = if state != 1 count
 
 minishell:
 isempty?
@@ -32,7 +42,7 @@ isempty?
 free alles
 
 
-checken of de quotes goed staan - mini1
+checken of de quotes goed staan
 input check
 checken of er geen twee speciale tekens achter elkaar staan.
 expander

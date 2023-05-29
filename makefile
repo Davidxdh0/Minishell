@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS =  #-Wall -Wextra -Werror 
+FLAGS =  -Wall -Wextra -Werror -g
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
@@ -34,7 +34,9 @@ PARSER_FILES =	lexer.c \
 				specialchar.c \
 				grammer_checker.c \
 				expander.c \
-				signals.c
+				signals.c \
+				syntax.c \
+				util.c
 
 SRC_FILES =		$(addprefix main/, $(MAIN_FILES)) \
 				$(addprefix executor/, $(EXECUTE_FI)) \
@@ -62,7 +64,20 @@ $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 lldb: $(NAME)
-	lldb ./$(NAME) -- -p 'ls'
+	lldb ./$(NAME) -- -p 'ls' 'exit'
+
+tests:
+
+TEST_DIR =	tests
+
+TEST =	$(TEST_DIR)/simple.c 
+
+TEST_BIN =	unit-tests
+
+tests_run:
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(TEST_BIN) $(SRC) $(TEST) $(READLINE_LIB)--coverage -lcriterion $(LDFLAGS) -g
+	./$(TEST_BIN)
+# gcc -o tests simple.c -lcriterion -I /Users/dyeboa/.brew/include
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)

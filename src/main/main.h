@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/04 20:27:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/26 18:12:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_execute
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
 	// [<][file]
 	// [>][filename]
+	int		count_cmd;
 	struct s_execute *prev;
   	struct s_execute *next;
 }	t_execute;
@@ -182,26 +183,30 @@ int			word_case(t_line_lst **line_lst, char *line, int state);
 int			quotes(t_line_lst *line_lst, char c, int state);
 
 // expander.c
-t_line_lst	*expander(t_line_lst *line_lst);
+void 		delete_node(t_line_lst *node_to_delete);
+t_line_lst	*remove_whitespace_list(t_line_lst *line_lst);
 t_line_lst	*word_list(t_line_lst *line);
 t_line_lst	*whitespaces_list(t_line_lst *line);
-char	*ft_getenv(const char *name, char **envp);
-int find_variable(char *str);
+t_line_lst	*string_quotes(t_line_lst *line_lst);
+char		*ft_getenv(const char *name, char **envp);
+int 		find_variable(char *str);
 t_line_lst	*variable_expand(t_line_lst *line, char **envp);
 char 		*change_str(char *str, int begin, int eind, char **envp);\
 
 //grammarchecker.c
-int		is_valid_grammer(t_line_lst *head);
+int			is_valid_grammer(t_line_lst *head);
 
 /* PARSER
 The parser processes the input line and build the list with tokens */
-void		delete_t_list(t_line_lst **head);
+void		delete_t_list(t_line_lst *head);
 void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(note_type type);
 int			length_of_list(t_line_lst *node);
 char 		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
+void 		delete_node(t_line_lst *node_to_delete);
+
 
 //signals.c
 void	redirect_signal(int signal);
@@ -214,3 +219,13 @@ void	add_line_in_history(char **line);
 int		str_isspaces(char **line);
 int		ft_isredirect(char *str);
 #endif
+
+//Syntax
+int		syntax_pipe(t_line_lst *line);
+int		syntax_redirects(t_line_lst *line);
+int		syntax_quotes(t_line_lst *line, note_type type);
+int		syntax_count_quotes(t_line_lst *line);
+
+//util
+int	perror_return(char *msg, char *msg2);
+void	delete_t_exec(t_execute *head);

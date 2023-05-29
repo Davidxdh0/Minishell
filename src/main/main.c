@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/04 20:51:12 by dyeboa        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "main.h"
 
 // count de commands tot |. if | count as 1.
@@ -48,6 +36,7 @@ char *make_string(t_line_lst *line_lst)
 {
 	char *tempstring;
 
+	tempstring = NULL;
 	if (line_lst->value)
 		tempstring = ft_strdup(line_lst->value);
 	while (line_lst != NULL && ft_strncmp(line_lst->value, "|", 1))
@@ -76,6 +65,7 @@ char **make_redirects(t_line_lst *line_lst)
 	t_line_lst *temp;
 	int i;
 
+	tempstring = NULL;
 	i = 0;
 	temp = line_lst;
 	while (temp != NULL && ft_strcmp(line_lst->value, "|"))
@@ -104,50 +94,52 @@ char **make_redirects(t_line_lst *line_lst)
 
 t_execute *alloc_execute_list(t_line_lst *head)
 {
-	int i;
-	int k;
-	t_execute *cmdlist = NULL;
- 	t_execute *last = NULL;
-	char *temp;
-	while (head != NULL)
-	{
-		k = 0;
-		i = count_commands(head);
-		t_execute *new_node = malloc(sizeof(t_execute));
-        new_node->cmd = malloc(sizeof(char *) * (i + 1));
+    int k;
+    t_execute *cmdlist = NULL;
+    t_execute *last = NULL;
+    char *temp;
+    while (head != NULL)
+    {
+        k = 0;
+        t_execute *new_node = malloc(sizeof(t_execute));
+        new_node->count_cmd = count_commands(head);
+        new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
+		new_node->redirects = NULL;
         new_node->next = NULL;
-		while (head != NULL && k < i)
-		{
-			if (head->state > 0)
-			{
-				temp = make_string(head);
-				if (temp[0] == '\"' || temp[0] == '\'')
-					new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
-				while (head != NULL && head->state > 0)
-					head = head->next;
-			}
-			else
-			{
-            	new_node->cmd[k] = ft_strdup(head->value);
-				head = head->next;
-			}
-            // printf("new_node->cmd[%d] == %s\n", k, new_node->cmd[k]);
+        while (head != NULL && k < new_node->count_cmd)
+        {
+            if (head->state > 0)
+            {
+                temp = make_string(head);
+                if (temp[0] == '\"' || temp[0] == '\'')
+                    new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
+                while (head != NULL && head->state > 0)
+                    head = head->next;
+				free(temp);
+				temp = NULL;
+            }
+            else
+            {
+                new_node->cmd[k] = ft_strdup(head->value);
+                head = head->next;
+            }
             k++;
-		}
-		new_node->cmd[k] = NULL;
-		if (last == NULL)
+        }
+        new_node->cmd[k] = NULL;
+        if (last == NULL)
             cmdlist = new_node;
         else
             last->next = new_node;
-		last = new_node;
-		if (head != NULL && !ft_strncmp(head->value,"|", 1))
-			printf("value head == %s\n", head->value);
-		if (head != NULL)
-			head = head->next;
-	}
-	// printf("cmdlist = %s", cmdlist->cmd[0]);
-	return (cmdlist);
+        last = new_node;
+        if (head != NULL && !ft_strncmp(head->value, "|", 1))
+            ;
+        if (head != NULL)
+            head = head->next;
+    }
+    // printf("cmdlist = %s", cmdlist->cmd[0]);
+    return (cmdlist);
 }
+
 
 int ft_arrlen(char **arr)
 {
@@ -209,16 +201,21 @@ void copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_
 /*
 ** Splits a command list into separate nodes of commands and redirects
 */
+
 t_execute *acco(t_execute *cmds)
 {
     t_execute *new_list;
     t_execute *current_node;
+	t_execute *head;
     int num_redirects;
     int num_commands;
 
+	head = cmds;
 	current_node = NULL;
 	new_list = NULL;
 	num_redirects = 0;
+	if (cmds == NULL)
+		return (NULL);
     while (cmds != NULL)
     {
         num_commands = 0;
@@ -237,8 +234,10 @@ t_execute *acco(t_execute *cmds)
         copy_commands_and_redirects(current_node, cmds->cmd, num_redirects);
         cmds = cmds->next;
     }
-
-    return new_list;
+	if (num_commands == 0)
+		new_list->cmd = NULL;
+	delete_t_exec(head);
+    return (new_list);
 }
 
 void	show(t_execute *cmd)
@@ -247,16 +246,19 @@ void	show(t_execute *cmd)
 	while (cmd != NULL)
 	{
 		i = 0;
-		while (cmd->cmd[i] != NULL)
+		while (cmd->cmd != NULL && cmd->cmd[i] != NULL)
 		{
 			printf("cmd[%d] = %s\n", i, cmd->cmd[i]);
 			i++;
 		}
 		i = 0;
-		while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
+		if (cmd->redirects != NULL && cmd->redirects[0] != NULL)
 		{
-			printf("redir = %s\n", cmd->redirects[i]);
-			i++;
+			while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
+			{
+				printf("redir = %s\n", cmd->redirects[i]);
+				i++;
+			}
 		}
 		cmd = cmd->next;
 	}
@@ -266,39 +268,44 @@ int	shell(char *line, char **envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
-	int i;
-	i = 0;
+	
+	cmd = NULL;
 	//tokenizer
 	line_lst = parser(line);
 	// show_t_list(line_lst, line);
-	//removes whitespaces
-	line_lst = expander(line_lst);
+	line_lst = remove_whitespace_list(line_lst);
 	// show_t_list(line_lst, line);
-	line_lst = variable_expand(line_lst, envp);
-	// show_t_list(line_lst, line);
-	//checks syntax
 	if (!syntax_check(line_lst))
 	{
+		// printf("syntax check gaat verder\n");
+		// show_t_list(line_lst, line);
+		line_lst = variable_expand(line_lst, envp);
+		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
+		cmd = acco(cmd);	
 		// show(cmd);
-		// printf("-----\n");
-		cmd = acco(cmd);
-		show(cmd);
-		// execute
 		// execute_cmd_list(cmd, &data);
 		// free
+		
+		
 	}
 	else
-		printf("syntax_check\telse"); //free line_lst
-	// printf("hm");
-	// if (!is_valid_grammer(line_lst))
-	// 	return (1);
-	// test_lists(line_lst, envp);
-	i++;
-	cmd = NULL;
-	delete_t_list(&line_lst);
-	envp++;	// temp until using envp
+	{
+		printf("syntax_check false\n"); //free line_lst
+		// exit(1);
+	}
+	delete_t_list(line_lst);
+	delete_t_exec(cmd);
+	// if (cmd != NULL)
+	// 	free(cmd);
+	// delete_t_exec(cmd);
+	// show(cmd);
 	return (1);
+}
+
+void	ft_atexit(void)
+{
+	system("leaks -q minishell");
 }
 
 int	main(int argc, char *argv[], char **envp)
@@ -311,15 +318,20 @@ int	main(int argc, char *argv[], char **envp)
 	g_data.envp = envp;
 	if (input_is_argv(argc, argv, &line))
 		return (shell(line, envp));
+	atexit(ft_atexit);
 	while (1)
 	{	
 		// if (argc != 1)
 		// 	exit(1); 1?
-		signal(SIGINT, redirect_signal);
+		// signal(SIGINT, redirect_signal);
 		line_reader(&line, "minishell$ ");
 		if (!ft_strncmp(line, "exit", 5))
+		{
+			// free(line);
 			exit(1);
+		}
 		shell(line, envp);
+		free(line);
 	}
 	return (0);
 }
