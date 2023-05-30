@@ -1,8 +1,19 @@
+David
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 exit codes - expanden - $$$$$? en $$$$.
 signals - ctrl + c, ctr d
 norminette
 functies kleiner
+
+Acco:
+error messages
+exit codes
+unset
+norminette
+functies kleiner
+
+samen:
+TESTEN
 
 Vandaag:
 voor start:
