@@ -12,13 +12,29 @@
 
 #include "../main/main.h"
 
+void	*ft_malloc(size_t size)
+{
+	void	*ptr;
+	ptr = malloc(size);
+	if (!ptr)
+		ft_exit_error("Malloc Failed", errno);
+	return (ptr);
+}
+
+void	ft_perror(char *str, int error_number)
+{
+	g_exitcode = 1;
+	printf("errno = %d\n", errno);
+	perror(str);
+}
+
 int	ft_exit_error(char *str, int err)
 {
 	// printf("Error\n%s\n", str);
 	write(2, "Error\n", 6);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
-	exit (err);
+	exit(err);
 }
 
 bool	malloc_perror(void *str, char **arr)
