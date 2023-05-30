@@ -76,7 +76,7 @@ bool	redirect_outfile(char **list)
 	return (file); //close fds
 }
 
-static void	first_child(int *pipe, t_execute *cmd_struct, char **envp)
+static void	first_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 {
 	close(pipe[0]);
 	redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name);
@@ -91,7 +91,7 @@ static void	first_child(int *pipe, t_execute *cmd_struct, char **envp)
 }
 
 static void	middle_child
-(int *pipe_in, int *pipe_out, t_execute *cmd_struct, char **envp)
+(int *pipe_in, int *pipe_out, t_execute *cmd_struct, t_envp *envp)
 {
 	close(pipe_in[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
@@ -111,7 +111,7 @@ static void	middle_child
 	ft_exit_error("Middle Child Survived", 17);
 }
 
-static void	last_child(int *pipe, t_execute *cmd_struct, char **envp)
+static void	last_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 {
 	close(pipe[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
@@ -125,10 +125,13 @@ static void	last_child(int *pipe, t_execute *cmd_struct, char **envp)
 	ft_exit_error("Last Child Survived", 19);
 }
 
-void	ft_execute_cmd(t_execute *cmd_struct, char **envp)
+void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 {
 	char	*cmd_path;
-
+	char	**envp_array;
+	
+	if (!cmd_struct->cmd)
+		exit(g_exitcode);
 	if (check_builtin(cmd_struct->cmd[0]))
 	{
 		printf("EXEC Builtin, Start\n");
@@ -136,13 +139,14 @@ void	ft_execute_cmd(t_execute *cmd_struct, char **envp)
 	}
 	else
 	{
-		cmd_path = check_path(cmd_struct->cmd[0], envp);
-		execve(cmd_path, cmd_struct->cmd, envp);
+		envp_array = envp_to_array(envp);
+		cmd_path = check_path(cmd_struct->cmd[0], envp_array);
+		execve(cmd_path, cmd_struct->cmd, envp_array);
 		ft_exit_error("Execve Failed", 13); // change for proper errors etc
 	}
 }
 
-void	ft_multiple_commands(t_execute *cmd_struct, char **envp) // 2 pipe logic?
+void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp) // 2 pipe logic?
 {
 	int		**pipes;
 	int		*pid;
@@ -202,8 +206,9 @@ void	ft_multiple_commands(t_execute *cmd_struct, char **envp) // 2 pipe logic?
 	free(pipes);
 }
 
-void	executor_dcs(t_execute *cmd_struct, char **envp)
+void	executor_dcs(t_execute *cmd_struct, t_envp *envp) // MAKE A PROTECTED MALLOC
 {
+system("leaks -q minishell");
 printf("\n\tStarted Executing\n");
 	t_execute	*next;
 	next = cmd_struct->next;
@@ -222,16 +227,15 @@ printf("\n\tStarted Executing\n");
 		next = next->next;
 	}
 printf("Number Of Commands = #%d\n", cmd_struct->count_cmd);
-	free(next);
 	ft_heredoc_init(cmd_struct);
 	if (cmd_struct->count_cmd > 1)
 		ft_multiple_commands(cmd_struct, envp);
 	else
 		ft_single_command(cmd_struct, envp);
 	ft_heredoc_cleanup(cmd_struct);
+	free(next);
 printf("\tFinished Executing\n\n");
-	
-// system("leaks -q minishell");
+system("leaks -q minishell");
 }
 
 
@@ -258,3 +262,10 @@ if (commands == 1)
 	}
 }
 	*/
+
+// 1, regular failure
+// 127, file permissions?
+// 130, signals?
+// 131, signals?
+// 255, exit shit??
+// 258 bad 

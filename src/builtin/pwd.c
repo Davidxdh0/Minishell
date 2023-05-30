@@ -19,4 +19,5 @@ void	ft_pwd(int fd)
 	buf = getcwd(NULL, 0);
 	write(fd, buf, ft_strlen(buf));
 	write(fd, "\n", 1);
+	free(buf);
 }

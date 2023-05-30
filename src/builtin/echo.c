@@ -21,8 +21,8 @@ static bool	echo_option(char *str)
 	i = 2;
 	while (str[i])
 	{
-		if (str[i] == ' ') // might be a problem, test "-nnn XX"
-			break ;
+		// if (str[i] == ' ') // might be a problem, test "-nnn XX"
+		// 	break ;
 		if (str[i] != 'n')
 			return (false);
 		i++;
@@ -42,8 +42,11 @@ void	ft_echo(t_execute *cmd_struct, int fd)
 		n = false;
 	if (n)
 		i++;
+	write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
+	i++;
 	while (cmd_struct->cmd[i])
 	{
+		write(fd, " ", 1);
 		write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
 		i++;
 	}

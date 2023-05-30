@@ -1,15 +1,22 @@
 #include "../main/main.h"
 
-void	ft_single_command(t_execute *cmd_struct, char **envp)
+void	ft_single_command(t_execute *cmd_struct, t_envp *envp)
 {
 	int	pid;
 	int	fd;
 
 	// if (!command_exists(cmd_struct))
 	// 	(no_command_redirects(cmd_struct->redirects))
-	if (check_builtin(cmd_struct->cmd[0]))
+	// exit(printf("DEATH\n"));
+	// if (!cmd_struct->cmd)
+	// {
+	// 	builtin_infile(cmd_struct->redirects);
+	// 	builtin_outfile(cmd_struct->redirects, &fd);
+	// }
+	if (cmd_struct->cmd && cmd_struct->cmd[0] && 
+	check_builtin(cmd_struct->cmd[0]))
 	{
-		
+		ft_heredoc_cleanup(cmd_struct);
 		builtin_infile(cmd_struct->redirects);
 		fd = 1;
 		if (!builtin_outfile(cmd_struct->redirects, &fd))
@@ -22,14 +29,13 @@ void	ft_single_command(t_execute *cmd_struct, char **envp)
 		pid = fork();
 		if (pid == -1)
 			ft_exit_error("Fork Failed", 177);
-		else if (pid == 0)
+		if (pid == 0)
 		{
 			redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name);
 			redirect_outfile(cmd_struct->redirects);
 			ft_execute_cmd(cmd_struct, envp);
 		}
-		else
-			waitpid(pid, NULL, 0);
+		waitpid(pid, NULL, 0);
 	}
 	// ft_env(envp, 1);
 }
