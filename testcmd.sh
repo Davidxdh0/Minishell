@@ -35,11 +35,7 @@
 # ./minishell -p 'echo -n-n -nnn -n -n- Hello'
 # ./minishell -p 'echo USER'
 # ./minishell -p 'echo "s ' USER ' s" | echo "USER"          s '
-# ./minishell -p 'echo "USER" '
-# ./minishell -p 'echo $USER'
-# ./minishell -p 'echo $USER'
-# ./minishell -p 'echo $USER 'plus''
-# ./minishell -p 'echo "$USER 'plus'"""'
+
 # ./minishell -p 'echo ~'
 
 #		redirects < 
@@ -116,22 +112,22 @@
 # ./minishell -p '>> $USER' 
 
 #EVAL
-./minishell -p '' 
-./minishell -p ' ' 
-./minishell -p '   '
-./minishell -p '   \t ' 
+# ./minishell -p '' 
+# ./minishell -p ' ' 
+# ./minishell -p '   '
+# ./minishell -p '   \t ' 
  
-./minishell -p '\t \t' #  cmd[0] = \t en cmd[1] = \t
-./minishell -p '/bin/ls '
-./minishell -p '/bin/ls | cat'
-./minishell -p 'echo HELLO'
-./minishell -p 'echo -nnn HELLo'
-./minishell -p 'exit' 
-./minishell -p 'exit | echo $?' # = 0 en exit niet'
-./minishell -p 'exit(1)' # bash: syntax error near unexpected token `1'
-./minishell -p '/bin/ls '
-./minishell -p '/bin/ls'
-./minishell -p '/bin/ls filethatdoesntexist' #TEST!! ls: filethatdoesntexist: No such file or directory
+# ./minishell -p '\t \t' #  cmd[0] = \t en cmd[1] = \t
+# ./minishell -p '/bin/ls '
+# ./minishell -p '/bin/ls | cat'
+# ./minishell -p 'echo HELLO'
+# ./minishell -p 'echo -nnn HELLo'
+# ./minishell -p 'exit' 
+# ./minishell -p 'exit | echo $?' # = 0 en exit niet'
+# ./minishell -p 'exit(1)' # bash: syntax error near unexpected token `1'
+# ./minishell -p '/bin/ls '
+# ./minishell -p '/bin/ls'
+# ./minishell -p '/bin/ls filethatdoesntexist' #TEST!! ls: filethatdoesntexist: No such file or directory
 
 # #SIGNALS check
 
@@ -147,3 +143,16 @@
 #redirections
 #pipes
 #history
+
+#			EXPAND
+# ./minishell -p 'echo "USER" '
+# ./minishell -p 'echo $USER'
+# ./minishell -p 'echo $nonexisting=empty'
+# ./minishell -p 'echo $USER 'plus''
+# ./minishell -p 'echo "$USER 'plus'"s""' -- gaan mensen dit testen?
+./minishell -p 'echo $?'
+# ./minishell -p 'echo $?hoi'
+# ./minishell -p 'echo $?$?'
+# ./minishell -p 'echo $$'
+# ./minishell -p 'echo $$$'
+# ./minishell -p 'echo $$$?'
