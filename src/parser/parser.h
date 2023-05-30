@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:41:10 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 21:50:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/30 12:21:58 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_execute *alloc_execute_list(t_line_lst *head);
 char *make_string(t_line_lst *line_lst);
 
 //parser_util.c
-t_execute *acco(t_execute *cmds);
-void copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_redirects);
-t_execute *create_new_node(int num_commands, int num_redirects);
-int count_redirects(char **cmd_list);
-int ft_arrlen(char **arr);
+t_execute 	*acco(t_execute *cmds);
+void 		copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_redirects);
+t_execute 	*create_new_node(int num_commands, int num_redirects);
+int 		count_redirects(char **cmd_list);
+int 		ft_arrlen(char **arr);

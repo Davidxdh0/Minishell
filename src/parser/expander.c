@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 18:27:08 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/30 12:40:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int find_variable(char *str)
 		if (str[i] == '$')
 		{
 			if (str[i + 1] == '$' || str[i + 1] == '?' )
-				return (0);
+				return (0); // string $$$$$
 			return (1);
 		}
 		i++;

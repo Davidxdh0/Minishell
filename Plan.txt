@@ -1,12 +1,8 @@
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
-exit codes - expanden. 
-signals
-ctrl + c, ctr d
+exit codes - expanden - $$$$$? en $$$$.
+signals - ctrl + c, ctr d
 norminette
 functies kleiner
-
-signals
-norminette
 
 Vandaag:
 voor start:
@@ -20,19 +16,9 @@ free alles
 return (0);
 
 minishell:
-isempty?
-	parse-exectute
-		tokenize 
-		syntax errors: pipe - redirects - quotes open?
-		expand - get env and stop erin.
-		make
-		 commands
 	voor executer- signal redirect = ?
-
 	na executer signal redirect = ?
 free alles
-
-
 
 edge cases:
 begin "|" of command = NULL
