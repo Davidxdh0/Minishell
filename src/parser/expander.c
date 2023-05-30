@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/30 14:41:32 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/30 15:43:36 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,24 @@ char	*expand_word(char* value, char** envp)
 	int i;
 	int begin;
 	int count;
+	char **array;
 	i = 0;
 	begin = 0;
 	count = 0;
 	//count aantal expands
-
 	while (value[i] != '\0')
 	{
 		while (value[i] == '$')
 			i++;
-		if (value[i] != '\0' && ft_isalpha(value[i]))
+		if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
 		{
-			while (ft_isalpha(value[i]))
+			while (ft_isascii(value[i]) && value[i] != '$')
 				i++;
 			count++;
 		}
 	}
+	value = change_str(value, begin, i, count);
+	return (value);
 	begin = i;
 	i++;
 	while (ft_isalpha(value[i]))
@@ -76,14 +78,15 @@ int find_variable(char *str)
 	return (0);
 }
 
-char *change_str(char *str, int begin, int eind, char **envp)
+char *change_str(char *str, int begin, int eind, char **envp, int count)
 {
 	int len;
 	char *newstr;
 	char *env;
-	
+	char **array;
 	int i = 0;
 	int k = 0;
+	array = (char **)malloc(sizeof(char **) * count + 1);
 	// printf("str = %s", str);
 	len = ft_strlen(str);
 	env = ft_substr(str, begin + 1, eind - begin - 1);
