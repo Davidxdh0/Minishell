@@ -56,6 +56,8 @@ https://github.com/Snaipe/Criterion
 # include <readline/history.h>
 # include <stdbool.h>
 
+int		g_exitcode;
+
 typedef struct s_line_lst
 {
 	int					type;
@@ -104,20 +106,27 @@ typedef struct s_data
 	int		exitcode;
 }	t_data;
 
+typedef	struct s_envp
+{
+	struct s_envp	*head;
+	char			*line;
+	int				value;
+	char			*identifier;
+	char			*string;
+	struct s_envp	*prev;
+	struct s_envp	*next;
+}	t_envp;
+
+
 typedef struct s_execute
 {
 	char	**cmd;
 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
 	int		count_cmd; //DCS, can be loaded in during initialization?
 	char	*heredoc_name;
-	// [<][file]
-	// [>][filename]
 	struct s_execute *prev;
   	struct s_execute *next;
 }	t_execute;
-
-t_data	g_data;
-
 
 /* Executer  & builtins*/
 //executor.c
@@ -221,7 +230,7 @@ int			syntax_check(t_line_lst *line);
 void	redirect_signal(int signal);
 
 /* Main */
-int		shell(char *line, char **envp);
+int		shell(char *line, char **original_envp, t_envp *envp); //DCS (still need to get rid of original envp?)
 int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
@@ -231,29 +240,30 @@ int		ft_isredirect(char *str);
 
 
 // Executor
-void	executor_dcs(t_execute *cmd_struct, char **envp);
-void	ft_execute_cmd(t_execute *cmd_struct, char **envp);
-// void	ft_execute_command(t_execute *cmd_struct, char **envp, int pipe1[2], int pipe2[2]);
-// void	ft_execute_command_struct(t_execute *cmd_struct, char **envp);
-void	ft_single_command(t_execute *cmd_struct, char **envp);
+void	executor_dcs(t_execute *cmd_struct, t_envp *envp);
+void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp);
+void	ft_single_command(t_execute *cmd_struct, t_envp *envp);
 // Builtins
 int		check_builtin(char *arg);
-void	exec_builtin(t_execute *cmd_struct, char **envp, int fd);
+void	exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd);
 
-void	ft_cd(t_execute *cmd_struct, char **envp, char *path);
+bool	ft_cd(t_execute *cmd_struct, t_envp *envp);
 void	ft_echo(t_execute *cmd_struct, int fd);
-bool	ft_env(char **envp, int fd);
-void	ft_exit(t_execute *cmd_struct, char **envp);
-void	ft_export(t_execute *cmd_struct, char **envp, int fd);
-void	ft_export_cmd(char *cmd, char **envp, int fd);
-void	ft_export_argless(t_execute *cmd_struct, char **envp, int fd);
+bool	ft_env(t_envp *envp, int fd);
+void	ft_exit(t_execute *cmd_struct);
+void	ft_export(t_execute *cmd_struct, t_envp *envp, int fd);
+void	ft_export_cmd(char *cmd, char *target, t_envp *envp, int fd);
+void	ft_export_argless(t_execute *cmd_struct, t_envp *envp, int fd);
 void	ft_pwd(int fd);
-void	ft_unset(t_execute *cmd_struct, char **envp, int fd);
+void	ft_unset(t_execute *cmd_struct, t_envp *envp, int fd); //might not need fd
 
 void	builtin_infile(char **list);
 bool	builtin_outfile(char **list, int *fd);
+bool	long_atoi(const char *str, long *number);
 // Utils
 int		ft_exit_error(char *str, int err);
+void	ft_perror(char *str, int);
+void	*ft_malloc(size_t size);
 
 bool	redirect_infile(char **list, char *name);
 bool	redirect_outfile(char **list);
@@ -270,5 +280,10 @@ void	ft_heredoc_init(t_execute *cmd_struct);
 bool	ft_heredoc(char *eof, char *name);
 void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
 void	ft_heredoc_cleanup(t_execute *cmd_struct);
+
+//Envp
+t_envp	*copy_envp(char **original_envp);
+char	**envp_to_array(t_envp *envp);
+int		check_envp_value(char *str);
 
 #endif

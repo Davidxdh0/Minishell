@@ -265,7 +265,7 @@ void	show(t_execute *cmd)
 	}
 }
 
-int	shell(char *line, char **envp)
+int	shell(char *line, char **original_envp, t_envp *envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
@@ -277,7 +277,7 @@ int	shell(char *line, char **envp)
 	//removes whitespaces
 	line_lst = expander(line_lst);
 	// show_t_list(line_lst, line);
-	line_lst = variable_expand(line_lst, envp);
+	line_lst = variable_expand(line_lst, original_envp);
 	// show_t_list(line_lst, line);
 	//checks syntax
 	if (!syntax_check(line_lst))
@@ -298,32 +298,33 @@ int	shell(char *line, char **envp)
 	// execute_cmd_list(cmd, &data);
 	// if (!is_valid_grammer(line_lst))
 	// 	return (1);
-	// test_lists(line_lst, envp);
+	// test_lists(line_lst, original_envp);
 	i++;
 	cmd = NULL;
 	delete_t_list(&line_lst);
 	return (0);
 }
 
-int	main(int argc, char *argv[], char **envp)
+int	main(int argc, char *argv[], char **original_envp)
 {
-	static char	*line;
-	
-	if (!*envp)
-		return (1);
-	g_data.exitcode = 0;
-	g_data.envp = envp;
+	static char	*line; //does this need to be static??
+	t_envp		*envp;
+
+	if (!*original_envp)
+		return (1); //error message?
+	envp = copy_envp(original_envp);
+	// if (!copy_envp(envp, original_envp))
+	// 	ft_exit_error("Failed To Copy The ENVP\n", 2); //edit
+	g_exitcode = 0;
 	if (input_is_argv(argc, argv, &line))
-		return (shell(line, envp));
+		return (shell(line, original_envp, envp));
 	while (1)
 	{	
 		// if (argc != 1)
 		// 	exit(1); 1?
 		signal(SIGINT, redirect_signal);
 		line_reader(&line, "minishell$ ");
-		if (!ft_strncmp(line, "exit", 5))
-			exit(1);
-		shell(line, envp);
+		shell(line, original_envp, envp);
 	}
 	return (0);
 }

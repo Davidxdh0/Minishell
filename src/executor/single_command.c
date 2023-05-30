@@ -1,15 +1,22 @@
 #include "../main/main.h"
 
-void	ft_single_command(t_execute *cmd_struct, char **envp)
+void	ft_single_command(t_execute *cmd_struct, t_envp *envp)
 {
 	int	pid;
 	int	fd;
 
 	// if (!command_exists(cmd_struct))
 	// 	(no_command_redirects(cmd_struct->redirects))
-	if (check_builtin(cmd_struct->cmd[0]))
+	// exit(printf("DEATH\n"));
+	// if (!cmd_struct->cmd)
+	// {
+	// 	builtin_infile(cmd_struct->redirects);
+	// 	builtin_outfile(cmd_struct->redirects, &fd);
+	// }
+	if (cmd_struct->cmd && cmd_struct->cmd[0] && 
+	check_builtin(cmd_struct->cmd[0]))
 	{
-		
+		ft_heredoc_cleanup(cmd_struct);
 		builtin_infile(cmd_struct->redirects);
 		fd = 1;
 		if (!builtin_outfile(cmd_struct->redirects, &fd))

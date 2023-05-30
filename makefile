@@ -15,7 +15,8 @@ READLINE_LIB = -lreadline
 
 EXECUTE_FI	=	executor_dcs.c \
 				executor_utils.c \
-				heredoc_dcs.c \
+				envp.c \
+				heredoc.c \
 				single_command.c
 				
 # executor.c
@@ -94,3 +95,6 @@ test: all
 
 run: all
 	./minishell
+
+exp: all
+	mv minishell ../SH_tester

@@ -31,7 +31,7 @@ int	check_builtin(char *arg)
 	return (0);
 }
 
-void	exec_builtin(t_execute *cmd_struct, char **envp, int fd)
+void	exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd)
 {
 	int	builtin;
 
@@ -39,7 +39,7 @@ void	exec_builtin(t_execute *cmd_struct, char **envp, int fd)
 	if (builtin == ECHO)
 		ft_echo(cmd_struct, fd);
 	else if (builtin == CD)
-		ft_cd(cmd_struct, envp, cmd_struct->cmd[1]);
+		ft_cd(cmd_struct, envp);
 	else if (builtin == PWD)
 		ft_pwd(fd);
 	else if (builtin == EXPORT)
@@ -49,9 +49,8 @@ void	exec_builtin(t_execute *cmd_struct, char **envp, int fd)
 	else if (builtin == ENV)
 		ft_env(envp, fd);
 	else if (builtin == EXIT)
-		ft_exit(cmd_struct, envp);
-	// reset_builtin_redirects(cmd_struct);
+		ft_exit(cmd_struct);
 	printf("EXEC Builtin, END\n");
 	if (cmd_struct->count_cmd > 1)
-		exit(0);
+		exit(g_exitcode);
 }
