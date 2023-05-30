@@ -12,18 +12,21 @@
 
 #include "../main/main.h"
 
-bool	ft_env(char **envp, int fd)
+bool	ft_env(t_envp *envp, int fd)
 {
 	int	i;
 
 	if (!envp)
 		return (false);
 	i = 0;
-	while (envp[i])
+	while (envp)
 	{
-		write(fd, envp[i], ft_strlen(envp[i]));
-		write(fd, "\n", 1);
-		i++;
+		if (envp->value)
+		{
+			write(fd, envp->line, ft_strlen(envp->line));
+			write(fd, "\n", 1);
+		}
+		envp = envp->next;
 	}
 	return (true);
 }
