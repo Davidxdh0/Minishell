@@ -4,8 +4,12 @@ expander - exitcodes
 	meerdere expands in woord.
 	evar $? dan return global exitcode
 signals - ctrl + c, ctr d
+syntax return code?
 norminette
 functies kleiner
+if argc != 1 -> exit 1
+	malloc met exit code + tekst perror("executable: " )
+leaks;
 
 Acco:
 error messages
@@ -19,8 +23,7 @@ TESTEN
 
 Vandaag:
 voor start:
-if argc != 1 -> exit 1
-	malloc met exit code + tekst perror("executable: " )
+
 ctrl + c attributes aan
 signals
 minishell
