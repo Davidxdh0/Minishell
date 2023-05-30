@@ -6,32 +6,61 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/30 12:40:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/30 14:41:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
+char	*expand_var(char* value, char** envp) 
+{
+	value = ft_substr(value, 1, ft_strlen(value));
+	char *str = ft_getenv(value, envp);
+	if (!str) 
+	{
+		str = ft_strdup("");
+		value = str;
+	}
+	else 
+	{
+		str = ft_substr(str, 1, ft_strlen(str));
+		value = ft_strdup(str);
+	}
+	free(str);
+	return (value);
+}
 
-// char	*ft_getenv(const char *name, char **envp)
-// {
-// 	int	i;
-// 	int	j;
+char	*expand_word(char* value, char** envp) 
+{
+	int i;
+	int begin;
+	int count;
+	i = 0;
+	begin = 0;
+	count = 0;
+	//count aantal expands
 
-// 	i = 0;
-// 	while (envp[i])
-// 	{
-// 		j = 0;
-// 		while (name[j] == envp[i][j])
-// 		{
-// 			j++;
-// 			if (!name[j])
-// 				return (envp[i] + j);
-// 		}
-// 		i++;
-// 	}
-// 	return (NULL);
-// }
+	while (value[i] != '\0')
+	{
+		while (value[i] == '$')
+			i++;
+		if (value[i] != '\0' && ft_isalpha(value[i]))
+		{
+			while (ft_isalpha(value[i]))
+				i++;
+			count++;
+		}
+	}
+	begin = i;
+	i++;
+	while (ft_isalpha(value[i]))
+		i++;
+	// $$$$$USER$?test
+	// $$$$$dyeboa0test
+	value = change_str(value, begin, i, envp);
+	// stop in string
+	return (value);
+}
 
 int find_variable(char *str)
 {
@@ -40,12 +69,8 @@ int find_variable(char *str)
 	i = 0;
 	while(str[i] && ft_strlen(str) > 1)
 	{
-		if (str[i] == '$')
-		{
-			if (str[i + 1] == '$' || str[i + 1] == '?' )
-				return (0); // string $$$$$
+		if (str[i] == '$' && str[i + 1] != '\0')
 			return (1);
-		}
 		i++;
 	}
 	return (0);
@@ -97,41 +122,22 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 	t_line_lst *temp;
 	int i;
 	int begin;
-	char *str;
 
 	begin = 0;
 	i = 0;
 	temp = line;
 	while (temp != NULL)
 	{
+		// find $ teken - zo ja expand
+		// if evar - substring alles na $.
 		if (find_variable(temp->value))
 		{
 			if (temp->type == e_var)
-			{
-				temp->value = ft_substr(temp->value, 1, ft_strlen(temp->value));
-				str = ft_getenv(temp->value, envp);
-				if (!str)
-				{
-					str = ft_strdup("");
-					temp->value = str;
-				}
-				else
-					str = ft_substr(str, 1, ft_strlen(str));
-					temp->value = str;
-			}
+				temp->value = ft_strdup(expand_var(temp->value, envp));
 			else if (temp->state == 2 || temp->state == 0)
-			{
-				while(temp->value[i] != '$')
-					i++;
-				begin = i;
-				i++;
-				while(ft_isalpha(temp->value[i]))
-					i++;
-				temp->value = change_str(temp->value, begin, i, envp);
-				//stop in string
-			}
+				temp->value = ft_strdup(expand_word(temp->value, envp));
 		}
 		temp = temp->next;
 	}
-	return (line);
+	return line;
 }

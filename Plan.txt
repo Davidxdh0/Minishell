@@ -1,6 +1,8 @@
 David
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
-exit codes - expanden - $$$$$? en $$$$.
+expander - exitcodes
+	meerdere expands in woord.
+	evar $? dan return global exitcode
 signals - ctrl + c, ctr d
 norminette
 functies kleiner
