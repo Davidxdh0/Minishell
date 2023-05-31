@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/31 11:07:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 11:10:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,20 +126,14 @@ int	main(int argc, char *argv[], char **original_envp)
 		// 	exit(1); 1?
 		// signal(SIGINT, redirect_signal);
 		line_reader(&line, "minishell$ ");
-<<<<<<< HEAD
-		if (!ft_strncmp(line, "exit", 5))
+		if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
 		{
 			free(line);
-			exit(1);
+			// exit(1);
 		}
-		shell(line, envp);
-		free(line);
-=======
-		// if (!ft_strncmp(line, "exit", 5))
-		// 	exit(1);
 		shell(line, original_envp, envp);
->>>>>>> e0a6a5cdc7eaa9e15b51325684945e39f43934cc
+		free(line);
 	}
-	atexit(ft_atexit);
+	// atexit(ft_atexit);
 	return (0);
 }
