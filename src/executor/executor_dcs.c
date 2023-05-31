@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/05/28 19:26:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 11:22:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp) // 2 pipe logic?
 
 void	executor_dcs(t_execute *cmd_struct, t_envp *envp) // MAKE A PROTECTED MALLOC
 {
-system("leaks -q minishell");
+// system("leaks -q minishell");
 printf("\n\tStarted Executing\n");
 	t_execute	*next;
 	next = cmd_struct->next;
@@ -235,7 +235,7 @@ printf("Number Of Commands = #%d\n", cmd_struct->count_cmd);
 	ft_heredoc_cleanup(cmd_struct);
 	free(next);
 printf("\tFinished Executing\n\n");
-system("leaks -q minishell");
+// system("leaks -q minishell");
 }
 
 

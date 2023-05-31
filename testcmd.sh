@@ -2,7 +2,7 @@
 
 #te fixen echo $? goed expanden met als het tweede command = 0
 # ./minishell -p 'export a=b"end"'
-./minishell -p '> "echo "USER  s"'
+# ./minishell -p '> "echo "USER  s"'
 # ./minishell -p 'ls'
 # ./minishell -p 'export'
 
@@ -14,7 +14,7 @@
 # ./minishell -p 'exit'
 
 
-./minishell -p 'pwd >> out | echo RAtaTATA '
+# ./minishell -p 'pwd >> out | echo RAtaTATA '
 
 
 # ./minishell -p 'ls -la > out | cat -e'
@@ -219,10 +219,15 @@
 # ./minishell -p 'echo $USER'
 # ./minishell -p 'echo $nonexisting=empty'
 # ./minishell -p 'echo $USER 'plus''
-# ./minishell -p 'echo "$USER 'plus'"s""' -- gaan mensen dit testen?
-./minishell -p 'echo $?'
+# ./minishell -p 'echo "USER 'plus'"s""' -- gaan mensen dit testen?
+# ./minishell -p 'echo $?'
 # ./minishell -p 'echo $?hoi'
 # ./minishell -p 'echo $?$?'
 # ./minishell -p 'echo $$'
 # ./minishell -p 'echo $$$'
 # ./minishell -p 'echo $$$?'
+
+./minishell -p echo 'plus'"s" 
+echo "$USER$USER"
+echo "$?"
+echo "s$?asss"

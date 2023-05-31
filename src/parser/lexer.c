@@ -31,13 +31,11 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 	node_type	last;
 
 	i = 0;
-	// printf("sd\n");
 	last = get_previous_type(*line_lst);
-	// printf("last = %d", last);
 	if (!ft_isspecial(line[i]))
 	{
 		len = 0;
-		while (!ft_isspecials(line[i + len]))
+		while (!ft_isspecial(line[i + len]))
 			len++;
 		substr = ft_substr(line, i, len);
 		// printf("state = %d", (int)state);

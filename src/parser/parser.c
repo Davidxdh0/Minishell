@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/31 11:06:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 18:50:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ t_line_lst	*parser(char *line)
 		else if (line[i] == '>')
 			i += greater_than_case(&line_lst, &line[i], state);
 		else if (line[i] == '$')
+		{
+			printf("char = %c\n", line[i]);
 			i += dolar_sign_case(&line_lst, &line[i], state);
+		}
 		else if (ft_isspace(line[i]))
 			i += space_case(&line_lst, state);
 		else

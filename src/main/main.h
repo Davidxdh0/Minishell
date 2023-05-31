@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/30 15:35:18 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 11:15:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ t_line_lst	*string_quotes(t_line_lst *line_lst);
 char		*ft_getenv(const char *name, char **envp);
 int 		find_variable(char *str);
 t_line_lst	*variable_expand(t_line_lst *line, char **envp);
-char 		*change_str(char *str, int begin, int eind, char **envp);\
+char 		*change_str(char *str, int begin, int eind, char **envp, int count);\
 
 //grammarchecker.c
 int			is_valid_grammer(t_line_lst *head);

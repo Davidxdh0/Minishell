@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/31 11:10:53 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 18:51:59 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,64 @@ void	show(t_execute *cmd)
 	}
 }
 
+t_line_lst *remove_quotes(t_line_lst *line_lst)
+{
+    t_line_lst *new_head = NULL;
+    t_line_lst *prev = NULL;
+
+    while (line_lst != NULL)
+    {
+        t_line_lst *next = line_lst->next;
+        if ((line_lst->type == e_quote && line_lst->state == 1) || (line_lst->type == e_quote && line_lst->state == 2))
+        {
+            if (prev != NULL)
+                prev->next = next;
+            if (next != NULL)
+                next->prev = prev;
+
+            free(line_lst->value);
+            free(line_lst);
+        }
+        else
+        {
+            if (new_head == NULL)
+                new_head = line_lst;
+            prev = line_lst;
+        }
+        line_lst = next;
+    }
+    return (new_head);
+}
+void combine_values(t_line_lst *list)
+{
+    if (list == NULL) {
+        return;
+    }
+    t_line_lst *current = list;
+    while (current != NULL) {
+        if (current->state != 0) {
+            t_line_lst *nextNode = current->next;
+            while (nextNode != NULL && (nextNode->type != e_whitespace && nextNode->state == 0)) 
+			{
+                current->len += nextNode->len;
+                current->value = realloc(current->value, (current->len + 1) * sizeof(char));
+                strcat(current->value, nextNode->value);
+                t_line_lst *temp = nextNode;
+                nextNode = nextNode->next;
+                free(temp);
+            }
+
+            if (nextNode != NULL) {
+                current->next = nextNode;
+            } else {
+                current->next = NULL;
+            }
+        }
+        current = current->next;
+    }
+}
+	
+
 int	shell(char *line, char **original_envp, t_envp *envp)
 {
 	t_line_lst	*line_lst;
@@ -79,24 +137,29 @@ int	shell(char *line, char **original_envp, t_envp *envp)
 	cmd = NULL;
 	//tokenizer
 	line_lst = parser(line);
+	show_t_list(line_lst, line);
+	line_lst = remove_quotes(line_lst);
+	// show_t_list(line_lst, line);
+	line_lst = variable_expand(line_lst, original_envp);
+	// line_lst = variable_expand(line_lst, original_envp);
+	combine_values(line_lst);
 	// show_t_list(line_lst, line);
 	line_lst = remove_whitespace_list(line_lst);
 	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		show_t_list(line_lst, line);
-		line_lst = variable_expand(line_lst, original_envp);
+		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
-		// show(cmd);
-		executor_dcs(cmd, envp); //DCS
+		show(cmd);
+		// return(1);
+		// executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 	}
 	else
 	{
-		printf("Syntax error doesn't get executed -> freeing\n");
+		;//printf("Syntax error doesn't get executed -> exitcode = ?\n");
 	}
-	// show_t_list(line_lst, line);
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
 	return (1);

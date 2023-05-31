@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser_util_extra.c                                :+:    :+:            */
+/*   parser_util2.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 21:38:12 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 17:27:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ t_execute *alloc_execute_list(t_line_lst *head)
             if (head->state > 0)
             {
                 temp = make_string(head);
-                if (temp[0] == '\"' || temp[0] == '\'')
-                    new_node->cmd[k] = ft_substr(temp, 1, ft_strlen(temp) - 2);
+                // if (temp[0] == '\"' || temp[0] == '\'')
+                new_node->cmd[k] = ft_substr(temp, 0, ft_strlen(temp) );
                 while (head != NULL && head->state > 0)
                     head = head->next;
 				free(temp);
@@ -89,7 +89,6 @@ t_execute *alloc_execute_list(t_line_lst *head)
         if (head != NULL)
             head = head->next;
     }
-    // printf("cmdlist = %s", cmdlist->cmd[0]);
     return (cmdlist);
 }
 
