@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 21:27:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/05/31 11:06:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,49 +114,6 @@ t_line_lst *remove_whitespace_list(t_line_lst *line_lst)
     return new_head;
 }
 
-
-// t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
-// {
-// 	t_line_lst *temp;
-	
-// 	temp = line_lst;
-// 	while (line_lst != NULL)
-// 	{
-// 		if (line_lst->type == e_whitespace && line_lst->state == 0)
-// 		{
-// 			line_lst = whitespaces_list(line_lst);
-// 			if (line_lst->prev == NULL && line_lst->next != NULL) // check if it's the head node
-// 			{
-// 				temp = line_lst->next;
-// 				free(line_lst);
-// 				line_lst = temp;
-// 				// continue; // skip to the next node
-// 			}
-// 			else if (line_lst->next == NULL)
-// 			{
-// 				line_lst->prev->next = NULL;
-// 				free(line_lst);
-// 			}
-// 			if (line_lst->next != NULL)
-// 				line_lst->prev->next = line_lst->next;
-// 		}
-// 		else if (line_lst != NULL && line_lst->state > 0)
-// 		{
-// 			// printf("value = %s\n", line_lst->value);
-// 			line_lst = word_list(line_lst);
-// 			// if (line_lst->next != NULL)
-// 			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
-// 			// if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
-// 			// {
-// 			// 	line_lst->next = line_lst->next->next;
-// 			// }
-// 		}
-// 		if (line_lst != NULL)
-// 			line_lst = line_lst->next;
-// 	}
-// 	return (temp);
-// }
-
 t_line_lst	*word_list(t_line_lst *line)
 {
 	t_line_lst *temp;
@@ -179,28 +136,3 @@ t_line_lst	*word_list(t_line_lst *line)
 	line->next = temp;
 	return (line);
 }
-
-// t_line_lst *string_quotes(t_line_lst *line_lst)
-// {
-// 	t_line_lst *temp;
-// 	char *tempstring;
-	
-// 	temp = line_lst;
-// 	while (line_lst != NULL)
-// 	{
-// 		tempstring = ft_strdup(line_lst->value);
-// 		if (line_lst != NULL && line_lst->state > 0)
-// 		{
-// 			// printf("value = %s\n", line_lst->value);
-// 			line_lst = word_list(line_lst);
-// 			// if (line_lst->next != NULL)
-// 			// 	printf("current = %s, next = %s\n", line_lst->value, line_lst->next->value);
-// 			// if (line_lst->next != NULL && line_lst->next->type == e_whitespace && line_lst->next->state == 0 && line_lst->next->next != NULL)
-// 			// {
-// 			// 	line_lst->next = line_lst->next->next;
-// 			// }
-// 		}
-// 		if (line_lst != NULL)
-// 			line_lst = line_lst->next;
-// 	}
-// }
