@@ -34,7 +34,7 @@ static int	validate_exit_arg(char *str)
 	arg %= 256;
 	return ((int)arg);
 }
-//change shit to ft_printferror
+
 void	ft_exit(t_execute *cmd_struct)
 {
 	int	i;
@@ -48,8 +48,9 @@ void	ft_exit(t_execute *cmd_struct)
 	arg = validate_exit_arg(cmd_struct->cmd[1]);
 	if (arg == -1)
 	{
-		printf("minishell: exit: %s: numeric argument required\n",
-		cmd_struct->cmd[1]); // change to printferror
+		write(2, "minishell: exit: ", 18);
+		write(2, cmd_struct->cmd[1], ft_strlen(cmd_struct->cmd[1]));
+		write(2, ": numeric argument required\n", 28);
 		exit(255);
 	}
 	if (cmd_struct->cmd[2])
@@ -58,10 +59,8 @@ void	ft_exit(t_execute *cmd_struct)
 		write(2, "minishell: exit: too many arguments\n", 36);
 		return ;
 	}
-	printf("ExitCode = %d\n", arg);
 	exit(arg);
 }
-
 
 		/*
 	check number of arguments (if too many, dont exit, error 1)

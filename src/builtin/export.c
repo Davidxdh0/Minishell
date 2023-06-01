@@ -15,127 +15,103 @@
 // cant start with a number
 // cant have special characters
 // += (dont need to handle)
+// sorting (not handling)
 
-bool	export_characters(char c, bool start)
+bool	export_characters(char c, bool start, char *str) //move to utils
 {
 	if (start == true)
 	{
 		if (!(c == '_') && !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z'))
+		{
+			write(2, "minishell: export: `", 21);
+			write(2, str, ft_strlen(str));
+			write(2, "\': not a valid identifier\n", 26);
 			return (false);
+		}
 	}
 	else if (!(c == '_') && !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') \
 			&& !(c >= '0' && c <= '9'))
+	{
+		write(2, "minishell: export: `", 21);
+		write(2, str, ft_strlen(str));
+		write(2, "\': not a valid identifier\n", 26);
 		return (false);
+	}
 	return (true);
 }
 
-static char	*ft_export_validation(char *cmd) //change for error status
+static bool	ft_export_validation(char *cmd, char **target)
 {
 	int		i;
-	char	*str;
 
-	if (!export_characters(cmd[0], true))
-		return (printf("minishell: export: `%s': not a valid identifier\n"
-				, cmd), NULL);
+	if (!export_characters(cmd[0], true, cmd))
+		return (false);
 	i = 1;
 	while (cmd[i])
 	{
 		if (cmd[i] == '=')
 		{
-			str = ft_substr(cmd, 0, i); //prots
-			// if (!str)
-			// 	ft_exit_error("Malloc Failed", errno);
-			printf("Export Target: %s\n", str);
-			return (str);
+			*target = ft_substr(cmd, 0, i);
+			return (true);
 		}
-		if (!export_characters(cmd[i], false))
-			return (printf("minishell: export: `%s': not a valid identifier\n"
-					, cmd), NULL);
+		if (!export_characters(cmd[i], false, cmd))
+			return (false);
 		i++;
 	}
-	return (NULL);
+	return (true);
 }
 
 bool	export_targeted(char *cmd, char *target, t_envp *envp)
 {
-	int		len;
-
-	if (target)
+	while (envp)
 	{
-		while (envp)
+		if (!ft_strcmp(target, envp->identifier))
 		{
-			if (!ft_strcmp(target, envp->identifier))
-			{
-				free(envp->line);
-				free(envp->string);
-				envp->line = ft_strdup(cmd); //prots
-				if (!envp->value)
-					envp->value = check_envp_value(envp->line);
-				envp->string = ft_substr(envp->line, envp->value + 1 \
-				, ft_strlen(envp->line) - (envp->value + 1)); //prots
-		printf("Envp #%d Line =\t%s\n", 666, envp->line);
-		printf("Envp #%d ID =\t%s\n", 666, envp->identifier);
-		printf("Envp #%d Str =\t%s\n", 666, envp->string);
-				return (true);
-			}
-			envp = envp->next;
+			free(target);
+			free(envp->line);
+			free(envp->string);
+			envp->line = ft_strdup(cmd);
+			if (!envp->value)
+				envp->value = check_envp_value(envp->line);
+			envp->string = ft_substr(envp->line, envp->value + 1 \
+			, ft_strlen(envp->line) - (envp->value + 1));
+			return (true);
 		}
+		envp = envp->next;
 	}
+	free(target);
 	return (false);
 }
 
-void	ft_export_cmd(char *cmd, char *target, t_envp *envp, int fd)
+t_envp	*ft_export_cmd(char *cmd, char *target, t_envp *envp)
 {
-	t_envp	*hd;
-	t_envp	*new;
+	t_envp	*head;
 
-	if (export_targeted(cmd, target, envp))
-		return ;
-	hd = envp;
+	head = envp;
 	if (!target)
 	{
 		while (envp)
 		{
 			if (!ft_strcmp(cmd, envp->identifier))
-				return ;
+				return (head);
 			envp = envp->next;
 		}
 	}
-	new = ft_malloc(sizeof(t_envp));
-	new->head = hd;
-	new->prev = hd;
-	new->next = hd->next;
-	new->line = ft_strdup(cmd); // prots
-	new->value = check_envp_value(new->line);
-	if (new->value)
-	{
-		new->identifier = ft_substr(new->line, 0, new->value); //prots
-		new->string = ft_substr(new->line, new->value + 1\
-		, ft_strlen(new->line) - (new->value + 1)); //prots
-		printf("Envp #%d Line =\t%s\n", 117, new->line);
-		printf("Envp #%d ID =\t%s\n", 117, new->identifier);
-		printf("Envp #%d Str =\t%s\n", 117, new->string);
-	}
+	else if (export_targeted(cmd, target, envp))
+		return (envp);
+	envp = head;
+	if (!envp)
+		envp = envp_start_list(cmd);
 	else
-	{
-		new->identifier = ft_strdup(new->line); //prots
-		new->string = NULL;
-	}
-	hd->next->prev = new;
-	hd->next = new;
+		envp_add_node(envp, cmd);
+	return (envp);
 }
 
-	// target, not present (make new)
-	// target, present (free and set new string)
-	// no target, present (keep old)
-	// no target, not present (make new)
-
-void	ft_export_argless(t_execute *cmd_struct, t_envp *envp, int fd)
+void	ft_export_argless(t_envp *envp, int fd)
 {
-	//sort?
 	while (envp)
 	{
-		write(fd, "declare -x ", 11); 
+		write(fd, "declare -x ", 11);
 		if (envp->value)
 		{
 			write(fd, envp->identifier, ft_strlen(envp->identifier));
@@ -152,45 +128,23 @@ void	ft_export_argless(t_execute *cmd_struct, t_envp *envp, int fd)
 	}
 }
 
-void	ft_export(t_execute *cmd_struct, t_envp *envp, int fd)
+t_envp	*ft_export(t_execute *cmd_struct, t_envp *envp, int fd)
 {
 	int		i;
 	char	*target;
 
-printf("Entered Export\n");
 	if (!cmd_struct->cmd[1])
-		ft_export_argless(cmd_struct, envp, fd);
+		ft_export_argless(envp, fd);
 	else
 	{
 		i = 1;
 		while (cmd_struct->cmd[i])
 		{
-			target = ft_export_validation(cmd_struct->cmd[i]); // change for error states
-			ft_export_cmd(cmd_struct->cmd[i], target, envp, fd);
+			target = NULL;
+			if (ft_export_validation(cmd_struct->cmd[i], &target))
+				envp = ft_export_cmd(cmd_struct->cmd[i], target, envp);
 			i++;
 		}
 	}
-printf("Exiting Export\n");
+	return (envp);
 }
-
-	// int		i;
-
-	// if (target)
-	// {
-	// 	ft_getenv_int(&i, target, envp);
-	// 	free(target);
-	// 	if (i >= 0)
-	// 	{
-	// 		envp[i] = ft_strdup(cmd); //prots
-	// 		// if (!envp[i])
-	// 		// 	ft_exit_error("Malloc Failed", errno);
-	// 		return ;
-	// 	}
-	// }
-	// i = 0;
-	// while (envp[i])
-	// 	i++;
-	// envp[i] = ft_strdup(cmd);
-	// if (!envp[i])
-	// 	ft_exit_error("Malloc Failed", errno);
-	// envp[i + 1] = NULL;

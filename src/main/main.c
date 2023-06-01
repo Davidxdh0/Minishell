@@ -71,7 +71,7 @@ void	show(t_execute *cmd)
 	}
 }
 
-int	shell(char *line, char **original_envp, t_envp *envp)
+t_envp	*shell(char *line, char **original_envp, t_envp *envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
@@ -88,7 +88,7 @@ int	shell(char *line, char **original_envp, t_envp *envp)
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
 		show(cmd);
-		executor_dcs(cmd, envp); //DCS
+		envp = executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 	}
 	else
@@ -98,7 +98,7 @@ int	shell(char *line, char **original_envp, t_envp *envp)
 	// show_t_list(line_lst, line);
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
-	return (1);
+	return (envp);
 }
 
 void	ft_atexit(void)
@@ -117,9 +117,9 @@ int	main(int argc, char *argv[], char **original_envp)
 	// if (!copy_envp(envp, original_envp))
 	// 	ft_exit_error("Failed To Copy The ENVP\n", 2); //edit
 	g_exitcode = 0;
-	if (input_is_argv(argc, argv, &line))
-		return (shell(line, original_envp, envp));
-	atexit(ft_atexit);
+	if (input_is_argv(argc, argv, &line)) //remove
+		return (shell(line, original_envp, envp), 7);
+	// atexit(ft_atexit);
 	while (1)
 	{	
 		// if (argc != 1)
@@ -128,7 +128,7 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		// if (!ft_strncmp(line, "exit", 5))
 		// 	exit(1);
-		shell(line, original_envp, envp);
+		envp = shell(line, original_envp, envp);
 	}
 	return (0);
 }

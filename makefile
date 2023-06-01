@@ -18,7 +18,8 @@ EXECUTE_FI	=	executor_dcs.c \
 				executor_utils.c \
 				envp.c \
 				heredoc_dcs.c \
-				single_command.c
+				commands.c \
+				daycare.c
 				
 # executor.c
 # messages.c

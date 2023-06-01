@@ -6,9 +6,13 @@ norminette
 functies kleiner
 
 Acco:
-error messages
-exit codes
 unset
+geen command segfault
+exit codes
+
+redirects zonder commands
+SHLVL ItoA AtoI
+error messages
 norminette
 functies kleiner
 

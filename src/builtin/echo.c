@@ -21,8 +21,6 @@ static bool	echo_option(char *str)
 	i = 2;
 	while (str[i])
 	{
-		// if (str[i] == ' ') // might be a problem, test "-nnn XX"
-		// 	break ;
 		if (str[i] != 'n')
 			return (false);
 		i++;

@@ -12,6 +12,19 @@
 
 #include "../main/main.h"
 
+bool	find_env_in_list(t_envp *envp, char *str)
+{
+	while (envp)
+	{
+		if (!ft_strcmp(str, envp->identifier))
+		{
+			return (true);
+		}
+		envp = envp->next;
+	}
+	return (false);
+}
+
 bool	ft_cd(t_execute *cmd_struct, t_envp *envp)
 {
 	int		i;
@@ -24,19 +37,16 @@ bool	ft_cd(t_execute *cmd_struct, t_envp *envp)
 		return (ft_perror(cmd_struct->cmd[1], errno), free(cwd), false);
 	cmd = ft_strjoin("OLDPWD=", cwd);
 	free(cwd);
-	if (!cmd)
-		ft_exit_error("Malloc Failed", errno);
-	ft_export_cmd(cmd, "OLDPWD=", envp, 1);
+	if (find_env_in_list(envp, "OLDPWD"))
+		ft_export_cmd(cmd, "OLDPWD", envp);
 	free(cmd);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (ft_perror(cmd_struct->cmd[1], errno), false);
 	cmd = ft_strjoin("PWD=", cwd);
-	if (!cmd)
-		ft_exit_error("Malloc Failed", errno);
 	free(cwd);
-	ft_export_cmd(cmd, "PWD=", envp, 1);
+	if (find_env_in_list(envp, "PWD"))
+		ft_export_cmd(cmd, "PWD", envp);
 	free(cmd);
-	// printf("Current PWD = %s\n", getcwd(NULL, 0));
 	return (true);
 }
