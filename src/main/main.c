@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 16:57:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 19:38:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		count_commands(t_line_lst *head)
 				return (i);
 		}
 		if (!ft_isredirect(temp->value))
-			printf("dfd");
+			printf("dfxd");
 		if (temp != NULL)
 			temp = temp->next;
 		i++;
@@ -140,14 +140,14 @@ int	shell(char *line, t_envp *envp)
 	line_lst = variable_expand(line_lst, envp);
 	combine_values(line_lst);
 	line_lst = remove_whitespace_list(line_lst);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
 		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
 		show(cmd);
-		executor_dcs(cmd, envp); //DCS
+		// executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 		// 130, signals?
 		// 131, signals?
@@ -167,16 +167,16 @@ void	ft_atexit(void)
 	system("leaks -q minishell");
 }
 
+
 int	main(int argc, char *argv[], char **original_envp)
 {
 	static char	*line; //does this need to be static??
 	t_envp		*envp;
-
-	if (!*original_envp)
-		return (1); //error message?
+	signal(SIGINT, signal_int);   // Handle Ctrl-C
+	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
+	// 
+	signal(SIGQUIT, signal_bs); 
 	envp = copy_envp(original_envp);
-	// if (!copy_envp(envp, original_envp))
-	// 	ft_exit_error("Failed To Copy The ENVP\n", 2); //edit
 	g_exitcode = 0;
 	if (input_is_argv(argc, argv, &line))
 		return (shell(line, envp));
@@ -184,15 +184,17 @@ int	main(int argc, char *argv[], char **original_envp)
 	{	
 		// if (argc != 1)
 		// 	exit(1); 1?
-		// signal(SIGINT, redirect_signal);
+		disable_ctrl_c_display();
 		line_reader(&line, "minishell$ ");
-		if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
+		if (line != NULL)
 		{
+			
+			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
+				free(line);
+			enable_ctrl_c_display();
+			shell(line, envp);
 			free(line);
-			// exit(1);
 		}
-		shell(line, envp);
-		free(line);
 	}
 	// atexit(ft_atexit);
 	return (0);

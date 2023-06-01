@@ -49,7 +49,6 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 		if (substr)
 			free(substr);
 	}
-	
 	return (i);
 }
 

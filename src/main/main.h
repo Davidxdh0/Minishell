@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 16:56:56 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 19:37:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,11 @@ void 		delete_node(t_line_lst *node_to_delete);
 
 //signals.c
 void	redirect_signal(int signal);
-
+void signal_int(int signal);
+void signal_int_heredoc(int signal);
+void 	disable_ctrl_c_display();
+void 	enable_ctrl_c_display();
+void	signal_bs(int signal);
 /* Main */
 int		shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
 int		input_is_argv(int argc, char *argv[], char **line);

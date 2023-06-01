@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/31 17:27:33 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 17:20:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
         k = 0;
         t_execute *new_node = malloc(sizeof(t_execute));
         new_node->count_cmd = count_commands(head);
+		printf("count cmd = %d", new_node->count_cmd);
         new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
 		new_node->redirects = NULL;
         new_node->next = NULL;

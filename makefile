@@ -10,8 +10,8 @@ INC_DIR = includes -I $(HOME)/.brew/Cellar/readline/8.2.1/include
 LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-# READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
-READLINE_LIB = -lreadline
+READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
+# READLINE_LIB = -lreadline
 # -L $(HOME)/.brew/Cellar/readline/8.2.1/lib 
 
 EXECUTE_FI	=	executor_dcs.c \

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 17:03:12 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 17:05:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int	syntax_count_quotes(t_line_lst *line)
 int	syntax_redirects(t_line_lst *line)
 {
 	//  < file   of < $file 
-	// printf("type = %d\n", line->type);
-	// printf("type = %d", line->next->type);
 	if (line->type == e_redirect_i)
 	{
 		if (line->next == NULL || (line->next->type != e_file && line->next->type != e_var && \
