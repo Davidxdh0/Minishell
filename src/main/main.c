@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 19:38:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 19:47:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,17 +140,13 @@ int	shell(char *line, t_envp *envp)
 	line_lst = variable_expand(line_lst, envp);
 	combine_values(line_lst);
 	line_lst = remove_whitespace_list(line_lst);
-	show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
-		show(cmd);
-		// executor_dcs(cmd, envp); //DCS
+		// show(cmd);
+		executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
-		// 130, signals?
-		// 131, signals?
 		// 255, exit shit??
 	}
 	else
@@ -188,7 +184,6 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-			
 			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
 				free(line);
 			enable_ctrl_c_display();

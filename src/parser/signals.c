@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 19:41:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 19:46:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ void signal_int_heredoc(int signal)
     if (signal == SIGINT)
 		exit(1);
 }
-// void	signal_bs(int signal)
-// {
-// 	// niet in heredoc - // Ctrl-\ pressed
-//     if (signal == SIGQUIT)
-//     {
-//         printf("^\\Quit: 3\n");
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-//     }
-// }
+void	signal_bs(int signal)
+{
+	// niet in heredoc - // Ctrl-\ pressed
+    if (signal == SIGQUIT)
+    {
+        printf("^\\Quit: 3\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+    }
+}
 	// else if (WIFSIGNALED(status) == true)
 	// {
 	// 	int exit_status;
