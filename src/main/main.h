@@ -109,7 +109,6 @@ typedef enum builtin_names
 
 typedef	struct s_envp
 {
-	struct s_envp	*head;
 	char			*line;
 	int				value;
 	char			*identifier;
@@ -239,7 +238,7 @@ void 	disable_ctrl_c_display();
 void 	enable_ctrl_c_display();
 void	signal_bs(int signal);
 /* Main */
-int		shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
+t_envp	*shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
 int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);
@@ -254,31 +253,39 @@ int		perror_return(char *msg, char *msg2);
 void	delete_t_exec(t_execute *head);
 
 // Executor
-void	executor_dcs(t_execute *cmd_struct, t_envp *envp);
+t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp);
 void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp);
-void	ft_single_command(t_execute *cmd_struct, t_envp *envp);
+t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp);
+void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp);
+
+//Daycare
+void		first_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
+void		middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct, t_envp *envp);
+void		last_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
+t_execute	*middle_child_loop(t_execute *cmd_struct, t_envp *envp, int **pipes, int *pid, int *i);
+void		child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i);
+
 // Builtins
 int		check_builtin(char *arg);
-void	exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd);
+t_envp	*exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd);
 
 bool	ft_cd(t_execute *cmd_struct, t_envp *envp);
 void	ft_echo(t_execute *cmd_struct, int fd);
-bool	ft_env(t_envp *envp, int fd);
+void	ft_env(t_envp *envp, int fd);
 void	ft_exit(t_execute *cmd_struct);
-void	ft_export(t_execute *cmd_struct, t_envp *envp, int fd);
-void	ft_export_cmd(char *cmd, char *target, t_envp *envp, int fd);
-void	ft_export_argless(t_execute *cmd_struct, t_envp *envp, int fd);
+t_envp	*ft_export(t_execute *cmd_struct, t_envp *envp, int fd);
+t_envp	*ft_export_cmd(char *cmd, char *target, t_envp *envp);
+void	ft_export_argless(t_envp *envp, int fd);
 void	ft_pwd(int fd);
-void	ft_unset(t_execute *cmd_struct, t_envp *envp, int fd); //might not need fd
+t_envp	*ft_unset(t_execute *cmd_struct, t_envp *envp);
 
 void	builtin_infile(char **list);
 bool	builtin_outfile(char **list, int *fd);
 bool	long_atoi(const char *str, long *number);
 // Utils
 int		ft_exit_error(char *str, int err);
-void	ft_perror(char *str, int);
+int		ft_perror(char *str, int err);
 void	*ft_malloc(size_t size);
-
 bool	redirect_infile(char **list, char *name);
 bool	redirect_outfile(char **list);
 
@@ -286,7 +293,7 @@ char	*get_path(char *exec_argv, char **path);
 char	*check_path(char *exec_argv, char **envp);
 char	*find_command(char **path, char *basepath);
 char	*ft_getenv(const char *name, char **envp);
-bool	ft_getenv_int(int *env, const char *name, char **envp);
+bool	ft_getenv_int(int *env, const char *name, char **envp); //unneeded?
 bool	is_path(char *exec_argv);
 
 //HereDoc
@@ -299,6 +306,11 @@ void	ft_heredoc_cleanup(t_execute *cmd_struct);
 t_envp	*copy_envp(char **original_envp);
 char	**envp_to_array(t_envp *envp);
 int		check_envp_value(char *str);
+t_envp	*remove_envp_node(t_envp *envp);
+t_envp	*envp_start_list(char *str);
+void	envp_add_node(t_envp *envp, char *str);
+void	show_envp_struct(t_envp *envp);
+void	show_envp_node(t_envp *envp);
 
 
 //Syntax
@@ -308,47 +320,7 @@ int		syntax_quotes(t_line_lst *line, node_type type);
 int		syntax_count_quotes(t_line_lst *line);
 
 //util
-int	perror_return(char *msg, char *msg2);
+int		perror_return(char *msg, char *msg2);
 void	delete_t_exec(t_execute *head);
 
 #endif
-// // Executor
-// void	executor_dcs(t_execute *cmd_struct, char **envp);
-// void	ft_execute_cmd(t_execute *cmd_struct, char **envp);
-// // void	ft_execute_command(t_execute *cmd_struct, char **envp, int pipe1[2], int pipe2[2]);
-// // void	ft_execute_command_struct(t_execute *cmd_struct, char **envp);
-// void	ft_single_command(t_execute *cmd_struct, char **envp);
-// // Builtins
-// int		check_builtin(char *arg);
-// void	exec_builtin(t_execute *cmd_struct, char **envp, int fd);
-
-// void	ft_cd(t_execute *cmd_struct, char **envp, char *path);
-// void	ft_echo(t_execute *cmd_struct, int fd);
-// bool	ft_env(char **envp, int fd);
-// void	ft_exit(t_execute *cmd_struct, char **envp);
-// void	ft_export(t_execute *cmd_struct, char **envp, int fd);
-// void	ft_export_cmd(char *cmd, char **envp, int fd);
-// void	ft_export_argless(t_execute *cmd_struct, char **envp, int fd);
-// void	ft_pwd(int fd);
-// void	ft_unset(t_execute *cmd_struct, char **envp, int fd);
-
-// void	builtin_infile(char **list);
-// bool	builtin_outfile(char **list, int *fd);
-// // Utils
-// int		ft_exit_error(char *str, int err);
-
-// bool	redirect_infile(char **list, char *name);
-// bool	redirect_outfile(char **list);
-
-// char	*get_path(char *exec_argv, char **path);
-// char	*check_path(char *exec_argv, char **envp);
-// char	*find_command(char **path, char *basepath);
-// char	*ft_getenv(const char *name, char **envp);
-// bool	ft_getenv_int(int *env, const char *name, char **envp);
-// bool	is_path(char *exec_argv);
-
-// //HereDoc
-// void	ft_heredoc_init(t_execute *cmd_struct);
-// bool	ft_heredoc(char *eof, char *name);
-// void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
-// void	ft_heredoc_cleanup(t_execute *cmd_struct);

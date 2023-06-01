@@ -13,13 +13,13 @@ if argc != 1 -> exit 1
 leaks;
 
 Acco:
-single fout command: e
-	You have access to multiple processes named minishell:
-    a)  8811 ./minishell
-    b)  8812 ./minishell
-error messages
-exit codes
 unset
+geen command segfault
+exit codes
+
+redirects zonder commands
+SHLVL ItoA AtoI
+error messages
 norminette
 functies kleiner
 

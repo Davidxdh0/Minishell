@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../src/main/main.h"
 
 static int	delim(const char *s, char c)
 {
@@ -71,7 +72,7 @@ char	**ft_split(char const *s, char c)
 	if (!s || s[0] == '\0')
 		return (NULL);
 	k = delim((char *)s, c);
-	str = (char **)malloc(sizeof(char *) * (delim(s, c) + 1));
+	str = (char **)ft_malloc(sizeof(char *) * (delim(s, c) + 1));
 	if (!str)
 		return (NULL);
 	while (k--)

@@ -12,13 +12,8 @@
 
 #include "../main/main.h"
 
-bool	ft_env(t_envp *envp, int fd)
+void	ft_env(t_envp *envp, int fd)
 {
-	int	i;
-
-	if (!envp)
-		return (false);
-	i = 0;
 	while (envp)
 	{
 		if (envp->value)
@@ -28,5 +23,7 @@ bool	ft_env(t_envp *envp, int fd)
 		}
 		envp = envp->next;
 	}
-	return (true);
 }
+
+// show_envp_struct(envp);
+// return (true);

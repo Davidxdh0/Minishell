@@ -12,6 +12,68 @@
 
 #include "../main/main.h"
 
+bool	redirect_infile(char **list, char *name)
+{
+	int		i;
+	bool	file;
+	int		fd;
+
+	file = false;
+	i = 0;
+	while (list && list[i])
+	{
+		if (list[i][0] == '<' && list[i][1] != '<')
+		{
+			i++;
+			if (dup2(open(list[i], O_RDONLY), STDIN_FILENO) == -1) //split open and dup
+				ft_exit_error("Couldn't Redirect Infile", errno); //errors and stuff
+			file = true;
+		}
+		if (list[i][0] == '<' && list[i][1] == '<')
+		{
+			i++;
+			fd = open(name, O_RDONLY); // error check open
+			if (dup2(fd, STDIN_FILENO) == -1)
+				ft_exit_error("Couldn't Redirect HereDoc To Infile", errno); //errors and stuff
+			file = true;
+		}
+		i++;
+	}
+// printf("No Redirect To Infile Found\n");
+	return (file); //close fds
+}
+
+bool	redirect_outfile(char **list)
+{
+	int		i;
+	bool	file;
+
+	file = false;
+	i = 0;
+	while (list && list[i])
+	{
+		if (list[i][0] == '>' && !list[i][1])
+		{
+			i++;
+			if (dup2(open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644) \
+			, STDOUT_FILENO) == -1) //split open and dup
+				ft_exit_error("Couldn't Redirect Outfile", errno); //errors and stuff
+			file = true;
+		}
+		else if (list[i][0] == '>' && list[i][1] == '>')
+		{
+			i++;
+			if (dup2(open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644) \
+			, STDOUT_FILENO) == -1) //split open and dup
+				ft_exit_error("Dup2? More Like \'Dumb Too\'\n", errno); //errors and stuff
+			file = true;
+		}
+		i++;
+	}
+// printf("No Redirect To Outfile Found\n");
+	return (file); //close fds
+}
+
 void	*ft_malloc(size_t size)
 {
 	void	*ptr;
@@ -21,30 +83,20 @@ void	*ft_malloc(size_t size)
 	return (ptr);
 }
 
-void	ft_perror(char *str, int error_number)
+int	ft_perror(char *str, int error_number)
 {
-	g_exitcode = 1;
-	printf("errno = %d\n", errno);
+	g_exitcode = error_number;
+// printf("errno = %d\n", errno);
 	perror(str);
+	return (error_number);
 }
 
 int	ft_exit_error(char *str, int err)
 {
-	// printf("Error\n%s\n", str);
 	write(2, "Error\n", 6);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
 	exit(err);
-}
-
-bool	malloc_perror(void *str, char **arr)
-{
-	if (!(str || arr))
-	{
-		perror("Malloc Failed");
-		return (true);
-	}
-	return (false);
 }
 
 char	**free_char_array(char **arr)
@@ -95,31 +147,31 @@ char	*ft_getenv(const char *name, char **envp)
 	return (NULL);
 }
 
-bool	ft_getenv_int(int *env, const char *name, char **envp)
-{
-	int	i;
-	int	j;
+// bool	ft_getenv_int(int *env, const char *name, char **envp)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	if (!name | !envp)
-		return (false);
-	while (envp[i])
-	{
-		j = 0;
-		while (name[j] == envp[i][j])
-		{
-			j++;
-			if (!name[j])
-			{
-				*env = i;
-				return (true);
-			}
-		}
-		i++;
-	}
-	*env = -1;
-	return (false);
-}
+// 	i = 0;
+// 	if (!name | !envp)
+// 		return (false);
+// 	while (envp[i])
+// 	{
+// 		j = 0;
+// 		while (name[j] == envp[i][j])
+// 		{
+// 			j++;
+// 			if (!name[j])
+// 			{
+// 				*env = i;
+// 				return (true);
+// 			}
+// 		}
+// 		i++;
+// 	}
+// 	*env = -1;
+// 	return (false);
+// }
 
 char	*find_command(char **path, char *basepath)
 {
@@ -131,8 +183,6 @@ char	*find_command(char **path, char *basepath)
 	while (!access_path)
 	{
 		access_path = ft_strjoin(path[i], basepath);
-		if (malloc_perror(access_path, NULL))
-			exit(errno);
 		if (path[i + 1] && access(access_path, F_OK))
 		{
 			free(access_path);
@@ -140,6 +190,7 @@ char	*find_command(char **path, char *basepath)
 			i++;
 		}
 	}
+	printf("Access Path = %s\n", access_path);
 	return (access_path);
 }
 
@@ -150,9 +201,14 @@ char	*get_path(char *exec_argv, char **path)
 
 	access_path = NULL;
 	base_path = ft_strjoin("/", exec_argv);
-	if (malloc_perror(base_path, NULL))
-		exit(errno);
 	access_path = find_command(path, base_path);
+	if (access(access_path, F_OK))
+	{
+		write(2, "minishell: ", 11);
+		write(2, exec_argv, ft_strlen(exec_argv));
+		write(2, ": command not found\n", 20);
+		exit(127);
+	}
 	free_char_array(path);
 	free(base_path);
 	return (access_path);
@@ -173,8 +229,6 @@ char	*check_path(char *exec_argv, char **envp)
 	if (env_hold)
 	{
 		path = ft_split(env_hold, ':');
-		if (malloc_perror(NULL, path))
-			exit(errno);
 		return (get_path(exec_argv, path));
 	}
 	else

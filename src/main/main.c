@@ -129,7 +129,7 @@ void combine_values(t_line_lst *list)
 }
 	
 
-int	shell(char *line, t_envp *envp)
+t_envp	*shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
@@ -145,7 +145,7 @@ int	shell(char *line, t_envp *envp)
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
 		// show(cmd);
-		executor_dcs(cmd, envp); //DCS
+		envp = executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 		// 255, exit shit??
 	}
@@ -155,7 +155,7 @@ int	shell(char *line, t_envp *envp)
 	}
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
-	return (1);
+	return (envp);
 }
 
 void	ft_atexit(void)
@@ -175,7 +175,8 @@ int	main(int argc, char *argv[], char **original_envp)
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
 	if (input_is_argv(argc, argv, &line))
-		return (shell(line, envp));
+		return (shell(line, envp), 117);
+	// atexit(ft_atexit);
 	while (1)
 	{	
 		// if (argc != 1)
@@ -187,7 +188,7 @@ int	main(int argc, char *argv[], char **original_envp)
 			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
 				free(line);
 			enable_ctrl_c_display();
-			shell(line, envp);
+			envp = shell(line, envp);
 			free(line);
 		}
 	}

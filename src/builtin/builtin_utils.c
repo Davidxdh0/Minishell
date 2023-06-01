@@ -44,8 +44,8 @@ bool	long_atoi(const char *str, long *number)
 		str++;
 	}
 	atoi = string_to_ull(str, neg);
-	if (atoi > (unsigned long long)__LONG_LONG_MAX__ + 1 || 
-	(atoi > __LONG_LONG_MAX__ && neg == 0))
+	if (atoi > (unsigned long long)__LONG_LONG_MAX__ + 1 ||
+		(atoi > __LONG_LONG_MAX__ && neg == 0))
 		return (false);
 	if (atoi == (unsigned long long)__LONG_LONG_MAX__ + 1)
 		*number = (__LONG_LONG_MAX__ * -1) - 1;
@@ -73,11 +73,11 @@ void	builtin_infile(char **list)
 			if (fd == -1)
 				ft_exit_error("Couldn't Open Builtin Infile", errno); //errors and stuff
 			if (close(fd) == -1)
-				ft_exit_error("Couldn't Close Builtin Infile", errno);
+				ft_exit_error("Couldn't Close Builtin Infile", errno); //errors and stuff
 		}
 		i++;
 	}
-	printf("Looped Through Builtin Infiles\n");
+printf("Looped Through Builtin Infiles\n");
 }
 
 bool	builtin_outfile(char **list, int *fd)
@@ -115,45 +115,17 @@ bool	builtin_outfile(char **list, int *fd)
 	}
 	if (file == true)
 	{
-		printf("fd Set\n");
+printf("fd Set\n");
 		*(fd) = temp_fd;
 	}
 	else
 	{
-		printf("fd = 1\n");
+printf("fd = 1\n");
 		*(fd) = 1;
 	}
 printf("Looped Through Builtin Outfiles\n");
 	return (true);
 }
-
-// void	reset_builtin_redirects(t_execute *cmd_struct)
-// {
-// 	if (dup2(cmd_struct->std_fds[STDIN_FILENO], STDIN_FILENO) == -1)
-// 		ft_exit_error("Couldn't Reset Standard In\n", errno); //errors and stuff
-// 	if (dup2(cmd_struct->std_fds[STDOUT_FILENO], STDOUT_FILENO) == -1)
-// 		ft_exit_error("Couldn't Reset Standard Out\n", errno); //errors and stuff
-// }
-
-// void	connect_pipe_out(t_execute *cmd_struct, int pipe_out[2])
-// {
-// 	if (pipe(pipe_out) == -1)
-// 		ft_exit_error("Some Pipes Fucked Up, Pipe_Out", errno);
-// 	close(pipe_out[0]);
-// 	if (dup2(pipe_out[1], STDOUT_FILENO) == -1)
-// 		ft_exit_error("Some Pipe Fucked Up, Pipe_Out", errno);
-// exit(printf("\nMagical Debugging Tool #3\n"));
-// 	close(pipe_out[1]);
-// }
-
-// void	connect_pipe_in(t_execute *cmd_struct, int pipe_in[2])
-// {
-// 	close(pipe_in[1]);
-// 	if (dup2(pipe_in[0], STDIN_FILENO) == -1)
-// 		ft_exit_error("Some Pipe Fucked Up, Pipe In", errno);
-// 	close(pipe_in[0]);
-// }
-
 
 // no file >>> fd = 1
 // correct file >>> fd = open(file)
