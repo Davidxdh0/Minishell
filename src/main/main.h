@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/31 11:15:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 16:56:56 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,8 +213,8 @@ t_line_lst	*whitespaces_list(t_line_lst *line);
 t_line_lst	*string_quotes(t_line_lst *line_lst);
 char		*ft_getenv(const char *name, char **envp);
 int 		find_variable(char *str);
-t_line_lst	*variable_expand(t_line_lst *line, char **envp);
-char 		*change_str(char *str, int begin, int eind, char **envp, int count);\
+t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp);
+char 		*change_str(char *str, int begin, int eind, t_envp* envp);
 
 //grammarchecker.c
 int			is_valid_grammer(t_line_lst *head);
@@ -235,7 +235,7 @@ void 		delete_node(t_line_lst *node_to_delete);
 void	redirect_signal(int signal);
 
 /* Main */
-int		shell(char *line, char **original_envp, t_envp *envp); //DCS (still need to get rid of original envp?)
+int		shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
 int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);

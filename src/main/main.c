@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/31 18:53:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 16:57:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,21 +129,16 @@ void combine_values(t_line_lst *list)
 }
 	
 
-int	shell(char *line, char **original_envp, t_envp *envp)
+int	shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
 	
 	cmd = NULL;
-	//tokenizer
 	line_lst = parser(line);
-	// show_t_list(line_lst, line);
 	line_lst = remove_quotes(line_lst);
-	// show_t_list(line_lst, line);
-	line_lst = variable_expand(line_lst, original_envp);
-	// line_lst = variable_expand(line_lst, original_envp);
+	line_lst = variable_expand(line_lst, envp);
 	combine_values(line_lst);
-	// show_t_list(line_lst, line);
 	line_lst = remove_whitespace_list(line_lst);
 	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
@@ -152,12 +147,15 @@ int	shell(char *line, char **original_envp, t_envp *envp)
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
 		show(cmd);
-		// executor_dcs(cmd, envp); //DCS
+		executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
+		// 130, signals?
+		// 131, signals?
+		// 255, exit shit??
 	}
 	else
 	{
-		;//printf("Syntax error doesn't get executed -> exitcode = ?\n");
+		g_exitcode = 258;//printf("Syntax error doesn't get executed -> exitcode = ?\n");
 	}
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
@@ -181,7 +179,7 @@ int	main(int argc, char *argv[], char **original_envp)
 	// 	ft_exit_error("Failed To Copy The ENVP\n", 2); //edit
 	g_exitcode = 0;
 	if (input_is_argv(argc, argv, &line))
-		return (shell(line, original_envp, envp));
+		return (shell(line, envp));
 	while (1)
 	{	
 		// if (argc != 1)
@@ -193,7 +191,7 @@ int	main(int argc, char *argv[], char **original_envp)
 			free(line);
 			// exit(1);
 		}
-		shell(line, original_envp, envp);
+		shell(line, envp);
 		free(line);
 	}
 	// atexit(ft_atexit);

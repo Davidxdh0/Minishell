@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 22:36:30 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 17:03:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	syntax_redirects(t_line_lst *line)
 		else if (line->prev == NULL)
 			return (1);
 		if (line->prev->type != e_file && line->prev->type != e_var && \
-		line->prev->type != e_word && line->next->type != e_quote)
+		line->prev->type != e_word && line->next->type != e_quote && line->prev->type != e_cmd)
 			return (1);
 	}
 	// >> append 
@@ -99,7 +99,6 @@ int	syntax_redirects(t_line_lst *line)
 		if (line->next == NULL || (line->next->type != e_file && line->next->type != e_var \
 		&& line->next->type != e_word && line->next->type != e_quote))
 			return (1);
-	// printf("syntax_redirects pass\n");
 	return (0);
 }
 
@@ -107,16 +106,12 @@ int	syntax_check(t_line_lst *line)
 {
 	t_line_lst *temp;
 
-	// if (line == NULL)
-	// 	return (1);
 	temp = line;
 	while(temp != NULL)
 	{
-		// pipes
 		if (temp->type == e_pipe)
 			if (syntax_pipe(temp))
 				return (perror_return("minishell: syntax error near unexpected token `|'", NULL));
-		// redirects
 		if (temp->type == e_redirect_i || temp->type == e_append || \
 			temp->type == e_redirect_o || temp->type == e_delimiter )
 			{
