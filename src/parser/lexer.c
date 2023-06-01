@@ -5,45 +5,48 @@
 /*                                                     +:+                    */
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/03/03 15:20:47 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/03/03 15:34:18 by dyeboa        ########   odam.nl         */                                                           
+/*   Created: 2023/06/01 20:43:01 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/06/01 20:46:48 by dyeboa        ########   odam.nl         */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
 int	ft_isspecial(char chr)
 {
-	return(ft_isspace(chr) || chr == '$' || chr ==  '<' || chr == '>' || chr == '\n' \
-		|| chr == '|' || chr == '\0' || chr == '\t' || chr == '\'' || chr == '\"');
+	return (ft_isspace(chr) || chr == '$' || chr == '<' || chr == '>' || \
+	chr == '\n' \
+	|| chr == '|' || chr == '\0' || chr == '\t' || chr == '\'' || chr == '\"');
 }
 
 int	ft_isspecials(char chr)
 {
-	return(ft_isspace(chr) || chr ==  '<' || chr == '>' || chr == '\n' \
-		|| chr == '|' || chr == '\0' || chr == '\t' || chr == '\'' || chr == '\"');
+	return (ft_isspace(chr) || chr == '<' || chr == '>' || chr == '\n' \
+	|| chr == '|' || chr == '\0' || \
+	chr == '\t' || chr == '\'' || chr == '\"');
 }
 
 int	word_case(t_line_lst **line_lst, char *line, int state)
 {
-	int		i;
-	int		len;
-	char	*substr;
-	node_type	last;
+	int			i;
+	int			len;
+	char		*substr;
+	node_type	l;
 
 	i = 0;
-	last = get_previous_type(*line_lst);
+	l = get_previous_type(*line_lst);
 	if (!ft_isspecial(line[i]))
 	{
 		len = 0;
 		while (!ft_isspecial(line[i + len]))
 			len++;
 		substr = ft_substr(line, i, len);
-		// printf("state = %d", (int)state);
-		if (last == e_start || last == e_pipe || last == e_file)
+		if (l == e_start || l == e_pipe || l == e_file)
 			add_at_end_of_list(line_lst, e_cmd, substr, state);
-		if (last == e_cmd || last == e_word || last == e_delimiter || last == e_quote || last == e_var || last == e_dquote || last == e_whitespace )
+		if (l == e_cmd || l == e_word || l == e_delimiter || l == e_quote || \
+		l == e_var || l == e_dquote || l == e_whitespace)
 			add_at_end_of_list(line_lst, e_word, substr, state);
-		if (last == e_redirect_i || last == e_redirect_o || last == e_append)
+		if (l == e_redirect_i || l == e_redirect_o || l == e_append)
 			add_at_end_of_list(line_lst, e_file, substr, state);
 		i += len;
 		if (substr)
@@ -52,12 +55,9 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 	return (i);
 }
 
-int	quotes(t_line_lst *line_lst, char c, int state)
+int	quotes(t_line_lst *line_lst, char c, int state, int flag)
 {
-	int flag;
-
 	flag = state;
-	// printf("c = %c\n", c);
 	if (c == '\'')
 	{
 		if (state == 0)
