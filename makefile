@@ -1,6 +1,7 @@
 NAME = minishell
 
-FLAGS =  -Wall -Wextra -Werror -g
+FLAGS =  -Wall -Wextra
+# FLAGS += -Werror 
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
@@ -10,18 +11,31 @@ LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
+# READLINE_LIB = -lreadline
+# -L $(HOME)/.brew/Cellar/readline/8.2.1/lib 
 
-EXECUTE_FI	=	executor.c \
-				file.c \
-				paths.c \
-				errors.c \
-				redirect.c \
-				builtin.c \
-				messages.c
+EXECUTE_FI	=	executor_dcs.c \
+				executor_utils.c \
+				envp.c \
+				heredoc_dcs.c \
+				single_command.c
 				
-BUILTIN_FI  =	echo.c \
+# executor.c
+# messages.c
+# file.c
+# paths.c
+# errors.c
+# redirect.c
+# builtin.c
+				
+BUILTIN_FI  =	builtin.c \
+				builtin_utils.c \
+				echo.c \
 				cd.c \
 				exit.c \
+				env.c \
+				pwd.c \
+				unset.c \
 				export.c
 
 MAIN_FILES =	main.c \
@@ -30,10 +44,13 @@ MAIN_FILES =	main.c \
 
 PARSER_FILES =	lexer.c \
 				parser.c \
+				parser_util.c \
+				parser_util2.c \
 				list.c \
+				list_util.c \
 				specialchar.c \
-				grammer_checker.c \
 				expander.c \
+				expander_util.c \
 				signals.c \
 				syntax.c \
 				util.c
@@ -91,3 +108,12 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+test: all
+	bash testcmd.sh
+
+run: all
+	./minishell
+
+exp: all
+	mv minishell ../SH_tester

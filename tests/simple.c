@@ -2,9 +2,8 @@
 #include <criterion/redirect.h>
 #include <unistd.h>
 #include <stdio.h>
-
+//eval "$(/Users/dyeboa/goinfre/.brew/bin/brew shellenv)"
 TestSuite(printer);
-
 Test(printer, basic)
 {
     cr_redirect_stdout();

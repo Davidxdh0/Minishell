@@ -3,22 +3,39 @@
 /*                                                        ::::::::            */
 /*   cd.c                                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: abarteld <abarteld@student.codam.n>          +#+                     */
+/*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/04 10:34:13 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/05/04 10:34:15 by abarteld      ########   odam.nl         */
+/*   Created: 2022/11/09 11:51:52 by dyeboa        #+#    #+#                 */
+/*   Updated: 2023/03/20 11:58:30 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-bool	ft_cd(t_execute *cmd_struct, t_envp *envp)
-{
-	int		i;
-	char	*cwd;
-	char	*cmd;
+/*
+int chdir(const char *path); 	
+Used to change the current working directory.
+On some systems, this command is used as an alias for the shell command cd. 
+chdir changes the current working directory of the calling process to the directory
+specified in path.
+*/
 
-<<<<<<< HEAD
+/* char *getcwd(char *buf, size_t size); 	
+Gets the path name of the current working directory. 
+If a buffer is specified, the path name is placed in that buffer,
+and the address of the buffer is returned. 
+Otherwise, 
+getcwd() allocates space for the path name and returns a pointer to that buffer. 
+In that instance, the user is responsible for deleting the storage when it is 
+no longer needed by calling free() with the pointer returned by getcwd(). 
+Copies an absolute pathname of the current working directory to the array 
+pointed to by buf, which is of length size.
+*/
+
+void	update_old_pwd(char *oldpath, t_data *data)
+{
+	char *updated_pwd;
+
 	updated_pwd = ft_strjoin("OLDPWD=", oldpath);
 	while(*data->envp != NULL)
 	{
@@ -77,29 +94,6 @@ void	execute_cd(char **cmd, t_data *data)
 	else
 		status = change_dir(oldpath, cmd[1]);
 	if (status == 0)
-		printf("test"); //update_old_pwd( oldpath, data);
+		;//update_old_pwd( oldpath, data);
 	//free(oldpath);
-=======
-	cwd = getcwd(NULL, 0);
-	i = chdir(cmd_struct->cmd[1]);
-	if (!cwd || i < 0)
-		return (ft_perror(cmd_struct->cmd[1], errno), free(cwd), false);
-	cmd = ft_strjoin("OLDPWD=", cwd);
-	free(cwd);
-	if (!cmd)
-		ft_exit_error("Malloc Failed", errno);
-	ft_export_cmd(cmd, "OLDPWD=", envp, 1);
-	free(cmd);
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (ft_perror(cmd_struct->cmd[1], errno), false);
-	cmd = ft_strjoin("PWD=", cwd);
-	if (!cmd)
-		ft_exit_error("Malloc Failed", errno);
-	free(cwd);
-	ft_export_cmd(cmd, "PWD=", envp, 1);
-	free(cmd);
-	// printf("Current PWD = %s\n", getcwd(NULL, 0));
-	return (true);
->>>>>>> 9b998d2321451c53440fe156fb178b317305482a
 }

@@ -6,69 +6,71 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/26 14:40:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 20:40:34 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
+char	*expand_var(char *value, t_envp *new_envp)
+{
+	char	*str;
 
-char	*ft_getenv(const char *name, char **envp)
+	if (value[1] == '?')
+		return (value = ft_strdup(ft_itoa(g_exitcode)));
+	value = ft_substr(value, 1, ft_strlen(value));
+	str = get_new_env(value, new_envp);
+	if (!str)
+	{
+		str = ft_strdup("");
+		value = str;
+	}
+	else
+	{
+		str = ft_substr(str, 0, ft_strlen(str));
+		value = ft_strdup(str);
+	}
+	free(str);
+	return (value);
+}
+
+char	*expand_word(char*value, t_envp *new_envp)
 {
 	int	i;
-	int	j;
+	int	begin;
+	int	count;
 
 	i = 0;
-	while (envp[i])
+	count = count_words_expander(value);
+	while (count > 0 && value[i] != '\0')
 	{
-		j = 0;
-		while (name[j] == envp[i][j])
+		while (value[i] == '$')
+			i++;
+		if (value[i] != '\0' && value[i] == '?')
 		{
-			j++;
-			if (!name[j])
-				return (envp[i] + j);
+			g_exitcode = 5;
+			return (value = ft_strdup(ft_itoa(g_exitcode)));
 		}
-		i++;
+		else if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
+		{
+			begin = i;
+			while (ft_isascii(value[i]) && value[i] != '$')
+				i++;
+			value = ft_strdup(change_str(value, begin, i, new_envp));
+			count--;
+		}
 	}
-	return (NULL);
+	return (value);
 }
 
-int find_variable(char *str)
+char	*create_and_fill_string(char *str, int begin, int eind, char *env, int len)
 {
-	int i;
-	
+	int		i;
+	int		k;
+	char	*newstr;
+
 	i = 0;
-	while(str[i] && ft_strlen(str) > 1)
-	{
-		if (str[i] == '$')
-		{
-			if (str[i + 1] == '$' || str[i + 1] == '?' )
-				return (0);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-char *change_str(char *str, int begin, int eind, char **envp)
-{
-	int len;
-	char *newstr;
-	char *env;
-	
-	int i = 0;
-	int k = 0;
-	// printf("str = %s", str);
-	len = ft_strlen(str);
-	env = ft_substr(str, begin + 1, eind - begin - 1);
-	len -= (ft_strlen(env));
-	env = ft_getenv(env, envp);
-	if (!env)
-		return ("");
-	// printf("str = %s, len = %d begin %d eind %d env = %s\n",str, len, begin, eind, env);
-	env = ft_substr(env, 1, ft_strlen(env));
-	len += ft_strlen(env);
+	k = 0;
 	newstr = malloc(sizeof(char *) * len + 1);
 	while (i < len)
 	{
@@ -84,20 +86,35 @@ char *change_str(char *str, int begin, int eind, char **envp)
 			begin++;
 			i++;
 		}
-		newstr[i] = str[i-1];
+		newstr[i] = str[i - 1];
 		i++;
 	}
 	newstr[i] = '\0';
-	// printf("newstr = %s\n", newstr);
 	return (newstr);
 }
 
-t_line_lst	*variable_expand(t_line_lst *line, char **envp)
+char	*change_str(char *str, int begin, int eind, t_envp *envp)
 {
-	t_line_lst *temp;
-	int i;
-	int begin;
-	char *str;
+	int		len;
+	char	*env;
+
+	len = ft_strlen(str);
+	env = ft_substr(str, begin + 1, eind - begin - 1);
+	len -= (ft_strlen(env));
+	env = get_new_env(env, envp);
+	if (!env)
+		return ("");
+	env = ft_substr(env, 1, ft_strlen(env));
+	len += ft_strlen(env);
+	str = ft_strdup(create_and_fill_string(str, begin, eind, env, len));
+	return (str);
+}
+
+t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
+{
+	t_line_lst	*temp;
+	int			i;
+	int			begin;
 
 	begin = 0;
 	i = 0;
@@ -106,30 +123,12 @@ t_line_lst	*variable_expand(t_line_lst *line, char **envp)
 	{
 		if (find_variable(temp->value))
 		{
+			printf("count = \n");
 			if (temp->type == e_var)
-			{
-				temp->value = ft_substr(temp->value, 1, ft_strlen(temp->value));
-				str = ft_getenv(temp->value, envp);
-				if (!str)
-				{
-					str = ft_strdup("");
-					temp->value = str;
-				}
-				else
-					str = ft_substr(str, 1, ft_strlen(str));
-					temp->value = str;
-			}
+				temp->value = ft_strdup(expand_var(temp->value, new_envp));
 			else if (temp->state == 2 || temp->state == 0)
-			{
-				while(temp->value[i] != '$')
-					i++;
-				begin = i;
-				i++;
-				while(ft_isalpha(temp->value[i]))
-					i++;
-				temp->value = change_str(temp->value, begin, i, envp);
-				//stop in string
-			}
+				temp->value = ft_strdup(expand_word(temp->value, new_envp));
+			temp->state = temp->state;
 		}
 		temp = temp->next;
 	}

@@ -1,0 +1,46 @@
+David
+leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
+signals - ctrl + c, ctr d en ctrl + \
+count commands leeg cmd meegeven
+> ""
+< ""
+>> ""
+<< ""
+norminette
+functies kleiner
+if argc != 1 -> exit 1
+	malloc met exit code + tekst perror("executable: " )
+leaks;
+
+Acco:
+single fout command: e
+	You have access to multiple processes named minishell:
+    a)  8811 ./minishell
+    b)  8812 ./minishell
+error messages
+exit codes
+unset
+norminette
+functies kleiner
+
+samen:
+TESTEN
+
+Vandaag:
+voor start:
+
+ctrl + c attributes aan
+signals
+minishell
+ctrl c uit - voor cat
+free alles
+return (0);
+
+minishell:
+	voor executer- signal redirect = ?
+	na executer signal redirect = ?
+free alles
+
+edge cases:
+begin "|" of command = NULL
+
