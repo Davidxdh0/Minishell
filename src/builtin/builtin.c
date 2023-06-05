@@ -38,6 +38,8 @@ t_envp	*exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd)
 	int	builtin;
 
 	builtin = check_builtin(cmd_struct->cmd[0]);
+	if (builtin != EXIT)
+		g_exitcode = 0;
 	if (builtin == ECH)
 		ft_echo(cmd_struct, fd);
 	else if (builtin == CD)
@@ -52,8 +54,9 @@ t_envp	*exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd)
 		ft_env(envp, fd);
 	else if (builtin == EXIT)
 		ft_exit(cmd_struct);
-	printf("EXEC Builtin, END\n");
 	if (cmd_struct->count_cmd > 1)
 		exit(g_exitcode);
+	if (fd != 1 && close(fd) == -1)
+		exit(ft_perror(NULL, 1));
 	return (envp);
 }

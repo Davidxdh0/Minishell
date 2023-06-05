@@ -14,10 +14,15 @@
 
 void	ft_pwd(int fd)
 {
-	char	*buf; // wd name capped (at 1024) by a certain rule, source needed
+	char	*cwd;
 
-	buf = getcwd(NULL, 0);
-	write(fd, buf, ft_strlen(buf));
-	write(fd, "\n", 1);
-	free(buf);
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		ft_perror("getcwd: ", 1);
+		return ;
+	}
+	ft_putstr_fd(cwd, fd);
+	ft_putstr_fd("\n", fd);
+	free(cwd);
 }

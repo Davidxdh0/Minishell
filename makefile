@@ -2,7 +2,7 @@ NAME = minishell
 
 FLAGS =  -Wall -Wextra
 # FLAGS += -Werror 
-# FLAGS += -g -fsanitize=address
+FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -11,23 +11,16 @@ LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
-# READLINE_LIB = -lreadline
-# -L $(HOME)/.brew/Cellar/readline/8.2.1/lib 
 
 EXECUTE_FI	=	executor_dcs.c \
 				executor_utils.c \
 				envp.c \
 				heredoc_dcs.c \
 				commands.c \
-				daycare.c
+				daycare.c \
+				execve_utils.c \
+				redirect.c
 				
-# executor.c
-# messages.c
-# file.c
-# paths.c
-# errors.c
-# redirect.c
-# builtin.c
 				
 BUILTIN_FI  =	builtin.c \
 				builtin_utils.c \

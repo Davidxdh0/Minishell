@@ -19,27 +19,27 @@ void	first_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 	if (!redirect_outfile(cmd_struct->redirects))
 	{
 		if (dup2(pipe[1], STDOUT_FILENO) == -1)
-			exit(ft_perror(NULL, errno));
+			exit(ft_perror(NULL, 1));
 	}
 	close(pipe[1]);
 	ft_execute_cmd(cmd_struct, envp);
 }
 
-void	middle_child
-		(int *pipe_in, int *pipe_out, t_execute *cmd_struct, t_envp *envp)
+void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct
+																, t_envp *envp)
 {
 	close(pipe_in[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
 	{	
 		if (dup2(pipe_in[0], STDIN_FILENO) == -1)
-			exit(ft_perror(NULL, errno));
+			exit(ft_perror(NULL, 1));
 	}
 	close(pipe_in[0]);
 	close(pipe_out[0]);
 	if (!redirect_outfile(cmd_struct->redirects))
 	{
 		if (dup2(pipe_out[1], STDOUT_FILENO) == -1)
-			exit(ft_perror(NULL, errno));
+			exit(ft_perror(NULL, 1));
 	}
 	close(pipe_out[1]);
 	ft_execute_cmd(cmd_struct, envp);
@@ -51,30 +51,33 @@ void	last_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
 	{	
 		if (dup2(pipe[0], STDIN_FILENO) == -1)
-			exit(ft_perror(NULL, errno));
+			exit(ft_perror(NULL, 1));
 	}
 	close(pipe[0]);
 	redirect_outfile(cmd_struct->redirects);
 	ft_execute_cmd(cmd_struct, envp);
 }
 
-t_execute	*middle_child_loop(t_execute *cmd_struct, t_envp *envp, 
-										int **pipes, int *pid, int *i)
+t_execute	*middle_child_loop(t_execute *cmd_struct, t_envp *envp
+											, int **pipes, int *pid)
 {
+	int	i;
+
+	i = 1;
 	cmd_struct = cmd_struct->next;
-	while (*i + 1 < cmd_struct->count_cmd)
+	while (i + 1 < cmd_struct->count_cmd)
 	{
-		pipes[*i] = ft_malloc(sizeof(int) * 2);
-		if (pipe(pipes[*i]) == -1)
-			exit(ft_perror(NULL, errno));
-		pid[*i] = fork();
-		if (pid[*i] == -1)
-			exit(ft_perror(NULL, errno));
-		if (pid[*i] == 0)
-			middle_child(pipes[*i - 1], pipes[*i], cmd_struct, envp);
-		close(pipes[*i - 1][0]);
-		close(pipes[*i - 1][1]);
-		*i += 1;
+		pipes[i] = ft_malloc(sizeof(int) * 2);
+		if (pipe(pipes[i]) == -1)
+			exit(ft_perror(NULL, 1));
+		pid[i] = fork();
+		if (pid[i] == -1)
+			exit(ft_perror(NULL, 1));
+		if (pid[i] == 0)
+			middle_child(pipes[i - 1], pipes[i], cmd_struct, envp);
+		close(pipes[i - 1][0]);
+		close(pipes[i - 1][1]);
+		i++;
 		cmd_struct = cmd_struct->next;
 	}
 	return (cmd_struct);
@@ -85,17 +88,15 @@ void	child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i)
 	int	status;
 
 	if (close(pipes[i - 1][0]) == -1)
-		exit(ft_perror(NULL, errno));
+		exit(ft_perror(NULL, 1));
 	if (close(pipes[i - 1][1]) == -1)
-		exit(ft_perror(NULL, errno));
+		exit(ft_perror(NULL, 1));
 	i = 0;
 	while (i < cmd_struct->count_cmd)
 	{
-printf("Multi Execve Entry\tg_exitcode = %d\n", g_exitcode);
 		waitpid(pid[i], &status, 0);
 		g_exitcode = WEXITSTATUS(status);
 		i++;
-printf("Multi Execve Exit\tg_exitcode = %d\n", g_exitcode);
 	}
 	free(pid);
 	i = 0;

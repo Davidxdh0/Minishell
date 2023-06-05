@@ -17,24 +17,24 @@
 // += (dont need to handle)
 // sorting (not handling)
 
-bool	export_characters(char c, bool start, char *str) //move to utils
+static bool	export_characters(char c, bool start, char *str)
 {
 	if (start == true)
 	{
 		if (!(c == '_') && !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z'))
 		{
-			write(2, "minishell: export: `", 21);
-			write(2, str, ft_strlen(str));
-			write(2, "\': not a valid identifier\n", 26);
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd("\': not a valid identifier\n", 2);
 			return (false);
 		}
 	}
 	else if (!(c == '_') && !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') \
 			&& !(c >= '0' && c <= '9'))
 	{
-		write(2, "minishell: export: `", 21);
-		write(2, str, ft_strlen(str));
-		write(2, "\': not a valid identifier\n", 26);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\': not a valid identifier\n", 2);
 		return (false);
 	}
 	return (true);
@@ -45,7 +45,7 @@ static bool	ft_export_validation(char *cmd, char **target)
 	int		i;
 
 	if (!export_characters(cmd[0], true, cmd))
-		return (false);
+		return (g_exitcode = 1, false);
 	i = 1;
 	while (cmd[i])
 	{
@@ -55,7 +55,7 @@ static bool	ft_export_validation(char *cmd, char **target)
 			return (true);
 		}
 		if (!export_characters(cmd[i], false, cmd))
-			return (false);
+			return (g_exitcode = 1, false);
 		i++;
 	}
 	return (true);
@@ -67,7 +67,6 @@ bool	export_targeted(char *cmd, char *target, t_envp *envp)
 	{
 		if (!ft_strcmp(target, envp->identifier))
 		{
-			free(target);
 			free(envp->line);
 			free(envp->string);
 			envp->line = ft_strdup(cmd);
@@ -75,6 +74,7 @@ bool	export_targeted(char *cmd, char *target, t_envp *envp)
 				envp->value = check_envp_value(envp->line);
 			envp->string = ft_substr(envp->line, envp->value + 1 \
 			, ft_strlen(envp->line) - (envp->value + 1));
+			free(target);
 			return (true);
 		}
 		envp = envp->next;
@@ -83,46 +83,22 @@ bool	export_targeted(char *cmd, char *target, t_envp *envp)
 	return (false);
 }
 
-t_envp	*ft_export_cmd(char *cmd, char *target, t_envp *envp)
-{
-	t_envp	*head;
-
-	head = envp;
-	if (!target)
-	{
-		while (envp)
-		{
-			if (!ft_strcmp(cmd, envp->identifier))
-				return (head);
-			envp = envp->next;
-		}
-	}
-	else if (export_targeted(cmd, target, envp))
-		return (envp);
-	envp = head;
-	if (!envp)
-		envp = envp_start_list(cmd);
-	else
-		envp_add_node(envp, cmd);
-	return (envp);
-}
-
-void	ft_export_argless(t_envp *envp, int fd)
+static void	export_argless(t_envp *envp, int fd)
 {
 	while (envp)
 	{
-		write(fd, "declare -x ", 11);
+		ft_putstr_fd("declare -x ", fd);
 		if (envp->value)
 		{
-			write(fd, envp->identifier, ft_strlen(envp->identifier));
-			write(fd, "=\"", 2);
-			write(fd, envp->string, ft_strlen(envp->string));
-			write(fd, "\"\n", 2);
+			ft_putstr_fd(envp->identifier, fd);
+			ft_putstr_fd("=\"", fd);
+			ft_putstr_fd(envp->string, fd);
+			ft_putstr_fd("\"\n", fd);
 		}
 		else
 		{
-			write(fd, envp->line, ft_strlen(envp->line));
-			write(fd, "\n", 1);
+			ft_putstr_fd(envp->line, fd);
+			ft_putstr_fd("\n", fd);
 		}
 		envp = envp->next;
 	}
@@ -134,7 +110,7 @@ t_envp	*ft_export(t_execute *cmd_struct, t_envp *envp, int fd)
 	char	*target;
 
 	if (!cmd_struct->cmd[1])
-		ft_export_argless(envp, fd);
+		export_argless(envp, fd);
 	else
 	{
 		i = 1;

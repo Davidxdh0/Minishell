@@ -12,10 +12,12 @@
 
 #include "../main/main.h"
 
+	/*
 void	show_envp_node(t_envp *envp)
 {
 	if (envp)
-		printf("Line: %s\nIdentifier: %s\tString: %s\n", envp->line, envp->identifier, envp->string);
+		printf("Line: %s\nIdentifier: %s\tString: %s\n", envp->line,
+		envp->identifier, envp->string);
 }
 
 void	show_envp_struct(t_envp *envp)
@@ -25,11 +27,13 @@ void	show_envp_struct(t_envp *envp)
 	i = 1;
 	while (envp)
 	{
-		printf("Node #%d\nLine:\t\t%s\nIdentifier:\t%s\nString:\t\t%s\n\n", i, envp->line, envp->identifier, envp->string);
+		printf("Node #%d\nLine:\t\t%s\nIdentifier:\t%s\nString:\t\t%s\n\n", i,
+		envp->line, envp->identifier, envp->string);
 		envp = envp->next;
 		i++;
 	}
 }
+	*/
 
 t_envp	*remove_envp_node(t_envp *node)
 {
@@ -66,22 +70,22 @@ char	**envp_to_array(t_envp *envp)
 	if (!envp)
 		return (NULL);
 	head = envp;
-	i = 1;
-	while (envp->next)
+	i = 0;
+	while (envp)
 	{
 		envp = envp->next;
 		i++;
 	}
-	envp_array = ft_malloc(sizeof(char *) * (i + 1));
-	envp_array[i + 1] = NULL;
-	i = 0;
 	envp = head;
+	envp_array = ft_malloc(sizeof(char *) * (i + 1));
+	i = 0;
 	while (envp)
 	{
 		envp_array[i] = envp->line;
 		envp = envp->next;
 		i++;
 	}
+	envp_array[i] = NULL;
 	return (envp_array);
 }
 
@@ -99,31 +103,22 @@ int	check_envp_value(char *str)
 	return (0);
 }
 
-// void	sort_envp(t_envp *envp) //for printing export argless
-// {
-// 	while (envp)
-// 	{
-
-// 	}
-// }
-
-
 t_envp	*envp_start_list(char *str)
 {
 	t_envp	*envp;
 
- 	envp = ft_malloc(sizeof(t_envp));
-	envp->line = ft_strdup(str); // prots
+	envp = ft_malloc(sizeof(t_envp));
+	envp->line = ft_strdup(str);
 	envp->value = check_envp_value(envp->line);
 	if (envp->value)
 	{
-		envp->identifier = ft_substr(envp->line, 0, envp->value); //prots
+		envp->identifier = ft_substr(envp->line, 0, envp->value);
 		envp->string = ft_substr(envp->line, envp->value + 1 \
-		, ft_strlen(envp->line) - (envp->value + 1)); //prots
+		, ft_strlen(envp->line) - (envp->value + 1));
 	}
 	else
 	{
-		envp->identifier = ft_strdup(envp->line); //prots
+		envp->identifier = ft_strdup(envp->line);
 		envp->string = NULL;
 	}
 	envp->prev = NULL;
@@ -140,45 +135,45 @@ void	envp_add_node(t_envp *envp, char *str)
 	envp->next = ft_malloc(sizeof(t_envp));
 	tmp = envp;
 	envp = envp->next;
-	envp->line = ft_strdup(str); // prots
+	envp->line = ft_strdup(str);
 	envp->value = check_envp_value(envp->line);
 	if (envp->value)
 	{
-		envp->identifier = ft_substr(envp->line, 0, envp->value); //prots
+		envp->identifier = ft_substr(envp->line, 0, envp->value);
 		envp->string = ft_substr(envp->line, envp->value + 1 \
-		, ft_strlen(envp->line) - (envp->value + 1)); //prots
+		, ft_strlen(envp->line) - (envp->value + 1));
 	}
 	else
 	{
-		envp->identifier = ft_strdup(envp->line); //prots
+		envp->identifier = ft_strdup(envp->line);
 		envp->string = NULL;
 	}
 	envp->prev = tmp;
 	envp->next = NULL;
 }
 
-void	increase_shlvl(t_envp *envp)
+bool	increase_shlvl(t_envp *envp)
 {
 	char	*tmp;
 	int		atoi; //technically need a seperate ft_atoi to reset SHLVL
-	
+
 	while (envp)
 	{
 		if (!ft_strcmp("SHLVL", envp->identifier))
 		{
-			// printf("Shell Level Alteration\n");
+// printf("Shell Level Alteration\n");
 			tmp = envp->string;
 			atoi = ft_atoi(envp->string); //
-			envp->string = ft_itoa(atoi + 1); //prots
+			envp->string = ft_itoa(atoi + 1); // change itoa for bash behaviour?
 			free(tmp);
 			free(envp->line);
 			envp->line = ft_strjoin("SHLVL=", envp->string);
-			// printf("NEW SHELL = %s\n", envp->line);
-			return ;
+// printf("NEW SHELL = %s\n", envp->line);
+			return (true);
 		}
-		envp = envp->next; 
+		envp = envp->next;
 	}
-	envp_add_node(envp, "SHLVL=1");
+	return (false);
 }
 
 t_envp	*copy_envp(char **original_envp)
@@ -188,62 +183,14 @@ t_envp	*copy_envp(char **original_envp)
 
 	if (!original_envp)
 		return (NULL);
-	envp = envp_start_list(original_envp[0]); // possible error msg
+	envp = envp_start_list(original_envp[0]);
 	i = 1;
 	while (original_envp[i])
 	{
-		envp_add_node(envp, original_envp[i]); // possible error msg
+		envp_add_node(envp, original_envp[i]);
 		i++;
 	}
-	increase_shlvl(envp);
-	// show_envp_struct(envp);
+	if (!increase_shlvl(envp))
+		envp_add_node(envp, "SHLVL=1");
 	return (envp);
 }
-
-	// int		i;
-	// t_envp	*envp;
-	// t_envp	*tmp;
-
-	// envp = ft_malloc(sizeof(t_envp));
-	// // envp->head = envp;
-	// envp->line = ft_strdup(original_envp[0]); // prots
-	// envp->value = check_envp_value(envp->line);
-	// if (envp->value)
-	// {
-	// 	envp->identifier = ft_substr(envp->line, 0, envp->value); //prots
-	// 	envp->string = ft_substr(envp->line, envp->value + 1 \
-	// 	, ft_strlen(envp->line) - (envp->value + 1)); //prots
-	// }
-	// else
-	// {
-	// 	envp->identifier = ft_strdup(envp->line); //prots
-	// 	envp->string = NULL;
-	// }
-	// envp->prev = NULL;
-	// i = 1;
-	// while (original_envp[i])
-	// {
-	// 	tmp = envp;
-	// 	envp->next = ft_malloc(sizeof(t_envp));
-	// 	envp = envp->next;
-	// 	// envp->head = tmp->head;
-	// 	envp->line = ft_strdup(original_envp[i]); // prots
-	// 	envp->value = check_envp_value(envp->line);
-	// 	if (envp->value)
-	// 	{
-	// 		envp->identifier = ft_substr(envp->line, 0, envp->value); //prots
-	// 		envp->string = ft_substr(envp->line, envp->value + 1 \
-	// 		, ft_strlen(envp->line) - (envp->value + 1)); //prots
-	// 	}
-	// 	else
-	// 	{
-	// 		envp->identifier = ft_strdup(envp->line); //prots
-	// 		envp->string = NULL;
-	// 	}
-	// 	envp->prev = tmp;
-	// 	i++;
-	// }
-	// printf("Envp Str = %s\n", envp->string);
-	// envp->next = NULL;
-	// increase_shlvl(envp->head);
-	// return (envp->head);

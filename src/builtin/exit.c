@@ -42,21 +42,21 @@ void	ft_exit(t_execute *cmd_struct)
 
 	i = 0;
 	if (!cmd_struct->next && !cmd_struct->prev)
-		write(1, "exit\n", 5);
+		ft_putstr_fd("exit\n", 1);
 	if (!cmd_struct->cmd[1])
 		exit(g_exitcode);
 	arg = validate_exit_arg(cmd_struct->cmd[1]);
 	if (arg == -1)
 	{
-		write(2, "minishell: exit: ", 18);
-		write(2, cmd_struct->cmd[1], ft_strlen(cmd_struct->cmd[1]));
-		write(2, ": numeric argument required\n", 28);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(cmd_struct->cmd[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
 	if (cmd_struct->cmd[2])
 	{
 		g_exitcode = 1;
-		write(2, "minishell: exit: too many arguments\n", 36);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return ;
 	}
 	exit(arg);

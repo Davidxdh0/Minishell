@@ -40,8 +40,11 @@ void	ft_echo(t_execute *cmd_struct, int fd)
 		n = false;
 	if (n)
 		i++;
-	write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
-	i++;
+	if (cmd_struct->cmd[i])
+	{
+		write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
+		i++;
+	}
 	while (cmd_struct->cmd[i])
 	{
 		write(fd, " ", 1);

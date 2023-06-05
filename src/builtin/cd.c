@@ -17,36 +17,57 @@ bool	find_env_in_list(t_envp *envp, char *str)
 	while (envp)
 	{
 		if (!ft_strcmp(str, envp->identifier))
-		{
 			return (true);
-		}
 		envp = envp->next;
 	}
 	return (false);
 }
 
-bool	ft_cd(t_execute *cmd_struct, t_envp *envp)
+static bool	cd_update_oldpwd(t_envp *envp)
 {
-	int		i;
-	char	*cwd;
 	char	*cmd;
+	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
-	i = chdir(cmd_struct->cmd[1]);
-	if (!cwd || i < 0)
-		return (ft_perror(cmd_struct->cmd[1], errno), free(cwd), false);
+	if (!cwd)
+	{
+		ft_perror("getcwd: ", 1);
+		return (false);
+	}
 	cmd = ft_strjoin("OLDPWD=", cwd);
 	free(cwd);
 	if (find_env_in_list(envp, "OLDPWD"))
-		ft_export_cmd(cmd, "OLDPWD", envp);
+		ft_export_cmd(cmd, ft_strdup("OLDPWD"), envp);
 	free(cmd);
+	return (true);
+}
+
+static bool	cd_update_pwd(t_envp *envp)
+{
+	char	*cmd;
+	char	*cwd;
+
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		return (ft_perror(cmd_struct->cmd[1], errno), false);
+	{
+		ft_perror("getcwd: ", 1);
+		return (false);
+	}
 	cmd = ft_strjoin("PWD=", cwd);
 	free(cwd);
 	if (find_env_in_list(envp, "PWD"))
-		ft_export_cmd(cmd, "PWD", envp);
+		ft_export_cmd(cmd, ft_strdup("PWD"), envp);
 	free(cmd);
 	return (true);
+}
+
+void	ft_cd(t_execute *cmd_struct, t_envp *envp)
+{
+	if (cd_update_oldpwd(envp))
+		cd_update_pwd(envp);
+	if (chdir(cmd_struct->cmd[1]) == -1)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_perror(cmd_struct->cmd[1], 1);
+	}
 }

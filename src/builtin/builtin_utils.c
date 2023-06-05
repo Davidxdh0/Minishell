@@ -11,7 +11,30 @@
 /* ************************************************************************** */
 
 #include "../main/main.h"
-#include <limits.h>
+
+t_envp	*ft_export_cmd(char *cmd, char *target, t_envp *envp)
+{
+	t_envp	*head;
+
+	head = envp;
+	if (!target)
+	{
+		while (envp)
+		{
+			if (!ft_strcmp(cmd, envp->identifier))
+				return (head);
+			envp = envp->next;
+		}
+	}
+	else if (export_targeted(cmd, target, envp))
+		return (envp);
+	envp = head;
+	if (!envp)
+		envp = envp_start_list(cmd);
+	else
+		envp_add_node(envp, cmd);
+	return (envp);
+}
 
 static unsigned long long	string_to_ull(const char *str, bool neg)
 {
@@ -44,7 +67,7 @@ bool	long_atoi(const char *str, long *number)
 		str++;
 	}
 	atoi = string_to_ull(str, neg);
-	if (atoi > (unsigned long long)__LONG_LONG_MAX__ + 1 ||
+	if (atoi > (unsigned long long)__LONG_LONG_MAX__ + 1 || \
 		(atoi > __LONG_LONG_MAX__ && neg == 0))
 		return (false);
 	if (atoi == (unsigned long long)__LONG_LONG_MAX__ + 1)
@@ -58,7 +81,7 @@ bool	long_atoi(const char *str, long *number)
 	return (true);
 }
 
-void	builtin_infile(char **list)
+bool	builtin_infile(char **list)
 {
 	int	i;
 	int	fd;
@@ -71,62 +94,40 @@ void	builtin_infile(char **list)
 			i++;
 			fd = open(list[i], O_RDONLY);
 			if (fd == -1)
-				ft_exit_error("Couldn't Open Builtin Infile", errno); //errors and stuff
+				return (ft_perror(list[i], 1), false);
 			if (close(fd) == -1)
-				ft_exit_error("Couldn't Close Builtin Infile", errno); //errors and stuff
+				return (ft_perror(NULL, 1), false);
 		}
 		i++;
 	}
-printf("Looped Through Builtin Infiles\n");
+	return (true);
 }
 
-bool	builtin_outfile(char **list, int *fd)
+bool	builtin_outfile(char **list, int *fd, int i, int temp_fd)
 {
-	int		i;
-	int		temp_fd;
-	bool	file;
-
-	file = false;
-	i = 0;
-	temp_fd = -1;
 	while (list && list[i])
 	{
 		if (list[i][0] == '>' && !list[i][1])
 		{
 			i++;
 			if (temp_fd != -1 && close(temp_fd) == -1)
-				ft_exit_error("Couldn't Close Builtin Outfile", errno); //errors and stuff
-			temp_fd = open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644); // does this need its own error check?
+				return (ft_perror(NULL, 1), false);
+			temp_fd = open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			if (temp_fd == -1)
-				ft_exit_error("Couldn't Open Builtin Outfile", errno); //errors and stuff
-			file = true;
+				return (ft_perror(list[i], 1), false);
 		}
 		else if (list[i][0] == '>' && list[i][1] == '>')
 		{
 			i++;
 			if (temp_fd != -1 && close(temp_fd) == -1)
-				ft_exit_error("Couldn't Close Builtin Outfile", errno); //errors and stuff
-			temp_fd = open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644); // does this need its own error check?
+				return (ft_perror(NULL, 1), false);
+			temp_fd = open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (temp_fd == -1)
-				ft_exit_error("Couldn't Open Builtin Outfile", errno); //errors and stuff
-			file = true;
+				return (ft_perror(list[i], 1), false);
 		}
 		i++;
 	}
-	if (file == true)
-	{
-printf("fd Set\n");
+	if (temp_fd != -1)
 		*(fd) = temp_fd;
-	}
-	else
-	{
-printf("fd = 1\n");
-		*(fd) = 1;
-	}
-printf("Looped Through Builtin Outfiles\n");
 	return (true);
 }
-
-// no file >>> fd = 1
-// correct file >>> fd = open(file)
-// erronous file >>> do not execute builtin

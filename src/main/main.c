@@ -166,16 +166,16 @@ void	ft_atexit(void)
 
 int	main(int argc, char *argv[], char **original_envp)
 {
-	static char	*line; //does this need to be static??
-	t_envp		*envp;
+	char	*line; //did this need to be static??
+	t_envp	*envp;
 	signal(SIGINT, signal_int);   // Handle Ctrl-C
 	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
 	// 
 	signal(SIGQUIT, signal_bs); 
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
-	if (input_is_argv(argc, argv, &line))
-		return (shell(line, envp), 117);
+	// if (input_is_argv(argc, argv, &line))
+	// 	return (shell(line, envp), 117);
 	// atexit(ft_atexit);
 	while (1)
 	{	
@@ -185,8 +185,8 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
-				free(line);
+			// if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
+			// 	free(line);
 			enable_ctrl_c_display();
 			envp = shell(line, envp);
 			free(line);

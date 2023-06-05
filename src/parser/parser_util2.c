@@ -56,7 +56,7 @@ t_execute *alloc_execute_list(t_line_lst *head)
         k = 0;
         t_execute *new_node = malloc(sizeof(t_execute));
         new_node->count_cmd = count_commands(head);
-		printf("count cmd = %d", new_node->count_cmd);
+		// printf("count cmd = %d\n", new_node->count_cmd);
         new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
 		new_node->redirects = NULL;
         new_node->next = NULL;
