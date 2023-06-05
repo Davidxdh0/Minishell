@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 19:47:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 12:28:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ t_line_lst *remove_quotes(t_line_lst *line_lst)
                 prev->next = next;
             if (next != NULL)
                 next->prev = prev;
-
             free(line_lst->value);
             free(line_lst);
         }
@@ -99,33 +98,36 @@ t_line_lst *remove_quotes(t_line_lst *line_lst)
     }
     return (new_head);
 }
-void combine_values(t_line_lst *list)
+t_line_lst *combine_values(t_line_lst *list)
 {
-    if (list == NULL) {
-        return;
-    }
     t_line_lst *current = list;
-    while (current != NULL) {
-        if (current->state != 0) {
+	printf("current value = ");
+    while (current != NULL) 
+	{
+        if (current->type != e_whitespace && current->state != 0) 
+		{
+			printf("current value = %s", current->value);
             t_line_lst *nextNode = current->next;
-            while (nextNode != NULL && (nextNode->type != e_whitespace && nextNode->state == 0)) 
+            while (nextNode != NULL && nextNode->type != e_whitespace) 
 			{
                 current->len += nextNode->len;
-                current->value = realloc(current->value, (current->len + 1) * sizeof(char));
-                strcat(current->value, nextNode->value);
+				printf("current value = %s", current->value);
+                // current->value = realloc(current->value, (current->len + 1) * sizeof(char));
+                // strcat(current->value, nextNode->value);
+				current->value = (char *)ft_strlcat(current->value, nextNode->value, (size_t)current->len);
+				printf("erna value = %s", current->value);
                 t_line_lst *temp = nextNode;
                 nextNode = nextNode->next;
                 free(temp);
             }
-
-            if (nextNode != NULL) {
+            if (nextNode != NULL)
                 current->next = nextNode;
-            } else {
+        	else 
                 current->next = NULL;
-            }
-        }
+		}
         current = current->next;
-    }
+	}
+	return (list);
 }
 	
 
@@ -136,15 +138,21 @@ int	shell(char *line, t_envp *envp)
 	
 	cmd = NULL;
 	line_lst = parser(line);
-	line_lst = remove_quotes(line_lst);
+	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	line_lst = variable_expand(line_lst, envp);
-	combine_values(line_lst);
+	// combine strings zolang geen whitespaces.
+	// show_t_list(line_lst, line);
+	line_lst = combine_values(line_lst);
+	show_t_list(line_lst, line);
 	line_lst = remove_whitespace_list(line_lst);
+	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
+		// line_lst = remove_quotes(line_lst);
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
-		// show(cmd);
+		show(cmd);
 		executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 		// 255, exit shit??

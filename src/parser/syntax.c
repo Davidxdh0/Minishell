@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 21:10:20 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 11:29:27 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	syntax_redirects(t_line_lst *line)
 	//  file > of  $file >
 	if (line->type == e_redirect_o)
 	{
-		if (line->prev == NULL && line->next != NULL)
+		if (line->prev == NULL && line->next->type != NULL)
 			return (0);
 		else if (line->prev == NULL)
 			return (1);

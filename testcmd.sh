@@ -95,7 +95,7 @@
 # ./minishell -p " < mooi ls -la > outfile > outfile2 | cat -e | cat -e"
 
 # ./minishell -p 'ls -la > outfile > outfile2 | cat -e | cat -e'
-./minishell -p 'ls -la > outfile | cat -e | cat -e'
+# ./minishell -p 'ls -la > outfile | cat -e | cat -e'
 # ./minishell -p 'ls -la > outfile | cat -e | cat -e'
 # # ./minishell -p 'echo "hello  $USER " > file | grep h | cat >> file | echo "done"'
 # ./minishell -p 'echo ""hello  $USER"" > file | grep h | cat >> file | echo "done"'
@@ -227,7 +227,7 @@
 # ./minishell -p 'echo $$$'
 # ./minishell -p 'echo $$$?'
 
-./minishell -p echo 'plus'"s" 
-echo "$USER$USER"
-echo "$?"
-echo "s$?asss"
+# ./minishell -p echo 'plus'"s" 
+./minishell -p echo "$USER$USER"
+# echo "$?"
+# echo "s$?asss"

@@ -2,10 +2,12 @@ David
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 signals - ctrl + c, ctr d en ctrl + \
 count commands leeg cmd meegeven
-> ""
-< ""
+alles goed achter elkaar plakken.
+< "" komt doordat ik quotes nu vooraf weghaal. hoe oplossen?
 >> ""
 << ""
+export cmd="ls -la" = export cmd= "ls -la"
+ec"ho" = ec ho
 norminette
 functies kleiner
 if argc != 1 -> exit 1
