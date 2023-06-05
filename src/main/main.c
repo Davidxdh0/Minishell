@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 15:16:13 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 15:21:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,8 @@ int	shell(char *line, t_envp *envp)
 		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
-		// show(cmd);
-		executor_dcs(cmd, envp); //DCS
+		show(cmd);
+		// executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 		// 255, exit shit??
 	}
@@ -192,7 +192,7 @@ int	shell(char *line, t_envp *envp)
 	}
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
-	return (envp);
+	return (1);
 }
 
 void	ft_atexit(void)
@@ -203,8 +203,8 @@ void	ft_atexit(void)
 
 int	main(int argc, char *argv[], char **original_envp)
 {
-	char	*line;
-	t_envp	*envp;
+	static char	*line; //does this need to be static??
+	t_envp		*envp;
 	signal(SIGINT, signal_int);   // Handle Ctrl-C
 	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
 	// 
@@ -222,10 +222,10 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-			// if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
-			// 	free(line);
+			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
+				free(line);
 			enable_ctrl_c_display();
-			envp = shell(line, envp);
+			shell(line, envp);
 			free(line);
 		}
 	}
