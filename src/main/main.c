@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 12:28:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 15:12:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,38 +98,63 @@ t_line_lst *remove_quotes(t_line_lst *line_lst)
     }
     return (new_head);
 }
-t_line_lst *combine_values(t_line_lst *list)
+t_line_lst	*combine_values(t_line_lst *list)
 {
-    t_line_lst *current = list;
-	printf("current value = ");
-    while (current != NULL) 
-	{
-        if (current->type != e_whitespace && current->state != 0) 
-		{
-			printf("current value = %s", current->value);
-            t_line_lst *nextNode = current->next;
-            while (nextNode != NULL && nextNode->type != e_whitespace) 
-			{
+    t_line_lst	*current;
+	t_line_lst	*nextNode;
+	char		*new_value;
+	t_line_lst 	*temp;
+	
+	current = list;
+    while (current != NULL)
+    {
+        if (current->state != 0 || current->type != e_whitespace)
+        {
+            nextNode = current->next;
+            while (nextNode != NULL && (nextNode->state != 0 || nextNode->type != e_whitespace))
+            {
                 current->len += nextNode->len;
-				printf("current value = %s", current->value);
-                // current->value = realloc(current->value, (current->len + 1) * sizeof(char));
-                // strcat(current->value, nextNode->value);
-				current->value = (char *)ft_strlcat(current->value, nextNode->value, (size_t)current->len);
-				printf("erna value = %s", current->value);
-                t_line_lst *temp = nextNode;
+				new_value = ft_strdup(current->value);
+                ft_strlcat(new_value, nextNode->value, current->len + 1);
+                free(current->value);
+                current->value = new_value;
+                temp = nextNode;
                 nextNode = nextNode->next;
                 free(temp);
             }
-            if (nextNode != NULL)
-                current->next = nextNode;
-        	else 
-                current->next = NULL;
-		}
+            current->next = nextNode;
+        }
         current = current->next;
-	}
-	return (list);
+    }
+    return (list);
 }
-	
+
+t_line_lst	*combine_quotes(t_line_lst *list)
+{
+    t_line_lst	*current;
+
+	current = list;
+    while (current != NULL)
+    {
+        if (current->state != 0 && current->type == e_quote)
+        {
+			if (current->next != NULL)
+			{
+				if ((current->next->type == e_quote && current->next->state == 2) \
+				|| (current->next->type == e_quote && current->next->state == 1))
+				{
+					current->next->value = ft_strdup("");
+					current->next->type = e_var;
+					current->next->state = 0;
+					if (current->next->next != NULL)
+						delete_node(current);
+				}
+			}
+        }
+        current = current->next;
+    }
+    return (list);
+}	
 
 int	shell(char *line, t_envp *envp)
 {
@@ -139,21 +164,25 @@ int	shell(char *line, t_envp *envp)
 	cmd = NULL;
 	line_lst = parser(line);
 	// show_t_list(line_lst, line);
-	show_t_list(line_lst, line);
+	if (syntax_count_quotes(line_lst))
+		return (0);
 	line_lst = variable_expand(line_lst, envp);
-	// combine strings zolang geen whitespaces.
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
+	line_lst = combine_quotes(line_lst);
+	show_t_list(line_lst, line);
+	line_lst = remove_quotes(line_lst);
+	show_t_list(line_lst, line);
 	line_lst = combine_values(line_lst);
 	show_t_list(line_lst, line);
 	line_lst = remove_whitespace_list(line_lst);
 	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		// line_lst = remove_quotes(line_lst);
+		// show_t_list(line_lst, line);
 		cmd = alloc_execute_list(line_lst);
 		cmd = acco(cmd);	
 		show(cmd);
-		executor_dcs(cmd, envp); //DCS
+		// executor_dcs(cmd, envp); //DCS
 		delete_t_exec(cmd);
 		// 255, exit shit??
 	}
@@ -179,11 +208,12 @@ int	main(int argc, char *argv[], char **original_envp)
 	signal(SIGINT, signal_int);   // Handle Ctrl-C
 	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
 	// 
+	// if (argc != 1)
+	// 	malloc met exit code + tekst perror("executable: " )
 	signal(SIGQUIT, signal_bs); 
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
-	if (input_is_argv(argc, argv, &line))
-		return (shell(line, envp));
+	
 	while (1)
 	{	
 		// if (argc != 1)

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:43:01 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 20:46:48 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 14:58:11 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ int	quotes(t_line_lst *line_lst, char c, int state, int flag)
 			state = 0;
 	}
 	if (flag > 0 && c == '\'')
-		add_at_end_of_list(&line_lst, e_quote, "\'", flag);
+		add_at_end_of_list(line_lst, e_quote, "\'", flag);
 	else if ((flag > 0 && c == '\"'))
-		add_at_end_of_list(&line_lst, e_quote, "\"", flag);
+		add_at_end_of_list(line_lst, e_quote, "\"", flag);
 	else if (c == '\'')
-		add_at_end_of_list(&line_lst, e_quote, "\'", state);
+		add_at_end_of_list(line_lst, e_quote, "\'", state);
 	else
-		add_at_end_of_list(&line_lst, e_quote, "\"", state);
+		add_at_end_of_list(line_lst, e_quote, "\"", state);
 	return (state);
 }

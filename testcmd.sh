@@ -227,7 +227,9 @@
 # ./minishell -p 'echo $$$'
 # ./minishell -p 'echo $$$?'
 
-# ./minishell -p echo 'plus'"s" 
-./minishell -p echo "$USER$USER"
+./minishell -p echo 'plus'"s"
+./minishell -p echo s'plus'"s" 
+./minishell -p ec"ho" hoi
+# ./minishell -p echo "$USER$USER"
 # echo "$?"
 # echo "s$?asss"

@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 10:35:14 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/05/04 10:35:15 by abarteld      ########   odam.nl         */
+/*   Updated: 2023/06/05 12:34:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,33 +132,16 @@ void	ft_export_cmd(char *cmd, char *target, t_envp *envp, int fd)
 
 void	ft_export_argless(t_execute *cmd_struct, t_envp *envp, int fd)
 {
-<<<<<<< HEAD
-	int exists;
-	int varlen;
-	
-	varlen = ft_strlen(cmd[1]);
-	exists = check_env_exist(cmd, data);
-	if (varlen == 0)
-		while(data->envp++)
-			printf("%s\n", *data->envp);
-	else if (exists == 1)
-=======
 	//sort?
 	while (envp)
->>>>>>> 9b998d2321451c53440fe156fb178b317305482a
 	{
 		write(fd, "declare -x ", 11); 
 		if (envp->value)
 		{
-<<<<<<< HEAD
-			//str = ft_strjoin(cmd[1], "=");
-			message("doe niets");
-=======
 			write(fd, envp->identifier, ft_strlen(envp->identifier));
 			write(fd, "=\"", 2);
 			write(fd, envp->string, ft_strlen(envp->string));
 			write(fd, "\"\n", 2);
->>>>>>> 9b998d2321451c53440fe156fb178b317305482a
 		}
 		else
 		{

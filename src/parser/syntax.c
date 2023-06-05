@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 11:29:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 14:40:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	syntax_count_quotes(t_line_lst *line)
 	int			dquote;
 	int			quote;
 
-	dquote = 0;
-	quote = 0;
+	dquote = 2;
+	quote = 2;
 	temp = line;
 	while (temp != NULL)
 	{
@@ -78,10 +78,10 @@ int	syntax_redirects(t_line_lst *line)
 	{
 		if (line->prev == NULL && line->next->type != NULL)
 			return (0);
-		else if (line->prev == NULL)
+		else if (line->next == NULL)
 			return (1);
-		if (line->prev->type != e_file && line->prev->type != e_var &&
-			line->prev->type != e_word && line->next->type != e_quote && line->prev->type != e_cmd)
+		if (line->next->type != e_file && line->next->type != e_var &&
+			line->next->type != e_word && line->next->type != e_quote && line->next->type != e_cmd)
 			return (1);
 	}
 	// >> append
@@ -117,7 +117,7 @@ int	syntax_check(t_line_lst *line)
 		temp = temp->next;
 	}
 	temp = line;
-	if (syntax_count_quotes(temp))
-		return (1);
+	// if (syntax_count_quotes(temp))
+	// 	return (1);
 	return (0);
 }

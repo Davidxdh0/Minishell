@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 21:08:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 14:58:31 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_line_lst	*parser(char *line)
 			i += word_case(&line_lst, line + i, state);
 		else if (line[i] == '\"' || line[i] == '\'')
 		{
-			state = quotes(line_lst, line[i], state, state);
+			state = quotes(&line_lst, line[i], state, state);
 			i++;
 		}
 		else if (line[i] == '|')
