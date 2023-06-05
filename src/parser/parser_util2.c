@@ -6,17 +6,17 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 17:20:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 15:14:42 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-char **make_redirects(t_line_lst *line_lst)
+char	**make_redirects(t_line_lst *line_lst)
 {
-	char **tempstring;
-	t_line_lst *temp;
-	int i;
+	char		**tempstring;
+	t_line_lst	*temp;
+	int			i;
 
 	tempstring = NULL;
 	i = 0;
@@ -41,61 +41,63 @@ char **make_redirects(t_line_lst *line_lst)
 		i++;
 		temp = temp->next;
 	}
-	// printf("string = %s\n", tempstring);
 	return (tempstring);
 }
 
-t_execute *alloc_execute_list(t_line_lst *head)
+t_execute	*alloc_execute_list(t_line_lst *head)
 {
-    int k;
-    t_execute *cmdlist = NULL;
-    t_execute *last = NULL;
-    char *temp;
-    while (head != NULL)
-    {
-        k = 0;
-        t_execute *new_node = malloc(sizeof(t_execute));
-        new_node->count_cmd = count_commands(head);
-		// printf("count cmd = %d\n", new_node->count_cmd);
-        new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
+	int			k;
+	t_execute	*new_node;
+	t_execute	*cmdlist;
+	t_execute	*last;
+	char		*temp;
+
+	cmdlist = NULL;
+	last = NULL;
+	while (head != NULL)
+	{
+		k = 0;
+		new_node = malloc(sizeof(t_execute));
+		new_node->count_cmd = count_commands(head);
+		printf("count cmd = %d", new_node->count_cmd);
+		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
 		new_node->redirects = NULL;
-        new_node->next = NULL;
-        while (head != NULL && k < new_node->count_cmd)
-        {
-            if (head->state > 0)
-            {
-                temp = make_string(head);
-                // if (temp[0] == '\"' || temp[0] == '\'')
-                new_node->cmd[k] = ft_substr(temp, 0, ft_strlen(temp) );
-                while (head != NULL && head->state > 0)
-                    head = head->next;
+		new_node->next = NULL;
+		while (head != NULL && k < new_node->count_cmd)
+		{
+			if (head->state > 0)
+			{
+				temp = make_string(head);
+				new_node->cmd[k] = ft_substr(temp, 0, ft_strlen(temp));
+				while (head != NULL && head->state > 0)
+					head = head->next;
 				free(temp);
 				temp = NULL;
-            }
-            else
-            {
-                new_node->cmd[k] = ft_strdup(head->value);
-                head = head->next;
-            }
-            k++;
-        }
-        new_node->cmd[k] = NULL;
-        if (last == NULL)
-            cmdlist = new_node;
-        else
-            last->next = new_node;
-        last = new_node;
-        if (head != NULL && !ft_strncmp(head->value, "|", 1))
-            ;
-        if (head != NULL)
-            head = head->next;
-    }
-    return (cmdlist);
+			}
+			else
+			{
+				new_node->cmd[k] = ft_strdup(head->value);
+				head = head->next;
+			}
+			k++;
+		}
+		new_node->cmd[k] = NULL;
+		if (last == NULL)
+			cmdlist = new_node;
+		else
+			last->next = new_node;
+		last = new_node;
+		if (head != NULL && !ft_strncmp(head->value, "|", 1))
+			;
+		if (head != NULL)
+			head = head->next;
+	}
+	return (cmdlist);
 }
 
-char *make_string(t_line_lst *line_lst)
+char	*make_string(t_line_lst *line_lst)
 {
-	char *tempstring;
+	char	*tempstring;
 
 	tempstring = NULL;
 	if (line_lst->value)
@@ -109,6 +111,5 @@ char *make_string(t_line_lst *line_lst)
 		}
 		line_lst = line_lst->next;
 	}
-	// printf("string = %s\n", tempstring);
 	return (tempstring);
 }

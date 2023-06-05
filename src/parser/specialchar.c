@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/05/28 19:24:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/01 21:09:10 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	pipe_case(t_line_lst **line_lst, int state)
 	return (1);
 }
 
-int space_case(t_line_lst **line_lst, int state)
+int	space_case(t_line_lst **line_lst, int state)
 {
 	add_at_end_of_list(line_lst, e_whitespace, " ", state);
 	return (1);

@@ -6,33 +6,11 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 19:37:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 15:20:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* sources
-Example:
-https://github.com/yabtaour/Minishell-42
-bash flow
-http://www.aosabook.org/en/bash.html
-tutorial
-https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
-explanation shell:
-https://cs61.seas.harvard.edu/site/2019/Section7/
-Shell Command Language:
-https://pubs.opengroup.org/onlinepubs/009604499/utilities/xcu_chap02.html
-BNF:
-https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
-bash manual:
-https://www.gnu.org/software/bash/manual/
-
-bash parser"
-https://mywiki.wooledge.org/BashParser
-tokenizer:
-https://ix-56h.github.io/how-to-make-a-tokenizer/
-ridirections:
-https://www.gnu.org/software/bash/manual/html_node/Redirections.html
-
 Unit tester:
 https://github.com/Snaipe/Criterion
 */
@@ -56,16 +34,6 @@ https://github.com/Snaipe/Criterion
 # include "../../libs/libft/libft.h"
 
 int		g_exitcode;
-
-// typedef struct s_line_lst
-// {
-// 	int					type;
-// 	char				*value;
-// 	int					len;
-// 	int					state;
-// 	struct s_line_lst	*next;
-// 	struct s_line_lst	*prev;
-// }	t_line_lst;
 
 typedef enum{
 	e_start = 0,
@@ -94,17 +62,6 @@ typedef enum builtin_names
 	EXIT
 }	e_builtin_names;
 
-// typedef struct s_data
-// {
-// 	char	**envp;
-// 	char	**cmd;
-// 	char	*path;
-// 	int 	fd[2];
-// 	int		outfile;
-// 	int 	infile;
-// 	int		exitcode;
-// }	t_data;
-
 typedef	struct s_envp
 {
 	char			*line;
@@ -115,72 +72,45 @@ typedef	struct s_envp
 	struct s_envp	*next;
 }	t_envp;
 
+typedef struct s_execute
+{
+	char	**cmd;
+	char	**redirects;
+	int		count_cmd;
+	char	*heredoc_name;
+	struct s_execute *prev;
+  	struct s_execute *next;
+}	t_execute;
 
-// typedef struct s_execute
-// {
-// 	char	**cmd;
-// 	char	**redirects; //redirect zoals gegeven, split op iets, redirects []
-// 	int		count_cmd; //DCS, can be loaded in during initialization?
-// 	char	*heredoc_name;
-// 	struct s_execute *prev;
-//   	struct s_execute *next;
-// }	t_execute;
+typedef struct s_line_lst
+{
+	int					type;
+	char				*value;
+	int					len;
+	int					state;
+	struct s_line_lst	*next;
+	struct s_line_lst	*prev;
+}	t_line_lst;
 
-/* Executer  & builtins*/
-//executor.c
-// void	execute_cmd_list(t_line_lst *cmdlist, t_data *data);
-// void	execute_commands(t_line_lst *stack, t_data *data, char **envp);
-// void	execute_process(t_line_lst *stack, t_data *data, char **envp);
-// void	close_fd_dup(t_data *data, int *stin, int *stout);
-// void	test_lists(t_line_lst *head, char **envp);
+//parser_util2.c
+char **make_redirects(t_line_lst *line_lst);
+t_execute *alloc_execute_list(t_line_lst *head);
+char *make_string(t_line_lst *line_lst);
 
-// //errors.c
-// int		msg_error_code(char *err, int code);
-// int		msg_error(char *err);
-// int		msg_custom_error_code(char *err, char *cmd, int code);
-
-// //exit.c
-// void	message_exit(char *message, int errornumber);
-// void	message(char *msg);
-// void	message_nl(char *msg);
-
-// //paths.c
-// char	*get_env_paths(char **envp);
-// char	*get_cmd_path(char *cmd, char **envp);
-
-// //redirect
-// void    redirect(t_line_lst *stack, t_data *data);
-
-// //file.c
-// void	open_infile(char *file);
-// void	redir_outfile(char *file, t_data *data, int flag);
-// void    redirect(t_line_lst *stack, t_data *data);
-
-// //builtin.c
-// void	execute_builtin(t_line_lst *cmdlist, char **cmd, t_data *data);
-// int		is_builtin(char *str);
-
-// //cd.c
-// void	execute_cd(char **cmd, t_data *data);
-// void	update_old_pwd(char *oldpath, t_data *data);
-// void	cd_home(char **envp);
-// int		change_dir(char *oldpath, char *path);
-
-// //echo.c
-// void	execute_echo(char **cmd);
-// int		check_option(char **cmd);
-
-// //export.c
-// void	execute_export(char **cmd, t_data *data);
-// int		check_env_exist(char **cmd, t_data *data);
+//parser_util.c
+t_execute 	*acco(t_execute *cmds);
+void 		copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_redirects);
+t_execute 	*create_new_node(int num_commands, int num_redirects);
+int 		count_redirects(char **cmd_list);
+int 		ft_arrlen(char **arr);
 
 /* LEXER*/
-int			is_valid_type(node_type type, t_line_lst *node);
-int			is_valid_var(node_type last_type);
-int			is_valid_word(node_type last_type);
-int			is_valid_file(node_type last_type);
-int			is_valid_pipe(node_type last_type);
-int			is_valid_cmd(node_type last_type);
+// int			is_valid_type(node_type type, t_line_lst *node);
+// int			is_valid_var(node_type last_type);
+// int			is_valid_word(node_type last_type);
+// int			is_valid_file(node_type last_type);
+// int			is_valid_pipe(node_type last_type);
+// int			is_valid_cmd(node_type last_type);
 char		*type_to_string(node_type type);
 node_type	get_previous_type(t_line_lst *node);
 int			is_word(char c);
@@ -200,7 +130,7 @@ int			dolar_sign_case(t_line_lst **line_lst, char *line, int state);
 // lexer.c
 int			ft_isspecial(char chr);
 int			word_case(t_line_lst **line_lst, char *line, int state);
-int			quotes(t_line_lst *line_lst, char c, int state);
+int			quotes(t_line_lst *line_lst, char c, int state, int flag);
 
 // expander.c
 void 		delete_node(t_line_lst *node_to_delete);
@@ -308,6 +238,9 @@ int		check_envp_value(char *str);
 bool	increase_shlvl(t_envp *envp);
 // void	show_envp_struct(t_envp *envp);
 // void	show_envp_node(t_envp *envp);
+char	*get_new_env(char *value, t_envp *envp);
+int		count_words_expander(char *value);
+int 	find_variable(char *str);
 
 // Utils
 int		ft_perror(char *str, int err);
@@ -321,7 +254,7 @@ int		syntax_quotes(t_line_lst *line, node_type type);
 int		syntax_count_quotes(t_line_lst *line);
 
 //util
-int		perror_return(char *msg, char *msg2);
+int			perror_return(char *msg, char *msg2);
 void	delete_t_exec(t_execute *head);
 
 #endif
