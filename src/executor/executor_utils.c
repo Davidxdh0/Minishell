@@ -30,14 +30,6 @@ int	ft_perror(char *str, int error_number)
 	return (error_number);
 }
 
-int	ft_exit_error(char *str, int err)
-{
-	write(2, "Error\n", 6);
-	write(2, str, ft_strlen(str));
-	write(2, "\n", 1);
-	exit(err);
-}
-
 char	**free_char_array(char **arr)
 {
 	int	i;

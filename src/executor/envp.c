@@ -12,55 +12,6 @@
 
 #include "../main/main.h"
 
-	/*
-void	show_envp_node(t_envp *envp)
-{
-	if (envp)
-		printf("Line: %s\nIdentifier: %s\tString: %s\n", envp->line,
-		envp->identifier, envp->string);
-}
-
-void	show_envp_struct(t_envp *envp)
-{
-	int	i;
-
-	i = 1;
-	while (envp)
-	{
-		printf("Node #%d\nLine:\t\t%s\nIdentifier:\t%s\nString:\t\t%s\n\n", i,
-		envp->line, envp->identifier, envp->string);
-		envp = envp->next;
-		i++;
-	}
-}
-	*/
-
-t_envp	*remove_envp_node(t_envp *node)
-{
-	t_envp	*head;
-
-	head = NULL;
-	if (node->prev)
-		head = node->prev;
-	else if (node->next)
-		head = node->next;
-	if (node)
-	{
-		if (node->next)
-			node->next->prev = node->prev;
-		if (node->prev)
-			node->prev->next = node->next;
-		free(node->line);
-		free(node->identifier);
-		free(node->string);
-		free(node);
-	}
-	if (head)
-		while (head->prev)
-			head = head->prev;
-	return (head);
-}
-
 char	**envp_to_array(t_envp *envp)
 {
 	char	**envp_array;
@@ -89,41 +40,30 @@ char	**envp_to_array(t_envp *envp)
 	return (envp_array);
 }
 
-int	check_envp_value(char *str)
+t_envp	*remove_envp_node(t_envp *node)
 {
-	int	i;
+	t_envp	*head;
 
-	i = 0;
-	while (str[i])
+	head = NULL;
+	if (node->prev)
+		head = node->prev;
+	else if (node->next)
+		head = node->next;
+	if (node)
 	{
-		if (str[i] == '=')
-			return (i);
-		i++;
+		if (node->next)
+			node->next->prev = node->prev;
+		if (node->prev)
+			node->prev->next = node->next;
+		free(node->line);
+		free(node->identifier);
+		free(node->string);
+		free(node);
 	}
-	return (0);
-}
-
-t_envp	*envp_start_list(char *str)
-{
-	t_envp	*envp;
-
-	envp = ft_malloc(sizeof(t_envp));
-	envp->line = ft_strdup(str);
-	envp->value = check_envp_value(envp->line);
-	if (envp->value)
-	{
-		envp->identifier = ft_substr(envp->line, 0, envp->value);
-		envp->string = ft_substr(envp->line, envp->value + 1 \
-		, ft_strlen(envp->line) - (envp->value + 1));
-	}
-	else
-	{
-		envp->identifier = ft_strdup(envp->line);
-		envp->string = NULL;
-	}
-	envp->prev = NULL;
-	envp->next = NULL;
-	return (envp);
+	if (head)
+		while (head->prev)
+			head = head->prev;
+	return (head);
 }
 
 void	envp_add_node(t_envp *envp, char *str)
@@ -152,28 +92,27 @@ void	envp_add_node(t_envp *envp, char *str)
 	envp->next = NULL;
 }
 
-bool	increase_shlvl(t_envp *envp)
+t_envp	*envp_start_list(char *str)
 {
-	char	*tmp;
-	int		atoi; //technically need a seperate ft_atoi to reset SHLVL
+	t_envp	*envp;
 
-	while (envp)
+	envp = ft_malloc(sizeof(t_envp));
+	envp->line = ft_strdup(str);
+	envp->value = check_envp_value(envp->line);
+	if (envp->value)
 	{
-		if (!ft_strcmp("SHLVL", envp->identifier))
-		{
-// printf("Shell Level Alteration\n");
-			tmp = envp->string;
-			atoi = ft_atoi(envp->string); //
-			envp->string = ft_itoa(atoi + 1); // change itoa for bash behaviour?
-			free(tmp);
-			free(envp->line);
-			envp->line = ft_strjoin("SHLVL=", envp->string);
-// printf("NEW SHELL = %s\n", envp->line);
-			return (true);
-		}
-		envp = envp->next;
+		envp->identifier = ft_substr(envp->line, 0, envp->value);
+		envp->string = ft_substr(envp->line, envp->value + 1 \
+		, ft_strlen(envp->line) - (envp->value + 1));
 	}
-	return (false);
+	else
+	{
+		envp->identifier = ft_strdup(envp->line);
+		envp->string = NULL;
+	}
+	envp->prev = NULL;
+	envp->next = NULL;
+	return (envp);
 }
 
 t_envp	*copy_envp(char **original_envp)

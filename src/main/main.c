@@ -166,7 +166,7 @@ void	ft_atexit(void)
 
 int	main(int argc, char *argv[], char **original_envp)
 {
-	char	*line; //did this need to be static??
+	char	*line;
 	t_envp	*envp;
 	signal(SIGINT, signal_int);   // Handle Ctrl-C
 	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
