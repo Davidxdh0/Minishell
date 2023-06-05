@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 14:58:31 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 21:45:45 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	delete_node(t_line_lst *node_to_delete)
 		node_to_delete->next->prev = node_to_delete->prev;
 	else if (node_to_delete->prev != NULL)
 		node_to_delete->prev->next = NULL;
+	free(node_to_delete->value);
 	free(node_to_delete);
 }
 
@@ -76,7 +77,6 @@ t_line_lst	*parser(char *line)
 			i += greater_than_case(&line_lst, &line[i], state);
 		else if (line[i] == '$')
 		{
-			printf("char = %c\n", line[i]);
 			i += dolar_sign_case(&line_lst, &line[i], state);
 		}
 		else if (ft_isspace(line[i]))

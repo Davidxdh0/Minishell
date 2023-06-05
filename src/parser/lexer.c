@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:43:01 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 14:58:11 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 17:31:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 		if (l == e_redirect_i || l == e_redirect_o || l == e_append)
 			add_at_end_of_list(line_lst, e_file, substr, state);
 		i += len;
-		if (substr)
-			free(substr);
+		free(substr);
 	}
 	return (i);
 }
 
-int	quotes(t_line_lst *line_lst, char c, int state, int flag)
+int	quotes(t_line_lst **line_lst, char c, int state, int flag)
 {
 	flag = state;
 	if (c == '\'')

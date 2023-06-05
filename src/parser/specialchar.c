@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 21:09:10 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 18:25:37 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	dolar_sign_case(t_line_lst **line_lst, char *line, int state)
 {
 	int			len;
 	node_type	type;
-
+	char		*str;
 	type = get_previous_type(*line_lst);
 	if (type == e_start || type == e_pipe)
 		type = e_cmd;
@@ -84,6 +84,8 @@ int	dolar_sign_case(t_line_lst **line_lst, char *line, int state)
 	len = 1;
 	while (!ft_isspecial(line[len]))
 		len++;
-	add_at_end_of_list(line_lst, e_var, ft_substr(line, 0, len), state);
+	str = ft_substr(line, 0, len);
+	add_at_end_of_list(line_lst, e_var, str, state);
+	free(str);
 	return (len);
 }

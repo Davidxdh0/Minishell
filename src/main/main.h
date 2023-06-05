@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 15:20:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 15:35:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int			dolar_sign_case(t_line_lst **line_lst, char *line, int state);
 // lexer.c
 int			ft_isspecial(char chr);
 int			word_case(t_line_lst **line_lst, char *line, int state);
-int			quotes(t_line_lst *line_lst, char c, int state, int flag);
+int			quotes(t_line_lst **line_lst, char c, int state, int flag);
 
 // expander.c
 void 		delete_node(t_line_lst *node_to_delete);
@@ -166,7 +166,7 @@ void 	disable_ctrl_c_display();
 void 	enable_ctrl_c_display();
 void	signal_bs(int signal);
 /* Main */
-t_envp	*shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
+int		shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
 int		input_is_argv(int argc, char *argv[], char **line);
 void	line_reader(char **line, const char *display_name);
 void	add_line_in_history(char **line);

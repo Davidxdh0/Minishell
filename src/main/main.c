@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 15:21:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 22:36:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_line_lst	*combine_values(t_line_lst *list)
 	char		*new_value;
 	t_line_lst 	*temp;
 	
+	new_value = NULL;
 	current = list;
     while (current != NULL)
     {
@@ -114,47 +115,51 @@ t_line_lst	*combine_values(t_line_lst *list)
             while (nextNode != NULL && (nextNode->state != 0 || nextNode->type != e_whitespace))
             {
                 current->len += nextNode->len;
-				new_value = ft_strdup(current->value);
+				new_value = malloc(current->len + nextNode->len + 1);
+                ft_strlcpy(new_value, current->value, current->len + 1);
                 ft_strlcat(new_value, nextNode->value, current->len + 1);
                 free(current->value);
-                current->value = new_value;
+                current->value = ft_strdup(new_value);
                 temp = nextNode;
                 nextNode = nextNode->next;
                 free(temp);
+				free(new_value);
+				new_value = NULL;
             }
             current->next = nextNode;
         }
         current = current->next;
     }
+	
     return (list);
 }
 
-t_line_lst	*combine_quotes(t_line_lst *list)
+t_line_lst *combine_quotes(t_line_lst *list)
 {
-    t_line_lst	*current;
+    t_line_lst *current;
+	t_line_lst	*next_node;
 
-	current = list;
+    current = list;
     while (current != NULL)
     {
         if (current->state != 0 && current->type == e_quote)
-        {
-			if (current->next != NULL)
-			{
-				if ((current->next->type == e_quote && current->next->state == 2) \
-				|| (current->next->type == e_quote && current->next->state == 1))
-				{
-					current->next->value = ft_strdup("");
-					current->next->type = e_var;
-					current->next->state = 0;
-					if (current->next->next != NULL)
-						delete_node(current);
-				}
-			}
-        }
+            if (current->next != NULL)
+                if ((current->next->type == e_quote && current->next->state == 2) \
+                || (current->next->type == e_quote && current->next->state == 1))
+                {
+                	next_node = current->next;
+                    current->next = next_node->next;
+					free(current->value);
+                    current->value = ft_strdup("");
+                    current->type = e_var;
+                    current->state = 0;
+					delete_node(next_node);
+                }
         current = current->next;
     }
     return (list);
-}	
+}
+
 
 int	shell(char *line, t_envp *envp)
 {
@@ -163,28 +168,23 @@ int	shell(char *line, t_envp *envp)
 	
 	cmd = NULL;
 	line_lst = parser(line);
-	// show_t_list(line_lst, line);
 	if (syntax_count_quotes(line_lst))
 		return (0);
 	line_lst = variable_expand(line_lst, envp);
-	show_t_list(line_lst, line);
 	line_lst = combine_quotes(line_lst);
-	show_t_list(line_lst, line);
 	line_lst = remove_quotes(line_lst);
-	show_t_list(line_lst, line);
-	line_lst = combine_values(line_lst);
-	show_t_list(line_lst, line);
+	// line_lst = combine_values(line_lst);
 	line_lst = remove_whitespace_list(line_lst);
 	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		// show_t_list(line_lst, line);
-		cmd = alloc_execute_list(line_lst);
-		cmd = acco(cmd);	
-		show(cmd);
+		show_t_list(line_lst, line);
+		// cmd = alloc_execute_list(line_lst);
+		// show(cmd);
+		// cmd = acco(cmd);	
+		// show(cmd);
 		// executor_dcs(cmd, envp); //DCS
-		delete_t_exec(cmd);
-		// 255, exit shit??
+		// delete_t_exec(cmd);
 	}
 	else
 	{
@@ -192,6 +192,8 @@ int	shell(char *line, t_envp *envp)
 	}
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
+	// system("leaks -q minishell");
+	envp++;
 	return (1);
 }
 
@@ -205,15 +207,14 @@ int	main(int argc, char *argv[], char **original_envp)
 {
 	static char	*line; //does this need to be static??
 	t_envp		*envp;
-	signal(SIGINT, signal_int);   // Handle Ctrl-C
+	// signal(SIGINT, signal_int);   // Handle Ctrl-C
 	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
 	// 
-	// if (argc != 1)
-	// 	malloc met exit code + tekst perror("executable: " )
+	if (argc != 1)
+		return(printf("%s not started right", argv[0]));
 	signal(SIGQUIT, signal_bs); 
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
-	
 	while (1)
 	{	
 		// if (argc != 1)
@@ -223,11 +224,15 @@ int	main(int argc, char *argv[], char **original_envp)
 		if (line != NULL)
 		{
 			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
+			{
 				free(line);
+				exit(1);
+			}
 			enable_ctrl_c_display();
 			shell(line, envp);
 			free(line);
 		}
+		// atexit(ft_atexit);
 	}
 	// atexit(ft_atexit);
 	return (0);

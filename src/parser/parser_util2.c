@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 15:14:42 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 22:31:59 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 	t_execute	*new_node;
 	t_execute	*cmdlist;
 	t_execute	*last;
-	char		*temp;
+	// char		*temp;
 
 	cmdlist = NULL;
 	last = NULL;
@@ -59,7 +59,6 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 		k = 0;
 		new_node = malloc(sizeof(t_execute));
 		new_node->count_cmd = count_commands(head);
-		printf("count cmd = %d", new_node->count_cmd);
 		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
 		new_node->redirects = NULL;
 		new_node->next = NULL;
@@ -67,12 +66,9 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 		{
 			if (head->state > 0)
 			{
-				temp = make_string(head);
-				new_node->cmd[k] = ft_substr(temp, 0, ft_strlen(temp));
+				new_node->cmd[k] = make_string(head);
 				while (head != NULL && head->state > 0)
 					head = head->next;
-				free(temp);
-				temp = NULL;
 			}
 			else
 			{
@@ -87,8 +83,6 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 		else
 			last->next = new_node;
 		last = new_node;
-		if (head != NULL && !ft_strncmp(head->value, "|", 1))
-			;
 		if (head != NULL)
 			head = head->next;
 	}
@@ -101,7 +95,9 @@ char	*make_string(t_line_lst *line_lst)
 
 	tempstring = NULL;
 	if (line_lst->value)
+	{
 		tempstring = ft_strdup(line_lst->value);
+	}
 	while (line_lst != NULL && ft_strncmp(line_lst->value, "|", 1))
 	{
 		while (line_lst->next != NULL && line_lst->next->state > 0)

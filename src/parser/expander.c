@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 20:40:34 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/05 21:31:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ char	*expand_var(char *value, t_envp *new_envp)
 	}
 	else
 	{
-		str = ft_substr(str, 0, ft_strlen(str));
-		value = ft_strdup(str);
+		free(value);
+		// str = ft_substr(str, 0, ft_strlen(str));
+		value = str;
 	}
-	free(str);
 	return (value);
 }
 
@@ -107,6 +107,7 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 	env = ft_substr(env, 1, ft_strlen(env));
 	len += ft_strlen(env);
 	str = ft_strdup(create_and_fill_string(str, begin, eind, env, len));
+	free(env);
 	return (str);
 }
 
@@ -123,7 +124,6 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 	{
 		if (find_variable(temp->value))
 		{
-			printf("count = \n");
 			if (temp->type == e_var)
 				temp->value = ft_strdup(expand_var(temp->value, new_envp));
 			else if (temp->state == 2 || temp->state == 0)

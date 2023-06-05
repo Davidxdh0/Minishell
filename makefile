@@ -1,8 +1,8 @@
 NAME = minishell
 
 FLAGS =  -Wall -Wextra
-# FLAGS += -Werror 
-FLAGS += -g -fsanitize=address
+FLAGS += -Werror -g
+# FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
 MAKE_FILE = makefile
@@ -74,22 +74,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 #libft
 $(LIBFT):
 	make -C $(LIBFT_DIR)
-
-lldb: $(NAME)
-	lldb ./$(NAME) -- -p 'ls' 'exit'
-
-tests:
-
-TEST_DIR =	tests
-
-TEST =	$(TEST_DIR)/simple.c 
-
-TEST_BIN =	unit-tests
-
-tests_run:
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(TEST_BIN) $(SRC) $(TEST) $(READLINE_LIB)--coverage -lcriterion $(LDFLAGS) -g
-	./$(TEST_BIN)
-# gcc -o tests simple.c -lcriterion -I /Users/dyeboa/.brew/include
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)
