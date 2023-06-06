@@ -34,11 +34,12 @@ BUILTIN_FI  =	builtin.c \
 				export.c
 
 MAIN_FILES =	main.c \
-				line_input.c \
-				argv_input.c
+				line_input.c 
 
 PARSER_FILES =	lexer.c \
+				lexer_util.c \
 				parser.c \
+				parse_list.c \
 				parser_util.c \
 				parser_util2.c \
 				list.c \

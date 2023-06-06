@@ -6,33 +6,14 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 21:45:45 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 17:43:14 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 #include <stdio.h>
 
-void	delete_node(t_line_lst *node_to_delete)
-{
-	if (node_to_delete == NULL)
-		return ;
-	if (node_to_delete->prev == NULL)
-	{
-		if (node_to_delete->next != NULL)
-			node_to_delete->next->prev = NULL;
-	}
-	else
-		node_to_delete->prev->next = node_to_delete->next;
-	if (node_to_delete->next != NULL)
-		node_to_delete->next->prev = node_to_delete->prev;
-	else if (node_to_delete->prev != NULL)
-		node_to_delete->prev->next = NULL;
-	free(node_to_delete->value);
-	free(node_to_delete);
-}
-
-node_type	get_previous_type(t_line_lst *node)
+node_type	get_prev_type(t_line_lst *node)
 {
 	node_type	type;
 
@@ -49,6 +30,28 @@ node_type	get_previous_type(t_line_lst *node)
 		node = node->next;
 	}
 	return (type);
+}
+
+int	pars_specials(int i, char *line, int state, t_line_lst	**line_lst)
+{
+	if (line[i])
+	{
+		if (line[i] == '|')
+			i += pipe_c(line_lst, state);
+		else if (line[i] == '<')
+			i += delim_c(line_lst, &line[i], state);
+		else if (line[i] == '>')
+			i += redirect_c(line_lst, &line[i], state);
+		else if (line[i] == '$')
+			i += dollar_c(line_lst, &line[i], state);
+		else if (ft_isspace(line[i]))
+			i += space_c(line_lst, state);
+		else if (ft_isspace(line[i]))
+			i += space_c(line_lst, state);
+		else
+			i++;
+	}
+	return (i);
 }
 
 t_line_lst	*parser(char *line)
@@ -69,20 +72,8 @@ t_line_lst	*parser(char *line)
 			state = quotes(&line_lst, line[i], state, state);
 			i++;
 		}
-		else if (line[i] == '|')
-			i += pipe_case(&line_lst, state);
-		else if (line[i] == '<')
-			i += less_than_case(&line_lst, &line[i], state);
-		else if (line[i] == '>')
-			i += greater_than_case(&line_lst, &line[i], state);
-		else if (line[i] == '$')
-		{
-			i += dolar_sign_case(&line_lst, &line[i], state);
-		}
-		else if (ft_isspace(line[i]))
-			i += space_case(&line_lst, state);
 		else
-			i++;
+			i = pars_specials(i, line, state, &line_lst);
 	}
 	return (line_lst);
 }
@@ -93,8 +84,6 @@ t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
 	t_line_lst	*prev;
 	t_line_lst	*next;
 
-	new_head = NULL;
-	prev = NULL;
 	while (line_lst != NULL)
 	{
 		next = line_lst->next;

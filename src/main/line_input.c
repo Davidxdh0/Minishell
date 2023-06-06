@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 19:31:59 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 16:15:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	make_sure_line_is_empty(char **line)
 
 int	str_isspaces(char **line)
 {
-	int i = 0;
+	int	i;
 
-	while(line[0][i])
+	i = 0;
+	while (line[0][i])
 	{
 		if (line[0][i] != ' ')
 			return (0);
@@ -33,6 +34,7 @@ int	str_isspaces(char **line)
 	}
 	return (1);
 }
+
 /*
 	Set the display name in the termian and reading the input from the termial
 	what to do with empty? ""?

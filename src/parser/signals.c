@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/01 19:46:07 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 15:14:34 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void disable_ctrl_c_display()
 {
     struct termios term;
-	
+
     tcgetattr(STDIN_FILENO, &term);
     term.c_lflag &= ~ECHOCTL;
     tcsetattr(STDIN_FILENO, TCSANOW, &term);
@@ -41,10 +41,10 @@ void	redirect_signal(int signal)
 		rl_redisplay();
 	}
 }
-
+// Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
 void signal_int(int signal)
 {
-	// Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
+
     if (signal == SIGINT)
     {
 		g_exitcode = 1;
@@ -54,15 +54,16 @@ void signal_int(int signal)
 		rl_redisplay();
     }
 }
+// Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
 void signal_int_heredoc(int signal)
 {
-	// Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
+
     if (signal == SIGINT)
 		exit(1);
 }
+// niet in heredoc - // Ctrl-\ pressed
 void	signal_bs(int signal)
 {
-	// niet in heredoc - // Ctrl-\ pressed
     if (signal == SIGQUIT)
     {
         printf("^\\Quit: 3\n");
@@ -74,7 +75,7 @@ void	signal_bs(int signal)
 	// else if (WIFSIGNALED(status) == true)
 	// {
 	// 	int exit_status;
-		
+	
 	// 	exit_status = WTERMSIG(status);
 	// 	if (exit_status == 2)
 	// 		g_exitcode = 130;

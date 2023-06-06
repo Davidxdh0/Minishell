@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 21:50:13 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 17:47:29 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,30 @@ void	add_at_end_of_list(t_line_lst **head, int type, char *value, int state)
 		temp = temp->next;
 	temp->next = new_node;
 	new_node->prev = temp;
+}
+
+void	delete_node(t_line_lst *node_to_delete)
+{
+	if (node_to_delete == NULL)
+		return ;
+	if (node_to_delete->prev == NULL)
+	{
+		if (node_to_delete->next != NULL)
+			node_to_delete->next->prev = NULL;
+	}
+	else
+		node_to_delete->prev->next = node_to_delete->next;
+	if (node_to_delete->next != NULL)
+		node_to_delete->next->prev = node_to_delete->prev;
+	else if (node_to_delete->prev != NULL)
+		node_to_delete->prev->next = NULL;
+	free(node_to_delete->value);
+	free(node_to_delete);
+}
+
+t_line_lst	*move_to_next_commands(t_line_lst *head)
+{
+	if (head != NULL)
+		return (head->next);
+	return (NULL);
 }

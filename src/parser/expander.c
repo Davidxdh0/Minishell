@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 14:18:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 16:59:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,32 +65,31 @@ char	*expand_word(char*value, t_envp *new_envp)
 	return (value);
 }
 
-char	*create_and_fill_string(char *str, int begin, int eind, char *env, int len)
+char	*fill_string(char *str, int bgn, int end, char *env)
 {
+	char	*newstr;
 	int		i;
 	int		k;
-	char	*newstr;
+	int		len;
 
+	len = bgn + ft_strlen(env) + ft_strlen(str + end) + 1;
 	i = 0;
 	k = 0;
-	newstr = malloc(sizeof(char *) * len + 1);
-	while (i < len)
+	newstr = malloc(len + 1);
+	while (i < bgn)
 	{
-		while (i < begin)
-		{
-			newstr[i] = str[i];
-			i++;
-		}
-		while (begin <= i && begin <= eind)
-		{
-			newstr[i] = env[k];
-			k++;
-			begin++;
-			i++;
-		}
-		newstr[i] = str[i - 1];
+		newstr[i] = str[i];
 		i++;
 	}
+	while (bgn <= i && bgn <= end)
+	{
+		newstr[i] = env[k];
+		k++;
+		bgn++;
+		i++;
+	}
+	newstr[i] = str[i - 1];
+	i++;
 	newstr[i] = '\0';
 	return (newstr);
 }
@@ -108,7 +107,7 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 		return ("");
 	env = ft_substr(env, 1, ft_strlen(env));
 	len += ft_strlen(env);
-	str = ft_strdup(create_and_fill_string(str, begin, eind, env, len));
+	str = ft_strdup(fill_string(str, begin, eind, env));
 	free(env);
 	return (str);
 }
@@ -116,29 +115,23 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 {
 	t_line_lst	*temp;
-	int			i;
-	int			begin;
 	char		*str;
 
-	begin = 0;
-	i = 0;
 	temp = line;
 	while (temp != NULL)
 	{
 		if (find_variable(temp->value))
 		{
 			if (temp->type == e_var)
-			{
 				str = expand_var(temp->value, new_envp);
+			else if (temp->state == 2 || temp->state == 0)
+				str = expand_word(temp->value, new_envp);
+			else
+				str = NULL;
+			if (str != NULL)
+			{
 				free(temp->value);
 				temp->value = ft_strdup(str);
-				free(str);
-			}
-			else if (temp->state == 2 || temp->state == 0)
-			{
-				str = expand_word(temp->value, new_envp);
-				free(temp->value);
-				temp->value = str;
 				free(str);
 			}
 			temp->state = temp->state;
