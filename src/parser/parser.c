@@ -6,16 +6,16 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 17:43:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 #include <stdio.h>
 
-node_type	get_prev_type(t_line_lst *node)
+t_node_type	get_prev_type(t_line_lst *node)
 {
-	node_type	type;
+	t_node_type	type;
 
 	type = e_start;
 	while (node != NULL)

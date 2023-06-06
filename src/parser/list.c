@@ -6,14 +6,14 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 17:47:29 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 #include <stdio.h>	// temp for show_t_list function 
 
-char	*type_to_string(node_type type)
+char	*type_to_string(t_node_type type)
 {
 	static char	*type_strings[13];
 

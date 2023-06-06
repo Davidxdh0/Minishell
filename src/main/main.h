@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 16:53:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:18:43 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ https://github.com/Snaipe/Criterion
 
 int		g_exitcode;
 
-typedef enum
+typedef enum type
 {
 	e_start = 0,
 	e_cmd,
@@ -49,7 +49,7 @@ typedef enum
 	e_redirect_o,
 	e_delimiter,
 	e_append
-}	node_type;
+}	t_node_type;
 
 typedef enum builtin_names
 {
@@ -60,9 +60,9 @@ typedef enum builtin_names
 	UNSET,
 	ENV,
 	EXIT
-}	e_builtin_names;
+}		e_builtin_names;
 
-typedef	struct s_envp
+typedef struct s_envp
 {
 	char			*line;
 	int				value;
@@ -78,8 +78,8 @@ typedef struct s_execute
 	char				**redirects;
 	int					count_cmd;
 	char				*heredoc_name;
-	struct s_execute 	*prev;
-  	struct s_execute 	*next;
+	struct s_execute	*prev;
+	struct s_execute	*next;
 }	t_execute;
 
 typedef struct s_line_lst
@@ -97,18 +97,18 @@ char		**make_redirects(t_line_lst *line_lst);
 t_execute	*alloc_execute_list(t_line_lst *head);
 char		*make_string(t_line_lst *line_lst);
 //parser_util.c
-t_execute 	*acco(t_execute *cmds);
-void 		copy_commands_and_redirects(t_execute *dest_node, char **cmd_list, int num_redirects);
-t_execute 	*create_new_node(int num_commands, int num_redirects);
-int 		count_redirects(char **cmd_list);
-int 		ft_arrlen(char **arr);
+t_execute	*acco(t_execute *cmds);
+void		copy_cmd_rdr(t_execute *d_node, char **cmd_list, int rd);
+t_execute	*create_new_node(int num_commands, int num_redirects);
+int			count_redirects(char **cmd_list);
+int			ft_arrlen(char **arr);
 /* LEXER*/
-char		*type_to_string(node_type type);
-node_type	get_prev_type(t_line_lst *node);
+char		*type_to_string(t_node_type type);
+t_node_type	get_prev_type(t_line_lst *node);
 t_line_lst	*lexer(char *line);
 t_line_lst	*parser(char *line);
 //specialchar.c
-int 		space_c(t_line_lst **line_lst, int state);
+int			space_c(t_line_lst **line_lst, int state);
 int			pipe_c(t_line_lst **line_lst, int state);
 int			delim_c(t_line_lst **line_lst, char *line, int state);
 int			redirect_c(t_line_lst **line_lst, char *line, int state);
@@ -120,41 +120,41 @@ int			word_case(t_line_lst **line_lst, char *line, int state);
 int			quotes(t_line_lst **line_lst, char c, int state, int flag);
 
 // expander.c
-void 		delete_node(t_line_lst *node_to_delete);
+void		delete_node(t_line_lst *node_to_delete);
 t_line_lst	*remove_whitespace_list(t_line_lst *line_lst);
 t_line_lst	*word_list(t_line_lst *line);
 char		*ft_getenv(const char *name, char **envp);
-int 		find_variable(char *str);
+int			find_variable(char *str);
 t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp);
-char 		*change_str(char *str, int begin, int eind, t_envp* envp);
+char		*change_str(char *str, int begin, int eind, t_envp *envp);
 
 /* PARSER
 The parser processes the input line and build the list with tokens */
 void		delete_t_list(t_line_lst *head);
-void		add_at_end_of_list(t_line_lst **head, int type, char *value, int state);
+void		add_at_end_of_list(t_line_lst **head, int type, char *val, int st);
 void		show_t_list(t_line_lst *node, char *line);
-char		*type_to_string(node_type type);
+char		*type_to_string(t_node_type type);
 int			length_of_list(t_line_lst *node);
-char 		*make_string(t_line_lst *line_lst);
+char		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
-void 		delete_node(t_line_lst *node_to_delete);
+void		delete_node(t_line_lst *node_to_delete);
 //signals.c
 void		redirect_signal(int signal);
-void 		signal_int(int signal);
-void 		signal_int_heredoc(int signal);
-void 		disable_ctrl_c_display();
-void 		enable_ctrl_c_display();
+void		signal_int(int signal);
+void		signal_int_heredoc(int signal);
+void		disable_ctrl_c_display(void);
+void		enable_ctrl_c_display(void);
 void		signal_bs(int signal);
 /* Main */
-int			shell(char *line, t_envp *envp); //DCS (still need to get rid of original envp?)
+int			shell(char *line, t_envp *envp);
 void		line_reader(char **line, const char *display_name);
 int			str_isspaces(char **line);
 int			ft_isredirect(char *str);
 void		show(t_execute *cmd);
 int			count_commands(t_line_lst *head);
 t_line_lst	*combine_values(t_line_lst *list);
-t_line_lst *remove_quotes(t_line_lst *line_lst);
-t_line_lst *combine_quotes(t_line_lst *list);
+t_line_lst	*remove_quotes(t_line_lst *line_lst);
+t_line_lst	*combine_quotes(t_line_lst *list);
 
 //util
 int			perror_return(char *msg2);
@@ -215,7 +215,7 @@ bool		increase_shlvl(t_envp *envp);
 // void	show_envp_node(t_envp *envp);
 char		*get_new_env(char *value, t_envp *envp);
 int			count_words_expander(char *value);
-int 		find_variable(char *str);
+int			find_variable(char *str);
 // Utils
 int			ft_perror(char *str, int err);
 void		*ft_malloc(size_t size);
@@ -223,15 +223,15 @@ char		**free_char_array(char **arr);
 //Syntax
 int			syntax_pipe(t_line_lst *line);
 int			syntax_redirects(t_line_lst *line);
-int			syntax_quotes(t_line_lst *line, node_type type);
+int			syntax_quotes(t_line_lst *line, t_node_type type);
 int			syntax_count_quotes(t_line_lst *line);
 //util
 int			perror_return(char *msg2);
 void		delete_t_exec(t_execute *head);
 //
-void fill_command_arrays(t_execute *new_node, t_line_lst **head_ptr);
+void		fill_command_arrays(t_execute *new_node, t_line_lst **head_ptr);
 t_execute	*create_execute_nodes(t_line_lst *head);
-t_line_lst *move_to_next_commands(t_line_lst *head);
-char	*fill_string(char *str, int bgn, int end, char *env);
+t_line_lst	*move_to_next_commands(t_line_lst *head);
+char		*fill_string(char *str, int bgn, int end, char *env);
 
 #endif

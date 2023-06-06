@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:02:07 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:06:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_line_lst	*combine_values(t_line_lst *list)
 	return (list);
 }
 
-t_line_lst *combine_quotes(t_line_lst *list)
+t_line_lst	*combine_quotes(t_line_lst *list)
 {
 	t_line_lst	*cur;
 	t_line_lst	*next_node;
@@ -114,7 +114,8 @@ t_line_lst *combine_quotes(t_line_lst *list)
 		if (cur->state != 0 && cur->type == e_quote)
 			if (cur->next != NULL)
 				if ((cur->next->type == e_quote && cur->next->state == 2) \
-				|| (cur->next->type == e_quote && cur->next->state == 1))
+				|| (cur->next->type == e_quote \
+				&& cur->next->state == 1))
 				{
 					next_node = cur->next;
 					cur->next = next_node->next;

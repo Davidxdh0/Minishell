@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:43:01 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 15:12:32 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 	int			i;
 	int			len;
 	char		*substr;
-	node_type	l;
+	t_node_type	l;
 
 	i = 0;
 	l = get_prev_type(*line_lst);

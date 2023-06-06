@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:33:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 22:15:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:12:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_execute	*acco(t_execute *cmds)
 			current_node->next = create_new_node(num_commands, num_redirects);
 			current_node = current_node->next;
 		}
-		copy_commands_and_redirects(current_node, cmds->cmd, num_redirects);
+		copy_cmd_rdr(current_node, cmds->cmd, num_redirects);
 		cmds = cmds->next;
 	}
 	if (num_commands == 0)
@@ -50,7 +50,7 @@ t_execute	*acco(t_execute *cmds)
 	return (new_list);
 }
 
-void	copy_commands_and_redirects(t_execute *d_node, char **cmd_list, int rd)
+void	copy_cmd_rdr(t_execute *d_node, char **cmd_list, int rd)
 {
 	int	i;
 	int	j;

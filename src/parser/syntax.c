@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 14:53:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	syntax_pipe(t_line_lst *line)
 	return (0);
 }
 
-int	syntax_quotes(t_line_lst *line, node_type type)
+int	syntax_quotes(t_line_lst *line, t_node_type type)
 {
 	char	*str;
 

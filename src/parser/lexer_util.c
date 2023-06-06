@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 14:55:53 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 15:06:09 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	dollar_special_c(t_line_lst **line_lst, char next_char, int state)
 {
-	node_type	type;
+	t_node_type	type;
 
 	type = get_prev_type(*line_lst);
 	if (type == e_start || type == e_pipe)
@@ -32,7 +32,7 @@ int	dollar_c(t_line_lst **line_lst, char *line, int state)
 {
 	int			len;
 	char		*str;
-	node_type	type;
+	t_node_type	type;
 
 	type = get_prev_type(*line_lst);
 	if (type == e_start || type == e_pipe)
