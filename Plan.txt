@@ -1,8 +1,6 @@
 David
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 signals - ctrl + c, ctr d en ctrl + \
-combine values en cmd leaken
-echo s"dfdf"decho s"dfdf"decho s"dfdf"decho s"dfdf"decho s"dfdf"decho s"dfdf"decho s"dfdf"d
 norminette
 functies kleiner
 

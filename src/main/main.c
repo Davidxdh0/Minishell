@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 22:36:51 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 14:27:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,22 +115,22 @@ t_line_lst	*combine_values(t_line_lst *list)
             while (nextNode != NULL && (nextNode->state != 0 || nextNode->type != e_whitespace))
             {
                 current->len += nextNode->len;
-				new_value = malloc(current->len + nextNode->len + 1);
-                ft_strlcpy(new_value, current->value, current->len + 1);
-                ft_strlcat(new_value, nextNode->value, current->len + 1);
+				new_value = malloc(sizeof(char *) * current->len + 1);
+                ft_strlcpy(new_value, current->value, current->len + nextNode->len + 1);
+                ft_strlcat(new_value, nextNode->value, current->len + nextNode->len + 1);
                 free(current->value);
                 current->value = ft_strdup(new_value);
                 temp = nextNode;
                 nextNode = nextNode->next;
+				free(temp->value);
                 free(temp);
 				free(new_value);
-				new_value = NULL;
+				// new_value = NULL;
             }
             current->next = nextNode;
         }
         current = current->next;
     }
-	
     return (list);
 }
 
@@ -173,18 +173,16 @@ int	shell(char *line, t_envp *envp)
 	line_lst = variable_expand(line_lst, envp);
 	line_lst = combine_quotes(line_lst);
 	line_lst = remove_quotes(line_lst);
-	// line_lst = combine_values(line_lst);
+	line_lst = combine_values(line_lst);
 	line_lst = remove_whitespace_list(line_lst);
-	// show_t_list(line_lst, line);
+	show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		show_t_list(line_lst, line);
-		// cmd = alloc_execute_list(line_lst);
-		// show(cmd);
-		// cmd = acco(cmd);	
-		// show(cmd);
-		// executor_dcs(cmd, envp); //DCS
-		// delete_t_exec(cmd);
+		cmd = alloc_execute_list(line_lst);
+		cmd = acco(cmd);	
+		show(cmd);
+		executor_dcs(cmd, envp); //DCS
+		delete_t_exec(cmd);
 	}
 	else
 	{

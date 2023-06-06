@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/05 21:31:51 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/06 14:18:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,21 @@ char	*expand_var(char *value, t_envp *new_envp)
 	char	*str;
 
 	if (value[1] == '?')
-		return (value = ft_strdup(ft_itoa(g_exitcode)));
+	{
+		value = ft_itoa(g_exitcode);
+		return (value);
+	}
 	value = ft_substr(value, 1, ft_strlen(value));
 	str = get_new_env(value, new_envp);
 	if (!str)
 	{
-		str = ft_strdup("");
-		value = str;
+		free(value);
+		value = ft_strdup("");
 	}
 	else
 	{
 		free(value);
-		// str = ft_substr(str, 0, ft_strlen(str));
-		value = str;
+		value = ft_strdup(str);
 	}
 	return (value);
 }
@@ -116,6 +118,7 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 	t_line_lst	*temp;
 	int			i;
 	int			begin;
+	char		*str;
 
 	begin = 0;
 	i = 0;
@@ -125,9 +128,19 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 		if (find_variable(temp->value))
 		{
 			if (temp->type == e_var)
-				temp->value = ft_strdup(expand_var(temp->value, new_envp));
+			{
+				str = expand_var(temp->value, new_envp);
+				free(temp->value);
+				temp->value = ft_strdup(str);
+				free(str);
+			}
 			else if (temp->state == 2 || temp->state == 0)
-				temp->value = ft_strdup(expand_word(temp->value, new_envp));
+			{
+				str = expand_word(temp->value, new_envp);
+				free(temp->value);
+				temp->value = str;
+				free(str);
+			}
 			temp->state = temp->state;
 		}
 		temp = temp->next;
