@@ -39,8 +39,14 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 {
 // system("leaks -q minishell");
 // printf("\n\tStarted Executing\n");
-	printf("cmd = %p\n", cmd_struct->cmd);
-	// printf("cmd[0] = %p\n", cmd_struct->cmd[0]);
+// t_execute	*tmp;
+// tmp = cmd_struct;
+// while (tmp)
+// {
+// 	printf("cmd = %p\n", tmp->cmd);
+// 	tmp = tmp->next;	
+// }
+// printf("cmd[0] = %p\n", cmd_struct->cmd[0]);
 	if (!count_cmd_structs(cmd_struct))
 		return (envp); //do some no command redirect testing
 	ft_heredoc_init(cmd_struct);

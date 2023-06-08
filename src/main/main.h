@@ -63,6 +63,13 @@ typedef enum builtin_names
 	EXIT
 }		e_builtin_names;
 
+typedef struct s_export
+{
+	char	*str;
+	bool	append;
+}	t_export;
+
+
 typedef struct s_envp
 {
 	char			*line;
@@ -188,7 +195,6 @@ bool		is_path(char *exec_argv);
 // Builtins
 int			check_builtin(char *arg);
 t_envp		*exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd);
-// Builtin Redirects
 bool		builtin_infile(char **list);
 bool		builtin_outfile(char **list, int *fd, int i, int temp_fd);
 // Builtin Functions
@@ -200,8 +206,7 @@ t_envp		*ft_export(t_execute *cmd_struct, t_envp *envp, int fd);
 void		ft_pwd(int fd);
 t_envp		*ft_unset(t_execute *cmd_struct, t_envp *envp);
 // Builtin Utils
-bool		export_targeted(char *cmd, char *target, t_envp *envp);
-t_envp		*ft_export_cmd(char *cmd, char *target, t_envp *envp);
+t_envp		*ft_export_cmd(char *cmd, char *target, t_envp *envp, bool append);
 bool		long_atoi(const char *str, long *number);
 // Redirects
 bool		redirect_infile(char **list, char *name);
@@ -220,15 +225,17 @@ char		**envp_to_array(t_envp *envp);
 // Envp Utils
 int			check_envp_value(char *str);
 bool		increase_shlvl(t_envp *envp);
-// void	show_envp_struct(t_envp *envp);
-// void	show_envp_node(t_envp *envp);
-char		*get_new_env(char *value, t_envp *envp);
-int			count_words_expander(char *value);
-int			find_variable(char *str);
+void	show_envp_struct(t_envp *envp);
+void	show_envp_node(t_envp *envp);
 // Utils
 int			ft_perror(char *str, int err);
 void		*ft_malloc(size_t size);
 char		**free_char_array(char **arr);
+char		*ft_str_fuse(char *s1, char *s2);
+// David File?
+char		*get_new_env(char *value, t_envp *envp);
+int			count_words_expander(char *value);
+int			find_variable(char *str);
 //Syntax
 int			syntax_pipe(t_line_lst *line);
 int			syntax_redirects(t_line_lst *line);

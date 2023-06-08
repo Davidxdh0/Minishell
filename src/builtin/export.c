@@ -40,7 +40,7 @@ static bool	export_characters(char c, bool start, char *str)
 	return (true);
 }
 
-static bool	ft_export_validation(char *cmd, char **target)
+static bool	ft_export_validation(char *cmd, t_export *target)
 {
 	int		i;
 
@@ -49,40 +49,34 @@ static bool	ft_export_validation(char *cmd, char **target)
 	i = 1;
 	while (cmd[i])
 	{
-		if (cmd[i] == '=')
+		if (cmd[i] == '=' || (cmd[i] == '+' && cmd[i + 1] == '='))
 		{
-			*target = ft_substr(cmd, 0, i);
+			if (cmd[i] == '+')
+				target->append = true;
+			if (cmd[i] == '+')
+				i++;
+			else
+				target->append = false;
+			target->str = ft_substr(cmd, 0, i - target->append);
 			return (true);
 		}
 		if (!export_characters(cmd[i], false, cmd))
 			return (g_exitcode = 1, false);
 		i++;
 	}
+	target->str = NULL;
+	target->append = false;
 	return (true);
 }
 
-bool	export_targeted(char *cmd, char *target, t_envp *envp)
-{
-	while (envp)
-	{
-		if (!ft_strcmp(target, envp->identifier))
-		{
-			free(envp->line);
-			free(envp->string);
-			envp->line = ft_strdup(cmd);
-			if (!envp->value)
-				envp->value = check_envp_value(envp->line);
-			envp->string = ft_substr(envp->line, envp->value + 1 \
-			, ft_strlen(envp->line) - (envp->value + 1));
-			free(target);
-			return (true);
-		}
-		envp = envp->next;
-	}
-	free(target);
-	return (false);
-}
+//	line = id + string
+//	cmd = id + new_string (new line)
+//	append_line = id + string + newstring
 
+/*
+As It Turns Out, Calling Export Without Any Arguments Doesn't Need To Display
+Anything. The Current Bash Behaviour Is Technically Undefined.
+*/
 static void	export_argless(t_envp *envp, int fd)
 {
 	while (envp)
@@ -106,8 +100,8 @@ static void	export_argless(t_envp *envp, int fd)
 
 t_envp	*ft_export(t_execute *cmd_struct, t_envp *envp, int fd)
 {
-	int		i;
-	char	*target;
+	int			i;
+	t_export	target;
 
 	if (!cmd_struct->cmd[1])
 		export_argless(envp, fd);
@@ -116,9 +110,9 @@ t_envp	*ft_export(t_execute *cmd_struct, t_envp *envp, int fd)
 		i = 1;
 		while (cmd_struct->cmd[i])
 		{
-			target = NULL;
 			if (ft_export_validation(cmd_struct->cmd[i], &target))
-				envp = ft_export_cmd(cmd_struct->cmd[i], target, envp);
+				envp = ft_export_cmd(cmd_struct->cmd[i], \
+										target.str, envp, target.append);
 			i++;
 		}
 	}

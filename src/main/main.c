@@ -128,11 +128,11 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-			if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
-			{
-				free(line);
-				exit(1);
-			}
+// if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
+// {
+// 	free(line);
+// 	exit(1);
+// }
 			enable_ctrl_c_display();
 			shell(line, envp);
 			free(line);

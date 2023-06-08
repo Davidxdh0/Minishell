@@ -37,7 +37,7 @@ static bool	cd_update_oldpwd(t_envp *envp)
 	cmd = ft_strjoin("OLDPWD=", cwd);
 	free(cwd);
 	if (find_env_in_list(envp, "OLDPWD"))
-		ft_export_cmd(cmd, ft_strdup("OLDPWD"), envp);
+		ft_export_cmd(cmd, ft_strdup("OLDPWD"), envp, false);
 	free(cmd);
 	return (true);
 }
@@ -56,7 +56,7 @@ static bool	cd_update_pwd(t_envp *envp)
 	cmd = ft_strjoin("PWD=", cwd);
 	free(cwd);
 	if (find_env_in_list(envp, "PWD"))
-		ft_export_cmd(cmd, ft_strdup("PWD"), envp);
+		ft_export_cmd(cmd, ft_strdup("PWD"), envp, false);
 	free(cmd);
 	return (true);
 }
