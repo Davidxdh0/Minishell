@@ -31,7 +31,6 @@ t_execute	*acco(t_execute *cmds)
 		num_commands = 0;
 		num_redirects = count_redirects(cmds->cmd);
 		num_commands = ft_arrlen(cmds->cmd) - num_redirects * 2;
-		printf("arrlen = %d\n", ft_arrlen(cmds->cmd));
 		if (new_list == NULL)
 		{
 			new_list = create_new_node(num_commands, num_redirects);
