@@ -37,10 +37,8 @@ static int	validate_exit_arg(char *str)
 
 void	ft_exit(t_execute *cmd_struct)
 {
-	int	i;
 	int	arg;
 
-	i = 0;
 	if (!cmd_struct->next && !cmd_struct->prev)
 		ft_putstr_fd("exit\n", 1);
 	if (!cmd_struct->cmd[1])

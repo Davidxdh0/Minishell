@@ -33,7 +33,7 @@ https://github.com/Snaipe/Criterion
 # include <limits.h>
 # include "../../libs/libft/libft.h"
 
-int		g_exitcode;
+extern	int g_exitcode;
 
 typedef enum type
 {

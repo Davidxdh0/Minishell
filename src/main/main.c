@@ -12,6 +12,8 @@
 
 #include "main.h"
 
+int		g_exitcode;
+
 int	ft_isredirect(char *str)
 {
 	if (ft_strcmp(str, ">") || ft_strcmp(str, ">>") || ft_strcmp(str, "<") \
@@ -58,7 +60,6 @@ int	shell(char *line, t_envp *envp)
 	if (syntax_count_quotes(line_lst))
 		return (0);
 	line_lst = variable_expand(line_lst, envp);
-
 	line_lst = combine_quotes(line_lst);
 	line_lst = remove_quotes(line_lst);
 	show_t_list(line_lst, line);
@@ -68,12 +69,10 @@ int	shell(char *line, t_envp *envp)
 	show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
-		printf("alloc\n");
 		cmd = alloc_execute_list(line_lst);
-		printf("acco\n");
-		// cmd = acco(cmd);
+		cmd = acco(cmd);
 		show(cmd);
-		// executor_dcs(cmd, envp);
+		executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}
 	else
