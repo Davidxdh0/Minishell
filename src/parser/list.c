@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 11:45:25 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*type_to_string(t_node_type type)
 	type_strings[e_word] = "word\t";
 	type_strings[e_quote] = "quote\t";
 	type_strings[e_dquote] = "dquote\t";
-	type_strings[e_whitespace] = "wspace\t";
+	type_strings[e_wspace] = "wspace\t";
 	type_strings[e_var] = "var\t";
 	type_strings[e_redirect_i] = "redirect_i";
 	type_strings[e_redirect_o] = "redirect_o";

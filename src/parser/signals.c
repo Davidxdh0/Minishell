@@ -6,14 +6,73 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 15:14:34 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 14:38:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 #include <termios.h>
 
+/*
+ctrl + c
+nieuwe lijn + naam
+
+ctrl + c - cat
+^C\n naam
+ctrl + d - cat
+naam op newline
+ctrl + \
+^\Quit: 3\n naam
+
+heredoc
+ctrl + c
+> \n + naam 
+ctrl + d
+> + naam - geen newline
+ctrl + \ - heredoc
+niets
+
+*/
+
+t_custom_sigaction init_sa(void) {
+    t_custom_sigaction sa;
+    sa.custom_handler = sigintHandler;
+    sigemptyset(&(sa.sa_mask));
+    sa.sa_flags = 0;
+    return sa;
+}
+
+
 // off voor fork command executer
+void	signals_controller(void)
+{
+    printf("Press Ctrl+C to test the signal.\n");
+}
+
+void sigintHandler(int sig) {
+	g_exitcode = 1;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	sig++;
+}
+
+void tempHandler(int sig) 
+{
+ 	//  if (sa.sa_flags == 3) {
+    //     printf("s\n");
+    // } else {
+    //     printf("p\n");
+    // }
+	g_exitcode = 1;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	sig++;
+}
+
 void disable_ctrl_c_display()
 {
     struct termios term;
@@ -32,6 +91,7 @@ void enable_ctrl_c_display()
     tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
+// ?
 void	redirect_signal(int signal)
 {
 	if (signal == 2)
@@ -57,7 +117,6 @@ void signal_int(int signal)
 // Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
 void signal_int_heredoc(int signal)
 {
-
     if (signal == SIGINT)
 		exit(1);
 }

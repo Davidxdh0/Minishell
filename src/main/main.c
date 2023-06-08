@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:02:30 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 14:44:59 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,14 @@ void	ft_atexit(void)
 	system("leaks -q minishell");
 }
 
+// struct sigaction create_sigaction(custom_sigaction sa) {
+//     struct sigaction action;
+//     action.sa_handler = sa.handler;
+//     action.sa_mask = sa.mask;
+//     action.sa_flags = sa.flags;
+//     return action;
+// }
+
 	// signal(SIGINT, signal_int);   // Handle Ctrl-C
 	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
 	// 
@@ -89,15 +97,31 @@ int	main(int argc, char *argv[], char **original_envp)
 {
 	char		*line;
 	t_envp		*envp;
-
 	if (argc != 1)
 		return (printf("%s not started right", argv[0]));
-	signal(SIGQUIT, signal_bs);
+
+	// struct sigaction sa;
+    // sa.sa_handler = sigintHandler;
+    // sigemptyset(&sa.sa_mask);
+    // sa.sa_flags = 0;
+	// if (sigaction(SIGINT, &sa, NULL) == -1) {
+    //     perror("sigaction");
+    //     exit(1);
+    // }
+	// signals_controller();
+	// signal(SIGQUIT, signal_bs);
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
 	while (1)
 	{	
-		disable_ctrl_c_display();
+		// disable_ctrl_c_display();
+	// t_custom_sigaction sa = init_sa(tempHandler);	
+    // struct sigaction action = create_sigaction(sa);
+
+    // if (sigaction(SIGINT, &action, NULL) == -1) {
+    //     perror("sigaction");
+    //     return 1;
+    // }
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:18:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 14:27:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ https://github.com/Snaipe/Criterion
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
+# include <signal.h>
 # include <stddef.h>
 # include <unistd.h>
 # include <fcntl.h>
@@ -39,7 +40,7 @@ typedef enum type
 	e_start = 0,
 	e_cmd,
 	e_file,
-	e_whitespace,
+	e_wspace,
 	e_dquote,
 	e_quote,
 	e_pipe,
@@ -91,6 +92,14 @@ typedef struct s_line_lst
 	struct s_line_lst	*next;
 	struct s_line_lst	*prev;
 }	t_line_lst;
+
+typedef struct custom_sigaction {
+    void (*custom_handler)(int);
+    sigset_t sa_mask;
+    int sa_flags;
+} t_custom_sigaction;
+
+t_custom_sigaction init_sa(void);
 
 //parser_util2.c
 char		**make_redirects(t_line_lst *line_lst);
@@ -234,4 +243,7 @@ t_execute	*create_execute_nodes(t_line_lst *head);
 t_line_lst	*move_to_next_commands(t_line_lst *head);
 char		*fill_string(char *str, int bgn, int end, char *env);
 
+void sigintHandler(int sig);
+void	signals_controller(void);
+void tempHandler(int sig);
 #endif

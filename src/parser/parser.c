@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 11:45:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_node_type	get_prev_type(t_line_lst *node)
 	while (node != NULL)
 	{
 		type = node->type;
-		if (node->type == e_whitespace && node->prev != NULL)
+		if (node->type == e_wspace && node->prev != NULL)
 		{
 			node = node->prev;
 			type = node->type;
@@ -87,7 +87,7 @@ t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
 	while (line_lst != NULL)
 	{
 		next = line_lst->next;
-		if (line_lst->type == e_whitespace && line_lst->state == 0)
+		if (line_lst->type == e_wspace && line_lst->state == 0)
 		{
 			if (prev != NULL)
 				prev->next = next;

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 14:56:11 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 11:45:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	pipe_c(t_line_lst **line_lst, int state)
 
 int	space_c(t_line_lst **line_lst, int state)
 {
-	add_at_end_of_list(line_lst, e_whitespace, " ", state);
+	add_at_end_of_list(line_lst, e_wspace, " ", state);
 	return (1);
 }
 
