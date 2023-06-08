@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 14:44:59 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 15:16:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,12 @@ int	shell(char *line, t_envp *envp)
 	line_lst = remove_quotes(line_lst);
 	line_lst = combine_values(line_lst);
 	line_lst = remove_whitespace_list(line_lst);
+	show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{
+		printf("alloc\n");
 		cmd = alloc_execute_list(line_lst);
+		printf("acco\n");
 		cmd = acco(cmd);
 		show(cmd);
 		executor_dcs(cmd, envp);

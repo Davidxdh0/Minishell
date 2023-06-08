@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/06 15:36:10 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 14:55:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 {
 // system("leaks -q minishell");
 // printf("\n\tStarted Executing\n");
+	printf("cmd = %p\n", cmd_struct->cmd);
+	// printf("cmd[0] = %p\n", cmd_struct->cmd[0]);
 	if (!count_cmd_structs(cmd_struct))
 		return (envp); //do some no command redirect testing
 	ft_heredoc_init(cmd_struct);

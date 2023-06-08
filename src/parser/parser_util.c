@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:33:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:12:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 15:14:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_execute	*acco(t_execute *cmds)
 	{
 		num_commands = 0;
 		num_redirects = count_redirects(cmds->cmd);
-		num_commands = ft_arrlen(cmds->cmd) - num_redirects;
+		num_commands = ft_arrlen(cmds->cmd) - num_redirects * 2;
+		printf("arrlen = %d\n", ft_arrlen(cmds->cmd));
 		if (new_list == NULL)
 		{
 			new_list = create_new_node(num_commands, num_redirects);
@@ -44,7 +45,8 @@ t_execute	*acco(t_execute *cmds)
 		copy_cmd_rdr(current_node, cmds->cmd, num_redirects);
 		cmds = cmds->next;
 	}
-	if (num_commands == 0)
+	printf("num commands = %d \n", num_commands);
+	if (num_commands <= 0)
 		new_list->cmd = NULL;
 	delete_t_exec(head);
 	return (new_list);

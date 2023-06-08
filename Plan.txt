@@ -3,6 +3,7 @@ leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 signals - ctrl + c, ctr d en ctrl + \
 norminette
 functies kleiner
+> in > in | > in
 
 Acco:
 unset

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 17:47:36 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 15:18:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,69 @@ char	**make_redirects(t_line_lst *line_l)
 
 t_execute	*alloc_execute_list(t_line_lst *head)
 {
+	int			k;
+	t_execute	*new_node;
 	t_execute	*cmdlist;
 	t_execute	*last;
-	t_execute	*new_node;
+	// char		*temp;
 
 	cmdlist = NULL;
 	last = NULL;
 	while (head != NULL)
 	{
-		new_node = create_execute_nodes(head);
-		fill_command_arrays(new_node, &head);
+		k = 0;
+		new_node = malloc(sizeof(t_execute));
+		new_node->count_cmd = count_commands(head);
+		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
+		new_node->redirects = NULL;
+		new_node->next = NULL;
+		while (head != NULL && k < new_node->count_cmd)
+		{
+			if (head->state > 0)
+			{
+				new_node->cmd[k] = make_string(head);
+				while (head != NULL && head->state > 0)
+					head = head->next;
+			}
+			else
+			{
+				new_node->cmd[k] = ft_strdup(head->value);
+				head = head->next;
+			}
+			k++;
+		}
+		new_node->cmd[k] = NULL;
 		if (last == NULL)
 			cmdlist = new_node;
 		else
 			last->next = new_node;
 		last = new_node;
+		if (head != NULL)
+			head = head->next;
 	}
 	return (cmdlist);
 }
+
+// t_execute	*alloc_execute_list(t_line_lst *head)
+// {
+// 	t_execute	*cmdlist;
+// 	t_execute	*last;
+// 	t_execute	*new_node;
+
+// 	cmdlist = NULL;
+// 	last = NULL;
+// 	while (head != NULL)
+// 	{
+// 		new_node = create_execute_nodes(head);
+// 		fill_command_arrays(new_node, &head);
+// 		if (last == NULL)
+// 			cmdlist = new_node;
+// 		else
+// 			last->next = new_node;
+// 		last = new_node;
+// 	}
+// 	return (cmdlist);
+// }
 
 t_execute	*create_execute_nodes(t_line_lst *head)
 {
