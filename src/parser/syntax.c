@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 18:18:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 15:55:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // printf("syntax error near unexpected token `|'\n");
 int	syntax_pipe(t_line_lst *line)
 {
+	if (ft_strcmp(line->value, "|"))
+		return (1);
 	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
 	{
 		return (1);
@@ -106,7 +108,13 @@ int	syntax_check(t_line_lst *line)
 		if (temp->type == e_redirect_i || temp->type == e_append || \
 			temp->type == e_redirect_o || temp->type == e_delimiter)
 		{
-			if (syntax_redirects(temp))
+			if (ft_strcmp(temp->value, ">") || ft_strcmp(temp->value, ">>") \
+			|| ft_strcmp(temp->value, "<") || ft_strcmp(temp->value, "<<"))
+			{
+				if (syntax_redirects(temp))
+					return (perror_return("`newline'"));
+			}
+			else
 				return (perror_return("`newline'"));
 		}
 		temp = temp->next;

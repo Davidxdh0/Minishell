@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 11:45:08 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 16:07:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
 	t_line_lst	*prev;
 	t_line_lst	*next;
 
+	new_head = NULL;
 	while (line_lst != NULL)
 	{
 		next = line_lst->next;

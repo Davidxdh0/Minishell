@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 15:10:55 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/08 16:19:21 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,30 @@ t_line_lst	*remove_quotes(t_line_lst *line_lst)
 	}
 	return (new_head);
 }
+int	specials(t_line_lst *list, int i)
+{	
+	if (list->type == e_delimiter && i == 1)
+		return (1);
+	if (list->type == e_redirect_i && i == 1)
+		return (1);
+	if (list->type == e_redirect_o && i == 1)
+		return (1);
+	if (list->type == e_append && i == 1)
+		return (1);
+	if (list->type == e_pipe && i == 1)
+		return (1);
+	if (list->next->type == e_delimiter && i == 0)
+		return (1);
+	if (list->next->type == e_redirect_i && i == 0)
+		return (1);
+	if (list->next->type == e_redirect_o && i == 0)
+		return (1);
+	if (list->next->type == e_append && i == 0)
+		return (1);
+	if (list->next->type == e_pipe && i == 0)
+		return (1);
+	return (0);
+}
 
 t_line_lst	*combine_values(t_line_lst *list)
 {
@@ -79,10 +103,10 @@ t_line_lst	*combine_values(t_line_lst *list)
 	cur = list;
 	while (cur != NULL)
 	{
-		if (cur->state != 0 || cur->type != e_wspace)
+		if ((cur->state != 0 || cur->type != e_wspace) && specials(list, 1))
 		{
 			next = cur->next;
-			while (next != NULL && (next->state != 0 || next->type != e_wspace))
+			while (next != NULL && (next->state != 0 || next->type != e_wspace) && specials(list, 0))
 			{
 				cur->len += next->len;
 				new_value = malloc(sizeof(char *) * cur->len + 1);
@@ -115,8 +139,7 @@ t_line_lst	*combine_quotes(t_line_lst *list)
 		{
 			if (cur->next != NULL)
 			{
-				if ((cur->next->type == e_quote && cur->next->state == 2) || \
-					(cur->next->type == e_quote && cur->next->state == 1))
+				if ((cur->next->type == e_quote && cur->next->state == 2) || (cur->next->type == e_quote && cur->next->state == 1))
 				{
 					next_node = cur->next;
 					cur->next = next_node->next;
