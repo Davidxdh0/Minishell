@@ -35,9 +35,33 @@ void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr)
 	free(number);
 }
 
-void	ft_heredoc(char *eof, char *name)
+bool	heredoc_loop(char *eof, int fd)
 {
 	char	*line;
+	bool	str;
+
+	line = readline("HereDoc> ");
+	if (!line)
+	{
+		// rl_on_new_line();
+		// rl_replace_line("", 0);
+		// rl_redisplay();
+		str = false;
+	}
+	else if (!ft_strcmp(line, eof))
+		str = false;
+	else
+	{
+		ft_putstr_fd(line, fd);
+		write(fd, "\n", 1);
+		str = true;
+	}
+	free(line);
+	return (str);
+}
+
+void	ft_heredoc(char *eof, char *name)
+{
 	int		fd;
 	bool	str;
 
@@ -46,21 +70,27 @@ void	ft_heredoc(char *eof, char *name)
 		exit(ft_perror(name, 1));
 	str = true;
 	while (str == true)
-	{
-		line = readline("HereDoc> ");
-		if (!line)
-			exit(1); //doublecheck (signals)
-		if (!ft_strcmp(line, eof))
-			str = false;
-		else
-		{
-			ft_putstr_fd(line, fd);
-			write(fd, "\n", 1);
-		}
-		free(line);
-	}
+		str = heredoc_loop(eof, fd);
 	close(fd);
 }
+	// {
+	// 	line = readline("HereDoc> ");
+	// 	if (!line)
+	// 	{
+	// 		rl_replace_line("", 0);
+	// 		rl_on_new_line();
+	// 		rl_redisplay();
+	// 		str = false;
+	// 	}
+	// 	else if (!ft_strcmp(line, eof))
+	// 		str = false;
+	// 	else
+	// 	{
+	// 		ft_putstr_fd(line, fd);
+	// 		write(fd, "\n", 1);
+	// 	}
+	// 	free(line);
+	// }
 
 void	ft_heredoc_init(t_execute *cmd_struct)
 {
@@ -80,7 +110,7 @@ void	ft_heredoc_init(t_execute *cmd_struct)
 				if (cmd_struct->heredoc_name)
 					unlink(cmd_struct->heredoc_name);
 				i++;
-				ft_heredoc_name(cmd_struct, count++); //check for eof = ""
+				ft_heredoc_name(cmd_struct, count++);
 				ft_heredoc(cmd_struct->redirects[i], cmd_struct->heredoc_name);
 			}
 			i++;

@@ -69,10 +69,10 @@ t_execute	*middle_child_loop(t_execute *cmd_struct, t_envp *envp
 	{
 		pipes[i] = ft_malloc(sizeof(int) * 2);
 		if (pipe(pipes[i]) == -1)
-			exit(ft_perror(NULL, 1));
+			exit(ft_perror(NULL, 1)); //heredoc
 		pid[i] = fork();
 		if (pid[i] == -1)
-			exit(ft_perror(NULL, 1));
+			exit(ft_perror(NULL, 1)); //heredoc
 		if (pid[i] == 0)
 			middle_child(pipes[i - 1], pipes[i], cmd_struct, envp);
 		close(pipes[i - 1][0]);
@@ -88,9 +88,9 @@ void	child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i)
 	int	status;
 
 	if (close(pipes[i - 1][0]) == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1)); //heredoc
 	if (close(pipes[i - 1][1]) == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1)); //heredoc
 	i = 0;
 	while (i < cmd_struct->count_cmd)
 	{

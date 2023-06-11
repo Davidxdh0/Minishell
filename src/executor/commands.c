@@ -54,7 +54,7 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 	}
 	pid = fork();
 	if (pid == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1)); //heredoc
 	if (pid == 0)
 		only_child(cmd_struct, envp);
 	waitpid(pid, &status, 0);
@@ -73,17 +73,17 @@ void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp)
 	pid = ft_malloc(sizeof(int) * cmd_struct->count_cmd);
 	pipes[0] = ft_malloc(sizeof(int) * 2);
 	if (pipe(pipes[0]) == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1)); //heredoc
 	pid[0] = fork();
 	if (pid[0] == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1)); //heredoc
 	if (pid[0] == 0)
 		first_child(pipes[0], cmd_struct, envp);
 	cmd_struct = middle_child_loop(cmd_struct, envp, pipes, pid);
 	i = cmd_struct->count_cmd - 1;
 	pid[i] = fork();
 	if (pid[i] == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1)); //heredoc
 	if (pid[i] == 0)
 		last_child(pipes[i - 1], cmd_struct, envp);
 	child_cleanup(cmd_struct, pipes, pid, i);
