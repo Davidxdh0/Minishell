@@ -60,3 +60,54 @@ t_envp	*exec_builtin(t_execute *cmd_struct, t_envp *envp, int fd)
 		exit(ft_perror(NULL, 1));
 	return (envp);
 }
+
+bool	builtin_infile(char **list)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	while (list && list[i])
+	{
+		if (list[i][0] == '<' && list[i][1] != '<')
+		{
+			i++;
+			fd = open(list[i], O_RDONLY);
+			if (fd == -1)
+				return (ft_perror(list[i], 1), false);
+			if (close(fd) == -1)
+				return (ft_perror(NULL, 1), false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+bool	builtin_outfile(char **list, int *fd, int i, int temp_fd)
+{
+	while (list && list[i])
+	{
+		if (list[i][0] == '>' && !list[i][1])
+		{
+			i++;
+			if (temp_fd != -1 && close(temp_fd) == -1)
+				return (ft_perror(NULL, 1), false);
+			temp_fd = open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (temp_fd == -1)
+				return (ft_perror(list[i], 1), false);
+		}
+		else if (list[i][0] == '>' && list[i][1] == '>')
+		{
+			i++;
+			if (temp_fd != -1 && close(temp_fd) == -1)
+				return (ft_perror(NULL, 1), false);
+			temp_fd = open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (temp_fd == -1)
+				return (ft_perror(list[i], 1), false);
+		}
+		i++;
+	}
+	if (temp_fd != -1)
+		*(fd) = temp_fd;
+	return (true);
+}

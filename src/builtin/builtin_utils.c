@@ -12,30 +12,6 @@
 
 #include "../main/main.h"
 
-t_envp	*ft_export_cmd(char *cmd, char *target, t_envp *envp)
-{
-	t_envp	*head;
-
-	head = envp;
-	if (!target)
-	{
-		while (envp)
-		{
-			if (!ft_strcmp(cmd, envp->identifier))
-				return (head);
-			envp = envp->next;
-		}
-	}
-	else if (export_targeted(cmd, target, envp))
-		return (envp);
-	envp = head;
-	if (!envp)
-		envp = envp_start_list(cmd);
-	else
-		envp_add_node(envp, cmd);
-	return (envp);
-}
-
 static unsigned long long	string_to_ull(const char *str, bool neg)
 {
 	unsigned long long	atoi;
@@ -81,53 +57,69 @@ bool	long_atoi(const char *str, long *number)
 	return (true);
 }
 
-bool	builtin_infile(char **list)
+static char	*remove_plus_from_str(char *cmd)
 {
-	int	i;
-	int	fd;
+	int		i;
 
-	i = 0;
-	while (list && list[i])
-	{
-		if (list[i][0] == '<' && list[i][1] != '<')
-		{
-			i++;
-			fd = open(list[i], O_RDONLY);
-			if (fd == -1)
-				return (ft_perror(list[i], 1), false);
-			if (close(fd) == -1)
-				return (ft_perror(NULL, 1), false);
-		}
-		i++;
-	}
-	return (true);
+	i = check_envp_value(cmd) - 1;
+	cmd = ft_str_fuse(ft_substr(cmd, 0, i), \
+		ft_substr(cmd, i + 1, ft_strlen(cmd) - (i + 1)));
+	return (cmd);
 }
 
-bool	builtin_outfile(char **list, int *fd, int i, int temp_fd)
+static bool	export_targeted(char *cmd, char *target, t_envp *envp, bool append)
 {
-	while (list && list[i])
+	while (envp)
 	{
-		if (list[i][0] == '>' && !list[i][1])
+		if (!ft_strcmp(target, envp->identifier))
 		{
-			i++;
-			if (temp_fd != -1 && close(temp_fd) == -1)
-				return (ft_perror(NULL, 1), false);
-			temp_fd = open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			if (temp_fd == -1)
-				return (ft_perror(list[i], 1), false);
+			if (append)
+				envp->line = ft_str_fuse(envp->line, ft_substr(cmd, \
+				check_envp_value(cmd) + 1, ft_strlen(cmd) - \
+				(check_envp_value(cmd) + 1)));
+			else
+			{
+				free(envp->line);
+				envp->line = ft_strdup(cmd);
+			}
+			free(envp->string);
+			if (!envp->value)
+				envp->value = check_envp_value(envp->line);
+			envp->string = ft_substr(envp->line, envp->value + 1 \
+			, ft_strlen(envp->line) - (envp->value + 1));
+			free(target);
+			return (true);
 		}
-		else if (list[i][0] == '>' && list[i][1] == '>')
-		{
-			i++;
-			if (temp_fd != -1 && close(temp_fd) == -1)
-				return (ft_perror(NULL, 1), false);
-			temp_fd = open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
-			if (temp_fd == -1)
-				return (ft_perror(list[i], 1), false);
-		}
-		i++;
+		envp = envp->next;
 	}
-	if (temp_fd != -1)
-		*(fd) = temp_fd;
-	return (true);
+	free(target);
+	return (false);
+}
+
+t_envp	*ft_export_cmd(char *cmd, char *target, t_envp *envp, bool append)
+{
+	t_envp	*head;
+
+	head = envp;
+	if (!target)
+	{
+		while (envp)
+		{
+			if (!ft_strcmp(cmd, envp->identifier))
+				return (head);
+			envp = envp->next;
+		}
+	}
+	else if (export_targeted(cmd, target, envp, append))
+		return (envp);
+	envp = head;
+	if (target && append)
+		cmd = remove_plus_from_str(cmd);
+	if (!envp)
+		envp = envp_start_list(cmd);
+	else
+		envp_add_node(envp, cmd);
+	if (target && append)
+		free(cmd);
+	return (envp);
 }

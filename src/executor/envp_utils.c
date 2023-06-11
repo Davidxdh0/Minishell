@@ -55,7 +55,6 @@ void	show_envp_node(t_envp *envp)
 		printf("Line: %s\nIdentifier: %s\tString: %s\n", envp->line,
 		envp->identifier, envp->string);
 }
-
 void	show_envp_struct(t_envp *envp)
 {
 	int	i;
@@ -64,7 +63,7 @@ void	show_envp_struct(t_envp *envp)
 	while (envp)
 	{
 		printf("Node #%d\nLine:\t\t%s\nIdentifier:\t%s\nString:\t\t%s\n\n", i,
-		envp->line, envp->identifier, envp->string);
+			envp->line, envp->identifier, envp->string);
 		envp = envp->next;
 		i++;
 	}

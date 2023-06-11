@@ -45,3 +45,30 @@ char	**free_char_array(char **arr)
 	free(arr);
 	return (NULL);
 }
+
+char	*ft_str_fuse(char *s1, char *s2)
+{
+	char	*str;
+	int		loop;
+	int		len1;
+	int		len2;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	str = ft_malloc(len1 + len2 + 1);
+	loop = 0;
+	while (loop < len1)
+	{
+		str[loop] = s1[loop];
+		loop++;
+	}
+	while (loop < len1 + len2)
+	{
+		str[loop] = s2[loop - len1];
+		loop++;
+	}
+	str[len1 + len2] = '\0';
+	free(s1);
+	free(s2);
+	return (str);
+}

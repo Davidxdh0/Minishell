@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 14:46:18 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 14:49:37 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,36 @@ t_line_lst	*remove_quotes(t_line_lst *line_lst)
 	}
 	return (new_head);
 }
+int	specials(t_line_lst *list, int i)
+{	
+	if (i >= 1)
+	{
+		if (list->type == e_delimiter)
+			return (1);
+		if (list->type == e_redirect_i)
+			return (1);
+		if (list->type == e_redirect_o)
+			return (1);
+		if (list->type == e_append)
+			return (1);
+		if (list->type == e_pipe)
+			return (1);
+	}
+	if (i >= 2)
+	{
+		if (list->next->type == e_delimiter)
+			return (1);
+		if (list->next->type == e_redirect_i)
+			return (1);
+		if (list->next->type == e_redirect_o)
+			return (1);
+		if (list->next->type == e_append)
+			return (1);
+		if (list->next->type == e_pipe)
+			return (1);
+	}
+	return (0);
+}
 
 t_line_lst	*combine_values(t_line_lst *list)
 {
@@ -79,17 +109,17 @@ t_line_lst	*combine_values(t_line_lst *list)
 	cur = list;
 	while (cur != NULL)
 	{
-		if (cur->state != 0 || cur->type != e_wspace)
+		if ((cur->state != 0 || cur->type != e_wspace) && (!specials(cur, 1)))
 		{
 			next = cur->next;
-			
-			while (next != NULL && (next->state != 0 || next->type != e_wspace))
+			while (next != NULL && (next->state != 0 || next->type != e_wspace) && (!specials(cur, 2)))
 			{
 				cur->len += next->len;
 				new_value = malloc(sizeof(char *) * cur->len + 1);
 				ft_strlcpy(new_value, cur->value, cur->len + next->len + 1);
 				ft_strlcat(new_value, next->value, cur->len + next->len + 1);
 				free(cur->value);
+				printf("newvalue=%s\n", new_value);
 				cur->value = ft_strdup(new_value);
 				temp = next;
 				next = next->next;
@@ -116,8 +146,7 @@ t_line_lst	*combine_quotes(t_line_lst *list)
 		{
 			if (cur->next != NULL)
 			{
-				if ((cur->next->type == e_quote && cur->next->state == 2) || \
-					(cur->next->type == e_quote && cur->next->state == 1))
+				if ((cur->next->type == e_quote && cur->next->state == 2) || (cur->next->type == e_quote && cur->next->state == 1))
 				{
 					next_node = cur->next;
 					cur->next = next_node->next;
