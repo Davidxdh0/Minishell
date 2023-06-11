@@ -48,7 +48,7 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 		ft_heredoc_cleanup(cmd_struct);
 		fd = 1;
 		if (builtin_infile(cmd_struct->redirects) && \
-			builtin_outfile(cmd_struct->redirects, &fd, 0, -1))
+					builtin_outfile(cmd_struct->redirects, &fd, 0, -1))
 			envp = exec_builtin(cmd_struct, envp, fd);
 		return (envp);
 	}
@@ -59,6 +59,7 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 		only_child(cmd_struct, envp);
 	waitpid(pid, &status, 0);
 	g_exitcode = WEXITSTATUS(status);
+	exitcode_signals(status);
 	return (envp);
 }
 
