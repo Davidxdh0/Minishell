@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 16:57:58 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:34:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 void	sig_controller(int flag)
 {
 	if (flag == 0)
-		signal(SIGINT, siginthandler);
+		signal(SIGINT, siginthandler); //voor linecheck
 	if (flag == 1)
-		signal(SIGINT, siginthandlerheredoc);
+		signal(SIGINT, siginthandlerheredoc); //redirect c 44
 	if (flag == 2)
-		signal(SIGINT, siginthandlerchild);
+		signal(SIGINT, siginthandlerchild); // voor child
 	if (flag == 3)
-		signal(SIGQUIT, signal_bs);
+		signal(SIGQUIT, signal_bs); // voor child
 }
 
 void	siginthandler(int sig)

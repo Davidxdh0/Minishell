@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 17:27:01 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:30:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-			sig_controller(3);
+			
 			shell(line, envp);
 			free(line);
 		}
