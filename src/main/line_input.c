@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 18:05:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 18:08:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	line_reader(char **line, const char *display_name)
 	if (*line == NULL)
 	{
 		g_exitcode = 0;
-		write(STDOUT_FILENO, "exit\n", 5);
+		printf("exit\n");
 		exit(1);
 	}
 	if (*line && **line && !str_isspaces(line))
