@@ -34,11 +34,13 @@ static bool	cd_update_oldpwd(t_envp *envp)
 		ft_perror("getcwd: ", 1);
 		return (false);
 	}
-	cmd = ft_strjoin("OLDPWD=", cwd);
-	free(cwd);
 	if (find_env_in_list(envp, "OLDPWD"))
+	{
+		cmd = ft_strjoin("OLDPWD=", cwd);
 		ft_export_cmd(cmd, ft_strdup("OLDPWD"), envp, false);
-	free(cmd);
+		free(cmd);
+	}
+	free(cwd);
 	return (true);
 }
 
@@ -53,11 +55,13 @@ static bool	cd_update_pwd(t_envp *envp)
 		ft_perror("getcwd: ", 1);
 		return (false);
 	}
-	cmd = ft_strjoin("PWD=", cwd);
-	free(cwd);
 	if (find_env_in_list(envp, "PWD"))
+	{
+		cmd = ft_strjoin("PWD=", cwd);
 		ft_export_cmd(cmd, ft_strdup("PWD"), envp, false);
-	free(cmd);
+		free(cmd);
+	}
+	free(cwd);
 	return (true);
 }
 
