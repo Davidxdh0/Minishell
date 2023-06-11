@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 17:39:11 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 18:27:37 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ int			str_isspaces(char **line);
 int			ft_isredirect(char *str);
 void		show(t_execute *cmd);
 
-
 //util
 int			perror_return(char *msg2);
 void		delete_t_exec(t_execute *head);
@@ -177,7 +176,8 @@ void		first_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
 void		middle_child(int *pipe_in, int *pipe_out, \
 t_execute *cmd_struct, t_envp *envp);
 void		last_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
-t_execute	*middle_child_loop(t_execute *cmd_struct, t_envp *envp, int **pipes, int *pid);
+t_execute	*middle_child_loop(t_execute *cmd_struct, \
+t_envp *envp, int **pipes, int *pid);
 void		child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i);
 // Execve Utils
 char		*get_path(char *exec_argv, char **path);
@@ -254,4 +254,5 @@ void		siginthandlerchild(int sig);
 //signals_utils.c
 void		disable_ctrl_c_display(void);
 void		enable_ctrl_c_display(void);
+char		*combine_thestring(char *first, char *second);
 #endif

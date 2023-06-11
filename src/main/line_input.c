@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 18:08:51 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 18:27:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,6 @@ int	str_isspaces(char **line)
 		i++;
 	}
 	return (1);
-}
-void removeTrailingNewline(char* str) {
-    if (str == NULL)
-        return;
-
-    size_t length = strlen(str);
-
-    if (length > 0 && str[length - 1] == '\n')
-        str[length - 1] = '\0';
 }
 
 /*
