@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 15:10:55 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 14:46:18 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_line_lst	*combine_values(t_line_lst *list)
 		if (cur->state != 0 || cur->type != e_wspace)
 		{
 			next = cur->next;
+			
 			while (next != NULL && (next->state != 0 || next->type != e_wspace))
 			{
 				cur->len += next->len;
