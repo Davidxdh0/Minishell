@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 17:28:13 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 18:26:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,10 @@ t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next)
 		if ((cur->state != 0 || cur->type != e_wspace) && (!specials(cur, 1)))
 		{
 			next = cur->next;
-			while (next != NULL && (next->state != 0 || next->type != e_wspace) && (!specials(cur, 2)))
+			while (next != NULL && (next->state != 0 || \
+			next->type != e_wspace) && (!specials(cur, 2)))
 			{
-				cur->len += next->len;
-				new_value = malloc(sizeof(char *) * cur->len + 1);
-				ft_strlcpy(new_value, cur->value, cur->len + next->len + 1);
-				ft_strlcat(new_value, next->value, cur->len + next->len + 1);
-				free(cur->value);
+				new_value = combine_thestring(cur->value, next->value);
 				cur->value = ft_strdup(new_value);
 				temp = next;
 				next = next->next;
