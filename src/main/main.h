@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 14:27:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:21:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ https://github.com/Snaipe/Criterion
 # include <sys/wait.h>
 # include <sys/signal.h>
 # include <string.h>
+# include <termios.h>
 # include <errno.h>
 # include <stdbool.h>
 # include <limits.h>
 # include "../../libs/libft/libft.h"
 
-extern	int g_exitcode;
+extern int	g_exitcode;
 
 typedef enum type
 {
@@ -92,14 +93,12 @@ typedef struct s_line_lst
 	struct s_line_lst	*next;
 	struct s_line_lst	*prev;
 }	t_line_lst;
-
-typedef struct custom_sigaction {
-    void (*custom_handler)(int);
-    sigset_t sa_mask;
-    int sa_flags;
-} t_custom_sigaction;
-
-t_custom_sigaction init_sa(void);
+//parse_list.c
+int			count_commands(t_line_lst *head);
+t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next);
+t_line_lst	*remove_quotes(t_line_lst *line_lst, t_line_lst *new_head,t_line_lst *prev);
+t_line_lst	*combine_quotes(t_line_lst *list);
+int			specials(t_line_lst *lst, int i);
 
 //parser_util2.c
 char		**make_redirects(t_line_lst *line_lst);
@@ -130,7 +129,7 @@ int			quotes(t_line_lst **line_lst, char c, int state, int flag);
 
 // expander.c
 void		delete_node(t_line_lst *node_to_delete);
-t_line_lst	*remove_whitespace_list(t_line_lst *line_lst);
+t_line_lst	*rm_wspace(t_line_lst *line_lst, t_line_lst *new_head, t_line_lst *prev);
 t_line_lst	*word_list(t_line_lst *line);
 char		*ft_getenv(const char *name, char **envp);
 int			find_variable(char *str);
@@ -147,23 +146,14 @@ int			length_of_list(t_line_lst *node);
 char		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
 void		delete_node(t_line_lst *node_to_delete);
-//signals.c
-void		redirect_signal(int signal);
-void		signal_int(int signal);
-void		signal_int_heredoc(int signal);
-void		disable_ctrl_c_display(void);
-void		enable_ctrl_c_display(void);
-void		signal_bs(int signal);
+
 /* Main */
 int			shell(char *line, t_envp *envp);
 void		line_reader(char **line, const char *display_name);
 int			str_isspaces(char **line);
 int			ft_isredirect(char *str);
 void		show(t_execute *cmd);
-int			count_commands(t_line_lst *head);
-t_line_lst	*combine_values(t_line_lst *list);
-t_line_lst	*remove_quotes(t_line_lst *line_lst);
-t_line_lst	*combine_quotes(t_line_lst *list);
+
 
 //util
 int			perror_return(char *msg2);
@@ -243,7 +233,14 @@ t_execute	*create_execute_nodes(t_line_lst *head);
 t_line_lst	*move_to_next_commands(t_line_lst *head);
 char		*fill_string(char *str, int bgn, int end, char *env);
 
-void sigintHandler(int sig);
-void	signals_controller(void);
-void tempHandler(int sig);
+//signals.c
+void		siginthandler(int sig);
+void		sig_controller(int flag);
+void		signal_bs(int sig);
+void		siginthandlerheredoc(int sig);
+void		siginthandlerchild(int sig);
+
+//signals_utils.c
+void		disable_ctrl_c_display(void);
+void		enable_ctrl_c_display(void);
 #endif
