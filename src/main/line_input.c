@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 16:15:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 18:05:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ int	str_isspaces(char **line)
 	}
 	return (1);
 }
+void removeTrailingNewline(char* str) {
+    if (str == NULL)
+        return;
+
+    size_t length = strlen(str);
+
+    if (length > 0 && str[length - 1] == '\n')
+        str[length - 1] = '\0';
+}
 
 /*
 	Set the display name in the termian and reading the input from the termial
@@ -45,7 +54,7 @@ void	line_reader(char **line, const char *display_name)
 	if (*line == NULL)
 	{
 		g_exitcode = 0;
-		printf("exit\n");
+		write(STDOUT_FILENO, "exit\n", 5);
 		exit(1);
 	}
 	if (*line && **line && !str_isspaces(line))
