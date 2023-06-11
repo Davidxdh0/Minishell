@@ -43,9 +43,8 @@ bool	heredoc_loop(char *eof, int fd)
 	line = readline("HereDoc> ");
 	if (!line)
 	{
-		// rl_on_new_line();
-		// rl_replace_line("", 0);
-		// rl_redisplay();
+		rl_on_new_line();
+		rl_redisplay();
 		str = false;
 	}
 	else if (!ft_strcmp(line, eof))

@@ -23,6 +23,7 @@ static int	redirect_infile_extended(char *name, int *i, bool *file)
 	if (dup2(fd, STDIN_FILENO) == -1)
 		exit(ft_perror(NULL, 1));
 	close(fd);
+	g_exitcode = 0;
 	*file = true;
 	return (fd);
 }
@@ -48,6 +49,7 @@ bool	redirect_infile(char **list, char *heredoc_name)
 			if (dup2(fd, STDIN_FILENO) == -1)
 				exit(ft_perror(NULL, 1));
 			close(fd);
+			g_exitcode = 0;
 			file = true;
 		}
 		i++;
@@ -66,6 +68,7 @@ static int	redirect_outfile_extended(char *name, int *i, bool *file)
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		exit(ft_perror(NULL, 1));
 	close(fd);
+	g_exitcode = 0;
 	(*file) = true;
 	return (fd);
 }
@@ -91,6 +94,7 @@ bool	redirect_outfile(char **list)
 			if (dup2(fd, STDOUT_FILENO) == -1)
 				exit(ft_perror(NULL, 1));
 			close(fd);
+			g_exitcode = 0;
 			file = true;
 		}
 		i++;
