@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 16:00:37 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:07:57 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 	t_execute	*new_node;
 	t_execute	*cmdlist;
 	t_execute	*last;
-	// char		*temp;
 
 	cmdlist = NULL;
 	last = NULL;

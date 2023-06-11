@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 14:49:37 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:28:13 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,75 +38,67 @@ int	count_commands(t_line_lst *head)
 	return (i);
 }
 
-t_line_lst	*remove_quotes(t_line_lst *line_lst)
+t_line_lst	*remove_quotes(t_line_lst *list, t_line_lst *nh, t_line_lst *prev)
 {
-	t_line_lst	*new_head;
-	t_line_lst	*prev;
 	t_line_lst	*next;
 
-	new_head = NULL;
-	while (line_lst != NULL)
+	while (list != NULL)
 	{
-		next = line_lst->next;
-		if ((line_lst->type == e_quote && line_lst->state == 1) || (line_lst->type == e_quote && line_lst->state == 2))
+		next = list->next;
+		if ((list->type == e_quote && list->state == 1) || \
+		(list->type == e_quote && list->state == 2))
 		{
 			if (prev != NULL)
 				prev->next = next;
 			if (next != NULL)
 				next->prev = prev;
-			free(line_lst->value);
-			free(line_lst);
+			free(list->value);
+			free(list);
 		}
 		else
 		{
-			if (new_head == NULL)
-				new_head = line_lst;
-			prev = line_lst;
+			if (nh == NULL)
+				nh = list;
+			prev = list;
 		}
-		line_lst = next;
+		list = next;
 	}
-	return (new_head);
+	return (nh);
 }
-int	specials(t_line_lst *list, int i)
+
+int	specials(t_line_lst *lst, int i)
 {	
 	if (i >= 1)
 	{
-		if (list->type == e_delimiter)
+		if (lst->type == e_delimiter)
 			return (1);
-		if (list->type == e_redirect_i)
+		if (lst->type == e_redirect_i)
 			return (1);
-		if (list->type == e_redirect_o)
+		if (lst->type == e_redirect_o)
 			return (1);
-		if (list->type == e_append)
+		if (lst->type == e_append)
 			return (1);
-		if (list->type == e_pipe)
+		if (lst->type == e_pipe)
 			return (1);
 	}
 	if (i >= 2)
 	{
-		if (list->next->type == e_delimiter)
+		if (lst->next->type == e_delimiter || lst->next->type == e_redirect_i)
 			return (1);
-		if (list->next->type == e_redirect_i)
+		if (lst->next->type == e_redirect_o || lst->next->type == e_append)
 			return (1);
-		if (list->next->type == e_redirect_o)
-			return (1);
-		if (list->next->type == e_append)
-			return (1);
-		if (list->next->type == e_pipe)
+		if (lst->next->type == e_pipe)
 			return (1);
 	}
 	return (0);
 }
 
-t_line_lst	*combine_values(t_line_lst *list)
+t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next)
 {
-	t_line_lst	*cur;
-	t_line_lst	*next;
 	char		*new_value;
 	t_line_lst	*temp;
 
 	new_value = NULL;
-	cur = list;
 	while (cur != NULL)
 	{
 		if ((cur->state != 0 || cur->type != e_wspace) && (!specials(cur, 1)))
@@ -119,7 +111,6 @@ t_line_lst	*combine_values(t_line_lst *list)
 				ft_strlcpy(new_value, cur->value, cur->len + next->len + 1);
 				ft_strlcat(new_value, next->value, cur->len + next->len + 1);
 				free(cur->value);
-				printf("newvalue=%s\n", new_value);
 				cur->value = ft_strdup(new_value);
 				temp = next;
 				next = next->next;
@@ -146,10 +137,10 @@ t_line_lst	*combine_quotes(t_line_lst *list)
 		{
 			if (cur->next != NULL)
 			{
-				if ((cur->next->type == e_quote && cur->next->state == 2) || (cur->next->type == e_quote && cur->next->state == 1))
+				if ((cur->next->type == e_quote && cur->next->state == 2) || \
+				(cur->next->type == e_quote && cur->next->state == 1))
 				{
 					next_node = cur->next;
-					cur->next = next_node->next;
 					free(cur->value);
 					cur->value = ft_strdup("");
 					cur->type = e_var;

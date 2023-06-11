@@ -6,50 +6,39 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 14:38:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:34:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
-#include <termios.h>
 
-/*
-ctrl + c
-nieuwe lijn + naam
-
-ctrl + c - cat
-^C\n naam
-ctrl + d - cat
-naam op newline
-ctrl + \
-^\Quit: 3\n naam
-
-heredoc
-ctrl + c
-> \n + naam 
-ctrl + d
-> + naam - geen newline
-ctrl + \ - heredoc
-niets
-
-*/
-
-t_custom_sigaction init_sa(void) {
-    t_custom_sigaction sa;
-    sa.custom_handler = sigintHandler;
-    sigemptyset(&(sa.sa_mask));
-    sa.sa_flags = 0;
-    return sa;
-}
-
-
-// off voor fork command executer
-void	signals_controller(void)
+//flag 0 
+// enable_ctrl_c_display();
+// disable_ctrl_c_display();??
+//ctrl + c new line exitcode = 1
+//flag 1
+// ctrl c in heredoc - new line exit code 1
+//flag 2
+// ctrl c in child - 130 en newline
+//flag 3
+// ctrl + \ in child Quit: 3  exitcode 131
+//flag 4
+// ctrl + \ in heredoc - niets
+// ctrl + \ - niets
+void	sig_controller(int flag)
 {
-    printf("Press Ctrl+C to test the signal.\n");
+	if (flag == 0)
+		signal(SIGINT, siginthandler); //voor linecheck
+	if (flag == 1)
+		signal(SIGINT, siginthandlerheredoc); //redirect c 44
+	if (flag == 2)
+		signal(SIGINT, siginthandlerchild); // voor child
+	if (flag == 3)
+		signal(SIGQUIT, signal_bs); // voor child
 }
 
-void sigintHandler(int sig) {
+void	siginthandler(int sig)
+{
 	g_exitcode = 1;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
@@ -58,13 +47,16 @@ void sigintHandler(int sig) {
 	sig++;
 }
 
-void tempHandler(int sig) 
+void	siginthandlerchild(int sig)
 {
- 	//  if (sa.sa_flags == 3) {
-    //     printf("s\n");
-    // } else {
-    //     printf("p\n");
-    // }
+	g_exitcode = 130;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	sig++;
+}
+
+void	siginthandlerheredoc(int sig)
+{
 	g_exitcode = 1;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
@@ -73,75 +65,12 @@ void tempHandler(int sig)
 	sig++;
 }
 
-void disable_ctrl_c_display()
+void	signal_bs(int sig)
 {
-    struct termios term;
-
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag &= ~ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	g_exitcode = 131;
+	printf("^\\Quit: 3\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	sig++;
 }
-//voor shell en na wifexit
-void enable_ctrl_c_display()
-{
-    struct termios term;
-
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag |= ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-}
-
-// ?
-void	redirect_signal(int signal)
-{
-	if (signal == 2)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-// Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
-void signal_int(int signal)
-{
-
-    if (signal == SIGINT)
-    {
-		g_exitcode = 1;
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-    }
-}
-// Ctrl-C pressedin cat ^C laten zien, heredoc: > en nieuw line
-void signal_int_heredoc(int signal)
-{
-    if (signal == SIGINT)
-		exit(1);
-}
-// niet in heredoc - // Ctrl-\ pressed
-void	signal_bs(int signal)
-{
-    if (signal == SIGQUIT)
-    {
-        printf("^\\Quit: 3\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-    }
-}
-	// else if (WIFSIGNALED(status) == true)
-	// {
-	// 	int exit_status;
-	
-	// 	exit_status = WTERMSIG(status);
-	// 	if (exit_status == 2)
-	// 		g_exitcode = 130;
-	// 	else if (exit_status == 3)
-	// 	{
-	// 		g_exitcode = 131;
-	// 		write(2, "Quit: 3", 8);
-	// 	}
-	// 	write(2, "\n", 2);
-	// }

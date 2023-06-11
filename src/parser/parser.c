@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 16:07:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:22:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,10 @@ t_line_lst	*parser(char *line)
 	return (line_lst);
 }
 
-t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
+t_line_lst	*rm_wspace(t_line_lst *line_lst, t_line_lst *nh, t_line_lst *prev)
 {
-	t_line_lst	*new_head;
-	t_line_lst	*prev;
 	t_line_lst	*next;
 
-	new_head = NULL;
 	while (line_lst != NULL)
 	{
 		next = line_lst->next;
@@ -99,13 +96,13 @@ t_line_lst	*remove_whitespace_list(t_line_lst *line_lst)
 		}
 		else
 		{
-			if (new_head == NULL)
-				new_head = line_lst;
+			if (nh == NULL)
+				nh = line_lst;
 			prev = line_lst;
 		}
 		line_lst = next;
 	}
-	return (new_head);
+	return (nh);
 }
 
 t_line_lst	*word_list(t_line_lst *line)

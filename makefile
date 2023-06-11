@@ -48,6 +48,7 @@ PARSER_FILES =	lexer.c \
 				expander.c \
 				expander_util.c \
 				signals.c \
+				signals_util.c \
 				syntax.c \
 				util.c
 
