@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 16:07:57 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 17:27:01 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,17 @@ int	shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
+	t_line_lst	*filler;
 
+	filler = NULL;
 	line_lst = parser(line);
 	if (syntax_count_quotes(line_lst))
 		return (0);
 	line_lst = variable_expand(line_lst, envp);
 	line_lst = combine_quotes(line_lst);
-	line_lst = remove_quotes(line_lst);
-	line_lst = combine_values(line_lst);
-	line_lst = remove_whitespace_list(line_lst);
+	line_lst = remove_quotes(line_lst, filler, filler);
+	line_lst = combine_values(line_lst, line_lst, filler);
+	line_lst = rm_wspace(line_lst, filler, filler);
 	if (!syntax_check(line_lst))
 	{
 		cmd = alloc_execute_list(line_lst);
@@ -82,56 +84,25 @@ void	ft_atexit(void)
 {
 	system("leaks -q minishell");
 }
+// enable_ctrl_c_display();
 
-// struct sigaction create_sigaction(custom_sigaction sa) {
-//     struct sigaction action;
-//     action.sa_handler = sa.handler;
-//     action.sa_mask = sa.mask;
-//     action.sa_flags = sa.flags;
-//     return action;
-// }
-
-	// signal(SIGINT, signal_int);   // Handle Ctrl-C
-	// signal(SIGQUIT, signal_handler);  // Handle Ctrl-'/'
-	// 
 int	main(int argc, char *argv[], char **original_envp)
 {
 	char		*line;
 	t_envp		*envp;
+
 	if (argc != 1)
 		return (printf("%s not started right", argv[0]));
-
-	// struct sigaction sa;
-    // sa.sa_handler = sigintHandler;
-    // sigemptyset(&sa.sa_mask);
-    // sa.sa_flags = 0;
-	// if (sigaction(SIGINT, &sa, NULL) == -1) {
-    //     perror("sigaction");
-    //     exit(1);
-    // }
-	// signals_controller();
-	// signal(SIGQUIT, signal_bs);
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
 	while (1)
 	{	
-		// disable_ctrl_c_display();
-	// t_custom_sigaction sa = init_sa(tempHandler);	
-    // struct sigaction action = create_sigaction(sa);
-
-    // if (sigaction(SIGINT, &action, NULL) == -1) {
-    //     perror("sigaction");
-    //     return 1;
-    // }
+		disable_ctrl_c_display();
+		sig_controller(0);
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-// if (!ft_strncmp(line, "exit", 4) || !ft_strncmp(line, "make", 4))
-// {
-// 	free(line);
-// 	exit(1);
-// }
-			enable_ctrl_c_display();
+			sig_controller(3);
 			shell(line, envp);
 			free(line);
 		}

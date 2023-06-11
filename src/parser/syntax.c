@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 15:55:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/11 15:09:35 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	syntax_redirects(t_line_lst *l)
 {
 	if (l->type == e_redirect_i)
 		if (l->next == NULL || (l->next->type != e_file \
-		&& l->next->type != e_var && l->prev->type != e_word \
+		&& l->next->type != e_var && l->next->type != e_word \
 		&& l->next->type != e_quote))
 			return (1);
 	if (l->type == e_redirect_o)
