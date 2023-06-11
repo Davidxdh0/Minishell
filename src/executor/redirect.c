@@ -12,14 +12,14 @@
 
 #include "../main/main.h"
 
-static int	redirect_infile_extended(char *list, int *i, bool *file)
+static int	redirect_infile_extended(char *name, int *i, bool *file)
 {
 	int	fd;
 
 	*i += 1;
-	fd = open(list, O_RDONLY);
+	fd = open(name, O_RDONLY);
 	if (fd == -1)
-		exit(ft_perror(list, 1));
+		exit(ft_perror(name, 1));
 	if (dup2(fd, STDIN_FILENO) == -1)
 		exit(ft_perror(NULL, 1));
 	close(fd);
@@ -27,7 +27,7 @@ static int	redirect_infile_extended(char *list, int *i, bool *file)
 	return (fd);
 }
 
-bool	redirect_infile(char **list, char *name)
+bool	redirect_infile(char **list, char *heredoc_name)
 {
 	int		i;
 	bool	file;
@@ -42,7 +42,7 @@ bool	redirect_infile(char **list, char *name)
 		if (list[i][0] == '<' && list[i][1] == '<')
 		{
 			i++;
-			fd = open(name, O_RDONLY);
+			fd = open(heredoc_name, O_RDONLY);
 			if (fd == -1)
 				exit(ft_perror(list[i], 1));
 			if (dup2(fd, STDIN_FILENO) == -1)
@@ -55,14 +55,14 @@ bool	redirect_infile(char **list, char *name)
 	return (file);
 }
 
-static int	redirect_outfile_extended(char *list, int *i, bool *file)
+static int	redirect_outfile_extended(char *name, int *i, bool *file)
 {
 	int	fd;
 
 	*i += 1;
-	fd = open(list, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		exit(ft_perror(list, 1));
+		exit(ft_perror(name, 1));
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		exit(ft_perror(NULL, 1));
 	close(fd);

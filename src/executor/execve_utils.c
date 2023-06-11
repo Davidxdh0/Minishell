@@ -93,12 +93,9 @@ char	*check_path(char *exec_argv, char **envp)
 		return (NULL);
 	if (!exec_argv[0])
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(exec_argv, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd("minishell: : command not found\n", 2);
 		exit(127);
 	}
-		// return ("");
 	if (is_path(exec_argv))
 		return (ft_strdup(exec_argv));
 	env_hold = ft_getenv("PATH=", envp);

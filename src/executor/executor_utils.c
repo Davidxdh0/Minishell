@@ -26,6 +26,8 @@ int	ft_perror(char *str, int error_number)
 {
 	g_exitcode = error_number;
 	ft_putstr_fd("minishell: ", 2);
+	if (str && !str[0])
+		ft_putstr_fd(": ", 2);
 	perror(str);
 	return (error_number);
 }

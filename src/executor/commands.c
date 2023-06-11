@@ -24,7 +24,7 @@ void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 	else
 	{
 		envp_array = envp_to_array(envp);
-		cmd_path = check_path(cmd_struct->cmd[0], envp_array); //check for "" if it reaches command not found
+		cmd_path = check_path(cmd_struct->cmd[0], envp_array);
 		execve(cmd_path, cmd_struct->cmd, envp_array);
 		exit(ft_perror(cmd_path, 1));
 	}
