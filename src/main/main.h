@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/13 17:01:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/13 22:57:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,17 @@ typedef struct s_line_lst
 	struct s_line_lst	*next;
 	struct s_line_lst	*prev;
 }	t_line_lst;
+
 //parse_list.c
 int			count_commands(t_line_lst *head);
 //long
 t_line_lst	*combine_values(t_line_lst *list, t_line_lst \
+<<<<<<< HEAD
 *cur, t_line_lst *next);
 //long
+=======
+	*cur, t_line_lst *next);
+>>>>>>> refs/remotes/origin/master
 t_line_lst	*remove_quotes(t_line_lst *line_lst, \
 t_line_lst *new_head, t_line_lst *prev);
 t_line_lst	*combine_quotes(t_line_lst *list);
@@ -183,11 +188,15 @@ void		ft_multiple_commands(t_execute *cmd_struct, t_envp *envp);
 void		first_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
 //long
 void		middle_child(int *pipe_in, int *pipe_out, \
+<<<<<<< HEAD
 t_execute *cmd_struct, t_envp *envp);
 //long
+=======
+	t_execute *cmd_struct, t_envp *envp);
+>>>>>>> refs/remotes/origin/master
 void		last_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
 t_execute	*middle_child_loop(t_execute *cmd_struct, \
-t_envp *envp, int **pipes, int *pid);
+	t_envp *envp, int **pipes, int *pid);
 void		child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i);
 // Execve Utils
 char		*get_path(char *exec_argv, char **path);
