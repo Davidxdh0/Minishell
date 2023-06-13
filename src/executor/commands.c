@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 16:07:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/06 15:22:09 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/13 18:06:50 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 {
 	char	*cmd_path;
 	char	**envp_array;
-
+	
 	if (cmd_struct->cmd == NULL)
 		exit(g_exitcode);
 	if (check_builtin(cmd_struct->cmd[0]))

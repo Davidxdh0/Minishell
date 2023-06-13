@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 17:34:33 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/13 22:56:06 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,22 @@
 //flag 4
 // ctrl + \ in heredoc - niets
 // ctrl + \ - niets
+
 void	sig_controller(int flag)
 {
 	if (flag == 0)
-		signal(SIGINT, siginthandler); //voor linecheck
+		signal(SIGINT, siginthandler);
 	if (flag == 1)
-		signal(SIGINT, siginthandlerheredoc); //redirect c 44
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, siginthandlerheredoc);
+	}
 	if (flag == 2)
-		signal(SIGINT, siginthandlerchild); // voor child
+		signal(SIGINT, siginthandlerchild);
 	if (flag == 3)
-		signal(SIGQUIT, signal_bs); // voor child
+		signal(SIGQUIT, signal_bs);
+	if (flag == 4)
+		signal(SIGQUIT, signal_bs);
 }
 
 void	siginthandler(int sig)
@@ -50,16 +56,14 @@ void	siginthandler(int sig)
 void	siginthandlerchild(int sig)
 {
 	g_exitcode = 130;
-	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	sig++;
 }
 
 void	siginthandlerheredoc(int sig)
 {
-	g_exitcode = 1;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
+	g_exitcode = 1000;
+	rl_replace_line("I'll give you control back when you press enter :)", 50);
 	rl_on_new_line();
 	rl_redisplay();
 	sig++;
@@ -67,10 +71,5 @@ void	siginthandlerheredoc(int sig)
 
 void	signal_bs(int sig)
 {
-	g_exitcode = 131;
-	printf("^\\Quit: 3\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
 	sig++;
 }
