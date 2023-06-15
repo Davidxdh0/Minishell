@@ -90,11 +90,5 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-test: all
-	bash testcmd.sh
-
 run: all
 	./minishell
-
-exp: all
-	mv minishell ../SH_tester
