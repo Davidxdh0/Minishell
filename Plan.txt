@@ -2,7 +2,7 @@ David
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 
 //valgrind --leak-check=full --show-leak-kinds=definite --child-silent-after-fork=yes ./minishell
-cat | cat | ls
+cat + ctrl c != 130 exitcode
 
 Acco:
 unset

@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 16:07:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 14:54:47 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 17:33:31 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 		only_child(cmd_struct, envp);
 	waitpid(pid, &status, 0);
 	g_exitcode = WEXITSTATUS(status);
-	// exitcode_signals(status);
+	exitcode_signals(status);
 	return (envp);
 }
 
