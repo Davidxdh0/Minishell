@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:04:47 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 17:09:39 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 17:23:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	expand_heredoc_word(char *value, t_envp *new_envp, int fd)
 		else if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
 		{
 			begin = i;
-			while (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$' && value[i] != ' ')
+			while (value[i] != '\0' && ft_isascii(value[i]) && \
+			value[i] != '$' && value[i] != ' ')
 				i++;
 			ft_putstr_fd(change_heredoc_str(value, begin, i, new_envp), fd);
 		}

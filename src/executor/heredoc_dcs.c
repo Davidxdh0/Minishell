@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/09 18:44:49 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 17:16:56 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 17:20:45 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ bool	ft_heredoc_init(t_execute *cmd_strc, t_envp *new_envp)
 					unlink(cmd_strc->heredoc_name);
 				i++;
 				ft_heredoc_name(cmd_strc, count++);
-				if (!ft_heredoc(cmd_strc->redirects[i], cmd_strc->heredoc_name))
+				if (!ft_heredoc(cmd_strc->redirects[i], cmd_strc->heredoc_name, new_envp))
 					return (false);
 			}
 			i++;
