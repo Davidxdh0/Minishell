@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 19:39:47 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 22:27:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	syntax_count_quotes(t_line_lst *line)
 	}
 	if (quote % 2 == 0 && dquote % 2 == 0)
 		return (0);
+	if (line != NULL)
+		delete_t_list(line);
 	ft_putstr_fd("minishell: Quotes are not balanced\n", 2);
 	return (1);
 }
