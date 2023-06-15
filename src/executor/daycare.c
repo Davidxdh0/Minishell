@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 16:43:11 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/13 18:31:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 14:44:36 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,15 @@ void	exitcode_signals(int status)
 	{
 		exit_status = WTERMSIG(status);
 		if (exit_status == 2)
+		{
 			g_exitcode = 130;
+			ft_putstr_fd("\n", 2);
+		}
 		else if (exit_status == 3)
 		{
 			g_exitcode = 131;
 			ft_putstr_fd("Quit: 3", 2);
+			ft_putstr_fd("\n", 2);
 		}
-		ft_putstr_fd("\n", 2);
 	}
 }

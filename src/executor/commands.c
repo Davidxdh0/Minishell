@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/04 16:07:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 13:03:33 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 14:54:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp)
 		exit(ft_perror(NULL, 1)); //heredoc
 	if (pid[0] == 0)
 		first_child(pipes[0], cmd_struct, envp);
+
 	cmd_struct = middle_child_loop(cmd_struct, envp, pipes, pid);
 	i = cmd_struct->count_cmd - 1;
 	pid[i] = fork();

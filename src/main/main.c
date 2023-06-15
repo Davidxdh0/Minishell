@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 14:02:51 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 14:54:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ int	main(int argc, char *argv[], char **original_envp)
 		sig_controller(0);
 		sig_controller(4);
 		line_reader(&line, "minishell$ ");
-		// if (!ft_strcmp("hoi", line))
-		// 	exit(1);
 		if (line != NULL)
 		{
 			shell(line, envp);

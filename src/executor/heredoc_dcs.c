@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/09 18:44:49 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/13 22:48:31 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 15:07:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ bool	heredoc_loop(char *eof, int fd)
 	bool	str;
 	
 	if (g_exitcode == 1000)
+	{
+		g_exitcode = 1;
 		return (false);
+	}
 	line = readline("HereDoc> ");
 	if (!line)
 	{
@@ -119,6 +122,8 @@ void	ft_heredoc_init(t_execute *cmd_struct)
 				i++;
 				ft_heredoc_name(cmd_struct, count++);
 				ft_heredoc(cmd_struct->redirects[i], cmd_struct->heredoc_name);
+				if (g_exitcode == 1000)
+					false en g_exitcode 1;
 			}
 			i++;
 		}
