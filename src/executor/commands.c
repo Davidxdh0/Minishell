@@ -16,7 +16,7 @@ void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 {
 	char	*cmd_path;
 	char	**envp_array;
-	
+
 	if (cmd_struct->cmd == NULL)
 		exit(g_exitcode);
 	if (check_builtin(cmd_struct->cmd[0]))
@@ -79,7 +79,6 @@ void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp)
 		exit(ft_perror(NULL, 1, cmd_struct));
 	if (pid[0] == 0)
 		first_child(pipes[0], cmd_struct, envp);
-
 	cmd_struct = middle_child_loop(cmd_struct, envp, pipes, pid);
 	i = cmd_struct->count_cmd - 1;
 	pid[i] = fork();

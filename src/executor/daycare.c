@@ -108,24 +108,3 @@ void	child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i)
 	}
 	free(pipes);
 }
-
-void	exitcode_signals(int status)
-{
-	int	exit_status;
-
-	if (WIFSIGNALED(status) == true)
-	{
-		exit_status = WTERMSIG(status);
-		if (exit_status == 2)
-		{
-			g_exitcode = 130;
-			ft_putstr_fd("\n", 2);
-		}
-		else if (exit_status == 3)
-		{
-			g_exitcode = 131;
-			ft_putstr_fd("Quit: 3", 2);
-			ft_putstr_fd("\n", 2);
-		}
-	}
-}

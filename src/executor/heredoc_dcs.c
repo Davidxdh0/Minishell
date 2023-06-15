@@ -12,21 +12,17 @@
 
 #include "../main/main.h"
 
-void	ft_heredoc_cleanup(t_execute *cmd_struct)
+static bool	realign_heredoc_prompt(void)
 {
-	while (cmd_struct)
-	{
-		if (cmd_struct->heredoc_name)
-		{
-			unlink(cmd_struct->heredoc_name);
-			free(cmd_struct->heredoc_name);
-			cmd_struct->heredoc_name = NULL;
-		}
-		cmd_struct = cmd_struct->next;
-	}
+	printf("\033[1A");
+	printf("\033[K");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	return (false);
 }
 
-void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr)
+static void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr)
 {
 	char	*number;
 
@@ -35,7 +31,7 @@ void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr)
 	free(number);
 }
 
-bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
+static bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
 {
 	char	*line;
 	bool	str;
@@ -43,20 +39,10 @@ bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
 
 	new = NULL;
 	if (g_exitcode == 1000)
-	{
-		g_exitcode = 1;
 		return (false);
-	}
 	line = readline("HereDoc> ");
 	if (!line)
-	{
-		printf("\033[1A");
-    	printf("\033[K");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		str = false;
-	}
+		str = realign_heredoc_prompt();
 	else if (!ft_strcmp(line, eof))
 		str = false;
 	else
@@ -72,7 +58,7 @@ bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
 	return (str);
 }
 
-bool	ft_heredoc(char *eof, char *name, t_envp *new_envp)
+static bool	ft_heredoc(char *eof, char *name, t_envp *new_envp)
 {
 	int		fd;
 	bool	str;
@@ -89,31 +75,31 @@ bool	ft_heredoc(char *eof, char *name, t_envp *new_envp)
 	return (true);
 }
 
-bool	ft_heredoc_init(t_execute *cmd_strc, t_envp *new_envp)
+bool	ft_heredoc_init(t_execute *cmd_s, t_envp *envp)
 {
 	int	i;
 	int	count;
 
 	count = 1;
-	while (cmd_strc)
+	while (cmd_s)
 	{
 		i = 0;
-		cmd_strc->heredoc_name = NULL;
-		while (cmd_strc->redirects && cmd_strc->redirects[i])
+		cmd_s->heredoc_name = NULL;
+		while (cmd_s->redirects && cmd_s->redirects[i])
 		{
-			if (cmd_strc->redirects[i][0] == '<' &&
-				cmd_strc->redirects[i][1] == '<')
+			if (cmd_s->redirects[i][0] == '<' &&
+				cmd_s->redirects[i][1] == '<')
 			{
-				if (cmd_strc->heredoc_name)
-					unlink(cmd_strc->heredoc_name);
+				if (cmd_s->heredoc_name)
+					unlink(cmd_s->heredoc_name);
 				i++;
-				ft_heredoc_name(cmd_strc, count++);
-				if (!ft_heredoc(cmd_strc->redirects[i], cmd_strc->heredoc_name, new_envp))
+				ft_heredoc_name(cmd_s, count++);
+				if (!ft_heredoc(cmd_s->redirects[i], cmd_s->heredoc_name, envp))
 					return (false);
 			}
 			i++;
 		}
-		cmd_strc = cmd_strc->next;
+		cmd_s = cmd_s->next;
 	}
 	return (true);
 }

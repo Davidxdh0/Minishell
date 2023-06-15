@@ -12,6 +12,20 @@
 
 #include "../main/main.h"
 
+void	ft_heredoc_cleanup(t_execute *cmd_struct)
+{
+	while (cmd_struct)
+	{
+		if (cmd_struct->heredoc_name)
+		{
+			unlink(cmd_struct->heredoc_name);
+			free(cmd_struct->heredoc_name);
+			cmd_struct->heredoc_name = NULL;
+		}
+		cmd_struct = cmd_struct->next;
+	}
+}
+
 static bool	count_cmd_structs(t_execute *cmd_struct)
 {
 	t_execute	*head;
@@ -53,6 +67,5 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 	else
 		g_exitcode = 1;
 	ft_heredoc_cleanup(cmd_struct);
-// system("leaks -q minishell");
 	return (envp);
 }
