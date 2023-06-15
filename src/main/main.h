@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 17:12:45 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 21:31:28 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_execute
 	char				**cmd;
 	char				**redirects;
 	int					count_cmd;
+	int					count_red;
 	char				*heredoc_name;
 	struct s_execute	*prev;
 	struct s_execute	*next;
@@ -242,6 +243,9 @@ int			find_variable(char *str);
 char		*expand_word(char*value, t_envp *new_envp);
 void		expand_heredoc_word(char *value, t_envp *new_envp, int fd);
 char		*change_heredoc_str(char *str, int begin, int eind, t_envp *envp);
+void		populate_red(t_execute *new_node, t_line_lst **head_ref, \
+int count_red);
+int			count_redirectss(t_line_lst *head);
 //Syntax
 int			syntax_pipe(t_line_lst *line);
 int			syntax_redirects(t_line_lst *line);

@@ -42,6 +42,7 @@ PARSER_FILES =	lexer.c \
 				parse_list.c \
 				parser_util.c \
 				parser_util2.c \
+				parser_util3.c \
 				list.c \
 				list_util.c \
 				specialchar.c \

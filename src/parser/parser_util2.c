@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 20:42:41 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 21:30:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,6 @@ char	**make_redirects(t_line_lst *line_l)
 	}
 	return (tempstring);
 }
-int	count_redirectss(t_line_lst *head)
-{
-	int i;
-
-	i = 0;
-	while(head != NULL)
-	{
-		if (specials(head, 1))
-			i++;
-		head = head->next;
-	}
-	return (i);
-}
 
 t_execute	*c_node_exec(t_line_lst *head)
 {
@@ -60,9 +47,11 @@ t_execute	*c_node_exec(t_line_lst *head)
 
 	new_node = ft_malloc(sizeof(t_execute));
 	new_node->count_cmd = count_commands(head);
+	new_node->count_red = count_redirectss(head);
 	new_node->cmd = ft_malloc(sizeof(char *) * (new_node->count_cmd + 1));
-	new_node->redirects = NULL;//count_redirects(head);
+	new_node->redirects = ft_malloc(sizeof(char *) * (new_node->count_red + 1));
 	new_node->next = NULL;
+	new_node->prev = NULL;
 	return (new_node);
 }
 
@@ -73,7 +62,8 @@ char	*make_string(t_line_lst *line_lst)
 	tempstring = NULL;
 	if (line_lst->value)
 		tempstring = ft_strdup(line_lst->value);
-	while (line_lst != NULL && (ft_strcmp(line_lst->value, "|") && line_lst->state != 0))
+	while (line_lst != NULL && (ft_strcmp(line_lst->value, "|") && \
+		line_lst->state != 0))
 	{
 		while (line_lst->next != NULL && line_lst->next->state > 0)
 		{
@@ -94,18 +84,15 @@ void	populate_cmd(t_execute *new_node, t_line_lst **head_ref, int count_cmd)
 	{
 		if (!ft_strcmp((*head_ref)->value, "|") && (*head_ref)->state == 0)
 			break ;
-		// if (specials(*head_ref, 1))
-		// {
-		// 	*head_ref = (*head_ref)->next;
-		// 	break ;
-		// }
+		if (specials((*head_ref), 1))
+			break ;
 		if ((*head_ref)->state > 0)
 		{
 			new_node->cmd[k] = make_string(*head_ref);
 			while (*head_ref != NULL && (*head_ref)->state > 0)
 				*head_ref = (*head_ref)->next;
 		}
-		else 
+		else
 		{
 			new_node->cmd[k] = ft_strdup((*head_ref)->value);
 			*head_ref = (*head_ref)->next;
@@ -125,9 +112,9 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 	last = NULL;
 	while (head != NULL)
 	{
-		printf("value = %s\n", head->value);
 		new_node = c_node_exec(head);
 		populate_cmd(new_node, &head, new_node->count_cmd);
+		populate_red(new_node, &head, new_node->count_red);
 		if (last == NULL)
 			cmdlist = new_node;
 		else

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 20:43:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 21:01:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	count_commands(t_line_lst *head)
 		if (specials(temp, 1))
 		{
 			temp = temp->next;
-			i++;
+			i--;
 		}
 		else if (temp->state > 0)
 		{
