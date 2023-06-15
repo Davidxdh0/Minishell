@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/13 22:56:06 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 12:08:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	siginthandlerchild(int sig)
 void	siginthandlerheredoc(int sig)
 {
 	g_exitcode = 1000;
-	rl_replace_line("I'll give you control back when you press enter :)", 50);
+	rl_replace_line("Press enter to continue", 24);
 	rl_on_new_line();
 	rl_redisplay();
 	sig++;
