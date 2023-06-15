@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 21:31:08 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 22:15:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	show(t_execute *cmd)
 
 // show_t_list(line_lst, line);
 // show(cmd);
+// line_lst = combine_quotes(line_lst);
 int	shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
@@ -62,7 +63,6 @@ int	shell(char *line, t_envp *envp)
 	if (syntax_count_quotes(line_lst))
 		return (0);
 	line_lst = variable_expand(line_lst, envp);
-	line_lst = combine_quotes(line_lst);
 	line_lst = remove_quotes(line_lst, filler, filler);
 	line_lst = combine_values(line_lst, line_lst, filler);
 	line_lst = rm_wspace(line_lst, filler, filler);

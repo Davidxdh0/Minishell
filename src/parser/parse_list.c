@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 21:01:20 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 22:14:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ t_line_lst	*remove_quotes(t_line_lst *list, t_line_lst *nh, t_line_lst *prev)
 	while (list != NULL)
 	{
 		next = list->next;
-		if ((list->type == e_quote && list->state == 1) || \
-		(list->type == e_quote && list->state == 2))
+		if ((((list->type == e_quote && list->state == 2)) && \
+			(list->state == 2 && ft_strcmp(list->value, "'"))) || \
+			(list->type == e_quote && list->state == 1))
 		{
 			if (prev != NULL)
 				prev->next = next;
