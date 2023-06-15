@@ -6,48 +6,39 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:33:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 18:51:06 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 12:46:09 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-t_execute	*acco(t_execute *cmds)
+t_execute	*acco(t_execute *cmds, t_execute *head, int num_red, int num_cmd)
 {
 	t_execute	*new_list;
 	t_execute	*current_node;
-	t_execute	*head;
-	int			num_redirects;
-	int			num_commands;
 
 	head = cmds;
-	current_node = NULL;
 	new_list = NULL;
-	num_redirects = 0;
-	if (cmds == NULL)
-		return (NULL);
 	while (cmds != NULL)
 	{
-		num_commands = 0;
-		num_redirects = count_redirects(cmds->cmd);
-		num_commands = ft_arrlen(cmds->cmd) - num_redirects * 2;
+		num_red = count_redirects(cmds->cmd);
+		num_cmd = ft_arrlen(cmds->cmd) - num_red * 2;
 		if (new_list == NULL)
 		{
-			new_list = create_new_node(num_commands, num_redirects);
+			new_list = create_new_node(num_cmd, num_red);
 			current_node = new_list;
 		}
 		else
 		{
-			current_node->next = create_new_node(num_commands, num_redirects);
+			current_node->next = create_new_node(num_cmd, num_red);
 			current_node = current_node->next;
 		}
-		copy_cmd_rdr(current_node, cmds->cmd, num_redirects);
-		if (num_commands <= 0)
+		copy_cmd_rdr(current_node, cmds->cmd, num_red);
+		if (num_cmd <= 0)
 			new_list->cmd = NULL;
 		cmds = cmds->next;
 	}
-	delete_t_exec(head);
-	return (new_list);
+	return (delete_t_exec(head), new_list);
 }
 
 void	copy_cmd_rdr(t_execute *d_node, char **cmd_list, int rd)

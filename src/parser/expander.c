@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/06 16:59:12 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/13 22:31:58 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 	{
 		if (find_variable(temp->value))
 		{
-			if (temp->type == e_var)
+			if (temp->type == e_var && temp->state != 1)
 				str = expand_var(temp->value, new_envp);
 			else if (temp->state == 2 || temp->state == 0)
 				str = expand_word(temp->value, new_envp);

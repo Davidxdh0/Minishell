@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/11 17:31:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 14:50:55 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,12 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 {
 	if (!count_cmd_structs(cmd_struct))
 		return (envp);
+	sig_controller(1);
 	if (ft_heredoc_init(cmd_struct))
 	{
+		sig_controller(2);
+		sig_controller(3);
+		enable_ctrl_c_display();
 		if (cmd_struct->count_cmd > 1)
 			ft_multiple_commands(cmd_struct, envp);
 		else

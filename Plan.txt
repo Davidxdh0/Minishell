@@ -1,8 +1,8 @@
 David
 leaks: valgrind --leak-check=full --show-leak-kinds=definite ./minishell
-signals - ctrl + c, ctr d en ctrl + \
-norminette
-functies kleiner
+
+//valgrind --leak-check=full --show-leak-kinds=definite --child-silent-after-fork=yes ./minishell
+cat | cat | ls
 
 Acco:
 unset

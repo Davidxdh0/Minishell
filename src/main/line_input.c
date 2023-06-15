@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:43 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 18:27:53 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/13 22:54:42 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void	line_reader(char **line, const char *display_name)
 	if (*line == NULL)
 	{
 		g_exitcode = 0;
-		printf("exit\n");
+		printf("\033[1A");
+		printf("\033[K");
+		printf("minishell$ exit\n");
 		exit(1);
 	}
 	if (*line && **line && !str_isspaces(line))

@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/09 18:44:49 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/04/09 18:44:50 by abarteld      ########   odam.nl         */
+/*   Updated: 2023/06/15 15:07:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,19 @@ bool	heredoc_loop(char *eof, int fd)
 {
 	char	*line;
 	bool	str;
-
+	
+	if (g_exitcode == 1000)
+	{
+		g_exitcode = 1;
+		return (false);
+	}
 	line = readline("HereDoc> ");
 	if (!line)
 	{
+		printf("\033[1A");
+    	printf("\033[K");
+		rl_on_new_line();
 		rl_replace_line("", 0);
-		// rl_on_new_line();
 		rl_redisplay();
 		str = false;
 	}
@@ -69,7 +76,7 @@ bool	ft_heredoc(char *eof, char *name)
 	if (fd == -1)
 		exit(ft_perror(name, 1));
 	str = true;
-	while (str == true)
+	while (str == true && g_exitcode != 1000)
 		str = heredoc_loop(eof, fd);
 	close(fd);
 	if (g_exitcode == 1000)

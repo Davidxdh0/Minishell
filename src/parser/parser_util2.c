@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 17:07:57 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/13 15:39:12 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,74 +41,7 @@ char	**make_redirects(t_line_lst *line_l)
 	return (tempstring);
 }
 
-t_execute	*alloc_execute_list(t_line_lst *head)
-{
-	int			k;
-	t_execute	*new_node;
-	t_execute	*cmdlist;
-	t_execute	*last;
-
-	cmdlist = NULL;
-	last = NULL;
-	while (head != NULL)
-	{
-		k = 0;
-		new_node = malloc(sizeof(t_execute));
-		new_node->count_cmd = count_commands(head);
-		new_node->cmd = malloc(sizeof(char *) * (new_node->count_cmd + 1));
-		new_node->redirects = NULL;
-		new_node->next = NULL;
-		while (head != NULL && k < new_node->count_cmd)
-		{
-			if (head->state > 0)
-			{
-				new_node->cmd[k] = make_string(head);
-				while (head != NULL && head->state > 0)
-					head = head->next;
-			}
-			else
-			{
-				new_node->cmd[k] = ft_strdup(head->value);
-				head = head->next;
-			}
-			k++;
-		}
-		new_node->cmd[k] = NULL;
-		if (last == NULL)
-			cmdlist = new_node;
-		else
-			last->next = new_node;
-		last = new_node;
-		if (head != NULL)
-			head = head->next;
-	}
-	return (cmdlist);
-}
-
-// t_execute	*alloc_execute_list(t_line_lst *head)
-// {
-// 	t_execute	*cmdlist;
-// 	t_execute	*last;
-// 	t_execute	*new_node;
-
-// 	cmdlist = NULL;
-// 	last = NULL;
-// 	while (head != NULL)
-// 	{
-// 		new_node = create_execute_nodes(head);
-// 		fill_command_arrays(new_node, &head);
-// 		if (last == NULL)
-// 			cmdlist = new_node;
-// 		else
-// 			last->next = new_node;
-// 		last = new_node;
-// 		if (head != NULL)
-// 			head = head->next;
-// 	}
-// 	return (cmdlist);
-// }
-
-t_execute	*create_execute_nodes(t_line_lst *head)
+t_execute	*c_node_exec(t_line_lst *head)
 {
 	t_execute	*new_node;
 
@@ -118,32 +51,6 @@ t_execute	*create_execute_nodes(t_line_lst *head)
 	new_node->redirects = NULL;
 	new_node->next = NULL;
 	return (new_node);
-}
-
-void	fill_command_arrays(t_execute *new_node, t_line_lst **head_ptr)
-{
-	int			k;
-	t_line_lst	*head;
-
-	k = 0;
-	head = *head_ptr;
-	while (head != NULL && k < new_node->count_cmd)
-	{
-		if (head->state > 0)
-		{
-			new_node->cmd[k] = make_string(head);
-			while (head != NULL && head->state > 0)
-				head = head->next;
-		}
-		else
-		{
-			new_node->cmd[k] = ft_strdup(head->value);
-			head = head->next;
-		}
-		k++;
-	}
-	new_node->cmd[k] = NULL;
-	*head_ptr = head;
 }
 
 char	*make_string(t_line_lst *line_lst)
@@ -163,4 +70,50 @@ char	*make_string(t_line_lst *line_lst)
 		line_lst = line_lst->next;
 	}
 	return (tempstring);
+}
+
+void	populate_cmd(t_execute *new_node, t_line_lst **head_ref, int count_cmd)
+{
+	int	k;
+
+	k = 0;
+	while (*head_ref != NULL && k < count_cmd)
+	{
+		if ((*head_ref)->state > 0)
+		{
+			new_node->cmd[k] = make_string(*head_ref);
+			while (*head_ref != NULL && (*head_ref)->state > 0)
+				*head_ref = (*head_ref)->next;
+		}
+		else
+		{
+			new_node->cmd[k] = ft_strdup((*head_ref)->value);
+			*head_ref = (*head_ref)->next;
+		}
+		k++;
+	}
+	new_node->cmd[k] = NULL;
+}
+
+t_execute	*alloc_execute_list(t_line_lst *head)
+{
+	t_execute	*new_node;
+	t_execute	*cmdlist;
+	t_execute	*last;
+
+	cmdlist = NULL;
+	last = NULL;
+	while (head != NULL)
+	{
+		new_node = c_node_exec(head);
+		populate_cmd(new_node, &head, new_node->count_cmd);
+		if (last == NULL)
+			cmdlist = new_node;
+		else
+			last->next = new_node;
+		last = new_node;
+		if (head != NULL)
+			head = head->next;
+	}
+	return (cmdlist);
 }

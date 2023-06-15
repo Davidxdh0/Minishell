@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 18:27:37 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 12:20:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_line_lst
 
 //parse_list.c
 int			count_commands(t_line_lst *head);
+//long
 t_line_lst	*combine_values(t_line_lst *list, t_line_lst \
 	*cur, t_line_lst *next);
 t_line_lst	*remove_quotes(t_line_lst *line_lst, \
@@ -113,8 +114,13 @@ int			specials(t_line_lst *lst, int i);
 char		**make_redirects(t_line_lst *line_lst);
 t_execute	*alloc_execute_list(t_line_lst *head);
 char		*make_string(t_line_lst *line_lst);
+//long
+void		populate_cmd(t_execute *new_node, t_line_lst **head_ref, \
+int count_cmd);
+t_execute	*c_node_exec(t_line_lst *head);
+
 //parser_util.c
-t_execute	*acco(t_execute *cmds);
+t_execute	*acco(t_execute *cmds, t_execute *head, int n_red, int n_cmd);
 void		copy_cmd_rdr(t_execute *d_node, char **cmd_list, int rd);
 t_execute	*create_new_node(int num_commands, int num_redirects);
 int			count_redirects(char **cmd_list);
@@ -138,6 +144,7 @@ int			quotes(t_line_lst **line_lst, char c, int state, int flag);
 
 // expander.c
 void		delete_node(t_line_lst *node_to_delete);
+//long
 t_line_lst	*rm_wspace(t_line_lst *line_lst, \
 t_line_lst *new_head, t_line_lst *prev);
 t_line_lst	*word_list(t_line_lst *line);
@@ -174,6 +181,7 @@ t_envp		*ft_single_command(t_execute *cmd_struct, t_envp *envp);
 void		ft_multiple_commands(t_execute *cmd_struct, t_envp *envp);
 //Daycare
 void		first_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
+//long
 void		middle_child(int *pipe_in, int *pipe_out, \
 	t_execute *cmd_struct, t_envp *envp);
 void		last_child(int *pipe, t_execute *cmd_struct, t_envp *envp);
@@ -219,8 +227,8 @@ char		**envp_to_array(t_envp *envp);
 // Envp Utils
 int			check_envp_value(char *str);
 bool		increase_shlvl(t_envp *envp);
-// void		show_envp_struct(t_envp *envp);
-// void		show_envp_node(t_envp *envp);
+void		show_envp_struct(t_envp *envp);
+void		show_envp_node(t_envp *envp);
 // Utils
 int			ft_perror(char *str, int err);
 void		*ft_malloc(size_t size);
