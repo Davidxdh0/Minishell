@@ -12,14 +12,10 @@
 
 #include "../main/main.h"
 
-int	perror_return(char *msg2)
+int	perror_return(char *msg)
 {
-	char	*msg;
-
-	msg = ft_strdup("minishell: syntax error near unexpected token ");
-	write(2, msg, ft_strlen(msg));
-	if (msg)
-		write(2, msg2, ft_strlen(msg2));
-	write(2, "\n", 1);
+	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
 	return (1);
 }

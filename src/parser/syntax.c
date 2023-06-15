@@ -12,32 +12,12 @@
 
 #include "../main/main.h"
 
-// printf("syntax error near unexpected token `|'\n");
 int	syntax_pipe(t_line_lst *line)
 {
 	if (ft_strcmp(line->value, "|"))
 		return (1);
 	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
 	{
-		return (1);
-	}
-	return (0);
-}
-
-int	syntax_quotes(t_line_lst *line, t_node_type type)
-{
-	char	*str;
-
-	while (line)
-	{
-		line = line->next;
-		if (!line || line->type == (int)type)
-			break ;
-	}
-	if (!line)
-	{
-		str = ft_strdup("minishell: Quotes are not balanced");
-		write(2, str, ft_strlen(str));
 		return (1);
 	}
 	return (0);
@@ -62,7 +42,7 @@ int	syntax_count_quotes(t_line_lst *line)
 	}
 	if (quote % 2 == 0 && dquote % 2 == 0)
 		return (0);
-	write(2, "minishell: Quotes are not balanced\n", 36);
+	ft_putstr_fd("minishell: Quotes are not balanced\n", 2);
 	return (1);
 }
 
