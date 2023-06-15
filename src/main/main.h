@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 21:31:28 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 23:02:44 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ void		sig_controller(int flag);
 void		signal_bs(int sig);
 void		siginthandlerheredoc(int sig);
 void		siginthandlerchild(int sig);
+void		signal_bs1(int sig);
 
 //signals_utils.c
 void		disable_ctrl_c_display(void);

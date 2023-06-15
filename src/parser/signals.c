@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 17:43:32 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 23:05:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	sig_controller(int flag)
 	if (flag == 3)
 		signal(SIGQUIT, signal_bs);
 	if (flag == 4)
-		signal(SIGQUIT, signal_bs);
+		signal(SIGQUIT, signal_bs1);
 }
 
 void	siginthandler(int sig)
@@ -55,9 +55,13 @@ void	siginthandler(int sig)
 
 void	siginthandlerchild(int sig)
 {
-	g_exitcode = 130;
-	rl_replace_line("", 1);
-	sig++;
+	if (sig == SIGINT)
+	{
+		g_exitcode = 130;
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
 }
 
 void	siginthandlerheredoc(int sig)
@@ -71,5 +75,7 @@ void	siginthandlerheredoc(int sig)
 
 void	signal_bs(int sig)
 {
+	ft_putstr_fd("Quit: 3", 2);
+	ft_putstr_fd("\n", 2);
 	sig++;
 }

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 21:30:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 23:02:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,9 @@ int	count_redirectss(t_line_lst *head)
 		head = head->next;
 	}
 	return (i);
+}
+
+void	signal_bs1(int sig)
+{
+	sig++;
 }
