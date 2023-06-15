@@ -19,7 +19,7 @@ void	ft_pwd(int fd)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_perror("getcwd: ", 1);
+		ft_perror("getcwd: ", 1, NULL);
 		return ;
 	}
 	ft_putstr_fd(cwd, fd);

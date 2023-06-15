@@ -53,24 +53,6 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 	else
 		g_exitcode = 1;
 	ft_heredoc_cleanup(cmd_struct);
-// system("leaks -q minishell");
+system("leaks -q minishell");
 	return (envp);
 }
-
-// void	exitcode_signals(int status)
-// {
-// 	int	exit_status;
-
-// 	if (WIFSIGNALED(status) == true)
-// 	{
-// 		exit_status = WTERMSIG(status);
-// 		if (exit_status == 2)
-// 			g_exitcode = 130;
-// 		else if (exit_status == 3)
-// 		{
-// 			g_exitcode = 131;
-// 			ft_putstr_fd("Quit: 3", 2);
-// 		}
-// 		ft_putstr_fd("\n", 2);
-// 	}
-// }

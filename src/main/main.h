@@ -230,7 +230,7 @@ bool		increase_shlvl(t_envp *envp);
 void		show_envp_struct(t_envp *envp);
 void		show_envp_node(t_envp *envp);
 // Utils
-int			ft_perror(char *str, int err);
+int			ft_perror(char *str, int error_number, t_execute *cmd_struct);
 void		*ft_malloc(size_t size);
 char		**free_char_array(char **arr);
 char		*ft_str_fuse(char *s1, char *s2);

@@ -56,15 +56,14 @@ void	siginthandler(int sig)
 void	siginthandlerchild(int sig)
 {
 	g_exitcode = 130;
-	rl_replace_line("", 0);
+	rl_replace_line("", 1);
 	sig++;
 }
 
 void	siginthandlerheredoc(int sig)
 {
 	
-	rl_replace_line("Press enter to continue exitcode = ", 24);
-	printf("%d", g_exitcode);
+	rl_replace_line("Press enter to continue...", 0);
 	g_exitcode = 1000;
 	rl_on_new_line();
 	rl_redisplay();
