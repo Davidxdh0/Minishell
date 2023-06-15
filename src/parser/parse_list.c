@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 13:52:11 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 20:43:15 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,14 @@ int	count_commands(t_line_lst *head)
 
 	temp = head;
 	i = 0;
-	while (temp != NULL && ft_strncmp(temp->value, "|", 1))
+	while (temp != NULL)
 	{
-		if (temp->state > 0)
+		if (specials(temp, 1))
+		{
+			temp = temp->next;
+			i++;
+		}
+		else if (temp->state > 0)
 		{
 			while (temp != NULL && temp->state > 0)
 				temp = temp->next;
@@ -29,8 +34,6 @@ int	count_commands(t_line_lst *head)
 			if (!temp)
 				return (i);
 		}
-		if (!ft_isredirect(temp->value))
-			printf("thisneverhappens");
 		if (temp != NULL)
 			temp = temp->next;
 		i++;
@@ -68,7 +71,7 @@ t_line_lst	*remove_quotes(t_line_lst *list, t_line_lst *nh, t_line_lst *prev)
 
 int	specials(t_line_lst *lst, int i)
 {	
-	if (i >= 1)
+	if (i >= 1 && lst->state == 0)
 	{
 		if (lst->type == e_delimiter)
 			return (1);
@@ -81,7 +84,7 @@ int	specials(t_line_lst *lst, int i)
 		if (lst->type == e_pipe)
 			return (1);
 	}
-	if (i >= 2)
+	if (i >= 2 && lst->state == 0)
 	{
 		if (lst->next->type == e_delimiter || lst->next->type == e_redirect_i)
 			return (1);

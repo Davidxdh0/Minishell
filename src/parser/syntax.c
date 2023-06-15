@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 15:09:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 19:39:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	syntax_pipe(t_line_lst *line)
 {
 	if (ft_strcmp(line->value, "|"))
 		return (1);
-	if (line->prev == NULL || line->next == NULL || line->next->type == e_pipe)
+	if (line->prev == NULL || line->next == NULL || \
+		(line->next->type == e_pipe && line->next->state == 0))
 	{
 		return (1);
 	}
@@ -82,11 +83,12 @@ int	syntax_check(t_line_lst *line)
 	temp = line;
 	while (temp != NULL)
 	{
-		if (temp->type == e_pipe)
+		if (temp->type == e_pipe && temp->state == 0)
 			if (syntax_pipe(temp))
 				return (perror_return("`|'"));
-		if (temp->type == e_redirect_i || temp->type == e_append || \
-			temp->type == e_redirect_o || temp->type == e_delimiter)
+		if ((temp->type == e_redirect_i || temp->type == e_append || \
+			temp->type == e_redirect_o || temp->type == e_delimiter \
+			) && temp->state == 0)
 		{
 			if (ft_strcmp(temp->value, ">") || ft_strcmp(temp->value, ">>") \
 			|| ft_strcmp(temp->value, "<") || ft_strcmp(temp->value, "<<"))
