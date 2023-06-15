@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 14:50:55 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 15:44:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 	if (!count_cmd_structs(cmd_struct))
 		return (envp); //do some no command redirect testing
 	sig_controller(1);
-	ft_heredoc_init(cmd_struct);
+	ft_heredoc_init(cmd_struct, envp);
 	sig_controller(2);
 	sig_controller(3);
 	enable_ctrl_c_display();

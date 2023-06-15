@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/13 22:31:58 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 16:42:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,12 @@ char	*expand_word(char*value, t_envp *new_envp)
 
 	i = 0;
 	count = count_words_expander(value);
-	while (count > 0 && value[i] != '\0')
+	while (count >= 0 && value[i] != '\0')
 	{
 		while (value[i] == '$')
 			i++;
 		if (value[i] != '\0' && value[i] == '?')
-		{
-			g_exitcode = 5;
 			return (value = ft_strdup(ft_itoa(g_exitcode)));
-		}
 		else if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
 		{
 			begin = i;
@@ -100,9 +97,11 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 	char	*env;
 
 	len = ft_strlen(str);
-	env = ft_substr(str, begin + 1, eind - begin - 1);
+	env = ft_substr(str, begin, eind - begin - 1);
+	printf("str = %s, env = %s\n", str, env);
 	len -= (ft_strlen(env));
 	env = get_new_env(env, envp);
+	printf("str = %s, env = %s\n", str, env);
 	if (!env)
 		return ("");
 	env = ft_substr(env, 1, ft_strlen(env));

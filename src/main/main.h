@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 12:20:15 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 16:55:39 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,8 @@ bool		long_atoi(const char *str, long *number);
 bool		redirect_infile(char **list, char *name);
 bool		redirect_outfile(char **list);
 // HereDoc
-void		ft_heredoc_init(t_execute *cmd_struct);
-void		ft_heredoc(char *eof, char *name);
+void		ft_heredoc_init(t_execute *cmd_struct, t_envp *new_envp);
+void		ft_heredoc(char *eof, char *name, t_envp *new_envp);
 void		ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
 void		ft_heredoc_cleanup(t_execute *cmd_struct);
 // Envp
@@ -239,6 +239,9 @@ void		exitcode_signals(int status); //Move to signals?
 char		*get_new_env(char *value, t_envp *envp);
 int			count_words_expander(char *value);
 int			find_variable(char *str);
+char		*expand_word(char*value, t_envp *new_envp);
+void		expand_heredoc_word(char *value, t_envp *new_envp, int fd);
+char		*change_heredoc_str(char *str, int begin, int eind, t_envp *envp);
 //Syntax
 int			syntax_pipe(t_line_lst *line);
 int			syntax_redirects(t_line_lst *line);
