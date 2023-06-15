@@ -43,7 +43,8 @@ bool	heredoc_loop(char *eof, int fd)
 	line = readline("HereDoc> ");
 	if (!line)
 	{
-		rl_on_new_line();
+		rl_replace_line("", 0);
+		// rl_on_new_line();
 		rl_redisplay();
 		str = false;
 	}
@@ -59,7 +60,7 @@ bool	heredoc_loop(char *eof, int fd)
 	return (str);
 }
 
-void	ft_heredoc(char *eof, char *name)
+bool	ft_heredoc(char *eof, char *name)
 {
 	int		fd;
 	bool	str;
@@ -71,49 +72,36 @@ void	ft_heredoc(char *eof, char *name)
 	while (str == true)
 		str = heredoc_loop(eof, fd);
 	close(fd);
+	if (g_exitcode == 1000)
+		return (false);
+	return (true);
 }
-	// {
-	// 	line = readline("HereDoc> ");
-	// 	if (!line)
-	// 	{
-	// 		rl_replace_line("", 0);
-	// 		rl_on_new_line();
-	// 		rl_redisplay();
-	// 		str = false;
-	// 	}
-	// 	else if (!ft_strcmp(line, eof))
-	// 		str = false;
-	// 	else
-	// 	{
-	// 		ft_putstr_fd(line, fd);
-	// 		write(fd, "\n", 1);
-	// 	}
-	// 	free(line);
-	// }
 
-void	ft_heredoc_init(t_execute *cmd_struct)
+bool	ft_heredoc_init(t_execute *cmd_strc)
 {
 	int	i;
 	int	count;
 
 	count = 1;
-	while (cmd_struct)
+	while (cmd_strc)
 	{
 		i = 0;
-		cmd_struct->heredoc_name = NULL;
-		while (cmd_struct->redirects && cmd_struct->redirects[i])
+		cmd_strc->heredoc_name = NULL;
+		while (cmd_strc->redirects && cmd_strc->redirects[i])
 		{
-			if (cmd_struct->redirects[i][0] == '<' &&
-				cmd_struct->redirects[i][1] == '<')
+			if (cmd_strc->redirects[i][0] == '<' &&
+				cmd_strc->redirects[i][1] == '<')
 			{
-				if (cmd_struct->heredoc_name)
-					unlink(cmd_struct->heredoc_name);
+				if (cmd_strc->heredoc_name)
+					unlink(cmd_strc->heredoc_name);
 				i++;
-				ft_heredoc_name(cmd_struct, count++);
-				ft_heredoc(cmd_struct->redirects[i], cmd_struct->heredoc_name);
+				ft_heredoc_name(cmd_strc, count++);
+				if (!ft_heredoc(cmd_strc->redirects[i], cmd_strc->heredoc_name))
+					return (false);
 			}
 			i++;
 		}
-		cmd_struct = cmd_struct->next;
+		cmd_strc = cmd_strc->next;
 	}
+	return (true);
 }

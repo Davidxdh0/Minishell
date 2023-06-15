@@ -59,7 +59,7 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 		only_child(cmd_struct, envp);
 	waitpid(pid, &status, 0);
 	g_exitcode = WEXITSTATUS(status);
-	exitcode_signals(status);
+	// exitcode_signals(status);
 	return (envp);
 }
 

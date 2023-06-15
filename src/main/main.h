@@ -206,8 +206,8 @@ bool		long_atoi(const char *str, long *number);
 bool		redirect_infile(char **list, char *name);
 bool		redirect_outfile(char **list);
 // HereDoc
-void		ft_heredoc_init(t_execute *cmd_struct);
-void		ft_heredoc(char *eof, char *name);
+bool		ft_heredoc_init(t_execute *cmd_struct);
+bool		ft_heredoc(char *eof, char *name);
 void		ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
 void		ft_heredoc_cleanup(t_execute *cmd_struct);
 // Envp

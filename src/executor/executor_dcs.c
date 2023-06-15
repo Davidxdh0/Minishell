@@ -37,32 +37,36 @@ static bool	count_cmd_structs(t_execute *cmd_struct)
 
 t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 {
-// system("leaks -q minishell");
-// printf("\n\tStarted Executing\n");
-// t_execute	*tmp;
-// tmp = cmd_struct;
-// while (tmp)
-// {
-// 	printf("cmd = %p\n", tmp->cmd);
-// 	tmp = tmp->next;	
-// }
-// printf("cmd[0] = %p\n", cmd_struct->cmd[0]);
 	if (!count_cmd_structs(cmd_struct))
-		return (envp); //do some no command redirect testing
-	ft_heredoc_init(cmd_struct);
-	if (cmd_struct->count_cmd > 1)
-		ft_multiple_commands(cmd_struct, envp);
+		return (envp);
+	if (ft_heredoc_init(cmd_struct))
+	{
+		if (cmd_struct->count_cmd > 1)
+			ft_multiple_commands(cmd_struct, envp);
+		else
+			envp = ft_single_command(cmd_struct, envp);
+	}
 	else
-		envp = ft_single_command(cmd_struct, envp);
+		g_exitcode = 1;
 	ft_heredoc_cleanup(cmd_struct);
-// printf("\tFinished Executing\n\n");
 // system("leaks -q minishell");
 	return (envp);
 }
 
-// 1, regular failure
-// 127, command not found
-// 130, signals?
-// 131, signals?
-// 255, exit shit??
-// 258 syntax error
+// void	exitcode_signals(int status)
+// {
+// 	int	exit_status;
+
+// 	if (WIFSIGNALED(status) == true)
+// 	{
+// 		exit_status = WTERMSIG(status);
+// 		if (exit_status == 2)
+// 			g_exitcode = 130;
+// 		else if (exit_status == 3)
+// 		{
+// 			g_exitcode = 131;
+// 			ft_putstr_fd("Quit: 3", 2);
+// 		}
+// 		ft_putstr_fd("\n", 2);
+// 	}
+// }
