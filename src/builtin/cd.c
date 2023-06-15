@@ -31,7 +31,7 @@ static bool	cd_update_oldpwd(t_envp *envp)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_perror("getcwd: ", 1);
+		ft_perror("getcwd: ", 1, NULL);
 		return (false);
 	}
 	if (find_env_in_list(envp, "OLDPWD"))
@@ -52,7 +52,7 @@ static bool	cd_update_pwd(t_envp *envp)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_perror("getcwd: ", 1);
+		ft_perror("getcwd: ", 1, NULL);
 		return (false);
 	}
 	if (find_env_in_list(envp, "PWD"))
@@ -72,6 +72,6 @@ void	ft_cd(t_execute *cmd_struct, t_envp *envp)
 	if (chdir(cmd_struct->cmd[1]) == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
-		ft_perror(cmd_struct->cmd[1], 1);
+		ft_perror(cmd_struct->cmd[1], 1, NULL);
 	}
 }

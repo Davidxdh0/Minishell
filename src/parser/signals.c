@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 17:35:17 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/15 17:37:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ void	siginthandler(int sig)
 void	siginthandlerchild(int sig)
 {
 	g_exitcode = 130;
-	// write(1, "\n", 1);
-	rl_replace_line("", 0);
+	rl_replace_line("", 1);
 	sig++;
 }
 
 void	siginthandlerheredoc(int sig)
 {
-	rl_replace_line("Press enter to continue", 24);
+	
+	rl_replace_line("Press enter to continue...", 0);
 	g_exitcode = 1000;
 	rl_on_new_line();
 	rl_redisplay();

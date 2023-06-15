@@ -18,17 +18,19 @@ void	*ft_malloc(size_t size)
 
 	ptr = malloc(size);
 	if (!ptr)
-		exit(ft_perror(NULL, errno));
+		exit(ft_perror(NULL, errno, NULL));
 	return (ptr);
 }
 
-int	ft_perror(char *str, int error_number)
+int	ft_perror(char *str, int error_number, t_execute *cmd_struct)
 {
 	g_exitcode = error_number;
 	ft_putstr_fd("minishell: ", 2);
 	if (str && !str[0])
 		ft_putstr_fd(": ", 2);
 	perror(str);
+	if (cmd_struct)
+		ft_heredoc_cleanup(cmd_struct);
 	return (error_number);
 }
 

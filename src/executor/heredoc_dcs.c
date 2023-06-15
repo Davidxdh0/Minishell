@@ -79,7 +79,7 @@ bool	ft_heredoc(char *eof, char *name, t_envp *new_envp)
 
 	fd = open(name, O_WRONLY | O_CREAT, 0644);
 	if (fd == -1)
-		exit(ft_perror(name, 1));
+		return (ft_perror(name, 1, NULL), false);
 	str = true;
 	while (str == true && g_exitcode != 1000)
 		str = heredoc_loop(eof, fd, new_envp);

@@ -19,9 +19,9 @@ static int	redirect_infile_extended(char *name, int *i, bool *file)
 	*i += 1;
 	fd = open(name, O_RDONLY);
 	if (fd == -1)
-		exit(ft_perror(name, 1));
+		exit(ft_perror(name, 1, NULL));
 	if (dup2(fd, STDIN_FILENO) == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1, NULL));
 	close(fd);
 	g_exitcode = 0;
 	*file = true;
@@ -45,9 +45,9 @@ bool	redirect_infile(char **list, char *heredoc_name)
 			i++;
 			fd = open(heredoc_name, O_RDONLY);
 			if (fd == -1)
-				exit(ft_perror(list[i], 1));
+				exit(ft_perror(list[i], 1, NULL));
 			if (dup2(fd, STDIN_FILENO) == -1)
-				exit(ft_perror(NULL, 1));
+				exit(ft_perror(NULL, 1, NULL));
 			close(fd);
 			g_exitcode = 0;
 			file = true;
@@ -64,9 +64,9 @@ static int	redirect_outfile_extended(char *name, int *i, bool *file)
 	*i += 1;
 	fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		exit(ft_perror(name, 1));
+		exit(ft_perror(name, 1, NULL));
 	if (dup2(fd, STDOUT_FILENO) == -1)
-		exit(ft_perror(NULL, 1));
+		exit(ft_perror(NULL, 1, NULL));
 	close(fd);
 	g_exitcode = 0;
 	(*file) = true;
@@ -90,9 +90,9 @@ bool	redirect_outfile(char **list)
 			i++;
 			fd = open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (fd == -1)
-				exit(ft_perror(list[i], 1));
+				exit(ft_perror(list[i], 1, NULL));
 			if (dup2(fd, STDOUT_FILENO) == -1)
-				exit(ft_perror(NULL, 1));
+				exit(ft_perror(NULL, 1, NULL));
 			close(fd);
 			g_exitcode = 0;
 			file = true;
