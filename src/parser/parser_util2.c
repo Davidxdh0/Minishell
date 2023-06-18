@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 21:30:47 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 17:49:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,22 @@ char	**make_redirects(t_line_lst *line_l)
 
 t_execute	*c_node_exec(t_line_lst *head)
 {
-	t_execute	*new_node;
+	t_execute	*node;
 
-	new_node = ft_malloc(sizeof(t_execute));
-	new_node->count_cmd = count_commands(head);
-	new_node->count_red = count_redirectss(head);
-	new_node->cmd = ft_malloc(sizeof(char *) * (new_node->count_cmd + 1));
-	new_node->redirects = ft_malloc(sizeof(char *) * (new_node->count_red + 1));
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	return (new_node);
+	node = ft_malloc(sizeof(t_execute));
+	node->count_cmd = count_commands(head);
+	node->count_red = count_redirectss(head);
+	if (node->count_cmd > 0)
+		node->cmd = ft_malloc(sizeof(char *) * (node->count_cmd + 1));
+	else
+		node->cmd = NULL;
+	if (node->count_red > 0)
+		node->redirects = ft_malloc(sizeof(char *) * (node->count_red + 1));
+	else
+		node->redirects = NULL;
+	node->next = NULL;
+	node->prev = NULL;
+	return (node);
 }
 
 char	*make_string(t_line_lst *line_lst)
@@ -113,8 +119,10 @@ t_execute	*alloc_execute_list(t_line_lst *head)
 	while (head != NULL)
 	{
 		new_node = c_node_exec(head);
-		populate_cmd(new_node, &head, new_node->count_cmd);
-		populate_red(new_node, &head, new_node->count_red);
+		if (new_node->count_cmd > 0)
+			populate_cmd(new_node, &head, new_node->count_cmd);
+		if (new_node->count_red > 0)
+			populate_red(new_node, &head, new_node->count_red);
 		if (last == NULL)
 			cmdlist = new_node;
 		else

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 22:14:08 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 17:49:19 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,31 @@ int	count_commands(t_line_lst *head)
 	return (i);
 }
 
-t_line_lst	*remove_quotes(t_line_lst *list, t_line_lst *nh, t_line_lst *prev)
+t_line_lst	*remove_quotes(t_line_lst *ls, t_line_lst *nh, t_line_lst *prev)
 {
 	t_line_lst	*next;
 
-	while (list != NULL)
+	while (ls != NULL)
 	{
-		next = list->next;
-		if ((((list->type == e_quote && list->state == 2)) && \
-			(list->state == 2 && ft_strcmp(list->value, "'"))) || \
-			(list->type == e_quote && list->state == 1))
+		next = ls->next;
+		if ((((ls->type == e_quote && ls->state == 2)) && \
+			(ls->state == 2 && ft_strcmp(ls->value, "'"))) || ((ls->type \
+			== e_quote && ls->state == 1) && ft_strcmp(ls->value,"\"")))
 		{
 			if (prev != NULL)
 				prev->next = next;
 			if (next != NULL)
 				next->prev = prev;
-			free(list->value);
-			free(list);
+			free(ls->value);
+			free(ls);
 		}
 		else
 		{
 			if (nh == NULL)
-				nh = list;
-			prev = list;
+				nh = ls;
+			prev = ls;
 		}
-		list = next;
+		ls = next;
 	}
 	return (nh);
 }
