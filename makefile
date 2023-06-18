@@ -1,7 +1,7 @@
 NAME = minishell
 
 FLAGS = -Wall -Wextra
-FLAGS += -Werror -g
+FLAGS += -Werror
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
@@ -75,7 +75,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(INC) $(READLINE_INC) -c -o $@ $<
 
-#libft
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
