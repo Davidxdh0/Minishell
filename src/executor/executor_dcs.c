@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/19 15:04:30 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 22:59:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 19:01:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 	else
 		g_exitcode = 1;
 	ft_heredoc_cleanup(cmd_struct);
-system("leaks -q minishell");
+// system("leaks -q minishell");
 	return (envp);
 }

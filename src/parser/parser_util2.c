@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/18 18:12:52 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 19:16:49 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_execute	*c_node_exec(t_line_lst *head)
 char	*make_string(t_line_lst *line_lst)
 {
 	char	*tempstring;
+	char	*temp;	
 
 	tempstring = NULL;
 	if (line_lst->value)
@@ -74,7 +75,14 @@ char	*make_string(t_line_lst *line_lst)
 		while (line_lst->next != NULL && line_lst->next->state > 0)
 		{
 			line_lst = line_lst->next;
-			tempstring = ft_strjoin(tempstring, line_lst->value);
+			temp = ft_strjoin(tempstring, line_lst->value);
+			if (temp == NULL)
+			{
+				free(tempstring);
+				return (NULL);
+			}
+			free(tempstring);
+			tempstring = temp;
 		}
 		line_lst = line_lst->next;
 	}

@@ -1,7 +1,7 @@
 NAME = minishell
 
 FLAGS = -Wall -Wextra
-FLAGS += -Werror
+FLAGS += -Werror -g
 # FLAGS += -g -fsanitize=address
 SRC_DIR = src
 OBJ_DIR = obj
