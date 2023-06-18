@@ -24,7 +24,7 @@ static char	*remove_plus_from_str(char *cmd)
 
 static char	*export_appended(char *line, char *cmd)
 {
-	int 	line_value;
+	int		line_value;
 	int		value;
 	char	*str;
 
