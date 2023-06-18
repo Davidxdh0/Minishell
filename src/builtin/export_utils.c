@@ -32,7 +32,7 @@ static char	*export_appended(char *line, char *cmd)
 	value = check_envp_value(cmd);
 	if (!line_value)
 	{
-		str = ft_str_fuse(ft_strjoin(line, "+="), \
+		str = ft_str_fuse(ft_strjoin(line, "="), \
 					ft_substr(cmd, value + 1, ft_strlen(cmd) - (value + 1)));
 		free(line);
 	}
