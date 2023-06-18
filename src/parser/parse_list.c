@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/18 17:49:19 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 18:13:27 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	count_commands(t_line_lst *head)
 	i = 0;
 	while (temp != NULL)
 	{
-		if (specials(temp, 1))
+		if (specials(temp, 1) || temp->type == e_file)
 		{
 			temp = temp->next;
 			i--;
@@ -50,7 +50,7 @@ t_line_lst	*remove_quotes(t_line_lst *ls, t_line_lst *nh, t_line_lst *prev)
 		next = ls->next;
 		if ((((ls->type == e_quote && ls->state == 2)) && \
 			(ls->state == 2 && ft_strcmp(ls->value, "'"))) || ((ls->type \
-			== e_quote && ls->state == 1) && ft_strcmp(ls->value,"\"")))
+			== e_quote && ls->state == 1) && ft_strcmp(ls->value, "\"")))
 		{
 			if (prev != NULL)
 				prev->next = next;
