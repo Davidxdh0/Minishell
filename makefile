@@ -31,7 +31,8 @@ BUILTIN_FI  =	builtin.c \
 				env.c \
 				pwd.c \
 				unset.c \
-				export.c
+				export.c \
+				export_utils.c
 
 MAIN_FILES =	main.c \
 				line_input.c 

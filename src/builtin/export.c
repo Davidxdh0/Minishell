@@ -12,11 +12,6 @@
 
 #include "../main/main.h"
 
-// cant start with a number
-// cant have special characters
-// += (dont need to handle)
-// sorting (not handling)
-
 static bool	export_characters(char c, bool start, char *str)
 {
 	if (start == true)
@@ -75,7 +70,7 @@ static bool	ft_export_validation(char *cmd, t_export *target)
 
 /*
 As It Turns Out, Calling Export Without Any Arguments Doesn't Need To Display
-Anything. The Current Bash Behaviour Is Technically Undefined.
+Anything. The Current Bash Behaviour Is Technically Undefined Behaviour.
 */
 static void	export_argless(t_envp *envp, int fd)
 {

@@ -50,7 +50,7 @@ t_line_lst	*remove_quotes(t_line_lst *ls, t_line_lst *nh, t_line_lst *prev)
 		next = ls->next;
 		if ((((ls->type == e_quote && ls->state == 2)) && \
 			(ls->state == 2 && ft_strcmp(ls->value, "'"))) || ((ls->type \
-			== e_quote && ls->state == 1) && ft_strcmp(ls->value,"\"")))
+			== e_quote && ls->state == 1) && ft_strcmp(ls->value, "\"")))
 		{
 			if (prev != NULL)
 				prev->next = next;
