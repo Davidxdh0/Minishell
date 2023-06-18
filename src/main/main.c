@@ -100,8 +100,6 @@ int	main(int argc, char *argv[], char **original_envp)
 			shell(line, envp);
 			free(line);
 		}
-// system("leaks -q minishell");
 	}
-// system("leaks -q minishell");
 	return (0);
 }

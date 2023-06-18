@@ -67,6 +67,5 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 	else
 		g_exitcode = 1;
 	ft_heredoc_cleanup(cmd_struct);
-// system("leaks -q minishell");
 	return (envp);
 }
