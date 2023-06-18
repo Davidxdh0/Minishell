@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 16:42:04 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 19:44:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,8 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 
 	len = ft_strlen(str);
 	env = ft_substr(str, begin, eind - begin - 1);
-	printf("str = %s, env = %s\n", str, env);
 	len -= (ft_strlen(env));
 	env = get_new_env(env, envp);
-	printf("str = %s, env = %s\n", str, env);
 	if (!env)
 		return ("");
 	env = ft_substr(env, 1, ft_strlen(env));

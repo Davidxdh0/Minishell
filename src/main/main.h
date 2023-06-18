@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 23:02:44 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 19:43:21 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ char		*make_string(t_line_lst *line_lst);
 void		populate_cmd(t_execute *new_node, t_line_lst **head_ref, \
 int count_cmd);
 t_execute	*c_node_exec(t_line_lst *head);
+void		free_single_node(t_line_lst *temp);
 
 //parser_util.c
 t_execute	*acco(t_execute *cmds, t_execute *head, int n_red, int n_cmd);

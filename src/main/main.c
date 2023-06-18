@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/18 19:20:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 19:44:58 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,32 @@ int	ft_isredirect(char *str)
 	return (0);
 }
 
-void	show(t_execute *cmd)
-{
-	int	i;
+// void	show(t_execute *cmd)
+// {
+// 	int	i;
 
-	printf("\n");
-	while (cmd != NULL)
-	{
-		i = 0;
-		while (cmd->cmd != NULL && cmd->cmd[i] != NULL)
-		{
-			printf("cmd[%d] = %s\n", i, cmd->cmd[i]);
-			i++;
-		}
-		i = 0;
-		if (cmd->redirects != NULL && cmd->redirects[0] != NULL)
-		{
-			while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
-			{
-				printf("redir = %s\n", cmd->redirects[i]);
-				i++;
-			}
-		}
-		cmd = cmd->next;
-		printf("\n");
-	}
-}
+// 	printf("\n");
+// 	while (cmd != NULL)
+// 	{
+// 		i = 0;
+// 		while (cmd->cmd != NULL && cmd->cmd[i] != NULL)
+// 		{
+// 			printf("cmd[%d] = %s\n", i, cmd->cmd[i]);
+// 			i++;
+// 		}
+// 		i = 0;
+// 		if (cmd->redirects != NULL && cmd->redirects[0] != NULL)
+// 		{
+// 			while (cmd->redirects != NULL && cmd->redirects[i] != NULL)
+// 			{
+// 				printf("redir = %s\n", cmd->redirects[i]);
+// 				i++;
+// 			}
+// 		}
+// 		cmd = cmd->next;
+// 		printf("\n");
+// 	}
+// }
 
 // show_t_list(line_lst, line);
 // show(cmd);
