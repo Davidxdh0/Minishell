@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 23:02:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/18 18:12:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	count_redirectss(t_line_lst *head)
 	int	i;
 
 	i = 0;
-	while (head != NULL)
+	while (head != NULL && ft_strcmp(head->value, "|"))
 	{
-		if (specials(head, 1))
+		if (specials(head, 1) && ft_strcmp(head->value, "|"))
 		{
 			i++;
 			i++;
