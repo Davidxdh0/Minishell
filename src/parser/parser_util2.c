@@ -26,7 +26,7 @@ char	**make_redirects(t_line_lst *line_l)
 			i++;
 		temp = temp->next;
 	}
-	tempstring = malloc(sizeof(char **) * i + 1);
+	tempstring = ft_malloc(sizeof(char **) * i + 1);
 	temp = line_l;
 	i = 0;
 	while (line_l != NULL && ft_strncmp(line_l->value, "|", 1))

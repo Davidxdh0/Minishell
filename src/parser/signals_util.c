@@ -39,7 +39,7 @@ char	*combine_thestring(char *first, char *second)
 
 	len = ft_strlen(first);
 	len2 = ft_strlen(second);
-	str = malloc(sizeof(char *) * len + 1 + len2 + 1 + 1);
+	str = ft_malloc(sizeof(char *) * len + 1 + len2 + 1 + 1);
 	ft_strlcpy(str, first, len + len2 + 1);
 	ft_strlcat(str, second, len + len2 +1);
 	free(first);

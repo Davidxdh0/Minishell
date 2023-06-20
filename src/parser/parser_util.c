@@ -45,9 +45,9 @@ t_execute	*create_new_node(int num_commands, int num_redirects)
 {
 	t_execute	*new_node;
 
-	new_node = malloc(sizeof(t_execute));
-	new_node->cmd = malloc(sizeof(char *) * (num_commands + 1));
-	new_node->redirects = malloc(sizeof(char *) * (num_redirects * 2 + 1));
+	new_node = ft_malloc(sizeof(t_execute));
+	new_node->cmd = ft_malloc(sizeof(char *) * (num_commands + 1));
+	new_node->redirects = ft_malloc(sizeof(char *) * (num_redirects * 2 + 1));
 	new_node->next = NULL;
 	return (new_node);
 }
