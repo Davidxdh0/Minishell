@@ -16,7 +16,7 @@ static bool	echo_option(char *str)
 {
 	int	i;
 
-	if (str[0] != '-' && str[1] != 'n')
+	if (str[0] != '-' || str[1] != 'n')
 		return (false);
 	i = 2;
 	while (str[i])
