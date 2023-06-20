@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 14:42:04 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 17:25:39 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*expand_var(char *value, t_envp *new_envp)
 	if (!str)
 		return (ft_strdup(""));
 	else
-		return (str);
+		return (ft_strdup(str));
 }
 
 char	*expand_word(char*value, t_envp *new_envp)
@@ -94,7 +94,7 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 	len -= (ft_strlen(env));
 	env = get_new_env(env, envp);
 	if (!env)
-		return ("");
+		return (ft_strdup(""));
 	env = ft_substr(env, 1, ft_strlen(env));
 	len += ft_strlen(env);
 	str = ft_strdup(fill_string(str, begin, eind, env));
