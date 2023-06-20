@@ -6,14 +6,10 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 19:18:58 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 19:46:29 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* sources
-Unit tester:
-https://github.com/Snaipe/Criterion
-*/
 #ifndef MAIN_H
 # define MAIN_H
 # include <stdio.h>

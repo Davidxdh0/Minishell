@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/09 18:44:49 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 17:20:45 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 19:50:31 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ static bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
 {
 	char	*line;
 	bool	str;
-	char	*new;
 
-	new = NULL;
 	if (g_exitcode == 1000)
 		return (false);
 	line = readline("HereDoc> ");

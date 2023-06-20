@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/11 17:22:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 20:12:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ t_line_lst	*rm_wspace(t_line_lst *line_lst, t_line_lst *nh, t_line_lst *prev)
 		next = line_lst->next;
 		if (line_lst->type == e_wspace && line_lst->state == 0)
 		{
+			if (line_lst->prev != NULL)
+				line_lst->prev->state = 0;
 			if (prev != NULL)
 				prev->next = next;
 			if (next != NULL)
