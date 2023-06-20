@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:04:47 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 20:23:47 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 20:26:01 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*change_heredoc_str(char *str, int begin, int eind, t_envp *envp)
 	int		len;
 	char	*env;
 	char	*envhold;
-	
+
 	len = ft_strlen(str);
 	env = ft_substr(str, begin, eind - begin);
 	len -= (ft_strlen(env));
