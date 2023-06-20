@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:04:47 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 17:23:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 20:23:47 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	expand_heredoc_word(char *value, t_envp *new_envp, int fd)
 		if (value[i] != '\0' && value[i] == '$')
 			i++;
 		if (value[i] != '\0' && value[i] == '?' && i++ > 0)
-			ft_putstr_fd(ft_itoa(g_exitcode), fd);
+			putstrherdoc(fd);
 		else if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
 		{
 			begin = i;
@@ -92,11 +92,14 @@ char	*change_heredoc_str(char *str, int begin, int eind, t_envp *envp)
 {
 	int		len;
 	char	*env;
-
+	char	*envhold;
+	
 	len = ft_strlen(str);
 	env = ft_substr(str, begin, eind - begin);
 	len -= (ft_strlen(env));
+	envhold = env;
 	env = get_new_env(env, envp);
+	free(envhold);
 	if (!env)
 		return ("");
 	return (env);
