@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/18 19:44:58 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 14:49:41 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	shell(char *line, t_envp *envp)
 	filler = NULL;
 	line_lst = parser(line);
 	if (syntax_count_quotes(line_lst))
-		return (0);
+		return (EXIT_FAILURE);
 	line_lst = variable_expand(line_lst, envp);
 	line_lst = remove_quotes(line_lst, filler, filler);
 	line_lst = combine_values(line_lst, line_lst, filler);
@@ -76,7 +76,7 @@ int	shell(char *line, t_envp *envp)
 		g_exitcode = 258;
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 // enable_ctrl_c_display();
@@ -94,6 +94,7 @@ int	main(int argc, char *argv[], char **original_envp)
 		disable_ctrl_c_display();
 		sig_controller(0);
 		sig_controller(4);
+		signal(SIGQUIT, SIG_DFL);
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{

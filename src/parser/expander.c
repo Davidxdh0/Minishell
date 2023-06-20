@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/18 19:44:32 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 14:42:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,15 @@ char	*expand_var(char *value, t_envp *new_envp)
 
 	if (value[1] == '?')
 	{
-		value = ft_itoa(g_exitcode);
-		return (value);
+		return (ft_itoa(g_exitcode));
 	}
 	value = ft_substr(value, 1, ft_strlen(value));
 	str = get_new_env(value, new_envp);
+	free(value);
 	if (!str)
-	{
-		free(value);
-		value = ft_strdup("");
-	}
+		return (ft_strdup(""));
 	else
-	{
-		free(value);
-		value = ft_strdup(str);
-	}
-	return (value);
+		return (str);
 }
 
 char	*expand_word(char*value, t_envp *new_envp)
@@ -49,13 +42,13 @@ char	*expand_word(char*value, t_envp *new_envp)
 		while (value[i] == '$')
 			i++;
 		if (value[i] != '\0' && value[i] == '?')
-			return (value = ft_strdup(ft_itoa(g_exitcode)));
+			return (value = ft_itoa(g_exitcode));
 		else if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
 		{
 			begin = i;
 			while (ft_isascii(value[i]) && value[i] != '$')
 				i++;
-			value = ft_strdup(change_str(value, begin, i, new_envp));
+			value = change_str(value, begin, i, new_envp);
 			count--;
 		}
 	}
@@ -72,7 +65,7 @@ char	*fill_string(char *str, int bgn, int end, char *env)
 	len = bgn + ft_strlen(env) + ft_strlen(str + end) + 1;
 	i = 0;
 	k = 0;
-	newstr = malloc(len + 1);
+	newstr = ft_malloc(len + 1);
 	while (i < bgn)
 	{
 		newstr[i] = str[i];
