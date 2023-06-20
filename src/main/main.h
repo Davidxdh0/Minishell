@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 18:29:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 19:08:05 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,12 @@ typedef struct s_execute
 	char				**redirects;
 	int					count_cmd;
 	int					count_red;
+	int					ck;
+	int					cr;
 	char				*heredoc_name;
 	struct s_execute	*prev;
 	struct s_execute	*next;
+
 }	t_execute;
 
 typedef struct s_line_lst
@@ -113,11 +116,11 @@ int			specials(t_line_lst *lst, int i);
 int			check_combine(t_line_lst *cur);
 //parser_util2.c
 char		**make_redirects(t_line_lst *line_lst);
-t_execute	*alloc_execute_list(t_line_lst *head);
+t_execute	*alloc_execute_list(t_line_lst *head, t_execute *een, t_execute *twee);
 char		*make_string(t_line_lst *line_lst);
 //long
 void		populate_cmd(t_execute *new_node, t_line_lst *head_ref, \
-int count_cmd);
+int count_cmd, int k);
 t_execute	*c_node_exec(t_line_lst *head);
 void		free_single_node(t_line_lst *temp);
 

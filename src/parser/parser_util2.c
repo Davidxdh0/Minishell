@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 18:37:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 19:13:25 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ t_execute	*c_node_exec(t_line_lst *head)
 	node = ft_malloc(sizeof(t_execute));
 	node->count_cmd = count_commands(head);
 	node->count_red = count_redirectss(head);
+	node->ck = 0;
+	node->cr = 0;
 	if (node->count_cmd > 0)
 		node->cmd = ft_malloc(sizeof(char *) * (node->count_cmd + 1));
 	else
@@ -85,51 +87,43 @@ char	*make_string(t_line_lst *line_lst)
 	return (tempstring);
 }
 
-void	populate_cmd(t_execute *new_node, t_line_lst *head_ref, int count_cmd)
+void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 {
-	int	k;
-
-	k = 0;
-	while (head_ref != NULL && k < count_cmd)
+	while (head != NULL && k < count_cmd)
 	{
-		if (!ft_strcmp(head_ref->value, "|") && head_ref->state == 0)
+		if (!ft_strcmp(head->value, "|") && head->state == 0)
 			break ;
-		if (head_ref->state > 0 && (!specials(head_ref, 1)) && head_ref->type != e_file)
+		if (head->state > 0 && (!specials(head, 1)) && head->type != e_file)
 		{
-			new_node->cmd[k] = make_string(head_ref);
-			while (head_ref != NULL && head_ref->state > 0)
-				head_ref = head_ref->next;
-			new_node->count_cmd--;
+			node->cmd[k] = make_string(head);
+			while (head != NULL && head->state > 0)
+				head = head->next;
 			k++;
 		}
-		else if (!specials(head_ref, 1) && head_ref->type != e_file)
+		else if (!specials(head, 1) && head->type != e_file)
 		{
-			new_node->cmd[k] = ft_strdup(head_ref->value);
-			head_ref = head_ref->next;
-			new_node->count_cmd--;
+			node->cmd[k] = ft_strdup(head->value);
+			head = head->next;
 			k++;
 		}
 		else
-			head_ref = head_ref->next;
+			head = head->next;
 	}
-	new_node->cmd[k] = NULL;
+	node->count_cmd -= k;
+	node->cmd[k] = NULL;
 }
 
-t_execute	*alloc_execute_list(t_line_lst *head)
+t_execute	*alloc_execute_list(t_line_lst *head, t_execute	*cmdlist, t_execute	*last)
 {
 	t_execute	*new_node;
-	t_execute	*cmdlist;
-	t_execute	*last;
 
-	cmdlist = NULL;
-	last = NULL;
 	while (head != NULL)
 	{
 		new_node = c_node_exec(head);
-		while(head != NULL && ft_strcmp(head->value, "|") && head->state == 0)
+		while (head != NULL && ft_strcmp(head->value, "|") && head->state == 0)
 		{
 			if (new_node->count_cmd > 0)
-				populate_cmd(new_node, head, new_node->count_cmd);
+				populate_cmd(new_node, head, new_node->count_cmd, 0);
 			if (new_node->count_red > 0)
 				populate_red(new_node, head, new_node->count_red);
 			head = head->next;
