@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 19:13:25 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 19:18:34 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 	node->cmd[k] = NULL;
 }
 
-t_execute	*alloc_execute_list(t_line_lst *head, t_execute	*cmdlist, t_execute	*last)
+t_execute	*alloc_execute_list(t_line_lst *head, t_execute	*l, t_execute *lst)
 {
 	t_execute	*new_node;
 
@@ -128,13 +128,13 @@ t_execute	*alloc_execute_list(t_line_lst *head, t_execute	*cmdlist, t_execute	*l
 				populate_red(new_node, head, new_node->count_red);
 			head = head->next;
 		}
-		if (last == NULL)
-			cmdlist = new_node;
+		if (lst == NULL)
+			l = new_node;
 		else
-			last->next = new_node;
-		last = new_node;
+			lst->next = new_node;
+		lst = new_node;
 		if (head != NULL)
 			head = head->next;
 	}
-	return (cmdlist);
+	return (l);
 }
