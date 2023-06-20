@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 14:54:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 16:24:05 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ t_line_lst	*remove_quotes(t_line_lst *line_lst, \
 t_line_lst *new_head, t_line_lst *prev);
 t_line_lst	*combine_quotes(t_line_lst *list);
 int			specials(t_line_lst *lst, int i);
-
+int			check_combine(t_line_lst *cur);
 //parser_util2.c
 char		**make_redirects(t_line_lst *line_lst);
 t_execute	*alloc_execute_list(t_line_lst *head);
