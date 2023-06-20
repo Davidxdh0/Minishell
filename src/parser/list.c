@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 21:12:13 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 17:53:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ void	delete_node(t_line_lst *node_to_delete)
 		node_to_delete->prev->next = node_to_delete->next;
 	if (node_to_delete->next != NULL)
 		node_to_delete->next->prev = node_to_delete->prev;
-	else if (node_to_delete->prev != NULL)
-		node_to_delete->prev->next = NULL;
+	// else if (node_to_delete->prev != NULL)
+	// 	node_to_delete->prev->next = NULL;
 	free(node_to_delete->value);
 	free(node_to_delete);
 }

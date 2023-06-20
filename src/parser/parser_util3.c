@@ -6,30 +6,31 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 15:02:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 18:29:58 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-void	populate_red(t_execute *new_node, t_line_lst **head_ref, int count_red)
+void	populate_red(t_execute *new_node, t_line_lst *head_ref, int count_red)
 {
 	int	k;
 
 	k = 0;
-	while (*head_ref != NULL && k < count_red)
+	while (head_ref != NULL && k < count_red && head_ref->type != e_cmd)
 	{
-		if (!ft_strcmp((*head_ref)->value, "|") && (*head_ref)->state == 0)
+		if (!ft_strcmp(head_ref->value, "|") && head_ref->state == 0)
 			break ;
-		while (*head_ref != NULL && specials(*head_ref, 1) && k < count_red)
+		while (head_ref != NULL && specials(head_ref, 1) && k < count_red )
 		{
-			new_node->redirects[k] = ft_strdup((*head_ref)->value);
+			new_node->redirects[k] = ft_strdup(head_ref->value);
 			k++;
-			(*head_ref) = (*head_ref)->next;
-			new_node->redirects[k] = ft_strdup((*head_ref)->value);
+			head_ref = head_ref->next;
+			new_node->redirects[k] = ft_strdup(head_ref->value);
 			k++;
+			new_node->count_red -= 2;
 		}
-		(*head_ref) = (*head_ref)->next;
+		head_ref = head_ref->next;
 	}
 	new_node->redirects[k] = NULL;
 }

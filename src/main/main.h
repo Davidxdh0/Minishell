@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 16:24:05 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 18:29:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char		**make_redirects(t_line_lst *line_lst);
 t_execute	*alloc_execute_list(t_line_lst *head);
 char		*make_string(t_line_lst *line_lst);
 //long
-void		populate_cmd(t_execute *new_node, t_line_lst **head_ref, \
+void		populate_cmd(t_execute *new_node, t_line_lst *head_ref, \
 int count_cmd);
 t_execute	*c_node_exec(t_line_lst *head);
 void		free_single_node(t_line_lst *temp);
@@ -244,7 +244,7 @@ int			find_variable(char *str);
 char		*expand_word(char*value, t_envp *new_envp);
 void		expand_heredoc_word(char *value, t_envp *new_envp, int fd);
 char		*change_heredoc_str(char *str, int begin, int eind, t_envp *envp);
-void		populate_red(t_execute *new_node, t_line_lst **head_ref, \
+void		populate_red(t_execute *new_node, t_line_lst *head_ref, \
 int count_red);
 int			count_redirectss(t_line_lst *head);
 //Syntax
