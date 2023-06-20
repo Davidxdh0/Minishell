@@ -101,8 +101,6 @@ void	delete_node(t_line_lst *node_to_delete)
 		node_to_delete->prev->next = node_to_delete->next;
 	if (node_to_delete->next != NULL)
 		node_to_delete->next->prev = node_to_delete->prev;
-	else if (node_to_delete->prev != NULL)
-		node_to_delete->prev->next = NULL;
 	free(node_to_delete->value);
 	free(node_to_delete);
 }

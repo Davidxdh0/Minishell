@@ -26,7 +26,7 @@ char	*expand_var(char *value, t_envp *new_envp)
 	if (!str)
 		return (ft_strdup(""));
 	else
-		return (str);
+		return (ft_strdup(str));
 }
 
 char	*expand_word(char*value, t_envp *new_envp)
@@ -42,7 +42,7 @@ char	*expand_word(char*value, t_envp *new_envp)
 		while (value[i] == '$')
 			i++;
 		if (value[i] != '\0' && value[i] == '?')
-			return (value = ft_itoa(g_exitcode));
+			return (ft_itoa(g_exitcode));
 		else if (value[i] != '\0' && ft_isascii(value[i]) && value[i] != '$')
 		{
 			begin = i;
@@ -88,16 +88,19 @@ char	*change_str(char *str, int begin, int eind, t_envp *envp)
 {
 	int		len;
 	char	*env;
+	char	*envhold;
 
 	len = ft_strlen(str);
 	env = ft_substr(str, begin, eind - begin - 1);
 	len -= (ft_strlen(env));
+	envhold = env;
 	env = get_new_env(env, envp);
+	free(envhold);
 	if (!env)
-		return ("");
+		return (ft_strdup(""));
 	env = ft_substr(env, 1, ft_strlen(env));
 	len += ft_strlen(env);
-	str = ft_strdup(fill_string(str, begin, eind, env));
+	str = fill_string(str, begin, eind, env);
 	free(env);
 	return (str);
 }
@@ -121,8 +124,7 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 			if (str != NULL)
 			{
 				free(temp->value);
-				temp->value = ft_strdup(str);
-				free(str);
+				temp->value = str;
 			}
 			temp->state = temp->state;
 		}

@@ -122,7 +122,6 @@ t_execute	*c_node_exec(t_line_lst *head);
 void		free_single_node(t_line_lst *temp);
 
 //parser_util.c
-t_execute	*acco(t_execute *cmds, t_execute *head, int n_red, int n_cmd);
 void		copy_cmd_rdr(t_execute *d_node, char **cmd_list, int rd);
 t_execute	*create_new_node(int num_commands, int num_redirects);
 int			count_redirects(char **cmd_list);
@@ -149,7 +148,6 @@ void		delete_node(t_line_lst *node_to_delete);
 //long
 t_line_lst	*rm_wspace(t_line_lst *line_lst, \
 t_line_lst *new_head, t_line_lst *prev);
-t_line_lst	*word_list(t_line_lst *line);
 char		*ft_getenv(const char *name, char **envp);
 int			find_variable(char *str);
 t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp);

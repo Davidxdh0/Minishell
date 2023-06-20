@@ -76,11 +76,6 @@ char	*make_string(t_line_lst *line_lst)
 		{
 			line_lst = line_lst->next;
 			temp = ft_strjoin(tempstring, line_lst->value);
-			if (temp == NULL)
-			{
-				free(tempstring);
-				return (NULL);
-			}
 			free(tempstring);
 			tempstring = temp;
 		}

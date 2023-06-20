@@ -104,25 +104,3 @@ t_line_lst	*rm_wspace(t_line_lst *line_lst, t_line_lst *nh, t_line_lst *prev)
 	}
 	return (nh);
 }
-
-t_line_lst	*word_list(t_line_lst *line)
-{
-	t_line_lst	*temp;
-	char		*str;
-	int			i;
-
-	i = 0;
-	temp = line;
-	str = "";
-	while (temp != NULL && temp->state > 0)
-	{
-		str = ft_strjoin(str, temp->value);
-		temp = temp->next;
-		free(temp);
-		i++;
-	}
-	line->value = NULL;
-	line->value = ft_strdup(str);
-	line->next = temp;
-	return (line);
-}

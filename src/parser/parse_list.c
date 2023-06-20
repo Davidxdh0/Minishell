@@ -99,10 +99,8 @@ int	specials(t_line_lst *lst, int i)
 
 t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next)
 {
-	char		*new_value;
 	t_line_lst	*temp;
 
-	new_value = NULL;
 	while (cur != NULL)
 	{
 		if ((cur->state != 0 || cur->type != e_wspace) && (!specials(cur, 1)))
@@ -111,13 +109,11 @@ t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next)
 			while (next != NULL && (next->state != 0 || \
 			next->type != e_wspace) && (!specials(cur, 2)))
 			{
-				new_value = combine_thestring(cur->value, next->value);
-				cur->value = ft_strdup(new_value);
+				cur->value = combine_thestring(cur->value, next->value);
 				cur->state = 0;
 				temp = next;
 				next = next->next;
 				free_single_node(temp);
-				free(new_value);
 			}
 			cur->next = next;
 		}
