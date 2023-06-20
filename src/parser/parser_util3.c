@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 18:57:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 19:37:00 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 {
-	while (head != NULL && node->cr < count_red && head->type != e_cmd)
+	while (head != NULL && head->type != e_cmd)
 	{
 		if (!ft_strcmp(head->value, "|") && head->state == 0)
 			break ;
-		while (head != NULL && specials(head, 1) && node->cr < count_red)
+		while (head != NULL && specials(head, 1))
 		{
 			node->redirects[node->cr] = ft_strdup(head->value);
 			node->cr++;
@@ -30,6 +30,7 @@ void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 		head = head->next;
 	}
 	node->redirects[node->cr] = NULL;
+	count_red++;
 }
 
 int	count_redirectss(t_line_lst *head)
