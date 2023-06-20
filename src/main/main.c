@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 14:49:41 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/20 15:00:20 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int	main(int argc, char *argv[], char **original_envp)
 		disable_ctrl_c_display();
 		sig_controller(0);
 		sig_controller(4);
-		signal(SIGQUIT, SIG_DFL);
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
@@ -102,5 +101,6 @@ int	main(int argc, char *argv[], char **original_envp)
 			free(line);
 		}
 	}
+	// atexit(leaks)
 	return (0);
 }
