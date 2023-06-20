@@ -12,35 +12,6 @@
 
 #include "../main/main.h"
 
-t_execute	*acco(t_execute *cmds, t_execute *head, int num_red, int num_cmd)
-{
-	t_execute	*new_list;
-	t_execute	*current_node;
-
-	head = cmds;
-	new_list = NULL;
-	while (cmds != NULL)
-	{
-		num_red = count_redirects(cmds->cmd);
-		num_cmd = ft_arrlen(cmds->cmd) - num_red * 2;
-		if (new_list == NULL)
-		{
-			new_list = create_new_node(num_cmd, num_red);
-			current_node = new_list;
-		}
-		else
-		{
-			current_node->next = create_new_node(num_cmd, num_red);
-			current_node = current_node->next;
-		}
-		copy_cmd_rdr(current_node, cmds->cmd, num_red);
-		if (num_cmd <= 0)
-			new_list->cmd = NULL;
-		cmds = cmds->next;
-	}
-	return (delete_t_exec(head), new_list);
-}
-
 void	copy_cmd_rdr(t_execute *d_node, char **cmd_list, int rd)
 {
 	int	i;
