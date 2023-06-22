@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 11:03:27 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 23:00:55 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:55:19 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,16 @@ void	exitcode_signals(int status)
 	{
 		exit_status = WTERMSIG(status);
 		if (exit_status == 2)
+		{
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_on_new_line();
 			g_exitcode = 130;
+		}
 		else if (exit_status == 3)
 		{
+			ft_putstr_fd("Quit: 3", 2);
+			ft_putstr_fd("\n", 2);
 			g_exitcode = 131;
 		}
 	}

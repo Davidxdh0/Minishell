@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 16:43:11 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/15 17:33:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:54:40 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ void	child_cleanup(t_execute *cmd_struct, int **pipes, int *pid, int i)
 	{
 		waitpid(pid[i], &status, 0);
 		g_exitcode = WEXITSTATUS(status);
-		exitcode_signals(status);
 		i++;
 	}
+	exitcode_signals(status);
 	free(pid);
 	i = 0;
 	while (i + 1 < cmd_struct->count_cmd)
