@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/15 11:23:08 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 18:23:29 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:10:18 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ char	*expand_spaces(char *str)
 	size_t	i;
 	char	*newstr;
 	int		j;
-	
-	j = 0;
 
+	j = 0;
 	i = ft_strlen(str);
 	newstr = malloc(sizeof(char) * (i + 1));
 	i = 0;
@@ -48,5 +47,5 @@ char	*expand_spaces(char *str)
 		j++;
 	}
 	newstr[j] = '\0';
-	return (newstr);	
+	return (newstr);
 }
