@@ -12,6 +12,16 @@
 
 #include "../main/main.h"
 
+int	ft_fork(void)
+{
+	int	pid;
+
+	sig_controller(2);
+	sig_controller(3);
+	pid = fork();
+	return (pid);
+}
+
 void	ft_heredoc_cleanup(t_execute *cmd_struct)
 {
 	while (cmd_struct)
@@ -53,12 +63,8 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 {
 	if (!count_cmd_structs(cmd_struct))
 		return (envp);
-	sig_controller(1);
 	if (ft_heredoc_init(cmd_struct, envp))
 	{
-		sig_controller(2); // c
-		sig_controller(3); // backslash
-		sig_controller(5); // reset
 		enable_ctrl_c_display();
 		if (cmd_struct->count_cmd > 1)
 			ft_multiple_commands(cmd_struct, envp);

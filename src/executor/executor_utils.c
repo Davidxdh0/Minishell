@@ -85,9 +85,13 @@ void	exitcode_signals(int status)
 	{
 		exit_status = WTERMSIG(status);
 		if (exit_status == 2)
+		{
+			ft_putstr_fd("\n", 2);
 			g_exitcode = 130;
+		}
 		else if (exit_status == 3)
 		{
+			ft_putstr_fd("Quit: 3\n", 2);
 			g_exitcode = 131;
 		}
 	}

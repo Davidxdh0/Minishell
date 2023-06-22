@@ -52,11 +52,12 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 			envp = exec_builtin(cmd_struct, envp, fd);
 		return (envp);
 	}
-	pid = fork();
+	pid = ft_fork();
 	if (pid == -1)
 		exit(ft_perror(NULL, 1, cmd_struct));
 	if (pid == 0)
 		only_child(cmd_struct, envp);
+	sig_controller(5);
 	waitpid(pid, &status, 0);
 	g_exitcode = WEXITSTATUS(status);
 	exitcode_signals(status);
@@ -74,17 +75,19 @@ void	ft_multiple_commands(t_execute *cmd_struct, t_envp *envp)
 	pipes[0] = ft_malloc(sizeof(int) * 2);
 	if (pipe(pipes[0]) == -1)
 		exit(ft_perror(NULL, 1, cmd_struct));
-	pid[0] = fork();
+	pid[0] = ft_fork();
 	if (pid[0] == -1)
 		exit(ft_perror(NULL, 1, cmd_struct));
 	if (pid[0] == 0)
 		first_child(pipes[0], cmd_struct, envp);
+	sig_controller(5);
 	cmd_struct = middle_child_loop(cmd_struct, envp, pipes, pid);
 	i = cmd_struct->count_cmd - 1;
-	pid[i] = fork();
+	pid[i] = ft_fork();
 	if (pid[i] == -1)
 		exit(ft_perror(NULL, 1, cmd_struct));
 	if (pid[i] == 0)
 		last_child(pipes[i - 1], cmd_struct, envp);
+	sig_controller(5);
 	child_cleanup(cmd_struct, pipes, pid, i);
 }

@@ -65,9 +65,11 @@ static bool	ft_heredoc(char *eof, char *name, t_envp *new_envp)
 	if (fd == -1)
 		return (ft_perror(name, 1, NULL), false);
 	str = true;
+	sig_controller(1);
 	while (str == true && g_exitcode != 1000)
 		str = heredoc_loop(eof, fd, new_envp);
 	close(fd);
+	sig_controller(5);
 	if (g_exitcode == 1000)
 		return (false);
 	return (true);

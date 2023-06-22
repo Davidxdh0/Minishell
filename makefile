@@ -12,7 +12,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 READLINE_LIB = -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline
 
-EXECUTE_FI	=	executor_dcs.c \
+EXECUTE_FI	=	executor.c \
 				executor_utils.c \
 				commands.c \
 				daycare.c \
@@ -20,7 +20,7 @@ EXECUTE_FI	=	executor_dcs.c \
 				envp.c \
 				envp_utils.c \
 				redirect.c \
-				heredoc_dcs.c
+				heredoc.c
 				
 				
 BUILTIN_FI  =	builtin.c \

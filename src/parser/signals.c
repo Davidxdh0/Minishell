@@ -39,9 +39,14 @@ void	sig_controller(int flag)
 	if (flag == 3)
 		signal(SIGQUIT, signal_bs);
 	if (flag == 4)
+	{
 		signal(SIGQUIT, signal_bs1);
+	}
 	if (flag == 5)
+	{
+		signal(SIGQUIT, signal_bs1);
 		signal(SIGINT, signal_bs1);
+	}
 }
 
 void	siginthandler(int sig)
@@ -58,7 +63,7 @@ void	siginthandlerchild(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_exitcode = 135;
+		g_exitcode = 130;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
