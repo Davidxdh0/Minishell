@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 19:09:34 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:37:45 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_execute	*c_node_exec(t_line_lst *head)
 	t_execute	*node;
 
 	node = ft_malloc(sizeof(t_execute));
-	node->count_cmd = count_commands(head);
 	node->count_red = count_redirectss(head);
+	node->count_cmd = count_commands(head) - node->count_red;
 	node->ck = 0;
 	node->cr = 0;
 	if (node->count_cmd > 0)
