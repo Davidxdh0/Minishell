@@ -12,11 +12,11 @@
 
 #include "../main/main.h"
 
-static bool	echo_option(char *str)
+static bool	echo_option_check(char *str)
 {
 	int	i;
 
-	if (str[0] != '-' || str[1] != 'n')
+	if ((str[0] != '-' || str[1] != 'n'))
 		return (false);
 	i = 2;
 	while (str[i])
@@ -28,29 +28,45 @@ static bool	echo_option(char *str)
 	return (true);
 }
 
+static int	echo_option(char **arr, bool *n)
+{
+	int		i;
+	bool	option;
+
+	option = true;
+	i = 1;
+	while (arr[i] && option == true)
+	{
+		option = echo_option_check(arr[i]);
+		if (option == true)
+		{
+			i++;
+			*n = true;
+		}
+	}
+	return (i);
+}
+
 void	ft_echo(t_execute *cmd_struct, int fd)
 {
 	int		i;
 	bool	n;
 
 	i = 1;
-	if (cmd_struct->cmd[i])
-		n = echo_option(cmd_struct->cmd[i]);
-	else
-		n = false;
-	if (n)
-		i++;
+	n = false;
+	if (cmd_struct->cmd[1])
+		i = echo_option(cmd_struct->cmd, &n);
 	if (cmd_struct->cmd[i])
 	{
 		write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
 		i++;
+		while (cmd_struct->cmd[i])
+		{
+			write(fd, " ", 1);
+			write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
+			i++;
+		}
 	}
-	while (cmd_struct->cmd[i])
-	{
-		write(fd, " ", 1);
-		write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
-		i++;
-	}
-	if (!n)
+	if (n == false)
 		write(fd, "\n", 1);
 }

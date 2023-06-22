@@ -58,6 +58,7 @@ t_execute	*c_node_exec(t_line_lst *head)
 		node->redirects = ft_malloc(sizeof(char *) * (node->count_red + 1));
 	else
 		node->redirects = NULL;
+	node->heredoc_name = NULL;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);

@@ -82,7 +82,6 @@ bool	ft_heredoc_init(t_execute *cmd_s, t_envp *envp)
 	while (cmd_s)
 	{
 		i = 0;
-		cmd_s->heredoc_name = NULL;
 		while (cmd_s->redirects && cmd_s->redirects[i])
 		{
 			if (cmd_s->redirects[i][0] == '<' &&
