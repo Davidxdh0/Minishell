@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 17:43:07 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:32:22 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ int	count_commands(t_line_lst *head)
 	i = 0;
 	while (temp != NULL && ft_strcmp(temp->value, "|"))
 	{
-		if (specials(temp, 1) && temp->type == 0)
-			i--;
-		else
-			i++;
+		i++;
 		temp = temp->next;
 	}
 	return (i);

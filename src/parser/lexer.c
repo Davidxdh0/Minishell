@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:43:01 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/08 11:44:49 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:38:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ int	word_case(t_line_lst **line_lst, char *line, int state)
 		substr = ft_substr(line, i, len);
 		if (l == e_start || l == e_pipe || l == e_file)
 			add_at_end_of_list(line_lst, e_cmd, substr, state);
-		if (l == e_cmd || l == e_word || l == e_delimiter || l == e_quote || \
+		if (l == e_cmd || l == e_word || l == e_quote || \
 		l == e_var || l == e_dquote || l == e_wspace)
 			add_at_end_of_list(line_lst, e_word, substr, state);
-		if (l == e_redirect_i || l == e_redirect_o || l == e_append)
+		if (l == e_redirect_i || l == e_redirect_o || l == e_append \
+			|| l == e_delimiter)
 			add_at_end_of_list(line_lst, e_file, substr, state);
 		i += len;
 		free(substr);
