@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 18:35:54 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 20:15:14 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,6 @@ void		sig_controller(int flag);
 void		signal_bs(int sig);
 void		siginthandlerheredoc(int sig);
 void		siginthandlerchild(int sig);
-void		signal_bs1(int sig);
 void		putstrherdoc(int fd);
 
 //signals_utils.c
