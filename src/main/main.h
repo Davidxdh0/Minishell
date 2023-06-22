@@ -234,7 +234,6 @@ void		*ft_malloc(size_t size);
 char		**free_char_array(char **arr);
 char		*ft_str_fuse(char *s1, char *s2);
 void		exitcode_signals(int status);
-int			ft_fork(void);
 // David File?
 char		*get_new_env(char *value, t_envp *envp);
 int			count_words_expander(char *value);

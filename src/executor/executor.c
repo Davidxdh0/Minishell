@@ -12,15 +12,13 @@
 
 #include "../main/main.h"
 
-int	ft_fork(void)
-{
-	int	pid;
+// int	ft_fork(void)
+// {
+// 	int	pid;
 
-	sig_controller(2);
-	sig_controller(3);
-	pid = fork();
-	return (pid);
-}
+// 	pid = fork();
+// 	return (pid);
+// }
 
 void	ft_heredoc_cleanup(t_execute *cmd_struct)
 {
@@ -63,6 +61,7 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 {
 	if (!count_cmd_structs(cmd_struct))
 		return (envp);
+	sig_controller(2);
 	if (ft_heredoc_init(cmd_struct, envp))
 	{
 		enable_ctrl_c_display();

@@ -93,7 +93,7 @@ int	main(int argc, char *argv[], char **original_envp)
 	{	
 		disable_ctrl_c_display();
 		sig_controller(0);
-		sig_controller(4);
+		sig_controller(3);
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
