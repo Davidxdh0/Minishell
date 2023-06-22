@@ -87,8 +87,6 @@ void	exitcode_signals(int status)
 		if (exit_status == 2)
 		{
 			write(1, "\n", 1);
-			// rl_replace_line("", 0);
-			// rl_on_new_line();
 			g_exitcode = 130;
 		}
 		else if (exit_status == 3)

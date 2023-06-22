@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 20:18:58 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 21:37:30 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,12 @@ void	sig_controller(int flag)
 		signal(SIGINT, siginthandlerheredoc);
 	}
 	if (flag == 2)
-		signal(SIGINT, siginthandlerchild);
-	if (flag == 3)
-		signal(SIGQUIT, signal_bs);
-	if (flag == 4)
-	{
-		signal(SIGQUIT, signal_bs);
-	}
-	if (flag == 5)
 	{
 		signal(SIGQUIT, signal_bs);
 		signal(SIGINT, signal_bs);
 	}
+	if (flag == 3)
+		signal(SIGQUIT, signal_bs);
 }
 
 void	siginthandler(int sig)
@@ -57,17 +51,6 @@ void	siginthandler(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 	sig++;
-}
-
-void	siginthandlerchild(int sig)
-{
-	if (sig == SIGINT)
-	{
-		// g_exitcode = 135;
-		// write(1, "\n", 1);
-		// rl_replace_line("", 0);
-		// rl_on_new_line();
-	}
 }
 
 void	siginthandlerheredoc(int sig)
@@ -81,7 +64,19 @@ void	siginthandlerheredoc(int sig)
 
 void	signal_bs(int sig)
 {
-	// ft_putstr_fd("Quit: 3", 2);
-	// ft_putstr_fd("\n", 2);
 	sig++;
 }
+
+	// if (flag == 2)
+	// 	signal(SIGINT, siginthandlerchild);
+	// if (flag == 3)
+	// 	signal(SIGQUIT, signal_bs);
+	// if (flag == 4)
+	// {
+	// 	signal(SIGQUIT, signal_bs1);
+	// }
+	// if (flag == 5)
+	// {
+	// 	signal(SIGQUIT, signal_bs1);
+	// 	signal(SIGINT, signal_bs1);
+	// }
