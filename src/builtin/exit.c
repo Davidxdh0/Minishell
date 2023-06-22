@@ -12,15 +12,25 @@
 
 #include "../main/main.h"
 
+static int	invert_integer(int arg)
+{
+	arg = 256 - arg;
+	return (arg);
+}
+
 static int	validate_exit_arg(char *str)
 {
 	long	arg;
 	int		i;
+	bool	neg;
 
+	neg = false;
 	while (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v'
 		|| *str == '\f' || *str == '\r')
 		str++;
 	i = 0;
+	if (str[i] == '-')
+		neg = true;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	while (str[i])
@@ -32,6 +42,8 @@ static int	validate_exit_arg(char *str)
 	if (long_atoi(str, &arg) == false)
 		return (-1);
 	arg %= 256;
+	if (neg == true)
+		arg = invert_integer(arg);
 	return ((int)arg);
 }
 
