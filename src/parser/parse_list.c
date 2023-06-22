@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 19:56:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 17:43:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,13 @@ int	count_commands(t_line_lst *head)
 
 	temp = head;
 	i = 0;
-	while (temp != NULL)
+	while (temp != NULL && ft_strcmp(temp->value, "|"))
 	{
-		if (specials(temp, 1) || temp->type == e_file)
-		{
-			temp = temp->next;
+		if (specials(temp, 1) && temp->type == 0)
 			i--;
-		}
-		else if (temp->state > 0)
-		{
-			while (temp != NULL && temp->state > 0)
-				temp = temp->next;
+		else
 			i++;
-			if (!temp)
-				return (i);
-		}
-		if (temp != NULL)
-			temp = temp->next;
-		i++;
+		temp = temp->next;
 	}
 	return (i);
 }

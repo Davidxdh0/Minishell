@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 20:23:36 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 18:35:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,4 +271,5 @@ void		putstrherdoc(int fd);
 void		disable_ctrl_c_display(void);
 void		enable_ctrl_c_display(void);
 char		*combine_thestring(char *first, char *second);
+char		*expand_spaces(char *str);
 #endif

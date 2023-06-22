@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 18:56:42 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 19:03:28 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 //flag 4
 // ctrl + \ in heredoc - niets
 // ctrl + \ - niets
-
 void	sig_controller(int flag)
 {
 	if (flag == 0)
@@ -41,6 +40,8 @@ void	sig_controller(int flag)
 		signal(SIGQUIT, signal_bs);
 	if (flag == 4)
 		signal(SIGQUIT, signal_bs1);
+	if (flag == 5)
+		signal(SIGINT, signal_bs1);
 }
 
 void	siginthandler(int sig)
@@ -57,7 +58,7 @@ void	siginthandlerchild(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_exitcode = 130;
+		g_exitcode = 135;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();

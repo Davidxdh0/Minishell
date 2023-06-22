@@ -6,27 +6,29 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 17:25:39 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 18:38:09 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-char	*expand_var(char *value, t_envp *new_envp)
+char	*expand_var(char *value, t_envp *new_envp, int state)
 {
 	char	*str;
 
 	if (value[1] == '?')
-	{
 		return (ft_itoa(g_exitcode));
-	}
 	value = ft_substr(value, 1, ft_strlen(value));
 	str = get_new_env(value, new_envp);
 	free(value);
 	if (!str)
 		return (ft_strdup(""));
 	else
+	{
+		if (state == 2)
+			str = expand_spaces(str);
 		return (ft_strdup(str));
+	}
 }
 
 char	*expand_word(char*value, t_envp *new_envp)
@@ -116,7 +118,7 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 		if (find_variable(temp->value))
 		{
 			if (temp->type == e_var && temp->state != 1)
-				str = expand_var(temp->value, new_envp);
+				str = expand_var(temp->value, new_envp, temp->state);
 			else if (temp->state == 2 || temp->state == 0)
 				str = expand_word(temp->value, new_envp);
 			else

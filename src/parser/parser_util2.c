@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 19:37:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 18:18:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**make_redirects(t_line_lst *line_l)
 	}
 	return (tempstring);
 }
-
+// printf("countcmd = %d count red = %d\n", node->count_cmd, node->count_red);
 t_execute	*c_node_exec(t_line_lst *head)
 {
 	t_execute	*node;
@@ -85,15 +85,17 @@ char	*make_string(t_line_lst *line_lst)
 	}
 	return (tempstring);
 }
-
+// printf("value = %s en k = %d count_cmd = %d\n", head->value, k, count_cmd);
 void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 {
 	while (head != NULL && k < count_cmd)
 	{
+		
 		if (!ft_strcmp(head->value, "|") && head->state == 0)
 			break ;
 		if (head->state > 0 && (!specials(head, 1)) && head->type != e_file)
 		{
+			// printf("eerst");
 			node->cmd[k] = make_string(head);
 			while (head != NULL && head->state > 0)
 				head = head->next;
@@ -101,6 +103,7 @@ void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 		}
 		else if (!specials(head, 1) && head->type != e_file)
 		{
+			// printf("tweee");
 			node->cmd[k] = ft_strdup(head->value);
 			head = head->next;
 			k++;
@@ -119,7 +122,7 @@ t_execute	*alloc_execute_list(t_line_lst *head, t_execute	*l, t_execute *lst)
 	while (head != NULL)
 	{
 		new_node = c_node_exec(head);
-		while (head != NULL && ft_strcmp(head->value, "|") && head->state == 0)
+		while (head != NULL && (ft_strcmp(head->value, "|") || head->state != 0))
 		{
 			if (new_node->count_cmd > 0)
 				populate_cmd(new_node, head, new_node->count_cmd, 0);
