@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 20:17:07 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 19:55:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 20:18:58 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	sig_controller(int flag)
 		signal(SIGQUIT, signal_bs);
 	if (flag == 4)
 	{
-		signal(SIGQUIT, signal_bs1);
+		signal(SIGQUIT, signal_bs);
 	}
 	if (flag == 5)
 	{
-		signal(SIGQUIT, signal_bs1);
-		signal(SIGINT, signal_bs1);
+		signal(SIGQUIT, signal_bs);
+		signal(SIGINT, signal_bs);
 	}
 }
 

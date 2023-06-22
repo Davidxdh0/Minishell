@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 20:15:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 21:35:05 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ char		*type_to_string(t_node_type type);
 t_node_type	get_prev_type(t_line_lst *node);
 t_line_lst	*lexer(char *line);
 t_line_lst	*parser(char *line);
+t_line_lst	*bad_functions(t_line_lst *list);	
+
 //specialchar.c
 int			space_c(t_line_lst **line_lst, int state);
 int			pipe_c(t_line_lst **line_lst, int state);
@@ -139,7 +141,7 @@ int			dollar_special_c(t_line_lst **line_lst, char next_char, int state);
 int			dollar_c(t_line_lst **line_lst, char *line, int state);
 // lexer.c
 int			ft_isspecial(char chr);
-int			word_case(t_line_lst **line_lst, char *line, int state);
+int			word_case(t_line_lst **line_lst, char *line, int state, int i);
 int			quotes(t_line_lst **line_lst, char c, int state, int flag);
 
 // expander.c

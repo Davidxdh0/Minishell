@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:43:50 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/20 19:44:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 21:35:26 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,22 @@ void	show_t_list(t_line_lst *node, char *input_line)
 		i++;
 	}
 	printf("-------- end line list table ---------\n\n");
+}
+
+t_line_lst	*bad_functions(t_line_lst *list)
+{
+	t_line_lst	*cur;
+	int			l;
+
+	l = 0;
+	cur = list;
+	while (cur != NULL)
+	{
+		if (cur->prev != NULL)
+			l = cur->prev->type;
+		if (l == e_redirect_i || l == e_delimiter || l == e_redirect_o)
+			cur->type = e_file;
+		cur = cur->next;
+	}
+	return (list);
 }
