@@ -87,14 +87,13 @@ void	exitcode_signals(int status)
 		if (exit_status == 2)
 		{
 			write(1, "\n", 1);
-			rl_replace_line("", 0);
-			rl_on_new_line();
+			// rl_replace_line("", 0);
+			// rl_on_new_line();
 			g_exitcode = 130;
 		}
 		else if (exit_status == 3)
 		{
-			ft_putstr_fd("Quit: 3", 2);
-			ft_putstr_fd("\n", 2);
+			ft_putstr_fd("Quit: 3\n", 2);
 			g_exitcode = 131;
 		}
 	}

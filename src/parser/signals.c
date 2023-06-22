@@ -39,9 +39,14 @@ void	sig_controller(int flag)
 	if (flag == 3)
 		signal(SIGQUIT, signal_bs);
 	if (flag == 4)
+	{
 		signal(SIGQUIT, signal_bs1);
+	}
 	if (flag == 5)
+	{
+		signal(SIGQUIT, signal_bs1);
 		signal(SIGINT, signal_bs1);
+	}
 }
 
 void	siginthandler(int sig)
