@@ -94,4 +94,7 @@ re: fclean all
 run: all
 	./minishell
 
-.DEFAULT_GOAL:=run
+exp: all
+	rm ../mini
+	mv ./minishell ../mini
+.DEFAULT_GOAL:=all
