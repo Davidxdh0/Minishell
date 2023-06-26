@@ -66,11 +66,9 @@ int	shell(char *line, t_envp *envp)
 	line_lst = remove_quotes(line_lst, filler, filler);
 	line_lst = combine_values(line_lst, line_lst, filler);
 	line_lst = rm_wspace(line_lst, filler, filler);
-	// show_t_list(line_lst, line);
 	if (!syntax_check(line_lst))
 	{		
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
-		// show(cmd);
 		executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}

@@ -41,7 +41,6 @@ char	**make_redirects(t_line_lst *line_l)
 	return (tempstring);
 }
 
-// printf("countcmd = %d count red = %d\n", node->count_cmd, node->count_red);
 t_execute	*c_node_exec(t_line_lst *head)
 {
 	t_execute	*node;
@@ -49,7 +48,6 @@ t_execute	*c_node_exec(t_line_lst *head)
 	node = ft_malloc(sizeof(t_execute));
 	node->count_red = count_redirectss(head);
 	node->count_cmd = count_commands(head) - node->count_red;
-	// printf("countcmd = %d count red = %d\n", node->count_cmd, node->count_red);
 	node->ck = 0;
 	node->cr = 0;
 	if (node->count_cmd > 0)
