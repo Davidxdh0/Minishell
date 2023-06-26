@@ -29,7 +29,7 @@ void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd_path, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
+			ft_putstr_fd(": PPermission denied\n", 2);
 			exit(126);
 		}
 		execve(cmd_path, cmd_struct->cmd, envp_array);
