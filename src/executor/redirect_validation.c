@@ -74,15 +74,17 @@ bool	validate_redirects(t_execute *cmd_struct)
 
 	i = 0;
 	if (cmd_struct->redirects)
+	{
 		while (cmd_struct->redirects[i])
 		{
-			if (!validate_file(cmd_struct->redirects[i], \
-								cmd_struct->redirects[i + 1]))
+			if (!validate_file(cmd_struct->redirects[i] \
+				, cmd_struct->redirects[i + 1]))
 			{
 				g_exitcode = 1;
 				return (false);
 			}
 			i++;
 		}
+	}
 	return (true);
 }

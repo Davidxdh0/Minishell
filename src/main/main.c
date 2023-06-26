@@ -69,6 +69,7 @@ int	shell(char *line, t_envp *envp)
 	if (!syntax_check(line_lst))
 	{		
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
+		show(cmd);
 		executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}

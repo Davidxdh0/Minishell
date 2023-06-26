@@ -54,7 +54,7 @@ t_envp	*executor_dcs(t_execute *cmd_struct, t_envp *envp)
 	if (!count_cmd_structs(cmd_struct))
 		return (envp);
 	sig_controller(2);
-	if (ft_heredoc_init(cmd_struct, envp)) // parse redirects for errors (in the right order)
+	if (ft_heredoc_init(cmd_struct, envp))
 	{
 		enable_ctrl_c_display();
 		if (cmd_struct->count_cmd > 1)
