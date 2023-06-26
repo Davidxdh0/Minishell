@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 19:32:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 21:29:23 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next)
 			next->type != e_wspace) && (!specials(cur, 2)))
 			{
 				cur->value = combine_thestring(cur->value, next->value);
-				cur->state = 0;
 				temp = next;
 				next = next->next;
 				free_single_node(temp);
 			}
+			cur->type = e_word;
 			cur->next = next;
 		}
 		cur = cur->next;

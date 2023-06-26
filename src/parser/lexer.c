@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 20:43:01 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 19:38:04 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/06/22 21:08:51 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,12 @@ int	ft_isspecials(char chr)
 	chr == '\t' || chr == '\'' || chr == '\"');
 }
 
-int	word_case(t_line_lst **line_lst, char *line, int state)
+int	word_case(t_line_lst **line_lst, char *line, int state, int i)
 {
-	int			i;
 	int			len;
 	char		*substr;
 	t_node_type	l;
 
-	i = 0;
 	l = get_prev_type(*line_lst);
 	if (!ft_isspecial(line[i]))
 	{
