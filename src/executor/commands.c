@@ -66,6 +66,8 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 	int	fd;
 	int	status;
 
+	if (!validate_redirects(cmd_struct))
+		return (envp);
 	if (cmd_struct->cmd && check_builtin(cmd_struct->cmd[0]))
 	{
 		ft_heredoc_cleanup(cmd_struct);

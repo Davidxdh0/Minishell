@@ -20,6 +20,7 @@ EXECUTE_FI	=	executor.c \
 				envp.c \
 				envp_utils.c \
 				redirect.c \
+				redirect_validation.c \
 				heredoc.c
 				
 				

@@ -212,6 +212,7 @@ t_envp		*ft_unset(t_execute *cmd_struct, t_envp *envp);
 t_envp		*ft_export_cmd(char *cmd, char *target, t_envp *envp, bool append);
 bool		long_atoi(const char *str, long *number);
 // Redirects
+bool		validate_redirects(t_execute *cmd_struct);
 bool		redirect_infile(char **list, char *name);
 bool		redirect_outfile(char **list);
 // HereDoc

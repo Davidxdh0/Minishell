@@ -89,7 +89,7 @@ bool	ft_heredoc_init(t_execute *cmd_s, t_envp *envp)
 			if (cmd_s->redirects[i][0] == '<' &&
 				cmd_s->redirects[i][1] == '<')
 			{
-				if (cmd_s->heredoc_name)
+				if (cmd_s->heredoc_name) //potential change (covers multishell usage)
 					unlink(cmd_s->heredoc_name);
 				i++;
 				ft_heredoc_name(cmd_s, count++);
