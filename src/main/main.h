@@ -218,8 +218,6 @@ bool		redirect_outfile(char **list);
 // HereDoc
 bool		ft_heredoc_init(t_execute *cmd_struct, t_envp *new_envp);
 void		ft_heredoc_cleanup(t_execute *cmd_struct);
-// bool		ft_heredoc(char *eof, char *name, t_envp *new_envp);
-// void		ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr);
 // Envp
 t_envp		*copy_envp(char **original_envp);
 t_envp		*envp_start_list(char *str);
