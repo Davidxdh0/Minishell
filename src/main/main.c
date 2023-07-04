@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 22:04:08 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:50:28 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,8 @@ int	shell(char *line, t_envp *envp)
 	line_lst = combine_values(line_lst, line_lst, filler);
 	line_lst = rm_wspace(line_lst, filler, filler);
 	if (!syntax_check(line_lst))
-	{		
+	{
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
-		show(cmd);
 		executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}
@@ -91,7 +90,7 @@ int	main(int argc, char *argv[], char **original_envp)
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
 	while (1)
-	{	
+	{
 		disable_ctrl_c_display();
 		sig_controller(0);
 		sig_controller(3);

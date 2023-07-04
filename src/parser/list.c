@@ -6,12 +6,12 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:11 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 21:47:33 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:51:00 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
-#include <stdio.h>	// temp for show_t_list function 
+#include <stdio.h>
 
 char	*type_to_string(t_node_type type)
 {

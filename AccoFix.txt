@@ -58,13 +58,35 @@ mini outfiles:
 bash outfiles:
 bye
 
-minishell$ ls -la >> outfile adsasd
 
-cmd[0] = ls
-cmd[1] = -la
-cmd[2] = outfile
-redir = >>
-redir = outfile
+#minishell$ ls -la >> outfile adsasd
+#
+#cmd[0] = ls
+#cmd[1] = -la
+#cmd[2] = outfile
+#redir = >>
+#redir = outfile
+#
+#bash-3.2$ ls -la >> outfile adsasd
+#ls: adsasd: No such file or directory
 
-bash-3.2$ ls -la >> outfile adsasd
-ls: adsasd: No such file or directory
+
+#>>> 				= >
+#>>>>				= >>
+#>>>>>>>>> 			= >>
+#ls <<< s			= werkt?
+#ls <<<< s			= <
+#ls <<<<< s			= <<
+#ls <<<<<< s 		= <<<
+#ls <<<<<<<<<<< s	= <<<
+#ls >| ss 			= ls in ss
+#ls |< s1			= no such file or directory	- mijn -  werkt
+#ls |> s2			= werkt						- mijn -  werkt
+#ls <l s				= no such file or directory	- mijn - werkt
+#ls |<< s1			= heredoc					- mijn -  werkt
+#ls |>> s2			= werkt						- mijn -  werkt
+#ls <<l s			= no such file or directory	- mijn -  werkt
+
+
+ls >| s0			= werkt						- mijn - ls?? s0 cmd not found 
+ls >>| s0			=  `|'						- mijn -  `>>'

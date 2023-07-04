@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 21:47:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:49:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	**make_redirects(t_line_lst *line_l)
 	return (tempstring);
 }
 
+//printf("cmd= %d red = %d\n", node->count_cmd, node->count_red);
 t_execute	*c_node_exec(t_line_lst *head)
 {
 	t_execute	*node;

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:43:50 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 21:35:26 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:52:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,14 @@ t_line_lst	*bad_functions(t_line_lst *list)
 	while (cur != NULL)
 	{
 		if (cur->prev != NULL)
+		{
 			l = cur->prev->type;
-		if (l == e_redirect_i || l == e_delimiter || l == e_redirect_o)
+			if (cur->prev->prev != NULL && l == e_pipe)
+				if (cur->prev->prev->type == e_redirect_o)
+					cur->type = e_file;
+		}
+		if ((l == e_redirect_i || l == e_delimiter || l == e_redirect_o) \
+			&& cur->type != e_pipe)
 			cur->type = e_file;
 		cur = cur->next;
 	}

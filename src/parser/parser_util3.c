@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 20:15:10 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:46:37 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,20 @@ void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 	{
 		if (!ft_strcmp(head->value, "|") && head->state == 0)
 			break ;
-		while (head != NULL && specials(head, 1))
+		while (head != NULL && specials(head, 1) && count_red > 0)
 		{
 			node->redirects[node->cr] = ft_strdup(head->value);
 			node->cr++;
 			head = head->next;
-			node->redirects[node->cr] = ft_strdup(head->value);
-			node->cr++;
-			node->count_red -= 2;
+			node->count_red--;
+			count_red--;
+			if (node->count_red > 0)
+			{
+				node->redirects[node->cr] = ft_strdup(head->value);
+				node->cr++;
+				node->count_red--;
+				count_red--;
+			}
 		}
 		head = head->next;
 	}
@@ -35,17 +41,20 @@ void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 
 int	count_redirectss(t_line_lst *head)
 {
-	int	i;
+	int			i;
+	t_line_lst	*temp;
 
 	i = 0;
-	while (head != NULL && ft_strcmp(head->value, "|"))
+	temp = head;
+	while (temp != NULL && ft_strcmp(temp->value, "|"))
 	{
-		if (specials(head, 1) && ft_strcmp(head->value, "|"))
+		if (specials(temp, 1) && ft_strcmp(temp->value, "|"))
 		{
 			i++;
-			i++;
+			if (ft_strcmp(temp->next->value, "|"))
+				i++;
 		}
-		head = head->next;
+		temp = temp->next;
 	}
 	return (i);
 }

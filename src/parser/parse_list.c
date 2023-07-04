@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 21:29:23 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:49:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_line_lst	*remove_quotes(t_line_lst *ls, t_line_lst *nh, t_line_lst *prev)
 }
 
 int	specials(t_line_lst *lst, int i)
-{	
+{
 	if (i >= 1 && lst->state == 0)
 	{
 		if (lst->type == e_delimiter)
@@ -83,27 +83,28 @@ int	specials(t_line_lst *lst, int i)
 	return (0);
 }
 
-t_line_lst	*combine_values(t_line_lst *list, t_line_lst *cur, t_line_lst *next)
+t_line_lst	*combine_values(t_line_lst *list, t_line_lst *l, t_line_lst *next)
 {
 	t_line_lst	*temp;
 
-	while (cur != NULL)
+	while (l != NULL)
 	{
-		if ((cur->state != 0 || cur->type != e_wspace) && (!specials(cur, 1)))
+		if ((l->state != 0 || l->type != e_wspace) && (!specials(l, 1)))
 		{
-			next = cur->next;
+			next = l->next;
 			while (next != NULL && (next->state != 0 || \
-			next->type != e_wspace) && (!specials(cur, 2)))
+			next->type != e_wspace) && (!specials(l, 2)))
 			{
-				cur->value = combine_thestring(cur->value, next->value);
+				l->value = combine_thestring(l->value, next->value);
 				temp = next;
 				next = next->next;
 				free_single_node(temp);
 			}
-			cur->type = e_word;
-			cur->next = next;
+			if (l->type != e_file && l->type != e_cmd && l->type != e_wspace)
+				l->type = e_word;
+			l->next = next;
 		}
-		cur = cur->next;
+		l = l->next;
 	}
 	return (list);
 }

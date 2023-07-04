@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/15 11:23:08 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 19:12:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:48:55 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,30 @@ int	perror_return(char *msg)
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
+	return (1);
+}
+
+char	*perror_red(t_line_lst *line)
+{
+	if (line->next == NULL)
+		return (line->value);
+	if (ft_strcmp(line->next->value, "|") && ft_strcmp(line->value, ">>"))
+		return ("|");
+	else
+		return (line->value);
+}
+
+int	perror_redirect(t_line_lst *line)
+{
+	char	*msg;
+
+	msg = perror_red(line);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if (ft_strcmp(msg, ">") || ft_strcmp(msg, ">>"))
+		ft_putstr_fd(msg, 2);
+	else if ((ft_strcmp(msg, "<") || ft_strcmp(msg, "<<")))
+		ft_putstr_fd(msg, 2);
+	ft_putstr_fd("'\n", 2);
 	return (1);
 }
 

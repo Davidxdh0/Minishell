@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 16:27:35 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/15 22:27:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:49:06 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	syntax_pipe(t_line_lst *line)
 	if (ft_strcmp(line->value, "|"))
 		return (1);
 	if (line->prev == NULL || line->next == NULL || \
-		(line->next->type == e_pipe && line->next->state == 0))
+		(line->next->type == e_pipe && line->next->state == 0) \
+		|| line->prev->type == e_delimiter || line->prev->type == e_redirect_i)
 	{
 		return (1);
 	}
@@ -64,7 +65,7 @@ int	syntax_redirects(t_line_lst *l)
 			return (1);
 		if (l->next->type != e_file && l->next->type != e_var && \
 			l->next->type != e_word && l->next->type != e_quote && \
-			l->next->type != e_cmd)
+			l->next->type != e_cmd && l->next->type != e_pipe)
 			return (1);
 	}
 	if (l->type == e_append)
@@ -96,7 +97,7 @@ int	syntax_check(t_line_lst *line)
 			|| ft_strcmp(temp->value, "<") || ft_strcmp(temp->value, "<<"))
 			{
 				if (syntax_redirects(temp))
-					return (perror_return("`newline'"));
+					return (perror_redirect(temp));
 			}
 			else
 				return (perror_return("`newline'"));

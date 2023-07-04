@@ -6,7 +6,7 @@
 /*   By: abarteld <abarteld@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/01 16:43:11 by abarteld      #+#    #+#                 */
-/*   Updated: 2023/06/22 19:54:40 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/04 15:52:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct
 		exit(g_exitcode);
 	close(pipe_in[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
-	{	
+	{
 		if (dup2(pipe_in[0], STDIN_FILENO) == -1)
 			exit(ft_perror(NULL, 1, NULL));
 	}
@@ -55,7 +55,7 @@ void	last_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 		exit(g_exitcode);
 	close(pipe[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
-	{	
+	{
 		if (dup2(pipe[0], STDIN_FILENO) == -1)
 			exit(ft_perror(NULL, 1, NULL));
 	}
