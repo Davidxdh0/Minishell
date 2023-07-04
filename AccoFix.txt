@@ -89,4 +89,6 @@ bye
 
 
 ls >| s0			= werkt						- mijn - ls?? s0 cmd not found 
+	1 redirect handelen. 
 ls >>| s0			=  `|'						- mijn -  `>>'
+	if next is pipe doe pipe.
