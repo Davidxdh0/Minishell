@@ -22,13 +22,29 @@ static bool	realign_heredoc_prompt(void)
 	return (false);
 }
 
-static void	ft_heredoc_name(t_execute *cmd_struct, int cmd_nbr)
+static bool	ft_heredoc_name(t_execute *cmd_struct, int *fd, int cmd_nbr)
 {
 	char	*number;
 
+	if (cmd_struct->heredoc_name)
+		unlink(cmd_struct->heredoc_name);
 	number = ft_itoa(cmd_nbr);
 	cmd_struct->heredoc_name = ft_strjoin(".heredoc", number);
 	free(number);
+	*fd = open(cmd_struct->heredoc_name, O_WRONLY | O_CREAT | O_EXCL, 0644);
+	while (errno == EEXIST)
+	{
+		errno = 0;
+		free(cmd_struct->heredoc_name);
+		cmd_nbr += 10;
+		number = ft_itoa(cmd_nbr);
+		cmd_struct->heredoc_name = ft_strjoin(".heredoc", number);
+		free(number);
+		*fd = open(cmd_struct->heredoc_name, O_WRONLY | O_CREAT | O_EXCL, 0644);
+	}
+	if (*fd == -1)
+		return (ft_perror(cmd_struct->heredoc_name, 1, NULL), false);
+	return (true);
 }
 
 static bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
@@ -56,14 +72,10 @@ static bool	heredoc_loop(char *eof, int fd, t_envp *new_envp)
 	return (str);
 }
 
-static bool	ft_heredoc(char *eof, char *name, t_envp *new_envp)
+static bool	ft_heredoc(char *eof, int fd, t_envp *new_envp)
 {
-	int		fd;
 	bool	str;
 
-	fd = open(name, O_WRONLY | O_CREAT, 0644);
-	if (fd == -1)
-		return (ft_perror(name, 1, NULL), false);
 	str = true;
 	sig_controller(1);
 	while (str == true && g_exitcode != 1000)
@@ -79,7 +91,9 @@ bool	ft_heredoc_init(t_execute *cmd_s, t_envp *envp)
 {
 	int	i;
 	int	count;
+	int	fd;
 
+	fd = 0;
 	count = 1;
 	while (cmd_s)
 	{
@@ -89,11 +103,10 @@ bool	ft_heredoc_init(t_execute *cmd_s, t_envp *envp)
 			if (cmd_s->redirects[i][0] == '<' &&
 				cmd_s->redirects[i][1] == '<')
 			{
-				if (cmd_s->heredoc_name)
-					unlink(cmd_s->heredoc_name);
 				i++;
-				ft_heredoc_name(cmd_s, count++);
-				if (!ft_heredoc(cmd_s->redirects[i], cmd_s->heredoc_name, envp))
+				if (!ft_heredoc_name(cmd_s, &fd, count++))
+					return (false);
+				if (!ft_heredoc(cmd_s->redirects[i], fd, envp))
 					return (false);
 			}
 			i++;

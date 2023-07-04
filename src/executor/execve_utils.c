@@ -14,6 +14,16 @@
 
 bool	is_path(char *exec_argv)
 {
+	if (!ft_strcmp(exec_argv, "."))
+	{
+		ft_putstr_fd("minishell: .: filename argument required\n", 2);
+		exit(2);
+	}
+	if (!ft_strcmp(exec_argv, ".."))
+	{
+		ft_putstr_fd("minishell: ..: command not found\n", 2);
+		exit(127);
+	}
 	if (exec_argv[0] == '/')
 		return (true);
 	if (exec_argv[0] == '.' && exec_argv[1] == '/')
@@ -97,7 +107,11 @@ char	*check_path(char *exec_argv, char **envp)
 		exit(127);
 	}
 	if (is_path(exec_argv))
+	{
+		if (access(exec_argv, F_OK))
+			exit(ft_perror(exec_argv, 127, NULL));
 		return (ft_strdup(exec_argv));
+	}
 	env_hold = ft_getenv("PATH=", envp);
 	if (env_hold)
 	{

@@ -14,6 +14,8 @@
 
 void	first_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 {
+	if (!validate_redirects(cmd_struct))
+		exit(g_exitcode);
 	close(pipe[0]);
 	redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name);
 	if (!redirect_outfile(cmd_struct->redirects))
@@ -28,6 +30,8 @@ void	first_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct
 																, t_envp *envp)
 {
+	if (!validate_redirects(cmd_struct))
+		exit(g_exitcode);
 	close(pipe_in[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
 	{	
@@ -47,6 +51,8 @@ void	middle_child(int *pipe_in, int *pipe_out, t_execute *cmd_struct
 
 void	last_child(int *pipe, t_execute *cmd_struct, t_envp *envp)
 {
+	if (!validate_redirects(cmd_struct))
+		exit(g_exitcode);
 	close(pipe[1]);
 	if (!redirect_infile(cmd_struct->redirects, cmd_struct->heredoc_name))
 	{	

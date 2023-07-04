@@ -41,7 +41,6 @@ char	**make_redirects(t_line_lst *line_l)
 	return (tempstring);
 }
 
-// printf("countcmd = %d count red = %d\n", node->count_cmd, node->count_red);
 t_execute	*c_node_exec(t_line_lst *head)
 {
 	t_execute	*node;

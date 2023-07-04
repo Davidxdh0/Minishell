@@ -12,14 +12,6 @@
 
 #include "../main/main.h"
 
-// int	ft_fork(void)
-// {
-// 	int	pid;
-
-// 	pid = fork();
-// 	return (pid);
-// }
-
 void	ft_heredoc_cleanup(t_execute *cmd_struct)
 {
 	while (cmd_struct)

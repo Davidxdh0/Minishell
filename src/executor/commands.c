@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../main/main.h"
+#include <dirent.h>
 
 void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 {
@@ -21,21 +22,36 @@ void	ft_execute_cmd(t_execute *cmd_struct, t_envp *envp)
 		exit(g_exitcode);
 	if (check_builtin(cmd_struct->cmd[0]))
 		exec_builtin(cmd_struct, envp, 1);
-	else
+	envp_array = envp_to_array(envp);
+	cmd_path = check_path(cmd_struct->cmd[0], envp_array);
+	if (!access(cmd_path, F_OK) && opendir(cmd_path))
 	{
-		envp_array = envp_to_array(envp);
-		cmd_path = check_path(cmd_struct->cmd[0], envp_array);
-		if (access(cmd_path, X_OK))
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd_path, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			exit(126);
-		}
-		execve(cmd_path, cmd_struct->cmd, envp_array);
-		exit(ft_perror(cmd_path, 1, NULL));
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		exit(126);
 	}
+	execve(cmd_path, cmd_struct->cmd, envp_array);
+	if (!ft_strcmp("Permission denied", strerror(errno)))
+		exit(ft_perror(cmd_path, 126, NULL));
+	exit(ft_perror(cmd_path, 1, NULL));
 }
+	// if (!access(cmd_path, F_OK) && access(cmd_path, X_OK))
+	// {
+	// 	ft_putstr_fd("minishell: ", 2);
+	// 	ft_putstr_fd(cmd_path, 2);
+	// 	ft_putstr_fd(": PPermission denied\n", 2); //change
+	// 	// ft_perror(cmd_path, 126, NULL);
+	// 	exit(126);
+	// }
+	// else if (!access(cmd_path, F_OK) && opendir(cmd_path))
+	// {
+	// 	ft_putstr_fd("minishell: ", 2);
+	// 	ft_putstr_fd(cmd_path, 2);
+	// 	ft_putstr_fd(": iis a directory\n", 2); //change
+	// 	// exit(ft_perror(cmd_path, 126, NULL));
+	// 	exit(126);
+	// }
 
 static void	only_child(t_execute *cmd_struct, t_envp *envp)
 {
@@ -50,6 +66,8 @@ t_envp	*ft_single_command(t_execute *cmd_struct, t_envp *envp)
 	int	fd;
 	int	status;
 
+	if (!validate_redirects(cmd_struct))
+		return (envp);
 	if (cmd_struct->cmd && check_builtin(cmd_struct->cmd[0]))
 	{
 		ft_heredoc_cleanup(cmd_struct);

@@ -39,3 +39,32 @@ $PWD
 	bash exit code = 126
 	mini error = ( Permission denied)
 	bash error = ( is a directory)
+
+
+
+
+
+minishell$   < infile ls | ls asdads  >>> outfile > infile
+minishell: syntax error near unexpected token `newline'
+minishell$ 
+
+bash-3.2$ $   < infile ls | ls asdads  >>>outfile > infile
+bash: syntax error near unexpected token `>'
+bash-3.2$ 
+
+Files ./mini_outfiles/outfile01 and ./bash_outfiles/outfile01 differ
+mini outfiles:
+./outfiles/outfile01
+bash outfiles:
+bye
+
+minishell$ ls -la >> outfile adsasd
+
+cmd[0] = ls
+cmd[1] = -la
+cmd[2] = outfile
+redir = >>
+redir = outfile
+
+bash-3.2$ ls -la >> outfile adsasd
+ls: adsasd: No such file or directory

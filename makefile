@@ -20,6 +20,7 @@ EXECUTE_FI	=	executor.c \
 				envp.c \
 				envp_utils.c \
 				redirect.c \
+				redirect_validation.c \
 				heredoc.c
 				
 				
@@ -94,4 +95,7 @@ re: fclean all
 run: all
 	./minishell
 
-.DEFAULT_GOAL:=run
+exp: all
+	rm ../mini
+	mv ./minishell ../mini
+.DEFAULT_GOAL:=all
