@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/04 14:37:36 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 13:04:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ void		fill_command_arrays(t_execute *new_node, t_line_lst **head_ptr);
 t_execute	*create_execute_nodes(t_line_lst *head);
 t_line_lst	*move_to_next_commands(t_line_lst *head);
 char		*fill_string(char *str, int bgn, int end, char *env);
+void		popuplate_red_utl(t_execute **node, t_line_lst *head);
 
 //signals.c
 void		siginthandler(int sig);

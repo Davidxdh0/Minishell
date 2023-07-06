@@ -6,11 +6,17 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/04 15:46:37 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 13:03:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
+
+void	popuplate_red_utl(t_execute **node, t_line_lst *head)
+{
+	(*node)->redirects[(*node)->cr] = ft_strdup(head->value);
+	(*node)->cr++;
+}
 
 void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 {
@@ -18,6 +24,8 @@ void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 	{
 		if (!ft_strcmp(head->value, "|") && head->state == 0)
 			break ;
+		if (head->type == e_file && count_red == 1)
+			popuplate_red_utl(&node, head);
 		while (head != NULL && specials(head, 1) && count_red > 0)
 		{
 			node->redirects[node->cr] = ft_strdup(head->value);
@@ -36,26 +44,32 @@ void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 		head = head->next;
 	}
 	node->redirects[node->cr] = NULL;
-	count_red++;
 }
 
 int	count_redirectss(t_line_lst *head)
 {
 	int			i;
 	t_line_lst	*temp;
+	int			flag;
 
 	i = 0;
+	flag = 0;
 	temp = head;
 	while (temp != NULL && ft_strcmp(temp->value, "|"))
 	{
 		if (specials(temp, 1) && ft_strcmp(temp->value, "|"))
 		{
 			i++;
-			if (ft_strcmp(temp->next->value, "|"))
-				i++;
+			if (temp->next != NULL)
+				if (ft_strcmp(temp->next->value, "|"))
+					i++;
 		}
+		if (temp->type == e_file)
+			flag = 1;
 		temp = temp->next;
 	}
+	if (flag == 1 && i == 0)
+		i = 1;
 	return (i);
 }
 
