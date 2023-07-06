@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 14:49:07 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 15:19:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ char	*expand_var(char *value, t_envp *new_envp, int state, t_line_lst *temp)
 	value = ft_substr(value, 1, ft_strlen(value));
 	str = get_new_env(value, new_envp);
 	free(value);
-	if (!str)
+	if (!str && state == 0)
 	{
-		temp->state = 2;
-		return (ft_strdup(""));
+		temp->state = 3;
+		ft_strdup("*");
 	}
+	if (!str)
+		return (ft_strdup(""));
 	else
 	{
 		if (state == 0)

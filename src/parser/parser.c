@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 14:51:42 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 15:22:17 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_line_lst *prev, t_line_lst *next)
 	{
 		next = l->next;
 		if ((l->type == e_wspace && l->state == 0) || \
-		(!ft_strcmp(l->value, "") && l->state == 2))
+		(ft_strcmp("*", l->value) && l->state == 3))
 		{
 			if (l->prev != NULL)
 				l->prev->state = 0;
