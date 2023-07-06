@@ -82,7 +82,7 @@ bye
 #ls >| ss 			= ls in ss
 #ls |< s1			= no such file or directory	- mijn -  werkt
 #ls |> s2			= werkt						- mijn -  werkt
-#ls <l s				= no such file or directory	- mijn - werkt
+#ls <l s			= no such file or directory	- mijn - werkt
 #ls |<< s1			= heredoc					- mijn -  werkt
 #ls |>> s2			= werkt						- mijn -  werkt
 #ls <<l s			= no such file or directory	- mijn -  werkt
