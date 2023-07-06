@@ -58,12 +58,12 @@ void	ft_echo(t_execute *cmd_struct, int fd)
 		i = echo_option(cmd_struct->cmd, &n);
 	if (cmd_struct->cmd[i])
 	{
-		write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
+		ft_putstr_fd(cmd_struct->cmd[i], fd);
 		i++;
 		while (cmd_struct->cmd[i])
 		{
 			write(fd, " ", 1);
-			write(fd, cmd_struct->cmd[i], ft_strlen(cmd_struct->cmd[i]));
+			ft_putstr_fd(cmd_struct->cmd[i], fd);
 			i++;
 		}
 	}
