@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 14:52:56 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 15:28:11 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char *argv[], char **original_envp)
 	t_envp		*envp;
 
 	if (argc != 1)
-		return (printf("%s not started right", argv[0]));
+		return (printf("%s did not started correctly\n", argv[0]));
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
 	while (1)

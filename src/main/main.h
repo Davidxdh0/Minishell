@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 14:50:39 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 15:22:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,8 @@ void		exitcode_signals(int status);
 char		*get_new_env(char *value, t_envp *envp);
 int			count_words_expander(char *value);
 int			find_variable(char *str);
+char		*expand_var(char *value, t_envp *new_envp, int state, \
+t_line_lst *temp);
 char		*expand_word(char*value, t_envp *new_envp);
 void		expand_heredoc_word(char *value, t_envp *new_envp, int fd);
 char		*change_heredoc_str(char *str, int begin, int eind, t_envp *envp);
