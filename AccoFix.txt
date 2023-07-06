@@ -86,4 +86,9 @@ bye
 #ls |<< s1			= heredoc					- mijn -  werkt
 #ls |>> s2			= werkt						- mijn -  werkt
 #ls <<l s			= no such file or directory	- mijn -  werkt
-ls >| s0
+
+
+ls >| s0			= werkt						- mijn - ls?? s0 cmd not found 
+	1 redirect handelen. 
+ls >>| s0			=  `|'						- mijn -  `>>'
+	if next is pipe doe pipe.

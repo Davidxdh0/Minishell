@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 13:09:21 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 13:55:36 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*expand_var(char *value, t_envp *new_envp, int state)
 		return (ft_strdup(""));
 	else
 	{
-		if (state == 2)
+		if (state == 0)
 			return (expand_spaces(str));
 	}
 	return (ft_strdup(str));
