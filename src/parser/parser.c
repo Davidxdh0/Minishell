@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/06/22 21:05:37 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 13:11:40 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,31 +78,31 @@ t_line_lst	*parser(char *line)
 	return (line_lst);
 }
 
-t_line_lst	*rm_wspace(t_line_lst *line_lst, t_line_lst *nh, t_line_lst *prev)
+t_line_lst	*rm_wspace(t_line_lst *l, t_line_lst *nh, t_line_lst *prev)
 {
 	t_line_lst	*next;
 
-	while (line_lst != NULL)
+	while (l != NULL)
 	{
-		next = line_lst->next;
-		if (line_lst->type == e_wspace && line_lst->state == 0)
+		next = l->next;
+		if ((l->type == e_wspace && l->state == 0) || !ft_strcmp(l->value, ""))
 		{
-			if (line_lst->prev != NULL)
-				line_lst->prev->state = 0;
+			if (l->prev != NULL)
+				l->prev->state = 0;
 			if (prev != NULL)
 				prev->next = next;
 			if (next != NULL)
 				next->prev = prev;
-			free(line_lst->value);
-			free(line_lst);
+			free(l->value);
+			free(l);
 		}
 		else
 		{
 			if (nh == NULL)
-				nh = line_lst;
-			prev = line_lst;
+				nh = l;
+			prev = l;
 		}
-		line_lst = next;
+		l = next;
 	}
 	return (nh);
 }
