@@ -86,5 +86,4 @@ bye
 #ls |<< s1			= heredoc					- mijn -  werkt
 #ls |>> s2			= werkt						- mijn -  werkt
 #ls <<l s			= no such file or directory	- mijn -  werkt
-
 ls >| s0

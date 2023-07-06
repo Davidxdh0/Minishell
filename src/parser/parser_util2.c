@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 13:04:22 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 13:27:30 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ t_execute	*alloc_execute_list(t_line_lst *tem, t_execute	*l, t_execute *lst)
 	{
 		new_node = c_node_exec(tem);
 		while (tem != NULL && (ft_strcmp(tem->value, "|") || tem->state != 0))
-		{
+		{	
 			if (new_node->count_cmd > 0)
 				populate_cmd(new_node, tem, new_node->count_cmd, 0);
 			if (new_node->count_red > 0)
