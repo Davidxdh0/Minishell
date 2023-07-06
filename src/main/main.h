@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 13:04:02 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 14:50:39 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int			quotes(t_line_lst **line_lst, char c, int state, int flag);
 void		delete_node(t_line_lst *node_to_delete);
 //long
 t_line_lst	*rm_wspace(t_line_lst *line_lst, \
-t_line_lst *new_head, t_line_lst *prev);
+t_line_lst *new_head, t_line_lst *prev, t_line_lst *next);
 char		*ft_getenv(const char *name, char **envp);
 int			find_variable(char *str);
 t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp);

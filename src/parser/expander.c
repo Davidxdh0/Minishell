@@ -6,13 +6,13 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/13 17:59:33 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 14:25:27 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/06 14:49:07 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/main.h"
 
-char	*expand_var(char *value, t_envp *new_envp, int state)
+char	*expand_var(char *value, t_envp *new_envp, int state, t_line_lst *temp)
 {
 	char	*str;
 
@@ -22,7 +22,10 @@ char	*expand_var(char *value, t_envp *new_envp, int state)
 	str = get_new_env(value, new_envp);
 	free(value);
 	if (!str)
-		return (ft_strdup("*"));
+	{
+		temp->state = 2;
+		return (ft_strdup(""));
+	}
 	else
 	{
 		if (state == 0)
@@ -118,7 +121,7 @@ t_line_lst	*variable_expand(t_line_lst *line, t_envp *new_envp)
 		if (find_variable(temp->value))
 		{
 			if (temp->type == e_var && temp->state != 1)
-				str = expand_var(temp->value, new_envp, temp->state);
+				str = expand_var(temp->value, new_envp, temp->state, temp);
 			else if (temp->state == 2 || temp->state == 0)
 				str = expand_word(temp->value, new_envp);
 			else
