@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 13:35:44 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/08 18:43:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 {
 	while (head != NULL && k < count_cmd)
 	{
-		if (!ft_strcmp(head->value, "|") && head->state == 0)
+		if (!ft_strcmp(head->value, "|") && head->type == e_pipe)
 			break ;
 		if (head->state > 0 && (!specials(head, 1)) && head->type != e_file)
 		{
@@ -102,7 +102,8 @@ void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 				head = head->next;
 			k++;
 		}
-		else if (!specials(head, 1) && head->type != e_file)
+		else if ((!specials(head, 1) && head->type != e_file) || \
+		(!ft_strcmp(head->value, "|") && head->type == e_word))
 		{
 			node->cmd[k] = ft_strdup(head->value);
 			head = head->next;
@@ -123,7 +124,8 @@ t_execute	*alloc_execute_list(t_line_lst *tem, t_execute	*l, t_execute *lst)
 	while (tem != NULL)
 	{
 		new_node = c_node_exec(tem);
-		while (tem != NULL && (ft_strcmp(tem->value, "|") || tem->state != 0))
+		while (tem != NULL && (ft_strcmp(tem->value, "|") || \
+		tem->type == e_word))
 		{
 			if (new_node->count_cmd > 0)
 				populate_cmd(new_node, tem, new_node->count_cmd, 0);

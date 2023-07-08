@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 13:03:53 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/08 17:37:03 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	populate_red(t_execute *node, t_line_lst *head, int count_red)
 {
 	while (head != NULL && head->type != e_cmd)
 	{
-		if (!ft_strcmp(head->value, "|") && head->state == 0)
+		if (!ft_strcmp(head->value, "|") && head->type == e_pipe)
 			break ;
 		if (head->type == e_file && count_red == 1)
 			popuplate_red_utl(&node, head);
