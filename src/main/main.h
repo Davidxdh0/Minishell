@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:56 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/06 15:22:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:17:08 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ int			specials(t_line_lst *lst, int i);
 int			check_combine(t_line_lst *cur);
 //parser_util2.c
 t_execute	*alloc_execute_list(t_line_lst *head, t_execute *e, t_execute *t);
-char		*make_string(t_line_lst *line_lst);
 //long
 void		populate_cmd(t_execute *new_node, t_line_lst *head_ref, \
 int count_cmd, int k);
@@ -160,7 +159,6 @@ void		add_at_end_of_list(t_line_lst **head, int type, char *val, int st);
 void		show_t_list(t_line_lst *node, char *line);
 char		*type_to_string(t_node_type type);
 int			length_of_list(t_line_lst *node);
-char		*make_string(t_line_lst *line_lst);
 int			syntax_check(t_line_lst *line);
 void		delete_node(t_line_lst *node_to_delete);
 

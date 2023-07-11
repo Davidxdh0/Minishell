@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/11 19:13:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:17:55 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ t_envp	*shell(char *line, t_envp *envp)
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
 	return (envp);
-	cmd++;
 }
 
 void	leakschk(void)
