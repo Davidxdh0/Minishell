@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:35:37 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/08 18:43:24 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:14:32 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,15 @@ void	populate_cmd(t_execute *node, t_line_lst *head, int count_cmd, int k)
 	{
 		if (!ft_strcmp(head->value, "|") && head->type == e_pipe)
 			break ;
-		if (head->state > 0 && (!specials(head, 1)) && head->type != e_file)
-		{
-			node->cmd[k] = make_string(head);
-			while (head != NULL && head->state > 0)
-				head = head->next;
-			k++;
-		}
-		else if ((!specials(head, 1) && head->type != e_file) || \
+		// if (head->state > 0 && (!specials(head, 1)) && head->type != e_file)
+		// {
+		// 	printf("wat\n");
+		// 	node->cmd[k] = make_string(head);
+		// 	while (head != NULL && head->state > 0)
+		// 		head = head->next;
+		// 	k++;
+		// }
+		if ((!specials(head, 1) && head->type != e_file) || \
 		(!ft_strcmp(head->value, "|") && head->type == e_word))
 		{
 			node->cmd[k] = ft_strdup(head->value);

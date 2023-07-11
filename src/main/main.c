@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/08 18:45:20 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:13:43 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	show(t_execute *cmd)
 
 // show_t_list(line_lst, line);
 // show(cmd);
+
 t_envp	*shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
@@ -69,6 +70,7 @@ t_envp	*shell(char *line, t_envp *envp)
 	if (!syntax_check(line_lst))
 	{
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
+		show(cmd);
 		envp = executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}
@@ -77,12 +79,13 @@ t_envp	*shell(char *line, t_envp *envp)
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
 	return (envp);
+	cmd++;
 }
 
-// void	leakschk(void)
-// {
-// 	system("leaks -q minishell"); //remove
-// }
+void	leakschk(void)
+{
+	system("leaks -q minishell"); //remove
+}
 
 // system("leaks -q minishell");
 // atexit(leakschk);
@@ -98,6 +101,7 @@ int	main(int argc, char *argv[], char **original_envp)
 	g_exitcode = 0;
 	while (1)
 	{
+		system("leaks -q minishell");
 		disable_ctrl_c_display();
 		sig_controller(0);
 		sig_controller(3);
