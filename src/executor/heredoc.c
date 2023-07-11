@@ -98,18 +98,18 @@ bool	ft_heredoc_init(t_execute *cmd_s, t_envp *envp)
 	while (cmd_s)
 	{
 		i = 0;
-		while (cmd_s->redirects && cmd_s->redirects[i])
+		while (cmd_s->redirects && \
+			cmd_s->redirects[i] && cmd_s->redirects[i + 1])
 		{
 			if (cmd_s->redirects[i][0] == '<' &&
 				cmd_s->redirects[i][1] == '<')
 			{
-				i++;
 				if (!ft_heredoc_name(cmd_s, &fd, count++))
 					return (false);
-				if (!ft_heredoc(cmd_s->redirects[i], fd, envp))
+				if (!ft_heredoc(cmd_s->redirects[i + 1], fd, envp))
 					return (false);
 			}
-			i++;
+			i += 2;
 		}
 		cmd_s = cmd_s->next;
 	}
