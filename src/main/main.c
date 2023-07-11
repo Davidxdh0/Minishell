@@ -69,7 +69,6 @@ t_envp	*shell(char *line, t_envp *envp)
 	if (!syntax_check(line_lst))
 	{
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
-		show(cmd);
 		envp = executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}
@@ -80,11 +79,13 @@ t_envp	*shell(char *line, t_envp *envp)
 	return (envp);
 }
 
-void	leakschk(void)
-{
-	system("leaks -q minishell"); //remove
-}
+// void	leakschk(void)
+// {
+// 	system("leaks -q minishell"); //remove
+// }
 
+// system("leaks -q minishell");
+// atexit(leakschk);
 // enable_ctrl_c_display();
 int	main(int argc, char *argv[], char **original_envp)
 {
@@ -103,11 +104,9 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-system("leaks -q minishell");
 			envp = shell(line, envp);
 			free(line);
 		}
 	}
-atexit(leakschk);
 	return (0);
 }

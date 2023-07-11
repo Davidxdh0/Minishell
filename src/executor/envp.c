@@ -120,17 +120,21 @@ t_envp	*copy_envp(char **original_envp)
 	int		i;
 	t_envp	*envp;
 
-	if (!original_envp)
-		return (NULL);
-	envp = envp_start_list(original_envp[0]);
-	i = 1;
-	while (original_envp[i])
+	if (!original_envp || !original_envp[0])
+		envp = envp_start_list("PWD");
+	else
 	{
-		if (ft_strncmp("OLDPWD=", original_envp[i], 7))
-			envp_add_node(envp, original_envp[i]);
-		i++;
+		envp = envp_start_list(original_envp[0]);
+		i = 1;
+		while (original_envp[i])
+		{
+			if (ft_strncmp("OLDPWD=", original_envp[i], 7))
+				envp_add_node(envp, original_envp[i]);
+			i++;
+		}
 	}
 	if (!increase_shlvl(envp))
 		envp_add_node(envp, "SHLVL=1");
+	envp_add_node(envp, "OLDPWD");
 	return (envp);
 }
