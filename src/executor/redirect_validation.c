@@ -84,6 +84,8 @@ bool	validate_redirects(t_execute *cmd_struct)
 				return (false);
 			}
 			i++;
+			if (cmd_struct->redirects[i])
+				i++;
 		}
 	}
 	return (true);
