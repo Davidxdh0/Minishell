@@ -62,8 +62,10 @@ void	show_envp_struct(t_envp *envp)
 	i = 1;
 	while (envp)
 	{
-		printf("Node #%d\nLine:\t\t%s\nIdentifier:\t%s\nString:\t\t%s\n\n", i,
+		printf("Node #%d\nLine:\t\t%s\nIdentifier:\t%s\nString:\t\t%s\n", i,
 			envp->line, envp->identifier, envp->string);
+		printf("(Previous Node = %p)\n", envp->prev);
+		printf("(Next Node = %p)\n\n", envp->next);
 		envp = envp->next;
 		i++;
 	}

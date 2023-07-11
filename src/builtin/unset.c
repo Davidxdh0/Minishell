@@ -75,5 +75,5 @@ t_envp	*ft_unset(t_execute *cmd_struct, t_envp *envp)
 		}
 		i++;
 	}
-	return (envp);
+	return (head);
 }

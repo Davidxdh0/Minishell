@@ -51,7 +51,7 @@ void	show(t_execute *cmd)
 
 // show_t_list(line_lst, line);
 // show(cmd);
-int	shell(char *line, t_envp *envp)
+t_envp	*shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
 	t_execute	*cmd;
@@ -60,7 +60,7 @@ int	shell(char *line, t_envp *envp)
 	filler = NULL;
 	line_lst = parser(line);
 	if (syntax_count_quotes(line_lst))
-		return (EXIT_FAILURE);
+		return (envp);
 	line_lst = variable_expand(line_lst, envp);
 	line_lst = combine_quotes(line_lst);
 	line_lst = remove_quotes(line_lst, filler, filler);
@@ -69,29 +69,30 @@ int	shell(char *line, t_envp *envp)
 	if (!syntax_check(line_lst))
 	{
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
-		executor_dcs(cmd, envp);
+		show(cmd);
+		envp = executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}
 	else
 		g_exitcode = 258;
 	if (line_lst != NULL)
 		delete_t_list(line_lst);
-	return (EXIT_SUCCESS);
+	return (envp);
 }
 
-// void	leakschk(void)
-// {
-// 	system("leaks -q minishell");
-// }
-// atexit(leakschk);
+void	leakschk(void)
+{
+	system("leaks -q minishell"); //remove
+}
+
 // enable_ctrl_c_display();
 int	main(int argc, char *argv[], char **original_envp)
 {
 	char		*line;
 	t_envp		*envp;
 
-	if (argc != 1)
-		return (printf("%s did not started correctly\n", argv[0]));
+	if (argc != 1 || !argv)
+		return (ft_putstr_fd("Minishell Does Not Take Arguments\n", 2), 1);
 	envp = copy_envp(original_envp);
 	g_exitcode = 0;
 	while (1)
@@ -102,9 +103,11 @@ int	main(int argc, char *argv[], char **original_envp)
 		line_reader(&line, "minishell$ ");
 		if (line != NULL)
 		{
-			shell(line, envp);
+system("leaks -q minishell");
+			envp = shell(line, envp);
 			free(line);
 		}
 	}
+atexit(leakschk);
 	return (0);
 }

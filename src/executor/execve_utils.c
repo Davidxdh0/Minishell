@@ -39,6 +39,8 @@ char	*ft_getenv(const char *name, char **envp)
 	int	i;
 	int	j;
 
+	if (!envp)
+		return (NULL);
 	i = 0;
 	while (envp[i])
 	{

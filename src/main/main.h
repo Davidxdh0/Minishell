@@ -165,7 +165,7 @@ int			syntax_check(t_line_lst *line);
 void		delete_node(t_line_lst *node_to_delete);
 
 /* Main */
-int			shell(char *line, t_envp *envp);
+t_envp		*shell(char *line, t_envp *envp);
 void		line_reader(char **line, const char *display_name);
 int			str_isspaces(char **line);
 int			ft_isredirect(char *str);
