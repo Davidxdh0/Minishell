@@ -71,41 +71,38 @@ bool	builtin_infile(char **list)
 	{
 		if (list[i][0] == '<' && list[i][1] != '<')
 		{
-			i++;
-			fd = open(list[i], O_RDONLY);
+			fd = open(list[i + 1], O_RDONLY);
 			if (fd == -1)
-				return (ft_perror(list[i], 1, NULL), false);
+				return (ft_perror(list[i + 1], 1, NULL), false);
 			if (close(fd) == -1)
 				return (ft_perror(NULL, 1, NULL), false);
 		}
-		i++;
+		i += 2;
 	}
 	return (true);
 }
 
 bool	builtin_outfile(char **list, int *fd, int i, int temp_fd)
 {
-	while (list && list[i])
+	while (list && list[i] && list[i + 1])
 	{
 		if (list[i][0] == '>' && !list[i][1])
 		{
-			i++;
 			if (temp_fd != -1 && close(temp_fd) == -1)
 				return (ft_perror(NULL, 1, NULL), false);
-			temp_fd = open(list[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			temp_fd = open(list[i + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			if (temp_fd == -1)
-				return (ft_perror(list[i], 1, NULL), false);
+				return (ft_perror(list[i + 1], 1, NULL), false);
 		}
 		else if (list[i][0] == '>' && list[i][1] == '>')
 		{
-			i++;
 			if (temp_fd != -1 && close(temp_fd) == -1)
 				return (ft_perror(NULL, 1, NULL), false);
-			temp_fd = open(list[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			temp_fd = open(list[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (temp_fd == -1)
-				return (ft_perror(list[i], 1, NULL), false);
+				return (ft_perror(list[i + 1], 1, NULL), false);
 		}
-		i++;
+		i += 2;
 	}
 	if (temp_fd != -1)
 		*(fd) = temp_fd;

@@ -70,6 +70,7 @@ t_envp	*shell(char *line, t_envp *envp)
 	if (!syntax_check(line_lst))
 	{
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
+show(cmd);
 		envp = executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
 	}
@@ -85,13 +86,13 @@ void	leakschk(void)
 	system("leaks -q minishell"); //remove
 }
 
-// atexit(leakschk);
 // enable_ctrl_c_display();
 int	main(int argc, char *argv[], char **original_envp)
 {
 	char		*line;
 	t_envp		*envp;
 
+atexit(leakschk);
 	if (argc != 1 || !argv)
 		return (ft_putstr_fd("Minishell Does Not Take Arguments\n", 2), 1);
 	envp = copy_envp(original_envp);
@@ -105,7 +106,7 @@ int	main(int argc, char *argv[], char **original_envp)
 		if (line != NULL)
 		{
 			envp = shell(line, envp);
-// system("leaks -q minishell");
+system("leaks -q minishell");
 			free(line);
 		}
 	}
