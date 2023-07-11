@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 21:28:38 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/08 17:37:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:40:54 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	count_redirectss(t_line_lst *head)
 	i = 0;
 	flag = 0;
 	temp = head;
-	while (temp != NULL && ft_strcmp(temp->value, "|"))
+	while (temp != NULL && temp->type != e_pipe)
 	{
-		if (specials(temp, 1) && ft_strcmp(temp->value, "|"))
+		if (specials(temp, 1) && temp->type != e_pipe)
 		{
 			i++;
 			if (temp->next != NULL)
-				if (ft_strcmp(temp->next->value, "|"))
+				if (temp->next->type != e_pipe)
 					i++;
 		}
 		if (temp->type == e_file)

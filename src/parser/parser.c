@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/11 19:13:16 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:46:46 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,10 @@ t_line_lst *prev, t_line_lst *next)
 	while (l != NULL)
 	{
 		next = l->next;
-		if ((l->type == e_wspace && l->state == 0) || \
-		l->state == 3)
+		if (((l->type == e_wspace && l->state == 0) || \
+		l->state == 3) || (l->prev != NULL && !ft_strcmp(">", l->prev->value) \
+		&& l->type == e_pipe))
 		{
-			// if (l->prev != NULL)
-			// 	l->prev->state = 0;
 			if (prev != NULL)
 				prev->next = next;
 			if (next != NULL)
