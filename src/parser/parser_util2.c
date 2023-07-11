@@ -12,35 +12,6 @@
 
 #include "../main/main.h"
 
-char	**make_redirects(t_line_lst *line_l)
-{
-	char		**tempstring;
-	t_line_lst	*temp;
-	int			i;
-
-	i = 0;
-	temp = line_l;
-	while (temp != NULL && ft_strcmp(line_l->value, "|"))
-	{
-		if (ft_isredirect(line_l->value) || ft_isredirect(line_l->prev->value))
-			i++;
-		temp = temp->next;
-	}
-	tempstring = ft_malloc(sizeof(char **) * i + 1);
-	temp = line_l;
-	i = 0;
-	while (line_l != NULL && ft_strncmp(line_l->value, "|", 1))
-	{
-		if (ft_isredirect(line_l->value))
-			tempstring[i] = ft_strdup(line_l->value);
-		else if (ft_isredirect(line_l->prev->value))
-			tempstring[i] = ft_strdup(line_l->value);
-		i++;
-		temp = temp->next;
-	}
-	return (tempstring);
-}
-
 //printf("cmd= %d red = %d\n", node->count_cmd, node->count_red);
 t_execute	*c_node_exec(t_line_lst *head)
 {

@@ -111,7 +111,6 @@ t_line_lst	*combine_quotes(t_line_lst *list);
 int			specials(t_line_lst *lst, int i);
 int			check_combine(t_line_lst *cur);
 //parser_util2.c
-char		**make_redirects(t_line_lst *line_lst);
 t_execute	*alloc_execute_list(t_line_lst *head, t_execute *e, t_execute *t);
 char		*make_string(t_line_lst *line_lst);
 //long
