@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/11 19:47:35 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 19:56:01 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int argc, char *argv[], char **original_envp)
 		if (line != NULL)
 		{
 			envp = shell(line, envp);
-system("leaks -q minishell");
+// system("leaks -q minishell");
 			free(line);
 		}
 	}
