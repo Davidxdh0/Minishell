@@ -44,11 +44,10 @@ void	line_reader(char **line, const char *display_name)
 	*line = readline(display_name);
 	if (*line == NULL)
 	{
-		g_exitcode = 0;
 		printf("\033[1A");
 		printf("\033[K");
 		printf("minishell$ exit\n");
-		exit(1);
+		exit(g_exitcode);
 	}
 	if (*line && **line && !str_isspaces(line))
 		add_history(*line);
