@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/20 17:52:13 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 18:06:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,15 @@ int	specials(t_line_lst *lst, int i)
 		if (lst->type == e_pipe)
 			return (1);
 	}
-	if (lst->next != NULL)
-		if (i >= 2 && lst->next->state == 0)
-		{
-			if (lst->next->type == e_delimiter || lst->next->type == e_redirect_i)
-				return (1);
-			if (lst->next->type == e_redirect_o || lst->next->type == e_append)
-				return (1);
-			if (lst->next->type == e_pipe)
-				return (1);
-		}
+	if (i >= 2 && lst->next->state == 0)
+	{
+		if (lst->next->type == e_delimiter || lst->next->type == e_redirect_i)
+			return (1);
+		if (lst->next->type == e_redirect_o || lst->next->type == e_append)
+			return (1);
+		if (lst->next->type == e_pipe)
+			return (1);
+	}
 	return (0);
 }
 
