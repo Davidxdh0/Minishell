@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/20 18:03:46 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 18:39:24 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_envp	*shell(char *line, t_envp *envp)
 	line_lst = rm_wspace(line_lst, filler, filler, filler);
 	if (!syntax_check(line_lst))
 	{
+		line_lst = rm_pipe(line_lst, filler, filler, filler);
 		cmd = alloc_execute_list(line_lst, NULL, NULL);
 		envp = executor_dcs(cmd, envp);
 		delete_t_exec(cmd);
@@ -98,7 +99,6 @@ int	main(int argc, char *argv[], char **original_envp)
 	g_exitcode = 0;
 	while (1)
 	{
-		system("leaks -q minishell");
 		disable_ctrl_c_display();
 		sig_controller(0);
 		sig_controller(3);

@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:26:23 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/20 18:06:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 18:39:45 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,35 @@ t_line_lst *prev, t_line_lst *next)
 	{
 		next = l->next;
 		if (((l->type == e_wspace && l->state == 0) || \
-		l->state == 3) || (l->prev != NULL && l->prev->type == e_redirect_o \
-		&& l->type == e_pipe))
+		l->state == 3))
+		{
+			if (prev != NULL)
+				prev->next = next;
+			if (next != NULL)
+				next->prev = prev;
+			free(l->value);
+			free(l);
+		}
+		else
+		{
+			if (nh == NULL)
+				nh = l;
+			prev = l;
+		}
+		l = next;
+	}
+	return (nh);
+}
+
+t_line_lst	*rm_pipe(t_line_lst *l, t_line_lst *nh, \
+t_line_lst *prev, t_line_lst *next)
+{
+	while (l != NULL)
+	{
+		next = l->next;
+		if (((l->type == e_wspace && l->state == 0) || \
+		l->state == 3) || (l->prev != NULL && (l->prev->type == e_redirect_o \
+		&& l->type == e_pipe)))
 		{
 			if (prev != NULL)
 				prev->next = next;
