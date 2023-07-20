@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/20 17:23:14 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 17:31:02 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,16 @@ int	specials(t_line_lst *lst, int i)
 		if (lst->type == e_pipe)
 			return (1);
 	}
-	if (i >= 2 && lst->state == 0)
-	{
-		if (lst->next->type == e_delimiter || lst->next->type == e_redirect_i)
-			return (1);
-		if (lst->next->type == e_redirect_o || lst->next->type == e_append)
-			return (1);
-		if (lst->next->type == e_pipe)
-			return (1);
-	}
+	if (lst->next != NULL)
+		if (i >= 2 && lst->next->state == 0)
+		{
+			if (lst->next->type == e_delimiter || lst->next->type == e_redirect_i)
+				return (1);
+			if (lst->next->type == e_redirect_o || lst->next->type == e_append)
+				return (1);
+			if (lst->next->type == e_pipe)
+				return (1);
+		}
 	return (0);
 }
 
@@ -94,7 +95,7 @@ t_line_lst	*combine_values(t_line_lst *list, t_line_lst *l, t_line_lst *nxt)
 		{
 			nxt = l->next;
 			while (nxt != NULL && (nxt->state != 0 || \
-			nxt->type != e_wspace) && (!specials(l, 2)))
+			nxt->type != e_wspace) && (!specials(nxt, 1)))
 			{
 				l->value = combine_thestring(l->value, nxt->value);
 				temp = nxt;
