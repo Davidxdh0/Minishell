@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/28 21:43:50 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/04 15:52:03 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 20:17:53 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,15 @@ void	show_t_list(t_line_lst *node, char *input_line)
 	i = 1;
 	printf("\ninput__line = %s", input_line);
 	printf("\n-----------line list table ------------\n");
-	printf("index \ttype \tlen \ttype_name \tstate\tvalue\n");
+	printf("index \ttype \tlen \ttype_name \tstate\tvalue\tvalueprev\n");
+	printf("%d\t%d\t%d\t%s\t%d\t%s\t%s\n", i, node->type, node->len, \
+		type_to_string(node->type), (int)node->state, node->value, "NULL");
+	node = node->next;
 	while (node != NULL)
 	{
-		printf("%d\t%d\t%d\t%s\t%d\t%s\n", i, node->type, node->len,
-			type_to_string(node->type), (int)node->state, node->value);
+		printf("%d\t%d\t%d\t%s\t%d\t%s\t%s\n", i, node->type, node->len,
+			type_to_string(node->type), (int)node->state, node->value, \
+			node->prev->value);
 		node = node->next;
 		i++;
 	}
