@@ -54,7 +54,7 @@ char	*expand_spaces(char *str)
 
 	j = 0;
 	i = ft_strlen(str);
-	newstr = malloc(sizeof(char) * (i + 1));
+	newstr = ft_malloc(sizeof(char) * (i + 1));
 	i = 0;
 	while (str[i])
 	{

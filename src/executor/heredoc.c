@@ -27,15 +27,19 @@ static bool	ft_heredoc_name(t_execute *cmd_struct, int *fd, int cmd_nbr)
 	char	*number;
 
 	if (cmd_struct->heredoc_name)
+	{
 		unlink(cmd_struct->heredoc_name);
+		free(cmd_struct->heredoc_name);
+		cmd_struct->heredoc_name = NULL;
+	}
 	number = ft_itoa(cmd_nbr);
 	cmd_struct->heredoc_name = ft_strjoin(".heredoc", number);
 	free(number);
 	*fd = open(cmd_struct->heredoc_name, O_WRONLY | O_CREAT | O_EXCL, 0644);
 	while (errno == EEXIST)
 	{
-		errno = 0;
 		free(cmd_struct->heredoc_name);
+		errno = 0;
 		cmd_nbr += 10;
 		number = ft_itoa(cmd_nbr);
 		cmd_struct->heredoc_name = ft_strjoin(".heredoc", number);
