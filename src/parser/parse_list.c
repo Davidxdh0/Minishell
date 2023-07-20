@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/11 20:51:33 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 17:23:14 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_line_lst	*combine_values(t_line_lst *list, t_line_lst *l, t_line_lst *nxt)
 		{
 			nxt = l->next;
 			while (nxt != NULL && (nxt->state != 0 || \
-			nxt->type != e_wspace) && (!specials(l, 2)) && nxt->type != e_pipe)
+			nxt->type != e_wspace) && (!specials(l, 2)))
 			{
 				l->value = combine_thestring(l->value, nxt->value);
 				temp = nxt;
