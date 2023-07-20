@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/11 20:51:57 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 16:46:38 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	main(int argc, char *argv[], char **original_envp)
 		{
 			envp = shell(line, envp);
 			free(line);
-system("leaks -q minishell");
 		}
 	}
 	return (0);
