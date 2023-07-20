@@ -1,0 +1,33 @@
+total 32
+drwxr-xr-x  10 dyeboa  piscine   340 Jul 11 20:52 .
+drwx------  27 dyeboa  piscine   918 Jul  8 16:04 ..
+-rw-r--r--@  1 dyeboa  piscine  6148 Jul 11 13:56 .DS_Store
+drwxr-xr-x  15 dyeboa  piscine   510 Jul 11 20:40 .git
+-rw-r--r--   1 dyeboa  piscine    78 Jul  8 18:44 .gitignore
+-rw-r--r--   1 dyeboa  piscine     0 Jul 11 20:54 12345
+-rw-r--r--   1 dyeboa  piscine  1856 Jul  6 15:39 Makefile
+drwxr-xr-x   9 dyeboa  piscine   306 Jul 11 20:53 intra
+drwxr-xr-x   3 dyeboa  piscine   102 Jul  6 15:39 libs
+drwxr-xr-x   6 dyeboa  piscine   204 Jul  6 15:39 src
+total 40
+drwxr-xr-x  10 dyeboa  piscine   340 Jul 11 20:52 .
+drwx------  27 dyeboa  piscine   918 Jul  8 16:04 ..
+-rw-r--r--@  1 dyeboa  piscine  6148 Jul 11 13:56 .DS_Store
+drwxr-xr-x  15 dyeboa  piscine   510 Jul 11 20:40 .git
+-rw-r--r--   1 dyeboa  piscine    78 Jul  8 18:44 .gitignore
+-rw-r--r--   1 dyeboa  piscine   570 Jul 11 20:54 12345
+-rw-r--r--   1 dyeboa  piscine  1856 Jul  6 15:39 Makefile
+drwxr-xr-x   9 dyeboa  piscine   306 Jul 11 20:53 intra
+drwxr-xr-x   3 dyeboa  piscine   102 Jul  6 15:39 libs
+drwxr-xr-x   6 dyeboa  piscine   204 Jul  6 15:39 src
+total 40
+drwxr-xr-x  10 dyeboa  piscine   340 Jul 11 20:52 .
+drwx------  27 dyeboa  piscine   918 Jul  8 16:04 ..
+-rw-r--r--@  1 dyeboa  piscine  6148 Jul 11 13:56 .DS_Store
+drwxr-xr-x  15 dyeboa  piscine   510 Jul 11 20:40 .git
+-rw-r--r--   1 dyeboa  piscine    78 Jul  8 18:44 .gitignore
+-rw-r--r--   1 dyeboa  piscine  1140 Jul 11 20:54 12345
+-rw-r--r--   1 dyeboa  piscine  1856 Jul  6 15:39 Makefile
+drwxr-xr-x   9 dyeboa  piscine   306 Jul 11 20:53 intra
+drwxr-xr-x   3 dyeboa  piscine   102 Jul  6 15:39 libs
+drwxr-xr-x   6 dyeboa  piscine   204 Jul  6 15:39 src

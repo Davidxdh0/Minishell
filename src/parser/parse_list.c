@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/06 18:01:14 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/11 19:42:43 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/11 20:51:33 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	specials(t_line_lst *lst, int i)
 	return (0);
 }
 
-t_line_lst	*combine_values(t_line_lst *list, t_line_lst *l, t_line_lst *next)
+t_line_lst	*combine_values(t_line_lst *list, t_line_lst *l, t_line_lst *nxt)
 {
 	t_line_lst	*temp;
 
@@ -92,18 +92,18 @@ t_line_lst	*combine_values(t_line_lst *list, t_line_lst *l, t_line_lst *next)
 	{
 		if ((l->state != 0 || l->type != e_wspace) && (!specials(l, 1)))
 		{
-			next = l->next;
-			while (next != NULL && (next->state != 0 || \
-			next->type != e_wspace) && (!specials(l, 2)))
+			nxt = l->next;
+			while (nxt != NULL && (nxt->state != 0 || \
+			nxt->type != e_wspace) && (!specials(l, 2)) && nxt->type != e_pipe)
 			{
-				l->value = combine_thestring(l->value, next->value);
-				temp = next;
-				next = next->next;
+				l->value = combine_thestring(l->value, nxt->value);
+				temp = nxt;
+				nxt = nxt->next;
 				free_single_node(temp);
 			}
 			if (l->type != e_file && l->type != e_cmd && l->type != e_wspace)
 				l->type = e_word;
-			l->next = next;
+			l->next = nxt;
 		}
 		l = l->next;
 	}
