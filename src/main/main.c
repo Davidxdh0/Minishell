@@ -6,7 +6,7 @@
 /*   By: dyeboa <dyeboa@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/17 15:25:51 by dyeboa        #+#    #+#                 */
-/*   Updated: 2023/07/20 16:46:38 by dyeboa        ########   odam.nl         */
+/*   Updated: 2023/07/20 16:51:04 by dyeboa        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	show(t_execute *cmd)
 
 // show_t_list(line_lst, line);
 // show(cmd);
-
 t_envp	*shell(char *line, t_envp *envp)
 {
 	t_line_lst	*line_lst;
