@@ -38,27 +38,27 @@ void	delete_t_list(t_line_lst *head)
 	}
 }
 
-void	show_t_list(t_line_lst *node, char *input_line)
-{
-	int	i;
+// void	show_t_list(t_line_lst *node, char *input_line)
+// {
+// 	int	i;
 
-	i = 1;
-	printf("\ninput__line = %s", input_line);
-	printf("\n-----------line list table ------------\n");
-	printf("index \ttype \tlen \ttype_name \tstate\tvalue\tvalueprev\n");
-	printf("%d\t%d\t%d\t%s\t%d\t%s\t%s\n", i, node->type, node->len, \
-		type_to_string(node->type), (int)node->state, node->value, "NULL");
-	node = node->next;
-	while (node != NULL)
-	{
-		printf("%d\t%d\t%d\t%s\t%d\t%s\t%s\n", i, node->type, node->len,
-			type_to_string(node->type), (int)node->state, node->value, \
-			node->prev->value);
-		node = node->next;
-		i++;
-	}
-	printf("-------- end line list table ---------\n\n");
-}
+// 	i = 1;
+// 	printf("\ninput__line = %s", input_line);
+// 	printf("\n-----------line list table ------------\n");
+// 	printf("index \ttype \tlen \ttype_name \tstate\tvalue\tvalueprev\n");
+// 	printf("%d\t%d\t%d\t%s\t%d\t%s\t%s\n", i, node->type, node->len,
+// 		type_to_string(node->type), (int)node->state, node->value, "NULL");
+// 	node = node->next;
+// 	while (node != NULL)
+// 	{
+// 		printf("%d\t%d\t%d\t%s\t%d\t%s\t%s\n", i, node->type, node->len,
+// 			type_to_string(node->type), (int)node->state, node->value,
+// 			node->prev->value);
+// 		node = node->next;
+// 		i++;
+// 	}
+// 	printf("-------- end line list table ---------\n\n");
+// }
 
 t_line_lst	*bad_functions(t_line_lst *list)
 {
